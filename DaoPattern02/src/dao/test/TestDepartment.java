@@ -675,8 +675,8 @@ public class TestDepartment extends TestCase {
     DepartmentDTO departmentDTO2 = (DepartmentDTO) fd.getDTO( //
         DepartmentDTO.class, connectionBean);
 
-    departmentDTO2.setName("FooName111");
-    departmentDTO2.setDescription("FooDescription111");
+    departmentDTO2.setName("FooName222");
+    departmentDTO2.setDescription("FooDescription222");
     departmentDAO.insert(departmentDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -726,8 +726,8 @@ public class TestDepartment extends TestCase {
     DepartmentDTO departmentDTO2 = (DepartmentDTO) fd.getDTO( //
         DepartmentDTO.class, connectionBean);
 
-    departmentDTO2.setName("FooName111");
-    departmentDTO2.setDescription("FooDescription111");
+    departmentDTO2.setName("FooName222");
+    departmentDTO2.setDescription("FooDescription222");
     departmentDAO.insert(departmentDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
