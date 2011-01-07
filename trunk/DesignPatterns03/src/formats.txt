@@ -1,0 +1,2 @@
+org.cyrano.formats.txt1.Txt1FileFormatFactory
+org.cyrano.formats.txt2.Txt2FileFormatFactory
