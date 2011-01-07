@@ -1,0 +1,3 @@
+org.cyrano.tools.happy.HappyPaintableFactory
+org.cyrano.tools.normal.NormalPaintableFactory
+org.cyrano.tools.sad.SadPaintableFactory

@@ -1,0 +1,16 @@
+DesignPatterns02
+
+- Write the simple version w/o plugins
+- Make the toolbar a toolbar
+- Add delete button (command)
+
+DesignPatterns03
+
+- Add icons/human readable names from the plugin to the toolbar
+- Add save load support in several formats (to show some other patters)
+- Create a deployment example where ease of adding plugins is shown
+
+DesignPatterns04
+
+- ADVANCED: Remove plugins.txt so it's enough to deploy plugin jar to have it loaded
+- ADVANCED: Same as before but with a hot load (no app restart) option :)
