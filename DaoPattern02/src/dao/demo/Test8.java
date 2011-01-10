@@ -16,6 +16,8 @@ import dao.base.api.IDTO;
 import dao.connection.ConnectionBean;
 import dao.connection.ConnectionFactory;
 import dao.example.base.AbstractFactoryDAO;
+import dao.example.base.BookDTO;
+import dao.example.base.NewsDTO;
 import dao.example.base.PublicationDAO;
 import dao.example.base.PublicationDTO;
 
@@ -50,8 +52,23 @@ public class Test8 {
       for (IDTO dto : dataList) {
         PublicationDTO ddo = (PublicationDTO) dto;
         System.err.println(ddo.getClass());
+
         System.err.println(ddo.getId() + ";" + //
             ddo.getManufacturer() + ";" + ddo.getNumber() + ";" + ddo.getDescription());
+
+        if (ddo instanceof BookDTO) {
+          BookDTO bookDTO = (BookDTO) ddo;
+
+          System.err.println(bookDTO.getSpeed() + ";" + //
+              bookDTO.getRating());
+        }
+
+        if (ddo instanceof NewsDTO) {
+          NewsDTO newsDTO = (NewsDTO) ddo;
+
+          System.err.println(newsDTO.getSize() + ";" + //
+              newsDTO.getType());
+        }
       }
 
       System.err.println("**********************************");
@@ -60,21 +77,24 @@ public class Test8 {
       // SELECT BY ID
       // --------------------------------------------------------------------------------
 
-      PublicationDTO ddo;
-
       // A book
-      ddo = (PublicationDTO) pd.loadById(5);
+      BookDTO bookDTO = (BookDTO) pd.loadById(5);
 
-      System.err.println(ddo.getClass());
-      System.err.println(ddo.getId() + ";" + //
-          ddo.getManufacturer() + ";" + ddo.getNumber() + ";" + ddo.getDescription());
+      System.err.println(bookDTO.getClass());
+      System.err.println(bookDTO.getId() + ";" + //
+          bookDTO.getManufacturer() + ";" + bookDTO.getNumber() + ";" + bookDTO.getDescription());
+      System.err.println(bookDTO.getSpeed() + ";" + //
+          bookDTO.getRating());
 
       // A news
-      ddo = (PublicationDTO) pd.loadById(15);
+      NewsDTO newsDTO = (NewsDTO) pd.loadById(15);
 
-      System.err.println(ddo.getClass());
-      System.err.println(ddo.getId() + ";" + //
-          ddo.getManufacturer() + ";" + ddo.getNumber() + ";" + ddo.getDescription());
+      System.err.println(newsDTO.getClass());
+      System.err.println(newsDTO.getId() + ";" + //
+          newsDTO.getManufacturer() + ";" + newsDTO.getNumber() + ";" + newsDTO.getDescription());
+      System.err.println(newsDTO.getSize() + ";" + //
+          newsDTO.getType());
+
     } catch (SQLException e) {
       System.err.println("Error: " + e.getMessage());
     } finally {

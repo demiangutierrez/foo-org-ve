@@ -16,7 +16,7 @@ import dao.example.base.EmployeeDTO;
 class EmployeeDAOImpl extends MySQLBaseDAO implements EmployeeDAO {
 
   public EmployeeDAOImpl() {
-    super(EmployeeDTOImpl.class);
+    super(EmployeeDTO.class);
   }
 
   // --------------------------------------------------------------------------------
@@ -118,17 +118,32 @@ class EmployeeDAOImpl extends MySQLBaseDAO implements EmployeeDAO {
 
   // --------------------------------------------------------------------------------
 
-  protected EmployeeDTOImpl resultSetToDTO(ResultSet rs) throws Exception {
-    EmployeeDTOImpl ret = //
-    (EmployeeDTOImpl) dtaSession.getDtaByKey( //
-        EmployeeDTOImpl.class, rs.getInt(EmployeeDTOImpl.ID));
+  //  protected EmployeeDTOImpl resultSetToDTO(ResultSet rs) throws Exception {
+  //    EmployeeDTOImpl ret = //
+  //    (EmployeeDTOImpl) dtaSession.getDtaByKey( //
+  //        EmployeeDTOImpl.class, rs.getInt(EmployeeDTOImpl.ID));
+  //
+  //    if (ret != null) {
+  //      return ret;
+  //    }
+  //
+  //    ret = (EmployeeDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
+  //        getDTO(EmployeeDTO.class, connectionBean);
+  //
+  //    ret.setId/*      */(rs.getInt(EmployeeDTOImpl.ID));
+  //    ret.setFrstName/**/(rs.getString(EmployeeDTOImpl.FRST_NAME));
+  //    ret.setLastName/**/(rs.getString(EmployeeDTOImpl.LAST_NAME));
+  //
+  //    Reference<DepartmentDTO> ref = ret.getDepartmentRef();
+  //    ref.setRefIdent(rs.getInt(EmployeeDTOImpl.DEPARTMENT_ID));
+  //    ref.setRefValue(null);
+  //
+  //    return (EmployeeDTOImpl) dtaSession.add(ret);
+  //  }
 
-    if (ret != null) {
-      return ret;
-    }
-
-    ret = (EmployeeDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
-        getDTO(EmployeeDTO.class, connectionBean);
+  @Override
+  protected IDTO internalResultSetToDTO(ResultSet rs, IDTO dto) throws Exception {
+    EmployeeDTOImpl ret = (EmployeeDTOImpl) dto;
 
     ret.setId/*      */(rs.getInt(EmployeeDTOImpl.ID));
     ret.setFrstName/**/(rs.getString(EmployeeDTOImpl.FRST_NAME));
@@ -138,6 +153,6 @@ class EmployeeDAOImpl extends MySQLBaseDAO implements EmployeeDAO {
     ref.setRefIdent(rs.getInt(EmployeeDTOImpl.DEPARTMENT_ID));
     ref.setRefValue(null);
 
-    return (EmployeeDTOImpl) dtaSession.add(ret);
+    return ret;
   }
 }

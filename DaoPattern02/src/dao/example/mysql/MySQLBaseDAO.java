@@ -138,10 +138,47 @@ abstract class MySQLBaseDAO extends BaseDAO {
 
   @Override
   public void update(IDTO dto) throws Exception {
-    checkCache(dto, CHECK_UPDATE);
+    internalUpdate(dto);
+
+    //    checkCache(dto, CHECK_UPDATE);
+    //    checkClass(dto, dtoClass, CHECK_UPDATE);
+    //
+    //    StringBuffer strbuf = new StringBuffer();
+    //
+    //    strbuf.append("UPDATE ");
+    //    strbuf.append(getTableName());
+    //    strbuf.append(" SET ");
+    //
+    //    strbuf.append(createUpdateValues(dto));
+    //
+    //    strbuf.append(" WHERE ");
+    //    strbuf.append(IDTO.ID);
+    //    strbuf.append(" = ");
+    //    strbuf.append(dto.getId());
+    //
+    //    System.err.println(strbuf.toString());
+    //
+    //    connection.createStatement().execute(strbuf.toString());
+  }
+
+  // --------------------------------------------------------------------------------
+
+  protected void internalUpdate(IDTO dto) throws Exception {
+    checkCache(dto,/*       */CHECK_UPDATE);
     checkClass(dto, dtoClass, CHECK_UPDATE);
 
-    StringBuffer strbuf = new StringBuffer();
+    if (daoParentClass != null) {
+      MySQLBaseDAO dao = (MySQLBaseDAO) AbstractFactoryDAO.getFactoryDAO(). //
+          getDAO(daoParentClass, connectionBean);
+
+      dao.internalUpdate(dto);
+    }
+
+    StringBuffer strbuf;
+
+    // ----------------------------------------
+
+    strbuf = new StringBuffer();
 
     strbuf.append("UPDATE ");
     strbuf.append(getTableName());
@@ -150,7 +187,7 @@ abstract class MySQLBaseDAO extends BaseDAO {
     strbuf.append(createUpdateValues(dto));
 
     strbuf.append(" WHERE ");
-    strbuf.append(DepublicationmentDTOImpl.ID);
+    strbuf.append(IDTO.ID);
     strbuf.append(" = ");
     strbuf.append(dto.getId());
 
@@ -163,10 +200,43 @@ abstract class MySQLBaseDAO extends BaseDAO {
 
   @Override
   public void delete(IDTO dto) throws Exception {
-    checkCache(dto, CHECK_DELETE);
+    internalDelete(dto);
+    //    checkCache(dto, CHECK_DELETE);
+    //    checkClass(dto, dtoClass, CHECK_DELETE);
+    //
+    //    StringBuffer strbuf = new StringBuffer();
+    //
+    //    strbuf.append("DELETE FROM ");
+    //    strbuf.append(getTableName());
+    //
+    //    strbuf.append(" WHERE ");
+    //    strbuf.append(IDTO.ID);
+    //    strbuf.append(" = ");
+    //    strbuf.append(dto.getId());
+    //
+    //    System.err.println(strbuf.toString());
+    //
+    //    connection.createStatement().execute(strbuf.toString());
+    //
+    //    dtaSession.del(dto);
+  }
+
+  protected void internalDelete(IDTO dto) throws Exception {
+    checkCache(dto,/*       */CHECK_DELETE);
     checkClass(dto, dtoClass, CHECK_DELETE);
 
-    StringBuffer strbuf = new StringBuffer();
+    if (daoParentClass != null) {
+      MySQLBaseDAO dao = (MySQLBaseDAO) AbstractFactoryDAO.getFactoryDAO(). //
+          getDAO(daoParentClass, connectionBean);
+
+      dao.internalDelete(dto);
+    }
+
+    StringBuffer strbuf;
+
+    // ----------------------------------------
+
+    strbuf = new StringBuffer();
 
     strbuf.append("DELETE FROM ");
     strbuf.append(getTableName());
@@ -180,6 +250,8 @@ abstract class MySQLBaseDAO extends BaseDAO {
 
     connection.createStatement().execute(strbuf.toString());
 
+    // ----------------------------------------
+
     dtaSession.del(dto);
   }
 
@@ -187,7 +259,7 @@ abstract class MySQLBaseDAO extends BaseDAO {
 
   @Override
   public IDTO loadById(int id) throws Exception {
-    List<IDTO> retList = listBy(IDTO.ID, id);
+    List<IDTO> retList = listBy(this.getTableName() + "." + IDTO.ID, id);
 
     if (retList.isEmpty()) {
       return null;
@@ -322,5 +394,38 @@ abstract class MySQLBaseDAO extends BaseDAO {
 
   // --------------------------------------------------------------------------------
 
-  protected abstract IDTO resultSetToDTO(ResultSet rs) throws Exception;
+  protected IDTO/*     */resultSetToDTO(ResultSet rs/*      */) throws Exception {
+
+    // TODO: THIS IS A HACK TO TRICK THE CACHE: I just create
+    // an empty dto from dtoClass (interface) to get the class
+    // of the current dto concrete implementation to perform
+    // further queries from cache with the concrete class instead
+    // the interface.
+    IDTO ret = AbstractFactoryDAO.getFactoryDAO(). //
+        getDTO(dtoClass, connectionBean);
+
+    ret = dtaSession.getDtaByKey( //
+        ret.getClass(), rs.getInt(NewsDTOImpl.ID));
+
+    if (ret != null) {
+      return ret;
+    }
+
+    // Already created (see previous comment), but nulled from getDtaByKey
+    ret = AbstractFactoryDAO.getFactoryDAO(). //
+        getDTO(dtoClass, connectionBean);
+
+    if (daoParentClass != null) {
+      MySQLBaseDAO dao = (MySQLBaseDAO) AbstractFactoryDAO.getFactoryDAO(). //
+          getDAO(daoParentClass, connectionBean);
+
+      dao.internalResultSetToDTO(rs, ret);
+    }
+
+    internalResultSetToDTO(rs, ret);
+
+    return dtaSession.add(ret);
+  }
+
+  protected abstract IDTO internalResultSetToDTO(ResultSet rs, IDTO dto) throws Exception;
 }
