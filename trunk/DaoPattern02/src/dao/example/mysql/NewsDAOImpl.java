@@ -4,18 +4,18 @@ import java.sql.ResultSet;
 
 import dao.base.api.IDTO;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.PartDAO;
-import dao.example.base.TireDAO;
-import dao.example.base.TireDTO;
+import dao.example.base.PublicationDAO;
+import dao.example.base.NewsDAO;
+import dao.example.base.NewsDTO;
 
 /**
  * @author Demián Gutierrez
  */
-public class TireDAOImpl extends MySQLBaseDAO implements TireDAO {
+public class NewsDAOImpl extends MySQLBaseDAO implements NewsDAO {
 
-  public TireDAOImpl() {
-    super(TireDTOImpl.class);
-    daoParentClass = PartDAO.class;
+  public NewsDAOImpl() {
+    super(NewsDTOImpl.class);
+    daoParentClass = PublicationDAO.class;
   }
 
   // --------------------------------------------------------------------------------
@@ -26,12 +26,12 @@ public class TireDAOImpl extends MySQLBaseDAO implements TireDAO {
   protected String createTableColumns() throws Exception {
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(TireDTOImpl.ID);
+    strbuf.append(NewsDTOImpl.ID);
     strbuf.append(" INT PRIMARY KEY, ");
-    strbuf.append(TireDTOImpl.SPEED);
-    strbuf.append(" INT,    ");
-    strbuf.append(TireDTOImpl.RATING);
-    strbuf.append(" INT     ");
+    strbuf.append(NewsDTOImpl.TYPE);
+    strbuf.append(" INT,             ");
+    strbuf.append(NewsDTOImpl.SIZE);
+    strbuf.append(" INT              ");
 
     return strbuf.toString();
   }
@@ -43,11 +43,11 @@ public class TireDAOImpl extends MySQLBaseDAO implements TireDAO {
       throws Exception {
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(TireDTOImpl.ID);
+    strbuf.append(NewsDTOImpl.ID);
     strbuf.append(", ");
-    strbuf.append(TireDTOImpl.SPEED);
+    strbuf.append(NewsDTOImpl.TYPE);
     strbuf.append(", ");
-    strbuf.append(TireDTOImpl.RATING);
+    strbuf.append(NewsDTOImpl.SIZE);
 
     return strbuf.toString();
   }
@@ -58,18 +58,18 @@ public class TireDAOImpl extends MySQLBaseDAO implements TireDAO {
   protected String createInsertValues(IDTO dto) //
       throws Exception {
 
-    TireDTOImpl tireDTOImpl = (TireDTOImpl) dto;
+    NewsDTOImpl newsDTOImpl = (NewsDTOImpl) dto;
 
     StringBuffer strbuf = new StringBuffer();
 
     // XXX: MySQL does not need to include the id if auto incremental
-    //    strbuf.append(tireDTOImpl.getId());
+    //    strbuf.append(NewsDTOImpl.getId());
     //    strbuf.append(", ");
-    strbuf.append(tireDTOImpl.getId());
+    strbuf.append(newsDTOImpl.getId());
     strbuf.append(", ");
-    strbuf.append(tireDTOImpl.getSpeed());
+    strbuf.append(newsDTOImpl.getType());
     strbuf.append(", ");
-    strbuf.append(tireDTOImpl.getRating());
+    strbuf.append(newsDTOImpl.getSize());
 
     return strbuf.toString();
   }
@@ -86,41 +86,41 @@ public class TireDAOImpl extends MySQLBaseDAO implements TireDAO {
   protected String createUpdateValues(IDTO dto) //
       throws Exception {
 
-    TireDTOImpl tireDTOImpl = (TireDTOImpl) dto;
+    NewsDTOImpl newsDTOImpl = (NewsDTOImpl) dto;
 
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(TireDTOImpl.SPEED);
+    strbuf.append(NewsDTOImpl.TYPE);
     strbuf.append(" = ");
-    strbuf.append(tireDTOImpl.getSpeed());
+    strbuf.append(newsDTOImpl.getType());
 
     strbuf.append(", ");
 
-    strbuf.append(TireDTOImpl.RATING);
+    strbuf.append(NewsDTOImpl.SIZE);
     strbuf.append(" = ");
-    strbuf.append(tireDTOImpl.getRating());
+    strbuf.append(newsDTOImpl.getSize());
 
     return strbuf.toString();
   }
 
   // --------------------------------------------------------------------------------
 
-  protected TireDTOImpl resultSetToDTO(ResultSet rs) throws Exception {
-    TireDTOImpl ret = //
-    (TireDTOImpl) dtaSession.getDtaByKey( //
-        TireDTOImpl.class, rs.getInt(TireDTOImpl.ID));
+  protected NewsDTOImpl resultSetToDTO(ResultSet rs) throws Exception {
+    NewsDTOImpl ret = //
+    (NewsDTOImpl) dtaSession.getDtaByKey( //
+        NewsDTOImpl.class, rs.getInt(NewsDTOImpl.ID));
 
     if (ret != null) {
       return ret;
     }
 
-    ret = (TireDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
-        getDTO(TireDTO.class, connectionBean);
+    ret = (NewsDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
+        getDTO(NewsDTO.class, connectionBean);
 
-    ret.setId/*    */(rs.getInt(TireDTOImpl.ID));
-    ret.setSpeed/* */(rs.getInt(TireDTOImpl.SPEED));
-    ret.setRating/**/(rs.getInt(TireDTOImpl.RATING));
+    ret.setId/*  */(rs.getInt(NewsDTOImpl.ID));
+    ret.setType/**/(rs.getInt(NewsDTOImpl.TYPE));
+    ret.setSize/**/(rs.getInt(NewsDTOImpl.SIZE));
 
-    return (TireDTOImpl) dtaSession.add(ret);
+    return (NewsDTOImpl) dtaSession.add(ret);
   }
 }

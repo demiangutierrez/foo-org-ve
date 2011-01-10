@@ -5,7 +5,7 @@ import dao.base.api.IDTO;
 /**
  * @author Demián Gutierrez
  */
-public interface PartDTO extends IDTO {
+public interface PublicationDTO extends IDTO {
 
   public abstract String/**/getNumber();
 

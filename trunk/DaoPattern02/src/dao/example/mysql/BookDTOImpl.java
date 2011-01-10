@@ -1,11 +1,11 @@
 package dao.example.mysql;
 
-import dao.example.base.TireDTO;
+import dao.example.base.BookDTO;
 
 /**
  * @author Demián Gutierrez
  */
-public class TireDTOImpl extends PartDTOImpl implements TireDTO {
+public class BookDTOImpl extends PublicationDTOImpl implements BookDTO {
 
   public static final String SPEED/* */= "speed";
   public static final String RATING/**/= "rating";
@@ -17,8 +17,8 @@ public class TireDTOImpl extends PartDTOImpl implements TireDTO {
 
   // --------------------------------------------------------------------------------
 
-  public TireDTOImpl() {
-    //super(TireDAO.class);
+  public BookDTOImpl() {
+    //super(BookDAO.class);
   }
 
   // --------------------------------------------------------------------------------

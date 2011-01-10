@@ -8,20 +8,20 @@ import dao.base.api.IDTO;
 import dao.connection.ConnectionBean;
 import dao.connection.ConnectionFactory;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.TireDAO;
-import dao.example.base.TireDTO;
+import dao.example.base.NewsDAO;
+import dao.example.base.NewsDTO;
 
 /**
  * @author Demián Gutierrez
  */
-public class TestTire extends TestCase {
+public class TestNews extends TestCase {
 
-  private boolean compareDTO(TireDTO tireDTO1, TireDTO tireDTO2) {
+  private boolean compareDTO(NewsDTO newsDTO1, NewsDTO newsDTO2) {
     boolean ret = true;
 
-    ret = ret && tireDTO1.getId() == tireDTO2.getId();
-    ret = ret && tireDTO1.getSpeed() == tireDTO2.getSpeed();
-    ret = ret && tireDTO1.getRating() == tireDTO2.getRating();
+    ret = ret && newsDTO1.getId() == newsDTO2.getId();
+    ret = ret && newsDTO1.getType() == newsDTO2.getType();
+    ret = ret && newsDTO1.getSize() == newsDTO2.getSize();
 
     return ret;
   }
@@ -30,7 +30,7 @@ public class TestTire extends TestCase {
 
   public void testInsertLoad() throws Exception {
     ConnectionBean connectionBean;
-    TireDAO tireDAO;
+    NewsDAO newsDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -40,26 +40,26 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    tireDAO.createTable();
+    newsDAO.createTable();
 
-    TireDTO tireDTO1 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO1.setSpeed(1);
-    tireDTO1.setRating(11);
-    tireDAO.insert(tireDTO1);
-    assertEquals(tireDTO1.getId(), 1);
+    newsDTO1.setType(1);
+    newsDTO1.setSize(11);
+    newsDAO.insert(newsDTO1);
+    assertEquals(newsDTO1.getId(), 1);
 
-    TireDTO tireDTO2 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO2.setSpeed(2);
-    tireDTO2.setRating(22);
-    tireDAO.insert(tireDTO2);
-    assertEquals(tireDTO2.getId(), 2);
+    newsDTO2.setType(2);
+    newsDTO2.setSize(22);
+    newsDAO.insert(newsDTO2);
+    assertEquals(newsDTO2.getId(), 2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -69,16 +69,16 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    TireDTO tireDTOX = (TireDTO) tireDAO.loadById(1);
-    assertTrue(compareDTO(tireDTO1, tireDTOX));
-    assertNotSame(tireDTO1, tireDTOX);
+    NewsDTO newsDTOX = (NewsDTO) newsDAO.loadById(1);
+    assertTrue(compareDTO(newsDTO1, newsDTOX));
+    assertNotSame(newsDTO1, newsDTOX);
 
-    TireDTO tireDTOY = (TireDTO) tireDAO.loadById(2);
-    assertTrue(compareDTO(tireDTO2, tireDTOY));
-    assertNotSame(tireDTO2, tireDTOY);
+    NewsDTO newsDTOY = (NewsDTO) newsDAO.loadById(2);
+    assertTrue(compareDTO(newsDTO2, newsDTOY));
+    assertNotSame(newsDTO2, newsDTOY);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -87,7 +87,7 @@ public class TestTire extends TestCase {
 
   public void testUpdateLoad() throws Exception {
     ConnectionBean connectionBean;
-    TireDAO tireDAO;
+    NewsDAO newsDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -97,26 +97,26 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    tireDAO.createTable();
+    newsDAO.createTable();
 
-    TireDTO tireDTO1 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO1.setSpeed(1);
-    tireDTO1.setRating(11);
-    tireDAO.insert(tireDTO1);
-    assertEquals(tireDTO1.getId(), 1);
+    newsDTO1.setType(1);
+    newsDTO1.setSize(11);
+    newsDAO.insert(newsDTO1);
+    assertEquals(newsDTO1.getId(), 1);
 
-    TireDTO tireDTO2 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO2.setSpeed(2);
-    tireDTO2.setRating(22);
-    tireDAO.insert(tireDTO2);
-    assertEquals(tireDTO2.getId(), 2);
+    newsDTO2.setType(2);
+    newsDTO2.setSize(22);
+    newsDAO.insert(newsDTO2);
+    assertEquals(newsDTO2.getId(), 2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -126,18 +126,18 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    TireDTO tireDTOX = (TireDTO) tireDAO.loadById(1);
-    tireDTOX.setSpeed(3);
-    tireDTOX.setRating(33);
-    tireDAO.update(tireDTOX); // Changes the 111
+    NewsDTO newsDTOX = (NewsDTO) newsDAO.loadById(1);
+    newsDTOX.setType(3);
+    newsDTOX.setSize(33);
+    newsDAO.update(newsDTOX); // Changes the 111
 
-    TireDTO tireDTOY = (TireDTO) tireDAO.loadById(2);
-    tireDTOY.setSpeed(4);
-    tireDTOY.setRating(44);
-    tireDAO.update(tireDTOY); // Changes the 222
+    NewsDTO newsDTOY = (NewsDTO) newsDAO.loadById(2);
+    newsDTOY.setType(4);
+    newsDTOY.setSize(44);
+    newsDAO.update(newsDTOY); // Changes the 222
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -147,16 +147,16 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    TireDTO tireDTOA = (TireDTO) tireDAO.loadById(1);
-    assertTrue(compareDTO(tireDTOX, tireDTOA));
-    assertNotSame(tireDTOX, tireDTOA);
+    NewsDTO newsDTOA = (NewsDTO) newsDAO.loadById(1);
+    assertTrue(compareDTO(newsDTOX, newsDTOA));
+    assertNotSame(newsDTOX, newsDTOA);
 
-    TireDTO tireDTOB = (TireDTO) tireDAO.loadById(2);
-    assertTrue(compareDTO(tireDTOY, tireDTOB));
-    assertNotSame(tireDTOY, tireDTOB);
+    NewsDTO newsDTOB = (NewsDTO) newsDAO.loadById(2);
+    assertTrue(compareDTO(newsDTOY, newsDTOB));
+    assertNotSame(newsDTOY, newsDTOB);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -165,7 +165,7 @@ public class TestTire extends TestCase {
 
   public void testDeleteLoad() throws Exception {
     ConnectionBean connectionBean;
-    TireDAO tireDAO;
+    NewsDAO newsDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -175,26 +175,26 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    tireDAO.createTable();
+    newsDAO.createTable();
 
-    TireDTO tireDTO1 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO1.setSpeed(1);
-    tireDTO1.setRating(11);
-    tireDAO.insert(tireDTO1);
-    assertEquals(tireDTO1.getId(), 1);
+    newsDTO1.setType(1);
+    newsDTO1.setSize(11);
+    newsDAO.insert(newsDTO1);
+    assertEquals(newsDTO1.getId(), 1);
 
-    TireDTO tireDTO2 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO2.setSpeed(2);
-    tireDTO2.setRating(22);
-    tireDAO.insert(tireDTO2);
-    assertEquals(tireDTO2.getId(), 2);
+    newsDTO2.setType(2);
+    newsDTO2.setSize(22);
+    newsDAO.insert(newsDTO2);
+    assertEquals(newsDTO2.getId(), 2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -204,14 +204,14 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    TireDTO tireDTOX = (TireDTO) tireDAO.loadById(1);
-    tireDAO.delete(tireDTOX);
+    NewsDTO newsDTOX = (NewsDTO) newsDAO.loadById(1);
+    newsDAO.delete(newsDTOX);
 
-    TireDTO tireDTOY = (TireDTO) tireDAO.loadById(2);
-    tireDAO.delete(tireDTOY);
+    NewsDTO newsDTOY = (NewsDTO) newsDAO.loadById(2);
+    newsDAO.delete(newsDTOY);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -221,14 +221,14 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    TireDTO tireDTOA = (TireDTO) tireDAO.loadById(1);
-    assertNull(tireDTOA);
+    NewsDTO newsDTOA = (NewsDTO) newsDAO.loadById(1);
+    assertNull(newsDTOA);
 
-    TireDTO tireDTOB = (TireDTO) tireDAO.loadById(2);
-    assertNull(tireDTOB);
+    NewsDTO newsDTOB = (NewsDTO) newsDAO.loadById(2);
+    assertNull(newsDTOB);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -237,7 +237,7 @@ public class TestTire extends TestCase {
 
   public void testCacheLoad() throws Exception {
     ConnectionBean connectionBean;
-    TireDAO tireDAO;
+    NewsDAO newsDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -247,26 +247,26 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    tireDAO.createTable();
+    newsDAO.createTable();
 
-    TireDTO tireDTO1 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO1.setSpeed(1);
-    tireDTO1.setRating(11);
-    tireDAO.insert(tireDTO1);
-    assertEquals(tireDTO1.getId(), 1);
+    newsDTO1.setType(1);
+    newsDTO1.setSize(11);
+    newsDAO.insert(newsDTO1);
+    assertEquals(newsDTO1.getId(), 1);
 
-    TireDTO tireDTO2 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO2.setSpeed(2);
-    tireDTO2.setRating(22);
-    tireDAO.insert(tireDTO2);
-    assertEquals(tireDTO2.getId(), 2);
+    newsDTO2.setType(2);
+    newsDTO2.setSize(22);
+    newsDAO.insert(newsDTO2);
+    assertEquals(newsDTO2.getId(), 2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -276,18 +276,18 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    TireDTO tireDTOX = (TireDTO) tireDAO.loadById(1);
-    TireDTO tireDTOA = (TireDTO) tireDAO.loadById(1);
-    assertTrue(compareDTO(tireDTOX, tireDTOA));
-    assertSame(tireDTOX, tireDTOA);
+    NewsDTO newsDTOX = (NewsDTO) newsDAO.loadById(1);
+    NewsDTO newsDTOA = (NewsDTO) newsDAO.loadById(1);
+    assertTrue(compareDTO(newsDTOX, newsDTOA));
+    assertSame(newsDTOX, newsDTOA);
 
-    TireDTO tireDTOY = (TireDTO) tireDAO.loadById(2);
-    TireDTO tireDTOB = (TireDTO) tireDAO.loadById(2);
-    assertTrue(compareDTO(tireDTOY, tireDTOB));
-    assertSame(tireDTOY, tireDTOB);
+    NewsDTO newsDTOY = (NewsDTO) newsDAO.loadById(2);
+    NewsDTO newsDTOB = (NewsDTO) newsDAO.loadById(2);
+    assertTrue(compareDTO(newsDTOY, newsDTOB));
+    assertSame(newsDTOY, newsDTOB);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -296,7 +296,7 @@ public class TestTire extends TestCase {
 
   public void testDeleteReInsert() throws Exception {
     ConnectionBean connectionBean;
-    TireDAO tireDAO;
+    NewsDAO newsDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -306,18 +306,18 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    tireDAO.createTable();
+    newsDAO.createTable();
 
-    TireDTO tireDTO1 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO1.setSpeed(1);
-    tireDTO1.setRating(11);
-    tireDAO.insert(tireDTO1);
-    assertEquals(tireDTO1.getId(), 1);
+    newsDTO1.setType(1);
+    newsDTO1.setSize(11);
+    newsDAO.insert(newsDTO1);
+    assertEquals(newsDTO1.getId(), 1);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -327,14 +327,14 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    TireDTO tireDTOX = (TireDTO) tireDAO.loadById(1);
-    tireDAO.delete(tireDTOX);
+    NewsDTO newsDTOX = (NewsDTO) newsDAO.loadById(1);
+    newsDAO.delete(newsDTOX);
 
     try {
-      tireDAO.insert(tireDTOX);
+      newsDAO.insert(newsDTOX);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -348,7 +348,7 @@ public class TestTire extends TestCase {
 
   public void testDeleteReUpdate() throws Exception {
     ConnectionBean connectionBean;
-    TireDAO tireDAO;
+    NewsDAO newsDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -358,18 +358,18 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    tireDAO.createTable();
+    newsDAO.createTable();
 
-    TireDTO tireDTO1 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO1.setSpeed(1);
-    tireDTO1.setRating(11);
-    tireDAO.insert(tireDTO1);
-    assertEquals(tireDTO1.getId(), 1);
+    newsDTO1.setType(1);
+    newsDTO1.setSize(11);
+    newsDAO.insert(newsDTO1);
+    assertEquals(newsDTO1.getId(), 1);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -379,14 +379,14 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    TireDTO tireDTOX = (TireDTO) tireDAO.loadById(1);
-    tireDAO.delete(tireDTOX);
+    NewsDTO newsDTOX = (NewsDTO) newsDAO.loadById(1);
+    newsDAO.delete(newsDTOX);
 
     try {
-      tireDAO.update(tireDTOX);
+      newsDAO.update(newsDTOX);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -400,7 +400,7 @@ public class TestTire extends TestCase {
 
   public void testDeleteReDelete() throws Exception {
     ConnectionBean connectionBean;
-    TireDAO tireDAO;
+    NewsDAO newsDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -410,18 +410,18 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    tireDAO.createTable();
+    newsDAO.createTable();
 
-    TireDTO tireDTO1 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO1.setSpeed(1);
-    tireDTO1.setRating(11);
-    tireDAO.insert(tireDTO1);
-    assertEquals(tireDTO1.getId(), 1);
+    newsDTO1.setType(1);
+    newsDTO1.setSize(11);
+    newsDAO.insert(newsDTO1);
+    assertEquals(newsDTO1.getId(), 1);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -431,14 +431,14 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    TireDTO tireDTOX = (TireDTO) tireDAO.loadById(1);
-    tireDAO.delete(tireDTOX);
+    NewsDTO newsDTOX = (NewsDTO) newsDAO.loadById(1);
+    newsDAO.delete(newsDTOX);
 
     try {
-      tireDAO.delete(tireDTOX);
+      newsDAO.delete(newsDTOX);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -452,7 +452,7 @@ public class TestTire extends TestCase {
 
   public void testCacheCrash() throws Exception {
     ConnectionBean connectionBean;
-    TireDAO tireDAO;
+    NewsDAO newsDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -462,29 +462,29 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    tireDAO.createTable();
+    newsDAO.createTable();
 
-    TireDTO tireDTO1 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO1.setSpeed(1);
-    tireDTO1.setRating(11);
+    newsDTO1.setType(1);
+    newsDTO1.setSize(11);
 
-    TireDTO tireDTO2 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO1.setSpeed(1);
-    tireDTO1.setRating(11);
+    newsDTO1.setType(1);
+    newsDTO1.setSize(11);
 
     // ----------------------------------------
     // UPDATE NON INSERTED
     // ----------------------------------------
 
     try {
-      tireDAO.update(tireDTO1);
+      newsDAO.update(newsDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -496,7 +496,7 @@ public class TestTire extends TestCase {
     // ----------------------------------------
 
     try {
-      tireDAO.delete(tireDTO1);
+      newsDAO.delete(newsDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -508,13 +508,13 @@ public class TestTire extends TestCase {
     // ----------------------------------------
 
     try {
-      tireDTO1.setId(1); // TAMPERED ID
-      tireDAO.insert(tireDTO1);
+      newsDTO1.setId(1); // TAMPERED ID
+      newsDAO.insert(newsDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      tireDTO1.setId(0); // UNTAMPER ID
+      newsDTO1.setId(0); // UNTAMPER ID
     }
 
     // ----------------------------------------
@@ -522,13 +522,13 @@ public class TestTire extends TestCase {
     // ----------------------------------------
 
     try {
-      tireDTO1.setId(1); // TAMPERED ID
-      tireDAO.update(tireDTO1);
+      newsDTO1.setId(1); // TAMPERED ID
+      newsDAO.update(newsDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      tireDTO1.setId(0); // UNTAMPER ID
+      newsDTO1.setId(0); // UNTAMPER ID
     }
 
     // ----------------------------------------
@@ -536,34 +536,34 @@ public class TestTire extends TestCase {
     // ----------------------------------------
 
     try {
-      tireDTO1.setId(1); // TAMPERED ID
-      tireDAO.delete(tireDTO1);
+      newsDTO1.setId(1); // TAMPERED ID
+      newsDAO.delete(newsDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      tireDTO1.setId(0); // UNTAMPER ID
+      newsDTO1.setId(0); // UNTAMPER ID
     }
 
     // ----------------------------------------
     // DTO INSERT
     // ----------------------------------------
 
-    tireDAO.insert(tireDTO1); // WORKS
-    tireDAO.insert(tireDTO2); // WORKS
+    newsDAO.insert(newsDTO1); // WORKS
+    newsDAO.insert(newsDTO2); // WORKS
 
     // ----------------------------------------
     // RE-INSERT TAMPERED
     // ----------------------------------------
 
     try {
-      tireDTO1.setId(0); // TAMPERED ID
-      tireDAO.insert(tireDTO1);
+      newsDTO1.setId(0); // TAMPERED ID
+      newsDAO.insert(newsDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      tireDTO1.setId(1); // UNTAMPER ID
+      newsDTO1.setId(1); // UNTAMPER ID
     }
 
     // ----------------------------------------
@@ -571,13 +571,13 @@ public class TestTire extends TestCase {
     // ----------------------------------------
 
     try {
-      tireDTO1.setId(2); // TAMPERED ID
-      tireDAO.update(tireDTO1);
+      newsDTO1.setId(2); // TAMPERED ID
+      newsDAO.update(newsDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      tireDTO1.setId(1); // UNTAMPER ID
+      newsDTO1.setId(1); // UNTAMPER ID
     }
 
     // ----------------------------------------
@@ -585,13 +585,13 @@ public class TestTire extends TestCase {
     // ----------------------------------------
 
     try {
-      tireDTO1.setId(2); // TAMPERED ID
-      tireDAO.delete(tireDTO1);
+      newsDTO1.setId(2); // TAMPERED ID
+      newsDAO.delete(newsDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      tireDTO1.setId(1); // UNTAMPER ID
+      newsDTO1.setId(1); // UNTAMPER ID
     }
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -601,7 +601,7 @@ public class TestTire extends TestCase {
 
   public void testCount() throws Exception {
     ConnectionBean connectionBean;
-    TireDAO tireDAO;
+    NewsDAO newsDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -611,24 +611,24 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    tireDAO.createTable();
+    newsDAO.createTable();
 
-    TireDTO tireDTO1 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO1.setSpeed(1);
-    tireDTO1.setRating(11);
-    tireDAO.insert(tireDTO1);
+    newsDTO1.setType(1);
+    newsDTO1.setSize(11);
+    newsDAO.insert(newsDTO1);
 
-    TireDTO tireDTO2 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO2.setSpeed(2);
-    tireDTO2.setRating(22);
-    tireDAO.insert(tireDTO2);
+    newsDTO2.setType(2);
+    newsDTO2.setSize(22);
+    newsDAO.insert(newsDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -638,10 +638,10 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    assertEquals(2, tireDAO.countAll());
+    assertEquals(2, newsDAO.countAll());
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -650,7 +650,7 @@ public class TestTire extends TestCase {
 
   public void testListAll() throws Exception {
     ConnectionBean connectionBean;
-    TireDAO tireDAO;
+    NewsDAO newsDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -660,24 +660,24 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    tireDAO.createTable();
+    newsDAO.createTable();
 
-    TireDTO tireDTO1 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO1.setSpeed(1);
-    tireDTO1.setRating(11);
-    tireDAO.insert(tireDTO1);
+    newsDTO1.setType(1);
+    newsDTO1.setSize(11);
+    newsDAO.insert(newsDTO1);
 
-    TireDTO tireDTO2 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO2.setSpeed(2);
-    tireDTO2.setRating(22);
-    tireDAO.insert(tireDTO2);
+    newsDTO2.setType(2);
+    newsDTO2.setSize(22);
+    newsDAO.insert(newsDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -687,12 +687,12 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    List<IDTO> tireList = tireDAO.listAll();
-    assertTrue(compareDTO(tireDTO1, (TireDTO) tireList.get(0)));
-    assertTrue(compareDTO(tireDTO2, (TireDTO) tireList.get(1)));
+    List<IDTO> newsList = newsDAO.listAll();
+    assertTrue(compareDTO(newsDTO1, (NewsDTO) newsList.get(0)));
+    assertTrue(compareDTO(newsDTO2, (NewsDTO) newsList.get(1)));
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -701,7 +701,7 @@ public class TestTire extends TestCase {
 
   public void testListAllLimOff() throws Exception {
     ConnectionBean connectionBean;
-    TireDAO tireDAO;
+    NewsDAO newsDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -711,24 +711,24 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    tireDAO.createTable();
+    newsDAO.createTable();
 
-    TireDTO tireDTO1 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO1.setSpeed(1);
-    tireDTO1.setRating(11);
-    tireDAO.insert(tireDTO1);
+    newsDTO1.setType(1);
+    newsDTO1.setSize(11);
+    newsDAO.insert(newsDTO1);
 
-    TireDTO tireDTO2 = (TireDTO) fd.getDTO( //
-        TireDTO.class, connectionBean);
+    NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
+        NewsDTO.class, connectionBean);
 
-    tireDTO2.setSpeed(2);
-    tireDTO2.setRating(22);
-    tireDAO.insert(tireDTO2);
+    newsDTO2.setType(2);
+    newsDTO2.setSize(22);
+    newsDAO.insert(newsDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -738,18 +738,18 @@ public class TestTire extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    tireDAO = (TireDAO) fd.getDAO( //
-        TireDAO.class, connectionBean);
+    newsDAO = (NewsDAO) fd.getDAO( //
+        NewsDAO.class, connectionBean);
 
-    List<IDTO> tireList;
+    List<IDTO> newsList;
 
-    tireList = tireDAO.listAll(1, 0);
-    assertEquals(1, tireList.size());
-    assertTrue(compareDTO(tireDTO1, (TireDTO) tireList.get(0)));
+    newsList = newsDAO.listAll(1, 0);
+    assertEquals(1, newsList.size());
+    assertTrue(compareDTO(newsDTO1, (NewsDTO) newsList.get(0)));
 
-    tireList = tireDAO.listAll(1, 1);
-    assertEquals(1, tireList.size());
-    assertTrue(compareDTO(tireDTO2, (TireDTO) tireList.get(0)));
+    newsList = newsDAO.listAll(1, 1);
+    assertEquals(1, newsList.size());
+    assertTrue(compareDTO(newsDTO2, (NewsDTO) newsList.get(0)));
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }

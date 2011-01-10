@@ -8,21 +8,20 @@ import dao.base.api.IDTO;
 import dao.connection.ConnectionBean;
 import dao.connection.ConnectionFactory;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.PartDAO;
-import dao.example.base.PartDTO;
+import dao.example.base.BookDAO;
+import dao.example.base.BookDTO;
 
 /**
  * @author Demián Gutierrez
  */
-public class TestPart extends TestCase {
+public class TestBook extends TestCase {
 
-  private boolean compareDTO(PartDTO partDTO1, PartDTO partDTO2) {
+  private boolean compareDTO(BookDTO bookDTO1, BookDTO bookDTO2) {
     boolean ret = true;
 
-    ret = ret && partDTO1.getId() == partDTO2.getId();
-    ret = ret && partDTO1.getManufacturer().equals(partDTO2.getManufacturer());
-    ret = ret && partDTO1.getNumber().equals(partDTO2.getNumber());
-    ret = ret && partDTO1.getDescription().equals(partDTO2.getDescription());
+    ret = ret && bookDTO1.getId() == bookDTO2.getId();
+    ret = ret && bookDTO1.getSpeed() == bookDTO2.getSpeed();
+    ret = ret && bookDTO1.getRating() == bookDTO2.getRating();
 
     return ret;
   }
@@ -31,7 +30,7 @@ public class TestPart extends TestCase {
 
   public void testInsertLoad() throws Exception {
     ConnectionBean connectionBean;
-    PartDAO partDAO;
+    BookDAO bookDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -41,28 +40,26 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    partDAO.createTable();
+    bookDAO.createTable();
 
-    PartDTO partDTO1 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO1.setManufacturer("FooManufacturer111");
-    partDTO1.setNumber("FooNumber111");
-    partDTO1.setDescription("FooDescription111");
-    partDAO.insert(partDTO1);
-    assertEquals(partDTO1.getId(), 1);
+    bookDTO1.setSpeed(1);
+    bookDTO1.setRating(11);
+    bookDAO.insert(bookDTO1);
+    assertEquals(bookDTO1.getId(), 1);
 
-    PartDTO partDTO2 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO2.setManufacturer("FooManufacturer222");
-    partDTO2.setNumber("FooNumber222");
-    partDTO2.setDescription("FooDescription222");
-    partDAO.insert(partDTO2);
-    assertEquals(partDTO2.getId(), 2);
+    bookDTO2.setSpeed(2);
+    bookDTO2.setRating(22);
+    bookDAO.insert(bookDTO2);
+    assertEquals(bookDTO2.getId(), 2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -72,16 +69,16 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    PartDTO partDTOX = (PartDTO) partDAO.loadById(1);
-    assertTrue(compareDTO(partDTO1, partDTOX));
-    assertNotSame(partDTO1, partDTOX);
+    BookDTO bookDTOX = (BookDTO) bookDAO.loadById(1);
+    assertTrue(compareDTO(bookDTO1, bookDTOX));
+    assertNotSame(bookDTO1, bookDTOX);
 
-    PartDTO partDTOY = (PartDTO) partDAO.loadById(2);
-    assertTrue(compareDTO(partDTO2, partDTOY));
-    assertNotSame(partDTO2, partDTOY);
+    BookDTO bookDTOY = (BookDTO) bookDAO.loadById(2);
+    assertTrue(compareDTO(bookDTO2, bookDTOY));
+    assertNotSame(bookDTO2, bookDTOY);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -90,7 +87,7 @@ public class TestPart extends TestCase {
 
   public void testUpdateLoad() throws Exception {
     ConnectionBean connectionBean;
-    PartDAO partDAO;
+    BookDAO bookDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -100,28 +97,26 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    partDAO.createTable();
+    bookDAO.createTable();
 
-    PartDTO partDTO1 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO1.setManufacturer("FooManufacturer111");
-    partDTO1.setNumber("FooNumber111");
-    partDTO1.setDescription("FooDescription111");
-    partDAO.insert(partDTO1);
-    assertEquals(partDTO1.getId(), 1);
+    bookDTO1.setSpeed(1);
+    bookDTO1.setRating(11);
+    bookDAO.insert(bookDTO1);
+    assertEquals(bookDTO1.getId(), 1);
 
-    PartDTO partDTO2 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO2.setManufacturer("FooManufacturer222");
-    partDTO2.setNumber("FooNumber222");
-    partDTO2.setDescription("FooDescription222");
-    partDAO.insert(partDTO2);
-    assertEquals(partDTO2.getId(), 2);
+    bookDTO2.setSpeed(2);
+    bookDTO2.setRating(22);
+    bookDAO.insert(bookDTO2);
+    assertEquals(bookDTO2.getId(), 2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -131,20 +126,18 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    PartDTO partDTOX = (PartDTO) partDAO.loadById(1);
-    partDTOX.setManufacturer("FooManufacturerXXX");
-    partDTOX.setNumber("FooNumberXXX");
-    partDTOX.setDescription("FooDescriptionXXX");
-    partDAO.update(partDTOX); // Changes the 111
+    BookDTO bookDTOX = (BookDTO) bookDAO.loadById(1);
+    bookDTOX.setSpeed(3);
+    bookDTOX.setRating(33);
+    bookDAO.update(bookDTOX); // Changes the 111
 
-    PartDTO partDTOY = (PartDTO) partDAO.loadById(2);
-    partDTOY.setManufacturer("FooManufacturerYYY");
-    partDTOY.setNumber("FooNumberYYY");
-    partDTOY.setDescription("FooDescriptionYYY");
-    partDAO.update(partDTOY); // Changes the 222
+    BookDTO bookDTOY = (BookDTO) bookDAO.loadById(2);
+    bookDTOY.setSpeed(4);
+    bookDTOY.setRating(44);
+    bookDAO.update(bookDTOY); // Changes the 222
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -154,16 +147,16 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    PartDTO partDTOA = (PartDTO) partDAO.loadById(1);
-    assertTrue(compareDTO(partDTOX, partDTOA));
-    assertNotSame(partDTOX, partDTOA);
+    BookDTO bookDTOA = (BookDTO) bookDAO.loadById(1);
+    assertTrue(compareDTO(bookDTOX, bookDTOA));
+    assertNotSame(bookDTOX, bookDTOA);
 
-    PartDTO partDTOB = (PartDTO) partDAO.loadById(2);
-    assertTrue(compareDTO(partDTOY, partDTOB));
-    assertNotSame(partDTOY, partDTOB);
+    BookDTO bookDTOB = (BookDTO) bookDAO.loadById(2);
+    assertTrue(compareDTO(bookDTOY, bookDTOB));
+    assertNotSame(bookDTOY, bookDTOB);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -172,7 +165,7 @@ public class TestPart extends TestCase {
 
   public void testDeleteLoad() throws Exception {
     ConnectionBean connectionBean;
-    PartDAO partDAO;
+    BookDAO bookDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -182,28 +175,26 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    partDAO.createTable();
+    bookDAO.createTable();
 
-    PartDTO partDTO1 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO1.setManufacturer("FooManufacturer111");
-    partDTO1.setNumber("FooNumber111");
-    partDTO1.setDescription("FooDescription111");
-    partDAO.insert(partDTO1);
-    assertEquals(partDTO1.getId(), 1);
+    bookDTO1.setSpeed(1);
+    bookDTO1.setRating(11);
+    bookDAO.insert(bookDTO1);
+    assertEquals(bookDTO1.getId(), 1);
 
-    PartDTO partDTO2 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO2.setManufacturer("FooManufacturer222");
-    partDTO2.setNumber("FooNumber222");
-    partDTO2.setDescription("FooDescription222");
-    partDAO.insert(partDTO2);
-    assertEquals(partDTO2.getId(), 2);
+    bookDTO2.setSpeed(2);
+    bookDTO2.setRating(22);
+    bookDAO.insert(bookDTO2);
+    assertEquals(bookDTO2.getId(), 2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -213,14 +204,14 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    PartDTO partDTOX = (PartDTO) partDAO.loadById(1);
-    partDAO.delete(partDTOX);
+    BookDTO bookDTOX = (BookDTO) bookDAO.loadById(1);
+    bookDAO.delete(bookDTOX);
 
-    PartDTO partDTOY = (PartDTO) partDAO.loadById(2);
-    partDAO.delete(partDTOY);
+    BookDTO bookDTOY = (BookDTO) bookDAO.loadById(2);
+    bookDAO.delete(bookDTOY);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -230,14 +221,14 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    PartDTO partDTOA = (PartDTO) partDAO.loadById(1);
-    assertNull(partDTOA);
+    BookDTO bookDTOA = (BookDTO) bookDAO.loadById(1);
+    assertNull(bookDTOA);
 
-    PartDTO partDTOB = (PartDTO) partDAO.loadById(2);
-    assertNull(partDTOB);
+    BookDTO bookDTOB = (BookDTO) bookDAO.loadById(2);
+    assertNull(bookDTOB);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -246,7 +237,7 @@ public class TestPart extends TestCase {
 
   public void testCacheLoad() throws Exception {
     ConnectionBean connectionBean;
-    PartDAO partDAO;
+    BookDAO bookDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -256,28 +247,26 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    partDAO.createTable();
+    bookDAO.createTable();
 
-    PartDTO partDTO1 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO1.setManufacturer("FooManufacturer111");
-    partDTO1.setNumber("FooNumber111");
-    partDTO1.setDescription("FooDescription111");
-    partDAO.insert(partDTO1);
-    assertEquals(partDTO1.getId(), 1);
+    bookDTO1.setSpeed(1);
+    bookDTO1.setRating(11);
+    bookDAO.insert(bookDTO1);
+    assertEquals(bookDTO1.getId(), 1);
 
-    PartDTO partDTO2 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO2.setManufacturer("FooManufacturer222");
-    partDTO2.setNumber("FooNumber222");
-    partDTO2.setDescription("FooDescription222");
-    partDAO.insert(partDTO2);
-    assertEquals(partDTO2.getId(), 2);
+    bookDTO2.setSpeed(2);
+    bookDTO2.setRating(22);
+    bookDAO.insert(bookDTO2);
+    assertEquals(bookDTO2.getId(), 2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -287,18 +276,18 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    PartDTO partDTOX = (PartDTO) partDAO.loadById(1);
-    PartDTO partDTOA = (PartDTO) partDAO.loadById(1);
-    assertTrue(compareDTO(partDTOX, partDTOA));
-    assertSame(partDTOX, partDTOA);
+    BookDTO bookDTOX = (BookDTO) bookDAO.loadById(1);
+    BookDTO bookDTOA = (BookDTO) bookDAO.loadById(1);
+    assertTrue(compareDTO(bookDTOX, bookDTOA));
+    assertSame(bookDTOX, bookDTOA);
 
-    PartDTO partDTOY = (PartDTO) partDAO.loadById(2);
-    PartDTO partDTOB = (PartDTO) partDAO.loadById(2);
-    assertTrue(compareDTO(partDTOY, partDTOB));
-    assertSame(partDTOY, partDTOB);
+    BookDTO bookDTOY = (BookDTO) bookDAO.loadById(2);
+    BookDTO bookDTOB = (BookDTO) bookDAO.loadById(2);
+    assertTrue(compareDTO(bookDTOY, bookDTOB));
+    assertSame(bookDTOY, bookDTOB);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -307,7 +296,7 @@ public class TestPart extends TestCase {
 
   public void testDeleteReInsert() throws Exception {
     ConnectionBean connectionBean;
-    PartDAO partDAO;
+    BookDAO bookDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -317,19 +306,18 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    partDAO.createTable();
+    bookDAO.createTable();
 
-    PartDTO partDTO1 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO1.setManufacturer("FooManufacturer111");
-    partDTO1.setNumber("FooNumber111");
-    partDTO1.setDescription("FooDescription111");
-    partDAO.insert(partDTO1);
-    assertEquals(partDTO1.getId(), 1);
+    bookDTO1.setSpeed(1);
+    bookDTO1.setRating(11);
+    bookDAO.insert(bookDTO1);
+    assertEquals(bookDTO1.getId(), 1);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -339,14 +327,14 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    PartDTO partDTOX = (PartDTO) partDAO.loadById(1);
-    partDAO.delete(partDTOX);
+    BookDTO bookDTOX = (BookDTO) bookDAO.loadById(1);
+    bookDAO.delete(bookDTOX);
 
     try {
-      partDAO.insert(partDTOX);
+      bookDAO.insert(bookDTOX);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -360,7 +348,7 @@ public class TestPart extends TestCase {
 
   public void testDeleteReUpdate() throws Exception {
     ConnectionBean connectionBean;
-    PartDAO partDAO;
+    BookDAO bookDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -370,19 +358,18 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    partDAO.createTable();
+    bookDAO.createTable();
 
-    PartDTO partDTO1 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO1.setManufacturer("FooManufacturer111");
-    partDTO1.setNumber("FooNumber111");
-    partDTO1.setDescription("FooDescription111");
-    partDAO.insert(partDTO1);
-    assertEquals(partDTO1.getId(), 1);
+    bookDTO1.setSpeed(1);
+    bookDTO1.setRating(11);
+    bookDAO.insert(bookDTO1);
+    assertEquals(bookDTO1.getId(), 1);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -392,14 +379,14 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    PartDTO partDTOX = (PartDTO) partDAO.loadById(1);
-    partDAO.delete(partDTOX);
+    BookDTO bookDTOX = (BookDTO) bookDAO.loadById(1);
+    bookDAO.delete(bookDTOX);
 
     try {
-      partDAO.update(partDTOX);
+      bookDAO.update(bookDTOX);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -413,7 +400,7 @@ public class TestPart extends TestCase {
 
   public void testDeleteReDelete() throws Exception {
     ConnectionBean connectionBean;
-    PartDAO partDAO;
+    BookDAO bookDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -423,19 +410,18 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    partDAO.createTable();
+    bookDAO.createTable();
 
-    PartDTO partDTO1 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO1.setManufacturer("FooManufacturer111");
-    partDTO1.setNumber("FooNumber111");
-    partDTO1.setDescription("FooDescription111");
-    partDAO.insert(partDTO1);
-    assertEquals(partDTO1.getId(), 1);
+    bookDTO1.setSpeed(1);
+    bookDTO1.setRating(11);
+    bookDAO.insert(bookDTO1);
+    assertEquals(bookDTO1.getId(), 1);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -445,14 +431,14 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    PartDTO partDTOX = (PartDTO) partDAO.loadById(1);
-    partDAO.delete(partDTOX);
+    BookDTO bookDTOX = (BookDTO) bookDAO.loadById(1);
+    bookDAO.delete(bookDTOX);
 
     try {
-      partDAO.delete(partDTOX);
+      bookDAO.delete(bookDTOX);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -466,7 +452,7 @@ public class TestPart extends TestCase {
 
   public void testCacheCrash() throws Exception {
     ConnectionBean connectionBean;
-    PartDAO partDAO;
+    BookDAO bookDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -476,31 +462,29 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    partDAO.createTable();
+    bookDAO.createTable();
 
-    PartDTO partDTO1 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO1.setManufacturer("FooManufacturer111");
-    partDTO1.setNumber("FooNumber111");
-    partDTO1.setDescription("FooDescription111");
+    bookDTO1.setSpeed(1);
+    bookDTO1.setRating(11);
 
-    PartDTO partDTO2 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO1.setManufacturer("FooManufacturer111");
-    partDTO1.setNumber("FooNumber111");
-    partDTO1.setDescription("FooDescription111");
+    bookDTO1.setSpeed(1);
+    bookDTO1.setRating(11);
 
     // ----------------------------------------
     // UPDATE NON INSERTED
     // ----------------------------------------
 
     try {
-      partDAO.update(partDTO1);
+      bookDAO.update(bookDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -512,7 +496,7 @@ public class TestPart extends TestCase {
     // ----------------------------------------
 
     try {
-      partDAO.delete(partDTO1);
+      bookDAO.delete(bookDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -524,13 +508,13 @@ public class TestPart extends TestCase {
     // ----------------------------------------
 
     try {
-      partDTO1.setId(1); // TAMPERED ID
-      partDAO.insert(partDTO1);
+      bookDTO1.setId(1); // TAMPERED ID
+      bookDAO.insert(bookDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      partDTO1.setId(0); // UNTAMPER ID
+      bookDTO1.setId(0); // UNTAMPER ID
     }
 
     // ----------------------------------------
@@ -538,13 +522,13 @@ public class TestPart extends TestCase {
     // ----------------------------------------
 
     try {
-      partDTO1.setId(1); // TAMPERED ID
-      partDAO.update(partDTO1);
+      bookDTO1.setId(1); // TAMPERED ID
+      bookDAO.update(bookDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      partDTO1.setId(0); // UNTAMPER ID
+      bookDTO1.setId(0); // UNTAMPER ID
     }
 
     // ----------------------------------------
@@ -552,34 +536,34 @@ public class TestPart extends TestCase {
     // ----------------------------------------
 
     try {
-      partDTO1.setId(1); // TAMPERED ID
-      partDAO.delete(partDTO1);
+      bookDTO1.setId(1); // TAMPERED ID
+      bookDAO.delete(bookDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      partDTO1.setId(0); // UNTAMPER ID
+      bookDTO1.setId(0); // UNTAMPER ID
     }
 
     // ----------------------------------------
     // DTO INSERT
     // ----------------------------------------
 
-    partDAO.insert(partDTO1); // WORKS
-    partDAO.insert(partDTO2); // WORKS
+    bookDAO.insert(bookDTO1); // WORKS
+    bookDAO.insert(bookDTO2); // WORKS
 
     // ----------------------------------------
     // RE-INSERT TAMPERED
     // ----------------------------------------
 
     try {
-      partDTO1.setId(0); // TAMPERED ID
-      partDAO.insert(partDTO1);
+      bookDTO1.setId(0); // TAMPERED ID
+      bookDAO.insert(bookDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      partDTO1.setId(1); // UNTAMPER ID
+      bookDTO1.setId(1); // UNTAMPER ID
     }
 
     // ----------------------------------------
@@ -587,13 +571,13 @@ public class TestPart extends TestCase {
     // ----------------------------------------
 
     try {
-      partDTO1.setId(2); // TAMPERED ID
-      partDAO.update(partDTO1);
+      bookDTO1.setId(2); // TAMPERED ID
+      bookDAO.update(bookDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      partDTO1.setId(1); // UNTAMPER ID
+      bookDTO1.setId(1); // UNTAMPER ID
     }
 
     // ----------------------------------------
@@ -601,13 +585,13 @@ public class TestPart extends TestCase {
     // ----------------------------------------
 
     try {
-      partDTO1.setId(2); // TAMPERED ID
-      partDAO.delete(partDTO1);
+      bookDTO1.setId(2); // TAMPERED ID
+      bookDAO.delete(bookDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      partDTO1.setId(1); // UNTAMPER ID
+      bookDTO1.setId(1); // UNTAMPER ID
     }
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -617,7 +601,7 @@ public class TestPart extends TestCase {
 
   public void testCount() throws Exception {
     ConnectionBean connectionBean;
-    PartDAO partDAO;
+    BookDAO bookDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -627,26 +611,24 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    partDAO.createTable();
+    bookDAO.createTable();
 
-    PartDTO partDTO1 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO1.setManufacturer("FooManufacturer111");
-    partDTO1.setNumber("FooNumber111");
-    partDTO1.setDescription("FooDescription111");
-    partDAO.insert(partDTO1);
+    bookDTO1.setSpeed(1);
+    bookDTO1.setRating(11);
+    bookDAO.insert(bookDTO1);
 
-    PartDTO partDTO2 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO2.setManufacturer("FooManufacturer222");
-    partDTO2.setNumber("FooNumber222");
-    partDTO2.setDescription("FooDescription222");
-    partDAO.insert(partDTO2);
+    bookDTO2.setSpeed(2);
+    bookDTO2.setRating(22);
+    bookDAO.insert(bookDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -656,10 +638,10 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    assertEquals(2, partDAO.countAll());
+    assertEquals(2, bookDAO.countAll());
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -668,7 +650,7 @@ public class TestPart extends TestCase {
 
   public void testListAll() throws Exception {
     ConnectionBean connectionBean;
-    PartDAO partDAO;
+    BookDAO bookDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -678,26 +660,24 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    partDAO.createTable();
+    bookDAO.createTable();
 
-    PartDTO partDTO1 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO1.setManufacturer("FooManufacturer111");
-    partDTO1.setNumber("FooNumber111");
-    partDTO1.setDescription("FooDescription111");
-    partDAO.insert(partDTO1);
+    bookDTO1.setSpeed(1);
+    bookDTO1.setRating(11);
+    bookDAO.insert(bookDTO1);
 
-    PartDTO partDTO2 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO2.setManufacturer("FooManufacturer222");
-    partDTO2.setNumber("FooNumber222");
-    partDTO2.setDescription("FooDescription222");
-    partDAO.insert(partDTO2);
+    bookDTO2.setSpeed(2);
+    bookDTO2.setRating(22);
+    bookDAO.insert(bookDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -707,12 +687,12 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    List<IDTO> partList = partDAO.listAll();
-    assertTrue(compareDTO(partDTO1, (PartDTO) partList.get(0)));
-    assertTrue(compareDTO(partDTO2, (PartDTO) partList.get(1)));
+    List<IDTO> bookList = bookDAO.listAll();
+    assertTrue(compareDTO(bookDTO1, (BookDTO) bookList.get(0)));
+    assertTrue(compareDTO(bookDTO2, (BookDTO) bookList.get(1)));
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -721,7 +701,7 @@ public class TestPart extends TestCase {
 
   public void testListAllLimOff() throws Exception {
     ConnectionBean connectionBean;
-    PartDAO partDAO;
+    BookDAO bookDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -731,26 +711,24 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    partDAO.createTable();
+    bookDAO.createTable();
 
-    PartDTO partDTO1 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO1.setManufacturer("FooManufacturer111");
-    partDTO1.setNumber("FooNumber111");
-    partDTO1.setDescription("FooDescription111");
-    partDAO.insert(partDTO1);
+    bookDTO1.setSpeed(1);
+    bookDTO1.setRating(11);
+    bookDAO.insert(bookDTO1);
 
-    PartDTO partDTO2 = (PartDTO) fd.getDTO( //
-        PartDTO.class, connectionBean);
+    BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
+        BookDTO.class, connectionBean);
 
-    partDTO2.setManufacturer("FooManufacturer222");
-    partDTO2.setNumber("FooNumber222");
-    partDTO2.setDescription("FooDescription222");
-    partDAO.insert(partDTO2);
+    bookDTO2.setSpeed(2);
+    bookDTO2.setRating(22);
+    bookDAO.insert(bookDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -760,18 +738,18 @@ public class TestPart extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    partDAO = (PartDAO) fd.getDAO( //
-        PartDAO.class, connectionBean);
+    bookDAO = (BookDAO) fd.getDAO( //
+        BookDAO.class, connectionBean);
 
-    List<IDTO> partList;
+    List<IDTO> bookList;
 
-    partList = partDAO.listAll(1, 0);
-    assertEquals(1, partList.size());
-    assertTrue(compareDTO(partDTO1, (PartDTO) partList.get(0)));
+    bookList = bookDAO.listAll(1, 0);
+    assertEquals(1, bookList.size());
+    assertTrue(compareDTO(bookDTO1, (BookDTO) bookList.get(0)));
 
-    partList = partDAO.listAll(1, 1);
-    assertEquals(1, partList.size());
-    assertTrue(compareDTO(partDTO2, (PartDTO) partList.get(0)));
+    bookList = bookDAO.listAll(1, 1);
+    assertEquals(1, bookList.size());
+    assertTrue(compareDTO(bookDTO2, (BookDTO) bookList.get(0)));
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }

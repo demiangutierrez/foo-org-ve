@@ -1,15 +1,13 @@
 package dao.example.base;
 
-import dao.base.api.IDTO;
-
 /**
  * @author Demián Gutierrez
  */
-public interface WheelDTO extends IDTO {
+public interface NewsDTO extends PublicationDTO {
 
-  public String/**/getColor();
+  public int getType();
 
-  public void/*  */setColor(String color);
+  public void setType(int type);
 
   // --------------------------------------------------------------------------------
 

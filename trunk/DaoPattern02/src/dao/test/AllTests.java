@@ -14,8 +14,8 @@ public class AllTests {
     suite.addTestSuite(TestEmployee.class);
     suite.addTestSuite(TestDepartment.class);
     suite.addTestSuite(TestDepartmentEmployee.class);
-    suite.addTestSuite(TestPart.class);
-    suite.addTestSuite(TestTire.class);
+    suite.addTestSuite(TestPublication.class);
+    //    suite.addTestSuite(TestBook.class);
     //$JUnit-END$
     return suite;
   }

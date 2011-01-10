@@ -3,7 +3,7 @@ package dao.example.base;
 /**
  * @author Demián Gutierrez
  */
-public interface TireDTO extends PartDTO {
+public interface BookDTO extends PublicationDTO {
 
   public int/* */getSpeed();
 
