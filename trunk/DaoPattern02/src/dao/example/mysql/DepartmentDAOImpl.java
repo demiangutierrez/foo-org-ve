@@ -3,7 +3,6 @@ package dao.example.mysql;
 import java.sql.ResultSet;
 
 import dao.base.api.IDTO;
-import dao.example.base.AbstractFactoryDAO;
 import dao.example.base.DepartmentDAO;
 import dao.example.base.DepartmentDTO;
 
@@ -18,7 +17,7 @@ public//
 class DepartmentDAOImpl extends MySQLBaseDAO implements DepartmentDAO {
 
   public DepartmentDAOImpl() {
-    super(DepartmentDTOImpl.class);
+    super(DepartmentDTO.class);
   }
 
   // --------------------------------------------------------------------------------
@@ -97,22 +96,33 @@ class DepartmentDAOImpl extends MySQLBaseDAO implements DepartmentDAO {
 
   // --------------------------------------------------------------------------------
 
-  protected IDTO resultSetToDTO(ResultSet rs) throws Exception {
-    DepartmentDTOImpl ret = //
-    (DepartmentDTOImpl) dtaSession.getDtaByKey( //
-        DepartmentDTOImpl.class, rs.getInt(DepartmentDTOImpl.ID));
+  //  protected IDTO resultSetToDTO(ResultSet rs) throws Exception {
+  //    DepartmentDTOImpl ret = //
+  //    (DepartmentDTOImpl) dtaSession.getDtaByKey( //
+  //        DepartmentDTOImpl.class, rs.getInt(DepartmentDTOImpl.ID));
+  //
+  //    if (ret != null) {
+  //      return ret;
+  //    }
+  //
+  //    ret = (DepartmentDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
+  //        getDTO(DepartmentDTO.class, connectionBean);
+  //
+  //    ret.setId/*     */(rs.getInt(DepartmentDTOImpl.ID));
+  //    ret.setName/*   */(rs.getString(DepartmentDTOImpl.NAME));
+  //    ret.setDescription(rs.getString(DepartmentDTOImpl.DESCRIPTION));
+  //
+  //    return (DepartmentDTOImpl) dtaSession.add(ret);
+  //  }
 
-    if (ret != null) {
-      return ret;
-    }
-
-    ret = (DepartmentDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
-        getDTO(DepartmentDTO.class, connectionBean);
+  @Override
+  protected IDTO internalResultSetToDTO(ResultSet rs, IDTO dto) throws Exception {
+    DepartmentDTOImpl ret = (DepartmentDTOImpl) dto;
 
     ret.setId/*     */(rs.getInt(DepartmentDTOImpl.ID));
     ret.setName/*   */(rs.getString(DepartmentDTOImpl.NAME));
     ret.setDescription(rs.getString(DepartmentDTOImpl.DESCRIPTION));
 
-    return (DepartmentDTOImpl) dtaSession.add(ret);
+    return ret;
   }
 }
