@@ -4,18 +4,17 @@ import java.sql.ResultSet;
 
 import dao.base.api.IDTO;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.PartDAO;
-import dao.example.base.TireDAO;
-import dao.example.base.TireDTO;
+import dao.example.base.WheelDAO;
+import dao.example.base.WheelDTO;
 
 /**
  * @author Demián Gutierrez
  */
-public class TireDAOImpl extends MySQLBaseDAO implements TireDAO {
+public class WheelDAOImpl extends PartDAOImpl implements WheelDAO {
 
-  public TireDAOImpl() {
-    super(TireDTOImpl.class);
-    daoParentClass = PartDAO.class;
+  public WheelDAOImpl() {
+    //super(WheelDTOImpl.class);
+    dtoClass = WheelDTOImpl.class;
   }
 
   // --------------------------------------------------------------------------------
@@ -26,12 +25,12 @@ public class TireDAOImpl extends MySQLBaseDAO implements TireDAO {
   protected String createTableColumns() throws Exception {
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(TireDTOImpl.ID);
+    strbuf.append(WheelDTOImpl.ID);
     strbuf.append(" INT PRIMARY KEY, ");
-    strbuf.append(TireDTOImpl.SPEED);
-    strbuf.append(" INT,    ");
-    strbuf.append(TireDTOImpl.RATING);
-    strbuf.append(" INT     ");
+    strbuf.append(WheelDTOImpl.COLOR);
+    strbuf.append(" VARCHAR(100),    ");
+    strbuf.append(WheelDTOImpl.SIZE);
+    strbuf.append(" INT              ");
 
     return strbuf.toString();
   }
@@ -43,11 +42,11 @@ public class TireDAOImpl extends MySQLBaseDAO implements TireDAO {
       throws Exception {
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(TireDTOImpl.ID);
+    strbuf.append(WheelDTOImpl.ID);
     strbuf.append(", ");
-    strbuf.append(TireDTOImpl.SPEED);
+    strbuf.append(WheelDTOImpl.COLOR);
     strbuf.append(", ");
-    strbuf.append(TireDTOImpl.RATING);
+    strbuf.append(WheelDTOImpl.SIZE);
 
     return strbuf.toString();
   }
@@ -58,18 +57,18 @@ public class TireDAOImpl extends MySQLBaseDAO implements TireDAO {
   protected String createInsertValues(IDTO dto) //
       throws Exception {
 
-    TireDTOImpl tireDTOImpl = (TireDTOImpl) dto;
+    WheelDTOImpl wheelDTOImpl = (WheelDTOImpl) dto;
 
     StringBuffer strbuf = new StringBuffer();
 
     // XXX: MySQL does not need to include the id if auto incremental
-    //    strbuf.append(tireDTOImpl.getId());
+    //    strbuf.append(WheelDTOImpl.getId());
     //    strbuf.append(", ");
-    strbuf.append(tireDTOImpl.getId());
+    strbuf.append(wheelDTOImpl.getId());
     strbuf.append(", ");
-    strbuf.append(tireDTOImpl.getSpeed());
+    strbuf.append(singleQuotes(wheelDTOImpl.getColor()));
     strbuf.append(", ");
-    strbuf.append(tireDTOImpl.getRating());
+    strbuf.append(wheelDTOImpl.getSize());
 
     return strbuf.toString();
   }
@@ -86,41 +85,41 @@ public class TireDAOImpl extends MySQLBaseDAO implements TireDAO {
   protected String createUpdateValues(IDTO dto) //
       throws Exception {
 
-    TireDTOImpl tireDTOImpl = (TireDTOImpl) dto;
+    WheelDTOImpl wheelDTOImpl = (WheelDTOImpl) dto;
 
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(TireDTOImpl.SPEED);
+    strbuf.append(WheelDTOImpl.COLOR);
     strbuf.append(" = ");
-    strbuf.append(tireDTOImpl.getSpeed());
+    strbuf.append(singleQuotes(wheelDTOImpl.getColor()));
 
     strbuf.append(", ");
 
-    strbuf.append(TireDTOImpl.RATING);
+    strbuf.append(WheelDTOImpl.SIZE);
     strbuf.append(" = ");
-    strbuf.append(tireDTOImpl.getRating());
+    strbuf.append(wheelDTOImpl.getSize());
 
     return strbuf.toString();
   }
 
   // --------------------------------------------------------------------------------
 
-  protected TireDTOImpl resultSetToDTO(ResultSet rs) throws Exception {
-    TireDTOImpl ret = //
-    (TireDTOImpl) dtaSession.getDtaByKey( //
-        TireDTOImpl.class, rs.getInt(TireDTOImpl.ID));
+  protected WheelDTOImpl resultSetToDTO(ResultSet rs) throws Exception {
+    WheelDTOImpl ret = //
+    (WheelDTOImpl) dtaSession.getDtaByKey( //
+        WheelDTOImpl.class, rs.getInt(WheelDTOImpl.ID));
 
     if (ret != null) {
       return ret;
     }
 
-    ret = (TireDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
-        getDTO(TireDTO.class, connectionBean);
+    ret = (WheelDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
+        getDTO(WheelDTO.class, connectionBean);
 
-    ret.setId/*    */(rs.getInt(TireDTOImpl.ID));
-    ret.setSpeed/* */(rs.getInt(TireDTOImpl.SPEED));
-    ret.setRating/**/(rs.getInt(TireDTOImpl.RATING));
+    ret.setId/*   */(rs.getInt/*   */(WheelDTOImpl.ID));
+    ret.setColor/**/(rs.getString/**/(WheelDTOImpl.COLOR));
+    ret.setSize/* */(rs.getInt/*   */(WheelDTOImpl.SIZE));
 
-    return (TireDTOImpl) dtaSession.add(ret);
+    return (WheelDTOImpl) dtaSession.add(ret);
   }
 }

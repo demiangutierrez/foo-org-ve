@@ -97,12 +97,6 @@ public class PartDAOImpl extends MySQLBaseDAO implements PartDAO {
 
   // --------------------------------------------------------------------------------
 
-  protected void internalInsert(IDTO dto) throws Exception {
-    super.insert(dto);
-  }
-
-  // --------------------------------------------------------------------------------
-
   protected String createUpdateValues(IDTO dto) //
       throws Exception {
 

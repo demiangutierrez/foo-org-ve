@@ -2,7 +2,10 @@ package dao.example.mysql;
 
 import dao.example.base.TireDTO;
 
-public class TireDTOImpl extends PartDTOImpl /*BaseDTO*/implements TireDTO {
+/**
+ * @author Demián Gutierrez
+ */
+public class TireDTOImpl extends PartDTOImpl implements TireDTO {
 
   public static final String SPEED/* */= "speed";
   public static final String RATING/**/= "rating";
