@@ -4,8 +4,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.base.api.IDAO;
 import dao.base.api.IDTO;
 import dao.base.impl.BaseDAO;
+import dao.example.base.AbstractFactoryDAO;
 
 /**
  * @author Demián Gutierrez
@@ -13,6 +15,8 @@ import dao.base.impl.BaseDAO;
 abstract class MySQLBaseDAO extends BaseDAO {
 
   protected Class<? extends IDTO> dtoClass;
+
+  protected Class<? extends IDAO> daoParentClass;
 
   // --------------------------------------------------------------------------------
 
@@ -85,8 +89,21 @@ abstract class MySQLBaseDAO extends BaseDAO {
 
   @Override
   public void insert(IDTO dto) throws Exception {
-    checkCache(dto, CHECK_INSERT);
+    internalInsert(dto);
+  }
+
+  // --------------------------------------------------------------------------------
+
+  protected void internalInsert(IDTO dto) throws Exception {
+    checkCache(dto,/*       */CHECK_INSERT);
     checkClass(dto, dtoClass, CHECK_INSERT);
+
+    if (daoParentClass != null) {
+      MySQLBaseDAO dao = (MySQLBaseDAO) AbstractFactoryDAO.getFactoryDAO(). //
+          getDAO(daoParentClass, connectionBean);
+
+      dao.internalInsert(dto);
+    }
 
     StringBuffer strbuf;
 

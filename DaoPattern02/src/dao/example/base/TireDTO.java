@@ -1,19 +1,17 @@
 package dao.example.base;
 
-import dao.base.api.IDTO;
-
 /**
  * @author Demián Gutierrez
  */
-public interface TireDTO extends IDTO {
+public interface TireDTO extends PartDTO {
 
-  public abstract int/* */getSpeed();
+  public int/* */getSpeed();
 
-  public abstract void/**/setSpeed(int speed);
+  public void/**/setSpeed(int speed);
 
   // --------------------------------------------------------------------------------
 
-  public abstract int/* */getRating();
+  public int/* */getRating();
 
-  public abstract void/**/setRating(int rating);
+  public void/**/setRating(int rating);
 }

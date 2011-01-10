@@ -71,10 +71,15 @@ public abstract class BaseDAO implements IDAO {
           "dto == null || dtoClass == null");
     }
 
-    if (dto.getClass() != dtoClass) {
+    // XXX: DMI: To support inheritance
+    if (!dtoClass.isAssignableFrom(dtoClass)) {
       throw new IllegalArgumentException( //
-          "dto.getClass() != dtoClass");
+          "!dtoClass.isAssignableFrom(dtoClass)");
     }
+    //    if (dto.getClass() != dtoClass) {
+    //      throw new IllegalArgumentException( //
+    //          "dto.getClass() != dtoClass");
+    //    }
 
     if (reqIdVal == CHECK_IGNORE) {
       return;
