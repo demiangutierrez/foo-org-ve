@@ -125,7 +125,9 @@ abstract class MySQLBaseDAO extends BaseDAO {
 
     connection.createStatement().execute(strbuf.toString());
 
-    dto.setId(getLastId());
+    if (dto.getId() == 0) {
+      dto.setId(getLastId());
+    }
 
     // ----------------------------------------
 
@@ -148,7 +150,7 @@ abstract class MySQLBaseDAO extends BaseDAO {
     strbuf.append(createUpdateValues(dto));
 
     strbuf.append(" WHERE ");
-    strbuf.append(DepartmentDTOImpl.ID);
+    strbuf.append(DepublicationmentDTOImpl.ID);
     strbuf.append(" = ");
     strbuf.append(dto.getId());
 

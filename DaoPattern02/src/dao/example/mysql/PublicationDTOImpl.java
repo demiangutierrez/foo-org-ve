@@ -1,13 +1,13 @@
 package dao.example.mysql;
 
 import dao.base.impl.BaseDTO;
-import dao.example.base.PartDAO;
-import dao.example.base.PartDTO;
+import dao.example.base.PublicationDAO;
+import dao.example.base.PublicationDTO;
 
 /**
  * @author Demián Gutierrez
  */
-public class PartDTOImpl extends BaseDTO implements PartDTO {
+public class PublicationDTOImpl extends BaseDTO implements PublicationDTO {
 
   public static final String MANUFACTURER/**/= "manufacturer";
   public static final String NUMBER/*      */= "number";
@@ -21,8 +21,8 @@ public class PartDTOImpl extends BaseDTO implements PartDTO {
 
   // --------------------------------------------------------------------------------
 
-  public PartDTOImpl() {
-    super(PartDAO.class);
+  public PublicationDTOImpl() {
+    super(PublicationDAO.class);
   }
 
   // --------------------------------------------------------------------------------

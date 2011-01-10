@@ -1,35 +1,35 @@
 package dao.example.mysql;
 
-import dao.example.base.WheelDTO;
+import dao.example.base.NewsDTO;
 
 /**
  * @author Demián Gutierrez
  */
-public class WheelDTOImpl extends PartDTOImpl implements WheelDTO {
+public class NewsDTOImpl extends PublicationDTOImpl implements NewsDTO {
 
-  public static final String COLOR/**/= "color";
-  public static final String SIZE/* */= "size";
+  public static final String TYPE = "type";
+  public static final String SIZE = "size";
 
   // --------------------------------------------------------------------------------
 
-  private String color;
+  private int type;
 
   private int size;
 
   // --------------------------------------------------------------------------------
 
-  public WheelDTOImpl() {
-    //super(TireDAO.class);
+  public NewsDTOImpl() {
+    //super(BookDAO.class);
   }
 
   // --------------------------------------------------------------------------------
 
-  public String getColor() {
-    return color;
+  public int getType() {
+    return type;
   }
 
-  public void setColor(String color) {
-    this.color = color;
+  public void setType(int type) {
+    this.type = type;
   }
 
   // --------------------------------------------------------------------------------

@@ -4,17 +4,18 @@ import java.sql.ResultSet;
 
 import dao.base.api.IDTO;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.WheelDAO;
-import dao.example.base.WheelDTO;
+import dao.example.base.PublicationDAO;
+import dao.example.base.BookDAO;
+import dao.example.base.BookDTO;
 
 /**
  * @author Demián Gutierrez
  */
-public class WheelDAOImpl extends PartDAOImpl implements WheelDAO {
+public class BookDAOImpl extends MySQLBaseDAO implements BookDAO {
 
-  public WheelDAOImpl() {
-    //super(WheelDTOImpl.class);
-    dtoClass = WheelDTOImpl.class;
+  public BookDAOImpl() {
+    super(BookDTOImpl.class);
+    daoParentClass = PublicationDAO.class;
   }
 
   // --------------------------------------------------------------------------------
@@ -25,12 +26,12 @@ public class WheelDAOImpl extends PartDAOImpl implements WheelDAO {
   protected String createTableColumns() throws Exception {
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(WheelDTOImpl.ID);
+    strbuf.append(BookDTOImpl.ID);
     strbuf.append(" INT PRIMARY KEY, ");
-    strbuf.append(WheelDTOImpl.COLOR);
-    strbuf.append(" VARCHAR(100),    ");
-    strbuf.append(WheelDTOImpl.SIZE);
-    strbuf.append(" INT              ");
+    strbuf.append(BookDTOImpl.SPEED);
+    strbuf.append(" INT,    ");
+    strbuf.append(BookDTOImpl.RATING);
+    strbuf.append(" INT     ");
 
     return strbuf.toString();
   }
@@ -42,11 +43,11 @@ public class WheelDAOImpl extends PartDAOImpl implements WheelDAO {
       throws Exception {
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(WheelDTOImpl.ID);
+    strbuf.append(BookDTOImpl.ID);
     strbuf.append(", ");
-    strbuf.append(WheelDTOImpl.COLOR);
+    strbuf.append(BookDTOImpl.SPEED);
     strbuf.append(", ");
-    strbuf.append(WheelDTOImpl.SIZE);
+    strbuf.append(BookDTOImpl.RATING);
 
     return strbuf.toString();
   }
@@ -57,18 +58,18 @@ public class WheelDAOImpl extends PartDAOImpl implements WheelDAO {
   protected String createInsertValues(IDTO dto) //
       throws Exception {
 
-    WheelDTOImpl wheelDTOImpl = (WheelDTOImpl) dto;
+    BookDTOImpl bookDTOImpl = (BookDTOImpl) dto;
 
     StringBuffer strbuf = new StringBuffer();
 
     // XXX: MySQL does not need to include the id if auto incremental
-    //    strbuf.append(WheelDTOImpl.getId());
+    //    strbuf.append(bookDTOImpl.getId());
     //    strbuf.append(", ");
-    strbuf.append(wheelDTOImpl.getId());
+    strbuf.append(bookDTOImpl.getId());
     strbuf.append(", ");
-    strbuf.append(singleQuotes(wheelDTOImpl.getColor()));
+    strbuf.append(bookDTOImpl.getSpeed());
     strbuf.append(", ");
-    strbuf.append(wheelDTOImpl.getSize());
+    strbuf.append(bookDTOImpl.getRating());
 
     return strbuf.toString();
   }
@@ -85,41 +86,41 @@ public class WheelDAOImpl extends PartDAOImpl implements WheelDAO {
   protected String createUpdateValues(IDTO dto) //
       throws Exception {
 
-    WheelDTOImpl wheelDTOImpl = (WheelDTOImpl) dto;
+    BookDTOImpl bookDTOImpl = (BookDTOImpl) dto;
 
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(WheelDTOImpl.COLOR);
+    strbuf.append(BookDTOImpl.SPEED);
     strbuf.append(" = ");
-    strbuf.append(singleQuotes(wheelDTOImpl.getColor()));
+    strbuf.append(bookDTOImpl.getSpeed());
 
     strbuf.append(", ");
 
-    strbuf.append(WheelDTOImpl.SIZE);
+    strbuf.append(BookDTOImpl.RATING);
     strbuf.append(" = ");
-    strbuf.append(wheelDTOImpl.getSize());
+    strbuf.append(bookDTOImpl.getRating());
 
     return strbuf.toString();
   }
 
   // --------------------------------------------------------------------------------
 
-  protected WheelDTOImpl resultSetToDTO(ResultSet rs) throws Exception {
-    WheelDTOImpl ret = //
-    (WheelDTOImpl) dtaSession.getDtaByKey( //
-        WheelDTOImpl.class, rs.getInt(WheelDTOImpl.ID));
+  protected BookDTOImpl resultSetToDTO(ResultSet rs) throws Exception {
+    BookDTOImpl ret = //
+    (BookDTOImpl) dtaSession.getDtaByKey( //
+        BookDTOImpl.class, rs.getInt(BookDTOImpl.ID));
 
     if (ret != null) {
       return ret;
     }
 
-    ret = (WheelDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
-        getDTO(WheelDTO.class, connectionBean);
+    ret = (BookDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
+        getDTO(BookDTO.class, connectionBean);
 
-    ret.setId/*   */(rs.getInt/*   */(WheelDTOImpl.ID));
-    ret.setColor/**/(rs.getString/**/(WheelDTOImpl.COLOR));
-    ret.setSize/* */(rs.getInt/*   */(WheelDTOImpl.SIZE));
+    ret.setId/*    */(rs.getInt(BookDTOImpl.ID));
+    ret.setSpeed/* */(rs.getInt(BookDTOImpl.SPEED));
+    ret.setRating/**/(rs.getInt(BookDTOImpl.RATING));
 
-    return (WheelDTOImpl) dtaSession.add(ret);
+    return (BookDTOImpl) dtaSession.add(ret);
   }
 }
