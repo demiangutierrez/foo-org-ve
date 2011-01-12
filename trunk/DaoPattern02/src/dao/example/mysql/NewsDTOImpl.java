@@ -7,38 +7,33 @@ import dao.example.base.NewsDTO;
  */
 public class NewsDTOImpl extends PublicationDTOImpl implements NewsDTO {
 
-  public static final String TYPE = "type";
-  public static final String SIZE = "size";
-
-  // --------------------------------------------------------------------------------
-
-  private int type;
-
-  private int size;
+  private String newsAtt1;
+  private String newsAtt2;
 
   // --------------------------------------------------------------------------------
 
   public NewsDTOImpl() {
-    //super(BookDAO.class);
+    // TODO:
+    // super(BookDAO.class);
   }
 
   // --------------------------------------------------------------------------------
 
-  public int getType() {
-    return type;
+  public String getNewsAtt1() {
+    return newsAtt1;
   }
 
-  public void setType(int type) {
-    this.type = type;
+  public void setNewsAtt1(String newsAtt1) {
+    this.newsAtt1 = newsAtt1;
   }
 
   // --------------------------------------------------------------------------------
 
-  public int getSize() {
-    return size;
+  public String getNewsAtt2() {
+    return newsAtt2;
   }
 
-  public void setSize(int size) {
-    this.size = size;
+  public void setNewsAtt2(String newsAtt2) {
+    this.newsAtt2 = newsAtt2;
   }
 }

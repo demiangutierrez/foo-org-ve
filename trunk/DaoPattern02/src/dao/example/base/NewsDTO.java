@@ -5,13 +5,18 @@ package dao.example.base;
  */
 public interface NewsDTO extends PublicationDTO {
 
-  public int getType();
-
-  public void setType(int type);
+  public static final String NEWS_ATT_1 = "newsAtt1";
+  public static final String NEWS_ATT_2 = "newsAtt2";
 
   // --------------------------------------------------------------------------------
 
-  public int/* */getSize();
+  public String getNewsAtt1();
 
-  public void/**/setSize(int size);
+  public void setNewsAtt1(String newsAtt1);
+
+  // --------------------------------------------------------------------------------
+
+  public String getNewsAtt2();
+
+  public void setNewsAtt2(String newsAtt2);
 }

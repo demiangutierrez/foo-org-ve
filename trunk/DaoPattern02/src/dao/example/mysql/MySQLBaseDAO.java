@@ -26,7 +26,7 @@ abstract class MySQLBaseDAO extends BaseDAO {
   }
 
   // --------------------------------------------------------------------------------
-  // DataAccessObject
+  // IDAO
   // --------------------------------------------------------------------------------
 
   public void createTable() throws Exception {
@@ -44,20 +44,6 @@ abstract class MySQLBaseDAO extends BaseDAO {
 
     connection.createStatement().execute(strbuf.toString());
 
-    // ----------------------------------------
-
-    //    strbuf = new StringBuffer();
-    //
-    //    strbuf.append("DROP SEQUENCE IF EXISTS ");
-    //    strbuf.append("seq_");
-    //    strbuf.append(getTableName());
-    //
-    //    System.err.println(strbuf.toString());
-    //
-    //    connection.createStatement().execute(strbuf.toString());
-
-    // ----------------------------------------
-
     strbuf = new StringBuffer();
 
     strbuf.append("CREATE TABLE ");
@@ -71,18 +57,6 @@ abstract class MySQLBaseDAO extends BaseDAO {
     System.err.println(strbuf.toString());
 
     connection.createStatement().execute(strbuf.toString());
-
-    // ----------------------------------------
-
-    //    strbuf = new StringBuffer();
-    //
-    //    strbuf.append("CREATE SEQUENCE ");
-    //    strbuf.append("seq_");
-    //    strbuf.append(getTableName());
-    //
-    //    System.err.println(strbuf.toString());
-    //
-    //    connection.createStatement().execute(strbuf.toString());
   }
 
   // --------------------------------------------------------------------------------
@@ -105,11 +79,7 @@ abstract class MySQLBaseDAO extends BaseDAO {
       dao.internalInsert(dto);
     }
 
-    StringBuffer strbuf;
-
-    // ----------------------------------------
-
-    strbuf = new StringBuffer();
+    StringBuffer strbuf = new StringBuffer();
 
     strbuf.append("INSERT INTO ");
     strbuf.append(getTableName());
@@ -139,26 +109,6 @@ abstract class MySQLBaseDAO extends BaseDAO {
   @Override
   public void update(IDTO dto) throws Exception {
     internalUpdate(dto);
-
-    //    checkCache(dto, CHECK_UPDATE);
-    //    checkClass(dto, dtoClass, CHECK_UPDATE);
-    //
-    //    StringBuffer strbuf = new StringBuffer();
-    //
-    //    strbuf.append("UPDATE ");
-    //    strbuf.append(getTableName());
-    //    strbuf.append(" SET ");
-    //
-    //    strbuf.append(createUpdateValues(dto));
-    //
-    //    strbuf.append(" WHERE ");
-    //    strbuf.append(IDTO.ID);
-    //    strbuf.append(" = ");
-    //    strbuf.append(dto.getId());
-    //
-    //    System.err.println(strbuf.toString());
-    //
-    //    connection.createStatement().execute(strbuf.toString());
   }
 
   // --------------------------------------------------------------------------------
@@ -174,11 +124,7 @@ abstract class MySQLBaseDAO extends BaseDAO {
       dao.internalUpdate(dto);
     }
 
-    StringBuffer strbuf;
-
-    // ----------------------------------------
-
-    strbuf = new StringBuffer();
+    StringBuffer strbuf = new StringBuffer();
 
     strbuf.append("UPDATE ");
     strbuf.append(getTableName());
@@ -201,25 +147,9 @@ abstract class MySQLBaseDAO extends BaseDAO {
   @Override
   public void delete(IDTO dto) throws Exception {
     internalDelete(dto);
-    //    checkCache(dto, CHECK_DELETE);
-    //    checkClass(dto, dtoClass, CHECK_DELETE);
-    //
-    //    StringBuffer strbuf = new StringBuffer();
-    //
-    //    strbuf.append("DELETE FROM ");
-    //    strbuf.append(getTableName());
-    //
-    //    strbuf.append(" WHERE ");
-    //    strbuf.append(IDTO.ID);
-    //    strbuf.append(" = ");
-    //    strbuf.append(dto.getId());
-    //
-    //    System.err.println(strbuf.toString());
-    //
-    //    connection.createStatement().execute(strbuf.toString());
-    //
-    //    dtaSession.del(dto);
   }
+
+  // --------------------------------------------------------------------------------
 
   protected void internalDelete(IDTO dto) throws Exception {
     checkCache(dto,/*       */CHECK_DELETE);
@@ -232,11 +162,7 @@ abstract class MySQLBaseDAO extends BaseDAO {
       dao.internalDelete(dto);
     }
 
-    StringBuffer strbuf;
-
-    // ----------------------------------------
-
-    strbuf = new StringBuffer();
+    StringBuffer strbuf = new StringBuffer();
 
     strbuf.append("DELETE FROM ");
     strbuf.append(getTableName());
@@ -427,5 +353,8 @@ abstract class MySQLBaseDAO extends BaseDAO {
     return dtaSession.add(ret);
   }
 
-  protected abstract IDTO internalResultSetToDTO(ResultSet rs, IDTO dto) throws Exception;
+  // --------------------------------------------------------------------------------
+
+  protected abstract IDTO internalResultSetToDTO(ResultSet rs, IDTO dto) //
+      throws Exception;
 }
