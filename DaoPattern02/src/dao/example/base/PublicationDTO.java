@@ -7,19 +7,18 @@ import dao.base.api.IDTO;
  */
 public interface PublicationDTO extends IDTO {
 
-  public abstract String/**/getNumber();
-
-  public abstract void/*  */setNumber(String number);
-
-  // --------------------------------------------------------------------------------
-
-  public abstract String/**/getManufacturer();
-
-  public abstract void/*  */setManufacturer(String manufacturer);
+  public static final String PUBL_ATT_1 = "publAtt1";
+  public static final String PUBL_ATT_2 = "publAtt2";
 
   // --------------------------------------------------------------------------------
 
-  public abstract String/**/getDescription();
+  public String getPublAtt1();
 
-  public abstract void/*  */setDescription(String description);
+  public void setPublAtt1(String publAtt1);
+
+  // --------------------------------------------------------------------------------
+
+  public String getPublAtt2();
+
+  public void setPublAtt2(String publAtt2);
 }

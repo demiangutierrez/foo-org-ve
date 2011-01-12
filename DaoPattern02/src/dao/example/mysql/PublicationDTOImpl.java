@@ -9,49 +9,33 @@ import dao.example.base.PublicationDTO;
  */
 public class PublicationDTOImpl extends BaseDTO implements PublicationDTO {
 
-  public static final String MANUFACTURER/**/= "manufacturer";
-  public static final String NUMBER/*      */= "number";
-  public static final String DESCRIPTION/* */= "description";
-
-  // --------------------------------------------------------------------------------
-
-  private String manufacturer;
-  private String number;
-  private String description;
+  private String publAtt1;
+  private String publAtt2;
 
   // --------------------------------------------------------------------------------
 
   public PublicationDTOImpl() {
+    // TODO:
     super(PublicationDAO.class);
   }
 
   // --------------------------------------------------------------------------------
 
-  public String getManufacturer() {
-    return manufacturer;
+  public String getPublAtt1() {
+    return publAtt1;
   }
 
-  public void setManufacturer(String manufacturer) {
-    this.manufacturer = manufacturer;
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public String getNumber() {
-    return number;
-  }
-
-  public void setNumber(String number) {
-    this.number = number;
+  public void setPublAtt1(String publAtt1) {
+    this.publAtt1 = publAtt1;
   }
 
   // --------------------------------------------------------------------------------
 
-  public String getDescription() {
-    return description;
+  public String getPublAtt2() {
+    return publAtt2;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setPublAtt2(String publAtt2) {
+    this.publAtt2 = publAtt2;
   }
 }

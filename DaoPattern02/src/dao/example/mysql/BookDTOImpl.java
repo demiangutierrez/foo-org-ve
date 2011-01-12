@@ -7,37 +7,33 @@ import dao.example.base.BookDTO;
  */
 public class BookDTOImpl extends PublicationDTOImpl implements BookDTO {
 
-  public static final String SPEED/* */= "speed";
-  public static final String RATING/**/= "rating";
-
-  // --------------------------------------------------------------------------------
-
-  private int speed;
-  private int rating;
+  private String bookAtt1;
+  private String bookAtt2;
 
   // --------------------------------------------------------------------------------
 
   public BookDTOImpl() {
-    //super(BookDAO.class);
+    // TODO:
+    // super(BookDAO.class);
   }
 
   // --------------------------------------------------------------------------------
 
-  public int getSpeed() {
-    return speed;
+  public String getBookAtt1() {
+    return bookAtt1;
   }
 
-  public void setSpeed(int speed) {
-    this.speed = speed;
+  public void setBookAtt1(String bookAtt1) {
+    this.bookAtt1 = bookAtt1;
   }
 
   // --------------------------------------------------------------------------------
 
-  public int getRating() {
-    return rating;
+  public String getBookAtt2() {
+    return bookAtt2;
   }
 
-  public void setRating(int rating) {
-    this.rating = rating;
+  public void setBookAtt2(String bookAtt2) {
+    this.bookAtt2 = bookAtt2;
   }
 }

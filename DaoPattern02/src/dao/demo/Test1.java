@@ -44,7 +44,7 @@ public class Test1 {
     dd.createTable();
 
     try {
-      for (int i = 0; i < 11; i++) {
+      for (int i = 1; i < 11; i++) {
         DepartmentDTO ddo = (DepartmentDTO) factoryDAO.getDTO( //
             DepartmentDTO.class, conn);
 

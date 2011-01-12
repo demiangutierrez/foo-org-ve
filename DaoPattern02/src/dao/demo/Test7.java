@@ -30,66 +30,61 @@ public class Test7 {
 
     ConnectionBean conn = ConnectionFactory.getConnectionBean();
 
-    FactoryDAO factoryDAO = AbstractFactoryDAO.getFactoryDAO();
-
-    // --------------------------------------------------------------------------------
-    // Instanciar DAO
-    // --------------------------------------------------------------------------------
-
-    PublicationDAO daoPublication = /*  */(PublicationDAO) /*  */factoryDAO. //
-        getDAO(PublicationDAO.class,/*  */conn);
-
-    BookDAO daoBook = /*  */(BookDAO) /*  */factoryDAO. //
-        getDAO(BookDAO.class,/*  */conn);
-
-    NewsDAO daoNews = /*  */(NewsDAO) /*  */factoryDAO. //
-        getDAO(NewsDAO.class,/*  */conn);
-
-    daoPublication.createTable();
-    daoBook.createTable();
-    daoNews.createTable();
-
-    // --------------------------------------------------------------------------------
-
     try {
+      FactoryDAO factoryDAO = AbstractFactoryDAO.getFactoryDAO();
+
+      // --------------------------------------------------------------------------------
+      // Instanciar DAO
+      // --------------------------------------------------------------------------------
+
+      PublicationDAO publDao = (PublicationDAO) factoryDAO. //
+          getDAO(PublicationDAO.class, conn);
+
+      BookDAO bookDao = (BookDAO) factoryDAO. //
+          getDAO(BookDAO.class, conn);
+
+      NewsDAO newsDao = (NewsDAO) factoryDAO. //
+          getDAO(NewsDAO.class, conn);
+
+      publDao.createTable();
+      bookDao.createTable();
+      newsDao.createTable();
+
+      // --------------------------------------------------------------------------------
+      // INSERT Book
+      // --------------------------------------------------------------------------------
+
       for (int i = 1; i < 11; i++) {
-        BookDTO dtoBook = (BookDTO) factoryDAO.getDTO( //
+        BookDTO bookDto = (BookDTO) factoryDAO.getDTO( //
             BookDTO.class, conn);
 
-        dtoBook.setManufacturer("BookManufacturer" + i);
-        dtoBook.setNumber("BookNumber" + i);
-        dtoBook.setDescription("BookDescription" + i);
-        dtoBook.setSpeed(1);
-        dtoBook.setRating(10);
+        bookDto.setPublAtt1("PublAtt1-" + i);
+        bookDto.setPublAtt2("PublAtt2-" + i);
+        bookDto.setBookAtt1("BookAtt1-" + i);
+        bookDto.setBookAtt2("BookAtt2-" + i);
 
-        // --------------------------------------------------------------------------------
-        // INSERT
-        // --------------------------------------------------------------------------------
-
-        // daoBook.insert(dtoBook); // Should work the same
-        daoPublication.insert(dtoBook);
+        // bookDao.insert(dtoBook); // Should work the same
+        publDao.insert(bookDto);
       }
 
+      // --------------------------------------------------------------------------------
+      // INSERT News
+      // --------------------------------------------------------------------------------
+
       for (int i = 1; i < 11; i++) {
-        NewsDTO dtoNews = (NewsDTO) factoryDAO.getDTO( //
+        NewsDTO newsDto = (NewsDTO) factoryDAO.getDTO( //
             NewsDTO.class, conn);
 
-        dtoNews.setManufacturer("NewsManufacturer" + i);
-        dtoNews.setNumber("NewsNumber" + i);
-        dtoNews.setDescription("NewsDescription" + i);
-        dtoNews.setSize(2);
-        dtoNews.setType(20);
+        newsDto.setPublAtt1("PublAtt1-" + i);
+        newsDto.setPublAtt2("PublAtt2-" + i);
+        newsDto.setNewsAtt1("NewsAtt1-" + i);
+        newsDto.setNewsAtt2("NewsAtt2-" + i);
 
-        // --------------------------------------------------------------------------------
-        // INSERT
-        // --------------------------------------------------------------------------------
-
-        // daoNews.insert(dtoNews); // Should work the same
-        daoPublication.insert(dtoNews);
+        // newsDao.insert(dtoNews); // Should work the same
+        publDao.insert(newsDto);
       }
     } catch (SQLException e) {
       e.printStackTrace();
-
     } finally {
       ConnectionFactory.closeConnection(conn.getConnection());
     }
