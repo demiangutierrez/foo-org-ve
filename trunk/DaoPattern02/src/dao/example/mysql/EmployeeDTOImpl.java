@@ -13,12 +13,6 @@ import dao.example.base.EmployeeDTO;
  */
 class EmployeeDTOImpl extends BaseDTO implements EmployeeDTO {
 
-  public static final String FRST_NAME/* */= "frstName";
-  public static final String LAST_NAME/* */= "lastName";
-  public static final String DEPARTMENT_ID = "departmentId";
-
-  // --------------------------------------------------------------------------------
-
   private String frstName;
   private String lastName;
 

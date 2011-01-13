@@ -21,11 +21,6 @@ import dao.example.base.EmployeeDTO;
 public//
 class DepartmentDTOImpl extends BaseDTO implements DepartmentDTO {
 
-  public static final String NAME/*    */= "name";
-  public static final String DESCRIPTION = "description";
-
-  // --------------------------------------------------------------------------------
-
   private String name;
   private String description;
 

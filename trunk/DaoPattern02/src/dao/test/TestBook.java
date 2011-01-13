@@ -20,8 +20,8 @@ public class TestBook extends TestCase {
     boolean ret = true;
 
     ret = ret && bookDTO1.getId() == bookDTO2.getId();
-    ret = ret && bookDTO1.getSpeed() == bookDTO2.getSpeed();
-    ret = ret && bookDTO1.getRating() == bookDTO2.getRating();
+    ret = ret && bookDTO1.getBookAtt1().equals(bookDTO2.getBookAtt1());
+    ret = ret && bookDTO1.getBookAtt2().equals(bookDTO2.getBookAtt2());
 
     return ret;
   }
@@ -48,16 +48,16 @@ public class TestBook extends TestCase {
     BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO1.setSpeed(1);
-    bookDTO1.setRating(11);
+    bookDTO1.setBookAtt1("1");
+    bookDTO1.setBookAtt2("11");;
     bookDAO.insert(bookDTO1);
     assertEquals(bookDTO1.getId(), 1);
 
     BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO2.setSpeed(2);
-    bookDTO2.setRating(22);
+    bookDTO2.setBookAtt1("2");;
+    bookDTO2.setBookAtt2("22");;
     bookDAO.insert(bookDTO2);
     assertEquals(bookDTO2.getId(), 2);
 
@@ -105,16 +105,16 @@ public class TestBook extends TestCase {
     BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO1.setSpeed(1);
-    bookDTO1.setRating(11);
+    bookDTO1.setBookAtt1("1");
+    bookDTO1.setBookAtt2("11");;
     bookDAO.insert(bookDTO1);
     assertEquals(bookDTO1.getId(), 1);
 
     BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO2.setSpeed(2);
-    bookDTO2.setRating(22);
+    bookDTO2.setBookAtt1("2");;
+    bookDTO2.setBookAtt2("22");;
     bookDAO.insert(bookDTO2);
     assertEquals(bookDTO2.getId(), 2);
 
@@ -130,13 +130,13 @@ public class TestBook extends TestCase {
         BookDAO.class, connectionBean);
 
     BookDTO bookDTOX = (BookDTO) bookDAO.loadById(1);
-    bookDTOX.setSpeed(3);
-    bookDTOX.setRating(33);
+    bookDTOX.setBookAtt1("3");;
+    bookDTOX.setBookAtt2("33");;
     bookDAO.update(bookDTOX); // Changes the 111
 
     BookDTO bookDTOY = (BookDTO) bookDAO.loadById(2);
-    bookDTOY.setSpeed(4);
-    bookDTOY.setRating(44);
+    bookDTOY.setBookAtt1("4");;
+    bookDTOY.setBookAtt2("44");;
     bookDAO.update(bookDTOY); // Changes the 222
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -183,16 +183,16 @@ public class TestBook extends TestCase {
     BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO1.setSpeed(1);
-    bookDTO1.setRating(11);
+    bookDTO1.setBookAtt1("1");
+    bookDTO1.setBookAtt2("11");;
     bookDAO.insert(bookDTO1);
     assertEquals(bookDTO1.getId(), 1);
 
     BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO2.setSpeed(2);
-    bookDTO2.setRating(22);
+    bookDTO2.setBookAtt1("2");;
+    bookDTO2.setBookAtt2("22");;
     bookDAO.insert(bookDTO2);
     assertEquals(bookDTO2.getId(), 2);
 
@@ -255,16 +255,16 @@ public class TestBook extends TestCase {
     BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO1.setSpeed(1);
-    bookDTO1.setRating(11);
+    bookDTO1.setBookAtt1("1");
+    bookDTO1.setBookAtt2("11");;
     bookDAO.insert(bookDTO1);
     assertEquals(bookDTO1.getId(), 1);
 
     BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO2.setSpeed(2);
-    bookDTO2.setRating(22);
+    bookDTO2.setBookAtt1("2");;
+    bookDTO2.setBookAtt2("22");;
     bookDAO.insert(bookDTO2);
     assertEquals(bookDTO2.getId(), 2);
 
@@ -314,8 +314,8 @@ public class TestBook extends TestCase {
     BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO1.setSpeed(1);
-    bookDTO1.setRating(11);
+    bookDTO1.setBookAtt1("1");
+    bookDTO1.setBookAtt2("11");;
     bookDAO.insert(bookDTO1);
     assertEquals(bookDTO1.getId(), 1);
 
@@ -366,8 +366,8 @@ public class TestBook extends TestCase {
     BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO1.setSpeed(1);
-    bookDTO1.setRating(11);
+    bookDTO1.setBookAtt1("1");
+    bookDTO1.setBookAtt2("11");;
     bookDAO.insert(bookDTO1);
     assertEquals(bookDTO1.getId(), 1);
 
@@ -418,8 +418,8 @@ public class TestBook extends TestCase {
     BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO1.setSpeed(1);
-    bookDTO1.setRating(11);
+    bookDTO1.setBookAtt1("1");
+    bookDTO1.setBookAtt2("11");;
     bookDAO.insert(bookDTO1);
     assertEquals(bookDTO1.getId(), 1);
 
@@ -470,14 +470,14 @@ public class TestBook extends TestCase {
     BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO1.setSpeed(1);
-    bookDTO1.setRating(11);
+    bookDTO1.setBookAtt1("1");
+    bookDTO1.setBookAtt2("11");;
 
     BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO1.setSpeed(1);
-    bookDTO1.setRating(11);
+    bookDTO1.setBookAtt1("1");
+    bookDTO1.setBookAtt2("11");;
 
     // ----------------------------------------
     // UPDATE NON INSERTED
@@ -619,15 +619,15 @@ public class TestBook extends TestCase {
     BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO1.setSpeed(1);
-    bookDTO1.setRating(11);
+    bookDTO1.setBookAtt1("1");
+    bookDTO1.setBookAtt2("11");;
     bookDAO.insert(bookDTO1);
 
     BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO2.setSpeed(2);
-    bookDTO2.setRating(22);
+    bookDTO2.setBookAtt1("2");;
+    bookDTO2.setBookAtt2("22");;
     bookDAO.insert(bookDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -668,15 +668,15 @@ public class TestBook extends TestCase {
     BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO1.setSpeed(1);
-    bookDTO1.setRating(11);
+    bookDTO1.setBookAtt1("1");
+    bookDTO1.setBookAtt2("11");;
     bookDAO.insert(bookDTO1);
 
     BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO2.setSpeed(2);
-    bookDTO2.setRating(22);
+    bookDTO2.setBookAtt1("2");;
+    bookDTO2.setBookAtt2("22");;
     bookDAO.insert(bookDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -719,15 +719,15 @@ public class TestBook extends TestCase {
     BookDTO bookDTO1 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO1.setSpeed(1);
-    bookDTO1.setRating(11);
+    bookDTO1.setBookAtt1("1");
+    bookDTO1.setBookAtt2("11");;
     bookDAO.insert(bookDTO1);
 
     BookDTO bookDTO2 = (BookDTO) fd.getDTO( //
         BookDTO.class, connectionBean);
 
-    bookDTO2.setSpeed(2);
-    bookDTO2.setRating(22);
+    bookDTO2.setBookAtt1("2");;
+    bookDTO2.setBookAtt2("22");;
     bookDAO.insert(bookDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
