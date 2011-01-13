@@ -163,11 +163,11 @@ public class NewsDAOImpl extends MySQLBaseDAO implements NewsDAO {
     IDAO par0 = //
     AbstractFactoryDAO.getFactoryDAO().getDAO( //
         daoParentClass, connectionBean);
-    strbuf.append(par0.getTableName());
 
     strbuf.append("SELECT * FROM ");
     strbuf.append(this.getTableName());
     strbuf.append(", ");
+    strbuf.append(par0.getTableName());
 
     strbuf.append(" WHERE ");
     strbuf.append(key);

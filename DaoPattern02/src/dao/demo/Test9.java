@@ -1,8 +1,8 @@
 /**
- * Ejemplo de UPDATE y DELETE usando Framework DAO
+ * Ejemplo de manejo de herencia usando Framework DAO
  * 
- * @author Preparador Hugo Morillo
- * @date   25/03/2010
+ * @author Demián Gutierrez
+ * @date   10/01/2011
  * 
  */
 
@@ -19,7 +19,6 @@ import dao.example.base.NewsDTO;
 import dao.example.base.PublicationDAO;
 import dao.example.base.PublicationDTO;
 
-//TODO: WRONG: DOES NOT LOAD THE RIGHT CHILD CLASS, LOADS PART INSTANCES
 public class Test9 {
 
   public static void main(String[] args) throws Exception {
@@ -30,68 +29,67 @@ public class Test9 {
 
     ConnectionBean conn = ConnectionFactory.getConnectionBean();
 
-    // --------------------------------------------------------------------------------
-    // Instanciar DAO
-    // --------------------------------------------------------------------------------
-
-    IDAO pd = AbstractFactoryDAO.getFactoryDAO(). //
-        getDAO(PublicationDAO.class, conn);
-
     try {
-      PublicationDTO pdo;
 
-      pdo = (PublicationDTO) pd.loadById(6);
+      // --------------------------------------------------------------------------------
+      // Instanciar DAO
+      // --------------------------------------------------------------------------------
+
+      IDAO publDao = AbstractFactoryDAO.getFactoryDAO(). //
+          getDAO(PublicationDAO.class, conn);
+
+      PublicationDTO publDto;
+
+      // --------------------------------------------------------------------------------
+      // UPDATE Book
+      // --------------------------------------------------------------------------------
+
+      publDto = (PublicationDTO) publDao.loadById(6);
 
       // I know this is a book:
 
-      BookDTO bookDTO = (BookDTO) pdo;
+      BookDTO bookDto = (BookDTO) publDto;
 
-      bookDTO.setManufacturer("BookNewManufacturer");
-      bookDTO.setNumber("BookNewNumber");
-      bookDTO.setDescription("BookNewDescription");
-      bookDTO.setSpeed(100);
-      bookDTO.setRating(1000);
+      bookDto.setPublAtt1("NewPublAtt1");
+      bookDto.setPublAtt2("NewPublAtt2");
+      bookDto.setBookAtt1("NewBookAtt1");
+      bookDto.setBookAtt2("NewBookAtt2");
 
-      // --------------------------------------------------------------------------------
-      // UPDATE
-      // --------------------------------------------------------------------------------
-
-      pd.update(pdo);
-
-      pdo = (PublicationDTO) pd.loadById(16);
-
-      // I know this is a book:
-
-      NewsDTO newsDTO = (NewsDTO) pdo;
-
-      newsDTO.setManufacturer("NewsNewManufacturer");
-      newsDTO.setNumber("NewNumber");
-      newsDTO.setDescription("NewsNewDescription");
-      newsDTO.setSize(100);
-      newsDTO.setType(1000);
+      publDao.update(publDto);
 
       // --------------------------------------------------------------------------------
-      // UPDATE
+      // UPDATE News
       // --------------------------------------------------------------------------------
 
-      pd.update(pdo);
+      publDto = (PublicationDTO) publDao.loadById(16);
+
+      // I know this is a news:
+
+      NewsDTO newsDto = (NewsDTO) publDto;
+
+      newsDto.setPublAtt1("NewPublAtt1");
+      newsDto.setPublAtt2("NewPublAtt2");
+      newsDto.setNewsAtt1("NewNewsAtt1");
+      newsDto.setNewsAtt2("NewNewsAtt2");
+
+      publDao.update(publDto);
 
       // --------------------------------------------------------------------------------
-      // DELETE
+      // DELETE Book
       // --------------------------------------------------------------------------------
 
       for (int i = 1; i < 6; i++) {
-        PublicationDTO ddoo = (PublicationDTO) pd.loadById(i);
-        pd.delete(ddoo);
+        PublicationDTO ddoo = (PublicationDTO) publDao.loadById(i);
+        publDao.delete(ddoo);
       }
 
       // --------------------------------------------------------------------------------
-      // DELETE
+      // DELETE News
       // --------------------------------------------------------------------------------
 
       for (int i = 11; i < 16; i++) {
-        PublicationDTO ddoo = (PublicationDTO) pd.loadById(i);
-        pd.delete(ddoo);
+        PublicationDTO ddoo = (PublicationDTO) publDao.loadById(i);
+        publDao.delete(ddoo);
       }
 
     } catch (SQLException e) {
