@@ -9,6 +9,11 @@ import dao.base.api.IDTO;
  */
 public interface DepartmentDTO extends IDTO {
 
+  public static final String NAME/*    */= "name";
+  public static final String DESCRIPTION = "description";
+
+  // --------------------------------------------------------------------------------
+
   public String/**/getName();
 
   public void/*  */setName(String name);

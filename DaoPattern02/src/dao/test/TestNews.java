@@ -20,8 +20,8 @@ public class TestNews extends TestCase {
     boolean ret = true;
 
     ret = ret && newsDTO1.getId() == newsDTO2.getId();
-    ret = ret && newsDTO1.getType() == newsDTO2.getType();
-    ret = ret && newsDTO1.getSize() == newsDTO2.getSize();
+    ret = ret && newsDTO1.getNewsAtt1().equals(newsDTO2.getNewsAtt1());
+    ret = ret && newsDTO1.getNewsAtt2().equals(newsDTO2.getNewsAtt2());
 
     return ret;
   }
@@ -48,16 +48,16 @@ public class TestNews extends TestCase {
     NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO1.setType(1);
-    newsDTO1.setSize(11);
+    newsDTO1.setNewsAtt1("1");;
+    newsDTO1.setNewsAtt2("11");;
     newsDAO.insert(newsDTO1);
     assertEquals(newsDTO1.getId(), 1);
 
     NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO2.setType(2);
-    newsDTO2.setSize(22);
+    newsDTO2.setNewsAtt1("2");;
+    newsDTO2.setNewsAtt2("22");;
     newsDAO.insert(newsDTO2);
     assertEquals(newsDTO2.getId(), 2);
 
@@ -105,16 +105,16 @@ public class TestNews extends TestCase {
     NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO1.setType(1);
-    newsDTO1.setSize(11);
+    newsDTO1.setNewsAtt1("1");;
+    newsDTO1.setNewsAtt2("11");;
     newsDAO.insert(newsDTO1);
     assertEquals(newsDTO1.getId(), 1);
 
     NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO2.setType(2);
-    newsDTO2.setSize(22);
+    newsDTO2.setNewsAtt1("2");;
+    newsDTO2.setNewsAtt2("22");;
     newsDAO.insert(newsDTO2);
     assertEquals(newsDTO2.getId(), 2);
 
@@ -130,13 +130,13 @@ public class TestNews extends TestCase {
         NewsDAO.class, connectionBean);
 
     NewsDTO newsDTOX = (NewsDTO) newsDAO.loadById(1);
-    newsDTOX.setType(3);
-    newsDTOX.setSize(33);
+    newsDTOX.setNewsAtt1("3");;
+    newsDTOX.setNewsAtt2("33");;
     newsDAO.update(newsDTOX); // Changes the 111
 
     NewsDTO newsDTOY = (NewsDTO) newsDAO.loadById(2);
-    newsDTOY.setType(4);
-    newsDTOY.setSize(44);
+    newsDTOY.setNewsAtt1("4");;
+    newsDTOY.setNewsAtt2("44");;
     newsDAO.update(newsDTOY); // Changes the 222
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -183,16 +183,16 @@ public class TestNews extends TestCase {
     NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO1.setType(1);
-    newsDTO1.setSize(11);
+    newsDTO1.setNewsAtt1("1");;
+    newsDTO1.setNewsAtt2("11");;
     newsDAO.insert(newsDTO1);
     assertEquals(newsDTO1.getId(), 1);
 
     NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO2.setType(2);
-    newsDTO2.setSize(22);
+    newsDTO2.setNewsAtt1("2");;
+    newsDTO2.setNewsAtt2("22");;
     newsDAO.insert(newsDTO2);
     assertEquals(newsDTO2.getId(), 2);
 
@@ -255,16 +255,16 @@ public class TestNews extends TestCase {
     NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO1.setType(1);
-    newsDTO1.setSize(11);
+    newsDTO1.setNewsAtt1("1");;
+    newsDTO1.setNewsAtt2("11");;
     newsDAO.insert(newsDTO1);
     assertEquals(newsDTO1.getId(), 1);
 
     NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO2.setType(2);
-    newsDTO2.setSize(22);
+    newsDTO2.setNewsAtt1("2");;
+    newsDTO2.setNewsAtt2("22");;
     newsDAO.insert(newsDTO2);
     assertEquals(newsDTO2.getId(), 2);
 
@@ -314,8 +314,8 @@ public class TestNews extends TestCase {
     NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO1.setType(1);
-    newsDTO1.setSize(11);
+    newsDTO1.setNewsAtt1("1");;
+    newsDTO1.setNewsAtt2("11");;
     newsDAO.insert(newsDTO1);
     assertEquals(newsDTO1.getId(), 1);
 
@@ -366,8 +366,8 @@ public class TestNews extends TestCase {
     NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO1.setType(1);
-    newsDTO1.setSize(11);
+    newsDTO1.setNewsAtt1("1");;
+    newsDTO1.setNewsAtt2("11");;
     newsDAO.insert(newsDTO1);
     assertEquals(newsDTO1.getId(), 1);
 
@@ -418,8 +418,8 @@ public class TestNews extends TestCase {
     NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO1.setType(1);
-    newsDTO1.setSize(11);
+    newsDTO1.setNewsAtt1("1");;
+    newsDTO1.setNewsAtt2("11");;
     newsDAO.insert(newsDTO1);
     assertEquals(newsDTO1.getId(), 1);
 
@@ -470,14 +470,14 @@ public class TestNews extends TestCase {
     NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO1.setType(1);
-    newsDTO1.setSize(11);
+    newsDTO1.setNewsAtt1("1");;
+    newsDTO1.setNewsAtt2("11");;
 
     NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO1.setType(1);
-    newsDTO1.setSize(11);
+    newsDTO1.setNewsAtt1("1");;
+    newsDTO1.setNewsAtt2("11");;
 
     // ----------------------------------------
     // UPDATE NON INSERTED
@@ -619,15 +619,15 @@ public class TestNews extends TestCase {
     NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO1.setType(1);
-    newsDTO1.setSize(11);
+    newsDTO1.setNewsAtt1("1");;
+    newsDTO1.setNewsAtt2("11");;
     newsDAO.insert(newsDTO1);
 
     NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO2.setType(2);
-    newsDTO2.setSize(22);
+    newsDTO2.setNewsAtt1("2");;
+    newsDTO2.setNewsAtt2("22");;
     newsDAO.insert(newsDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -668,15 +668,15 @@ public class TestNews extends TestCase {
     NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO1.setType(1);
-    newsDTO1.setSize(11);
+    newsDTO1.setNewsAtt1("1");;
+    newsDTO1.setNewsAtt2("11");;
     newsDAO.insert(newsDTO1);
 
     NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO2.setType(2);
-    newsDTO2.setSize(22);
+    newsDTO2.setNewsAtt1("2");;
+    newsDTO2.setNewsAtt2("22");;
     newsDAO.insert(newsDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -719,15 +719,15 @@ public class TestNews extends TestCase {
     NewsDTO newsDTO1 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO1.setType(1);
-    newsDTO1.setSize(11);
+    newsDTO1.setNewsAtt1("1");;
+    newsDTO1.setNewsAtt2("11");;
     newsDAO.insert(newsDTO1);
 
     NewsDTO newsDTO2 = (NewsDTO) fd.getDTO( //
         NewsDTO.class, connectionBean);
 
-    newsDTO2.setType(2);
-    newsDTO2.setSize(22);
+    newsDTO2.setNewsAtt1("2");;
+    newsDTO2.setNewsAtt2("22");;
     newsDAO.insert(newsDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
