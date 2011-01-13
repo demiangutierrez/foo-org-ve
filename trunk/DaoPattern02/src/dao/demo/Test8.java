@@ -1,8 +1,8 @@
 /**
- * Ejemplo de SELECT usando Framework DAO
+ * Ejemplo de manejo de herencia usando Framework DAO
  * 
- * @author Preparador Hugo Morillo
- * @date   25/03/2010
+ * @author Demián Gutierrez
+ * @date   10/01/2011
  * 
  */
 
@@ -11,18 +11,42 @@ package dao.demo;
 import java.sql.SQLException;
 import java.util.List;
 
-import dao.base.api.IDAO;
+import dao.base.api.FactoryDAO;
 import dao.base.api.IDTO;
 import dao.connection.ConnectionBean;
 import dao.connection.ConnectionFactory;
 import dao.example.base.AbstractFactoryDAO;
+import dao.example.base.BookDAO;
 import dao.example.base.BookDTO;
+import dao.example.base.NewsDAO;
 import dao.example.base.NewsDTO;
 import dao.example.base.PublicationDAO;
 import dao.example.base.PublicationDTO;
 
-// TODO: WRONG: DOES NOT LOAD THE RIGHT CHILD CLASS, LOADS PART INSTANCES
 public class Test8 {
+
+  public static void print(PublicationDTO publDto) {
+    System.err.println("publDto.getClass(): " + publDto.getClass());
+
+    System.err.println(publDto.getId() + ";" + //
+        publDto.getPublAtt1() + ";" + publDto.getPublAtt2());
+
+    if (publDto instanceof BookDTO) {
+      BookDTO bookDto = (BookDTO) publDto;
+
+      System.err.println( //
+          bookDto.getBookAtt1() + ";" + bookDto.getBookAtt2());
+    }
+
+    if (publDto instanceof NewsDTO) {
+      NewsDTO newsDto = (NewsDTO) publDto;
+
+      System.err.println( //
+          newsDto.getNewsAtt1() + ";" + newsDto.getNewsAtt2());
+    }
+  }
+
+  // --------------------------------------------------------------------------------
 
   public static void main(String[] args) throws Exception {
 
@@ -32,43 +56,43 @@ public class Test8 {
 
     ConnectionBean conn = ConnectionFactory.getConnectionBean();
 
-    // --------------------------------------------------------------------------------
-    // Instanciar DAO
-    // --------------------------------------------------------------------------------
-
-    IDAO pd = AbstractFactoryDAO.getFactoryDAO(). //
-        getDAO(PublicationDAO.class, conn);
-
     try {
+      FactoryDAO factoryDAO = AbstractFactoryDAO.getFactoryDAO();
+
+      // --------------------------------------------------------------------------------
+      // Instanciar DAO
+      // --------------------------------------------------------------------------------
+
+      PublicationDAO publDao = (PublicationDAO) factoryDAO. //
+          getDAO(PublicationDAO.class, conn);
+
+      BookDAO bookDao = (BookDAO) factoryDAO. //
+          getDAO(BookDAO.class, conn);
+
+      NewsDAO newsDao = (NewsDAO) factoryDAO. //
+          getDAO(NewsDAO.class, conn);
+
+      // --------------------------------------------------------------------------------
+      // SELECT COUNT
+      // --------------------------------------------------------------------------------
+
+      System.err.println("count publ: " + publDao.countAll());
+      System.err.println("count book: " + bookDao.countAll());
+      System.err.println("count news: " + newsDao.countAll());
+
+      System.err.println("**********************************");
 
       // --------------------------------------------------------------------------------
       // SELECT ALL
       // --------------------------------------------------------------------------------
 
-      //List<DataObject> dataList = dd.listAll(3, 3);
+      // List<DataObject> dataList = dd.listAll(3, 3);
+      List<IDTO> dtoList = publDao.listAll();
 
-      List<IDTO> dataList = pd.listAll();
+      for (IDTO dto : dtoList) {
+        PublicationDTO publDto = (PublicationDTO) dto;
 
-      for (IDTO dto : dataList) {
-        PublicationDTO ddo = (PublicationDTO) dto;
-        System.err.println(ddo.getClass());
-
-        System.err.println(ddo.getId() + ";" + //
-            ddo.getManufacturer() + ";" + ddo.getNumber() + ";" + ddo.getDescription());
-
-        if (ddo instanceof BookDTO) {
-          BookDTO bookDTO = (BookDTO) ddo;
-
-          System.err.println(bookDTO.getSpeed() + ";" + //
-              bookDTO.getRating());
-        }
-
-        if (ddo instanceof NewsDTO) {
-          NewsDTO newsDTO = (NewsDTO) ddo;
-
-          System.err.println(newsDTO.getSize() + ";" + //
-              newsDTO.getType());
-        }
+        print(publDto);
       }
 
       System.err.println("**********************************");
@@ -78,25 +102,15 @@ public class Test8 {
       // --------------------------------------------------------------------------------
 
       // A book
-      BookDTO bookDTO = (BookDTO) pd.loadById(5);
-
-      System.err.println(bookDTO.getClass());
-      System.err.println(bookDTO.getId() + ";" + //
-          bookDTO.getManufacturer() + ";" + bookDTO.getNumber() + ";" + bookDTO.getDescription());
-      System.err.println(bookDTO.getSpeed() + ";" + //
-          bookDTO.getRating());
+      BookDTO bookDTO = (BookDTO) publDao.loadById(5);
+      print(bookDTO);
 
       // A news
-      NewsDTO newsDTO = (NewsDTO) pd.loadById(15);
-
-      System.err.println(newsDTO.getClass());
-      System.err.println(newsDTO.getId() + ";" + //
-          newsDTO.getManufacturer() + ";" + newsDTO.getNumber() + ";" + newsDTO.getDescription());
-      System.err.println(newsDTO.getSize() + ";" + //
-          newsDTO.getType());
+      NewsDTO newsDTO = (NewsDTO) publDao.loadById(15);
+      print(newsDTO);
 
     } catch (SQLException e) {
-      System.err.println("Error: " + e.getMessage());
+      e.printStackTrace();
     } finally {
 
       // --------------------------------------------------------------------------------

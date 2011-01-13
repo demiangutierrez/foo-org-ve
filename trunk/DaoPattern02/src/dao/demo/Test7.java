@@ -2,7 +2,7 @@
  * Ejemplo de manejo de herencia usando Framework DAO
  * 
  * @author Demián Gutierrez
- * @date   13/04/2010
+ * @date   10/01/2011
  * 
  */
 
