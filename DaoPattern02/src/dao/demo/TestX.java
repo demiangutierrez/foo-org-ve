@@ -13,8 +13,8 @@ import dao.base.api.IDAO;
 import dao.connection.ConnectionBean;
 import dao.connection.ConnectionFactory;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.DepartmentDAO;
-import dao.example.base.EmployeeDAO;
+import dao.example.base.DeptDAO;
+import dao.example.base.ProfDAO;
 
 public class TestX {
 
@@ -23,10 +23,10 @@ public class TestX {
     FactoryDAO factoryDAO = AbstractFactoryDAO.getFactoryDAO();
 
     IDAO dd = factoryDAO.getDAO( //
-        DepartmentDAO.class, conn);
+        DeptDAO.class, conn);
 
     IDAO ee = factoryDAO.getDAO( //
-        EmployeeDAO.class, conn);
+        ProfDAO.class, conn);
 
     dd.createTable();
     ee.createTable();

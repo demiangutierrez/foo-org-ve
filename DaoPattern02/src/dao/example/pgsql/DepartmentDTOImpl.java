@@ -6,15 +6,15 @@ import java.util.List;
 
 import dao.base.impl.BaseDTO;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.DepartmentDAO;
-import dao.example.base.DepartmentDTO;
-import dao.example.base.EmployeeDAO;
-import dao.example.base.EmployeeDTO;
+import dao.example.base.DeptDAO;
+import dao.example.base.DeptDTO;
+import dao.example.base.ProfDAO;
+import dao.example.base.ProfDTO;
 
 /**
  * @author Demián Gutierrez
  */
-class DepartmentDTOImpl extends BaseDTO implements DepartmentDTO {
+class DeptDTOImpl extends BaseDTO implements DeptDTO {
 
   public static final String NAME/*    */= "name";
   public static final String DESCRIPTION = "description";
@@ -26,16 +26,16 @@ class DepartmentDTOImpl extends BaseDTO implements DepartmentDTO {
 
   // --------------------------------------------------------------------------------
 
-  private List<EmployeeDTO> employeeDTOList;
+  private List<ProfDTO> profDTOList;
 
   // --------------------------------------------------------------------------------
 
-  public DepartmentDTOImpl() {
-    super(DepartmentDAO.class);
+  public DeptDTOImpl() {
+    super(DeptDAO.class);
   }
 
   // --------------------------------------------------------------------------------
-  // DepartmentDTO
+  // DeptDTO
   // --------------------------------------------------------------------------------
 
   @Override
@@ -64,28 +64,28 @@ class DepartmentDTOImpl extends BaseDTO implements DepartmentDTO {
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<EmployeeDTO> getEmployeeDTOList() {
-    if (employeeDTOList == null) {
+  public List<ProfDTO> getProfDTOList() {
+    if (profDTOList == null) {
       try {
 
         // Lazy load the list
-        EmployeeDAO employeeDAO = (EmployeeDAO) AbstractFactoryDAO.getFactoryDAO(). //
-            getDAO(EmployeeDAO.class, connectionBean);
+        ProfDAO profDAO = (ProfDAO) AbstractFactoryDAO.getFactoryDAO(). //
+            getDAO(ProfDAO.class, connectionBean);
 
-        employeeDTOList = new ArrayList<EmployeeDTO>();
-        employeeDTOList.addAll((Collection<? extends EmployeeDTO>) //
-            employeeDAO.listBy(EmployeeDTOImpl.DEPARTMENT_ID, id));
+        profDTOList = new ArrayList<ProfDTO>();
+        profDTOList.addAll((Collection<? extends ProfDTO>) //
+            profDAO.listBy(ProfDTOImpl.DEPARTMENT_ID, id));
 
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
     }
 
-    return employeeDTOList;
+    return profDTOList;
   }
 
   @Override
-  public void setEmployeeDTOList(List<EmployeeDTO> employeeDTOList) {
+  public void setProfDTOList(List<ProfDTO> profDTOList) {
     throw new UnsupportedOperationException();
   }
 }

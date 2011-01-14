@@ -20,9 +20,9 @@ public class TestPublication extends TestCase {
     boolean ret = true;
 
     ret = ret && publicationDTO1.getId() == publicationDTO2.getId();
-    ret = ret && publicationDTO1.getManufacturer().equals(publicationDTO2.getManufacturer());
-    ret = ret && publicationDTO1.getNumber().equals(publicationDTO2.getNumber());
-    ret = ret && publicationDTO1.getDescription().equals(publicationDTO2.getDescription());
+
+    ret = ret && publicationDTO1.getPublAtt1().equals(publicationDTO2.getPublAtt1());
+    ret = ret && publicationDTO1.getPublAtt2().equals(publicationDTO2.getPublAtt2());
 
     return ret;
   }
@@ -49,18 +49,16 @@ public class TestPublication extends TestCase {
     PublicationDTO publicationDTO1 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO1.setManufacturer("FooManufacturer111");
-    publicationDTO1.setNumber("FooNumber111");
-    publicationDTO1.setDescription("FooDescription111");
+    publicationDTO1.setPublAtt1("PublAtt1_111");
+    publicationDTO1.setPublAtt2("PublAtt2_111");
     publicationDAO.insert(publicationDTO1);
     assertEquals(publicationDTO1.getId(), 1);
 
     PublicationDTO publicationDTO2 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO2.setManufacturer("FooManufacturer222");
-    publicationDTO2.setNumber("FooNumber222");
-    publicationDTO2.setDescription("FooDescription222");
+    publicationDTO2.setPublAtt1("PublAtt1_222");
+    publicationDTO2.setPublAtt2("PublAtt2_222");
     publicationDAO.insert(publicationDTO2);
     assertEquals(publicationDTO2.getId(), 2);
 
@@ -108,18 +106,16 @@ public class TestPublication extends TestCase {
     PublicationDTO publicationDTO1 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO1.setManufacturer("FooManufacturer111");
-    publicationDTO1.setNumber("FooNumber111");
-    publicationDTO1.setDescription("FooDescription111");
+    publicationDTO1.setPublAtt1("PublAtt1_111");
+    publicationDTO1.setPublAtt2("PublAtt2_111");
     publicationDAO.insert(publicationDTO1);
     assertEquals(publicationDTO1.getId(), 1);
 
     PublicationDTO publicationDTO2 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO2.setManufacturer("FooManufacturer222");
-    publicationDTO2.setNumber("FooNumber222");
-    publicationDTO2.setDescription("FooDescription222");
+    publicationDTO2.setPublAtt1("PublAtt1_222");
+    publicationDTO2.setPublAtt2("PublAtt2_222");
     publicationDAO.insert(publicationDTO2);
     assertEquals(publicationDTO2.getId(), 2);
 
@@ -135,15 +131,13 @@ public class TestPublication extends TestCase {
         PublicationDAO.class, connectionBean);
 
     PublicationDTO publicationDTOX = (PublicationDTO) publicationDAO.loadById(1);
-    publicationDTOX.setManufacturer("FooManufacturerXXX");
-    publicationDTOX.setNumber("FooNumberXXX");
-    publicationDTOX.setDescription("FooDescriptionXXX");
+    publicationDTOX.setPublAtt1("FooManufacturerXXX");
+    publicationDTOX.setPublAtt2("FooNumberXXX");
     publicationDAO.update(publicationDTOX); // Changes the 111
 
     PublicationDTO publicationDTOY = (PublicationDTO) publicationDAO.loadById(2);
-    publicationDTOY.setManufacturer("FooManufacturerYYY");
-    publicationDTOY.setNumber("FooNumberYYY");
-    publicationDTOY.setDescription("FooDescriptionYYY");
+    publicationDTOY.setPublAtt1("FooManufacturerYYY");
+    publicationDTOY.setPublAtt2("FooNumberYYY");
     publicationDAO.update(publicationDTOY); // Changes the 222
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -190,18 +184,16 @@ public class TestPublication extends TestCase {
     PublicationDTO publicationDTO1 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO1.setManufacturer("FooManufacturer111");
-    publicationDTO1.setNumber("FooNumber111");
-    publicationDTO1.setDescription("FooDescription111");
+    publicationDTO1.setPublAtt1("PublAtt1_111");
+    publicationDTO1.setPublAtt2("PublAtt2_111");
     publicationDAO.insert(publicationDTO1);
     assertEquals(publicationDTO1.getId(), 1);
 
     PublicationDTO publicationDTO2 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO2.setManufacturer("FooManufacturer222");
-    publicationDTO2.setNumber("FooNumber222");
-    publicationDTO2.setDescription("FooDescription222");
+    publicationDTO2.setPublAtt1("PublAtt1_222");
+    publicationDTO2.setPublAtt2("PublAtt2_222");
     publicationDAO.insert(publicationDTO2);
     assertEquals(publicationDTO2.getId(), 2);
 
@@ -264,18 +256,16 @@ public class TestPublication extends TestCase {
     PublicationDTO publicationDTO1 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO1.setManufacturer("FooManufacturer111");
-    publicationDTO1.setNumber("FooNumber111");
-    publicationDTO1.setDescription("FooDescription111");
+    publicationDTO1.setPublAtt1("PublAtt1_111");
+    publicationDTO1.setPublAtt2("PublAtt2_111");
     publicationDAO.insert(publicationDTO1);
     assertEquals(publicationDTO1.getId(), 1);
 
     PublicationDTO publicationDTO2 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO2.setManufacturer("FooManufacturer222");
-    publicationDTO2.setNumber("FooNumber222");
-    publicationDTO2.setDescription("FooDescription222");
+    publicationDTO2.setPublAtt1("PublAtt1_222");
+    publicationDTO2.setPublAtt2("PublAtt2_222");
     publicationDAO.insert(publicationDTO2);
     assertEquals(publicationDTO2.getId(), 2);
 
@@ -325,9 +315,8 @@ public class TestPublication extends TestCase {
     PublicationDTO publicationDTO1 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO1.setManufacturer("FooManufacturer111");
-    publicationDTO1.setNumber("FooNumber111");
-    publicationDTO1.setDescription("FooDescription111");
+    publicationDTO1.setPublAtt1("PublAtt1_111");
+    publicationDTO1.setPublAtt2("PublAtt2_111");
     publicationDAO.insert(publicationDTO1);
     assertEquals(publicationDTO1.getId(), 1);
 
@@ -378,9 +367,8 @@ public class TestPublication extends TestCase {
     PublicationDTO publicationDTO1 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO1.setManufacturer("FooManufacturer111");
-    publicationDTO1.setNumber("FooNumber111");
-    publicationDTO1.setDescription("FooDescription111");
+    publicationDTO1.setPublAtt1("PublAtt1_111");
+    publicationDTO1.setPublAtt2("PublAtt2_111");
     publicationDAO.insert(publicationDTO1);
     assertEquals(publicationDTO1.getId(), 1);
 
@@ -431,9 +419,8 @@ public class TestPublication extends TestCase {
     PublicationDTO publicationDTO1 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO1.setManufacturer("FooManufacturer111");
-    publicationDTO1.setNumber("FooNumber111");
-    publicationDTO1.setDescription("FooDescription111");
+    publicationDTO1.setPublAtt1("PublAtt1_111");
+    publicationDTO1.setPublAtt2("PublAtt2_111");
     publicationDAO.insert(publicationDTO1);
     assertEquals(publicationDTO1.getId(), 1);
 
@@ -484,16 +471,14 @@ public class TestPublication extends TestCase {
     PublicationDTO publicationDTO1 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO1.setManufacturer("FooManufacturer111");
-    publicationDTO1.setNumber("FooNumber111");
-    publicationDTO1.setDescription("FooDescription111");
+    publicationDTO1.setPublAtt1("PublAtt1_111");
+    publicationDTO1.setPublAtt2("PublAtt2_111");
 
     PublicationDTO publicationDTO2 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO1.setManufacturer("FooManufacturer111");
-    publicationDTO1.setNumber("FooNumber111");
-    publicationDTO1.setDescription("FooDescription111");
+    publicationDTO1.setPublAtt1("PublAtt1_111");
+    publicationDTO1.setPublAtt2("PublAtt2_111");
 
     // ----------------------------------------
     // UPDATE NON INSERTED
@@ -635,17 +620,15 @@ public class TestPublication extends TestCase {
     PublicationDTO publicationDTO1 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO1.setManufacturer("FooManufacturer111");
-    publicationDTO1.setNumber("FooNumber111");
-    publicationDTO1.setDescription("FooDescription111");
+    publicationDTO1.setPublAtt1("PublAtt1_111");
+    publicationDTO1.setPublAtt2("PublAtt2_111");
     publicationDAO.insert(publicationDTO1);
 
     PublicationDTO publicationDTO2 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO2.setManufacturer("FooManufacturer222");
-    publicationDTO2.setNumber("FooNumber222");
-    publicationDTO2.setDescription("FooDescription222");
+    publicationDTO2.setPublAtt1("PublAtt1_222");
+    publicationDTO2.setPublAtt2("PublAtt2_222");
     publicationDAO.insert(publicationDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -686,17 +669,15 @@ public class TestPublication extends TestCase {
     PublicationDTO publicationDTO1 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO1.setManufacturer("FooManufacturer111");
-    publicationDTO1.setNumber("FooNumber111");
-    publicationDTO1.setDescription("FooDescription111");
+    publicationDTO1.setPublAtt1("PublAtt1_111");
+    publicationDTO1.setPublAtt2("PublAtt2_111");
     publicationDAO.insert(publicationDTO1);
 
     PublicationDTO publicationDTO2 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO2.setManufacturer("FooManufacturer222");
-    publicationDTO2.setNumber("FooNumber222");
-    publicationDTO2.setDescription("FooDescription222");
+    publicationDTO2.setPublAtt1("PublAtt1_222");
+    publicationDTO2.setPublAtt2("PublAtt2_222");
     publicationDAO.insert(publicationDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -739,17 +720,15 @@ public class TestPublication extends TestCase {
     PublicationDTO publicationDTO1 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO1.setManufacturer("FooManufacturer111");
-    publicationDTO1.setNumber("FooNumber111");
-    publicationDTO1.setDescription("FooDescription111");
+    publicationDTO1.setPublAtt1("PublAtt1_111");
+    publicationDTO1.setPublAtt2("PublAtt2_111");
     publicationDAO.insert(publicationDTO1);
 
     PublicationDTO publicationDTO2 = (PublicationDTO) fd.getDTO( //
         PublicationDTO.class, connectionBean);
 
-    publicationDTO2.setManufacturer("FooManufacturer222");
-    publicationDTO2.setNumber("FooNumber222");
-    publicationDTO2.setDescription("FooDescription222");
+    publicationDTO2.setPublAtt1("PublAtt1_222");
+    publicationDTO2.setPublAtt2("PublAtt2_222");
     publicationDAO.insert(publicationDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());

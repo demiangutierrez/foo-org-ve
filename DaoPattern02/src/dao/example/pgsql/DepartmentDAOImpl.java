@@ -4,16 +4,16 @@ import java.sql.ResultSet;
 
 import dao.base.api.IDTO;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.DepartmentDAO;
-import dao.example.base.DepartmentDTO;
+import dao.example.base.DeptDAO;
+import dao.example.base.DeptDTO;
 
 /**
  * @author Demián Gutierrez
  */
-class DepartmentDAOImpl extends PgSQLBaseDAO implements DepartmentDAO {
+class DeptDAOImpl extends PgSQLBaseDAO implements DeptDAO {
 
-  public DepartmentDAOImpl() {
-    super(DepartmentDTOImpl.class);
+  public DeptDAOImpl() {
+    super(DeptDTOImpl.class);
   }
 
   // --------------------------------------------------------------------------------
@@ -24,11 +24,11 @@ class DepartmentDAOImpl extends PgSQLBaseDAO implements DepartmentDAO {
   protected String createTableColumns() throws Exception {
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(DepartmentDTOImpl.ID);
+    strbuf.append(DeptDTOImpl.ID);
     strbuf.append(" INT PRIMARY KEY, ");
-    strbuf.append(DepartmentDTOImpl.NAME);
+    strbuf.append(DeptDTOImpl.NAME);
     strbuf.append(" VARCHAR(100),    ");
-    strbuf.append(DepartmentDTOImpl.DESCRIPTION);
+    strbuf.append(DeptDTOImpl.DESCRIPTION);
     strbuf.append(" VARCHAR(100)     ");
 
     return strbuf.toString();
@@ -40,15 +40,15 @@ class DepartmentDAOImpl extends PgSQLBaseDAO implements DepartmentDAO {
   protected String createInsertValues(IDTO dto) //
       throws Exception {
 
-    DepartmentDTO departmentDTO = (DepartmentDTO) dto;
+    DeptDTO deptDTO = (DeptDTO) dto;
 
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(departmentDTO.getId());
+    strbuf.append(deptDTO.getId());
     strbuf.append(", ");
-    strbuf.append(singleQuotes(departmentDTO.getName()));
+    strbuf.append(singleQuotes(deptDTO.getName()));
     strbuf.append(", ");
-    strbuf.append(singleQuotes(departmentDTO.getDescription()));
+    strbuf.append(singleQuotes(deptDTO.getDescription()));
 
     return strbuf.toString();
   }
@@ -58,19 +58,19 @@ class DepartmentDAOImpl extends PgSQLBaseDAO implements DepartmentDAO {
   protected String createUpdateValues(IDTO dto) //
       throws Exception {
 
-    DepartmentDTO departmentDTO = (DepartmentDTO) dto;
+    DeptDTO deptDTO = (DeptDTO) dto;
 
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(DepartmentDTOImpl.NAME);
+    strbuf.append(DeptDTOImpl.NAME);
     strbuf.append(" = ");
-    strbuf.append(singleQuotes(departmentDTO.getName()));
+    strbuf.append(singleQuotes(deptDTO.getName()));
 
     strbuf.append(", ");
 
-    strbuf.append(DepartmentDTOImpl.DESCRIPTION);
+    strbuf.append(DeptDTOImpl.DESCRIPTION);
     strbuf.append(" = ");
-    strbuf.append(singleQuotes(departmentDTO.getDescription()));
+    strbuf.append(singleQuotes(deptDTO.getDescription()));
 
     return strbuf.toString();
   }
@@ -78,21 +78,21 @@ class DepartmentDAOImpl extends PgSQLBaseDAO implements DepartmentDAO {
   // --------------------------------------------------------------------------------
 
   protected IDTO resultSetToDTO(ResultSet rs) throws Exception {
-    DepartmentDTOImpl ret = //
-    (DepartmentDTOImpl) dtaSession.getDtaByKey( //
-        DepartmentDTOImpl.class, rs.getInt(DepartmentDTOImpl.ID));
+    DeptDTOImpl ret = //
+    (DeptDTOImpl) dtaSession.getDtaByKey( //
+        DeptDTOImpl.class, rs.getInt(DeptDTOImpl.ID));
 
     if (ret != null) {
       return ret;
     }
 
-    ret = (DepartmentDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
-        getDTO(DepartmentDTO.class, connectionBean);
+    ret = (DeptDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
+        getDTO(DeptDTO.class, connectionBean);
 
-    ret.setId/*     */(rs.getInt(DepartmentDTOImpl.ID));
-    ret.setName/*   */(rs.getString(DepartmentDTOImpl.NAME));
-    ret.setDescription(rs.getString(DepartmentDTOImpl.DESCRIPTION));
+    ret.setId/*     */(rs.getInt(DeptDTOImpl.ID));
+    ret.setName/*   */(rs.getString(DeptDTOImpl.NAME));
+    ret.setDescription(rs.getString(DeptDTOImpl.DESCRIPTION));
 
-    return (DepartmentDTOImpl) dtaSession.add(ret);
+    return (DeptDTOImpl) dtaSession.add(ret);
   }
 }

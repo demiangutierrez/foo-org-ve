@@ -5,7 +5,6 @@
  * @date   13/04/2010
  * 
  */
-
 package dao.demo;
 
 import java.sql.SQLException;
@@ -14,10 +13,10 @@ import dao.base.api.FactoryDAO;
 import dao.connection.ConnectionBean;
 import dao.connection.ConnectionFactory;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.DepartmentDAO;
-import dao.example.base.DepartmentDTO;
-import dao.example.base.EmployeeDAO;
-import dao.example.base.EmployeeDTO;
+import dao.example.base.DeptDAO;
+import dao.example.base.DeptDTO;
+import dao.example.base.ProfDAO;
+import dao.example.base.ProfDTO;
 
 public class Test4 {
 
@@ -29,51 +28,53 @@ public class Test4 {
 
     ConnectionBean conn = ConnectionFactory.getConnectionBean();
 
-    FactoryDAO factoryDAO = AbstractFactoryDAO.getFactoryDAO();
-
-    // --------------------------------------------------------------------------------
-    // Instanciar DAO
-    // --------------------------------------------------------------------------------
-
-    DepartmentDAO daoDep = /**/(DepartmentDAO) /**/factoryDAO. //
-        getDAO(DepartmentDAO.class,/**/conn);
-
-    EmployeeDAO daoEmp = /*  */(EmployeeDAO) /*  */factoryDAO. //
-        getDAO(EmployeeDAO.class,/*  */conn);
-
-    // --------------------------------------------------------------------------------
-    // CREATE TABLE
-    // --------------------------------------------------------------------------------
-
-    daoDep.createTable();
-    daoEmp.createTable();
-
     try {
-      DepartmentDTO doComp = (DepartmentDTO) factoryDAO.getDTO( //
-          DepartmentDTO.class, conn);
+      FactoryDAO factoryDAO = AbstractFactoryDAO.getFactoryDAO();
 
-      doComp.setName("Computacion");
-      doComp.setDescription("... bla, bla bla ...");
+      // --------------------------------------------------------------------------------
+      // Instanciar DAO
+      // --------------------------------------------------------------------------------
+
+      DeptDAO deptDao = (DeptDAO) factoryDAO. //
+          getDAO(DeptDAO.class, conn);
+
+      ProfDAO profDao = (ProfDAO) factoryDAO. //
+          getDAO(ProfDAO.class, conn);
+
+      // --------------------------------------------------------------------------------
+      // CREATE TABLE
+      // --------------------------------------------------------------------------------
+
+      deptDao.createTable();
+      profDao.createTable();
+
+      DeptDTO deptDto = (DeptDTO) factoryDAO.getDTO( //
+          DeptDTO.class, conn);
+
+      deptDto.setDeptAtt1("Foo");
+      deptDto.setDeptAtt2("Faa");
 
       // --------------------------------------------------------------------------------
       // INSERT
       // --------------------------------------------------------------------------------
 
-      daoDep.insert(doComp);
+      deptDao.insert(deptDto);
 
       // --------------------------------------------------------------------------------
       // Crea 10 empleados
       // --------------------------------------------------------------------------------
 
       for (int i = 0; i < 10; i++) {
-        EmployeeDTO doEmp = (EmployeeDTO) factoryDAO.getDTO( //
-            EmployeeDTO.class, conn);
+        ProfDTO profDto = (ProfDTO) factoryDAO.getDTO( //
+            ProfDTO.class, conn);
 
-        doEmp.setFrstName("Nombre " + i);
-        doEmp.setLastName("Apellido " + i);
-        doComp.getEmployeeDTOList().add(doEmp);
-        doEmp.setDepartmentDTORef(doComp);
-        daoEmp.insert(doEmp);
+        profDto.setProfAtt1("Foo " + i);
+        profDto.setProfAtt2("Faa " + i);
+
+        deptDto.getProfDTOList().add(profDto);
+        profDto.setDeptDTORef(deptDto);
+
+        profDao.insert(profDto);
       }
     } catch (SQLException e) {
       e.printStackTrace();

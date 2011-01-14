@@ -5,7 +5,6 @@
  * @date   25/03/2010
  * 
  */
-
 package dao.demo;
 
 import java.sql.SQLException;
@@ -16,8 +15,8 @@ import dao.base.api.IDTO;
 import dao.connection.ConnectionBean;
 import dao.connection.ConnectionFactory;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.DepartmentDAO;
-import dao.example.base.DepartmentDTO;
+import dao.example.base.DeptDAO;
+import dao.example.base.DeptDTO;
 
 public class Test2 {
 
@@ -33,22 +32,23 @@ public class Test2 {
     // Instanciar DAO
     // --------------------------------------------------------------------------------
 
-    IDAO dd = AbstractFactoryDAO.getFactoryDAO(). //
-        getDAO(DepartmentDAO.class, conn);
-
     try {
+      IDAO deptDao = AbstractFactoryDAO.getFactoryDAO(). //
+          getDAO(DeptDAO.class, conn);
 
       // --------------------------------------------------------------------------------
       // SELECT ALL
       // --------------------------------------------------------------------------------
 
-      //List<DataObject> dataList = dd.listAll(3, 3);
+      // List<DataObject> dataList = dd.listAll(3, 3);
 
-      List<IDTO> dataList = dd.listAll();
+      List<IDTO> dataList = deptDao.listAll();
 
       for (IDTO dto : dataList) {
-        DepartmentDTO ddo = (DepartmentDTO) dto;
-        System.err.println(ddo.getId() + ";" + ddo.getName() + ";" + ddo.getDescription());
+        DeptDTO deptDto = (DeptDTO) dto;
+
+        System.err.println(deptDto.getId() + ";" + //
+            deptDto.getDeptAtt1() + ";" + deptDto.getDeptAtt2());
       }
 
       System.err.println("**********************************");
@@ -57,11 +57,13 @@ public class Test2 {
       // SELECT BY ID
       // --------------------------------------------------------------------------------
 
-      DepartmentDTO ddo = (DepartmentDTO) dd.loadById(5);
+      DeptDTO deptDto = (DeptDTO) deptDao.loadById(5);
 
-      System.err.println(ddo.getId() + ";" + ddo.getName() + ";" + ddo.getDescription());
+      System.err.println(deptDto.getId() + ";" + //
+          deptDto.getDeptAtt1() + ";" + deptDto.getDeptAtt1());
+
     } catch (SQLException e) {
-      System.err.println("Error: " + e.getMessage());
+      e.printStackTrace();
     } finally {
 
       // --------------------------------------------------------------------------------

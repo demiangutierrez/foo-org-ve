@@ -5,7 +5,6 @@
  * @date   25/03/2010
  * 
  */
-
 package dao.demo;
 
 import java.sql.SQLException;
@@ -14,8 +13,8 @@ import dao.base.api.IDAO;
 import dao.connection.ConnectionBean;
 import dao.connection.ConnectionFactory;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.DepartmentDAO;
-import dao.example.base.DepartmentDTO;
+import dao.example.base.DeptDAO;
+import dao.example.base.DeptDTO;
 
 public class Test3 {
 
@@ -31,24 +30,24 @@ public class Test3 {
     // Instanciar DAO
     // --------------------------------------------------------------------------------
 
-    IDAO dd = AbstractFactoryDAO.getFactoryDAO(). //
-        getDAO(DepartmentDAO.class, conn);
-
     try {
-      DepartmentDTO ddo = (DepartmentDTO) dd.loadById(10);
+      IDAO deptDao = AbstractFactoryDAO.getFactoryDAO(). //
+          getDAO(DeptDAO.class, conn);
 
-      ddo.setName("NewName");
-      ddo.setDescription("NewDescription");
+      DeptDTO deptDtoUpd = (DeptDTO) deptDao.loadById(10);
+
+      deptDtoUpd.setDeptAtt1("NewFoo");
+      deptDtoUpd.setDeptAtt2("NewFaa");
 
       // --------------------------------------------------------------------------------
       // UPDATE
       // --------------------------------------------------------------------------------
 
-      dd.update(ddo);
+      deptDao.update(deptDtoUpd);
 
       for (int i = 1; i < 5; i++) {
-        DepartmentDTO ddoo = (DepartmentDTO) dd.loadById(i);
-        dd.delete(ddoo);
+        DeptDTO deptDtoDel = (DeptDTO) deptDao.loadById(i);
+        deptDao.delete(deptDtoDel);
       }
 
     } catch (SQLException e) {
