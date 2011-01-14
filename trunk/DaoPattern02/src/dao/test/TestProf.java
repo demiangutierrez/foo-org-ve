@@ -8,20 +8,21 @@ import dao.base.api.IDTO;
 import dao.connection.ConnectionBean;
 import dao.connection.ConnectionFactory;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.EmployeeDAO;
-import dao.example.base.EmployeeDTO;
+import dao.example.base.ProfDAO;
+import dao.example.base.ProfDTO;
 
 /**
  * @author Demián Gutierrez
  */
-public class TestEmployee extends TestCase {
+public class TestProf extends TestCase {
 
-  private boolean compareDTO(EmployeeDTO employeeDTO1, EmployeeDTO employeeDTO2) {
+  private boolean compareDTO(ProfDTO profDTO1, ProfDTO profDTO2) {
     boolean ret = true;
 
-    ret = ret && employeeDTO1.getId() == employeeDTO2.getId();
-    ret = ret && employeeDTO1.getFrstName().equals(employeeDTO2.getFrstName());
-    ret = ret && employeeDTO1.getLastName().equals(employeeDTO2.getLastName());
+    ret = ret && profDTO1.getId() == profDTO2.getId();
+
+    ret = ret && profDTO1.getProfAtt1().equals(profDTO2.getProfAtt1());
+    ret = ret && profDTO1.getProfAtt2().equals(profDTO2.getProfAtt2());
 
     return ret;
   }
@@ -30,7 +31,7 @@ public class TestEmployee extends TestCase {
 
   public void testInsertLoad() throws Exception {
     ConnectionBean connectionBean;
-    EmployeeDAO employeeDAO;
+    ProfDAO profDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -40,26 +41,26 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    employeeDAO.createTable();
+    profDAO.createTable();
 
-    EmployeeDTO employeeDTO1 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO1 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO1.setFrstName("FooFrstName111");
-    employeeDTO1.setLastName("FooLastName111");
-    employeeDAO.insert(employeeDTO1);
-    assertEquals(employeeDTO1.getId(), 1);
+    profDTO1.setProfAtt1("FooFrstName111");
+    profDTO1.setProfAtt2("FooLastName111");
+    profDAO.insert(profDTO1);
+    assertEquals(profDTO1.getId(), 1);
 
-    EmployeeDTO employeeDTO2 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO2 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO2.setFrstName("FooFrstName222");
-    employeeDTO2.setLastName("FooLastName222");
-    employeeDAO.insert(employeeDTO2);
-    assertEquals(employeeDTO2.getId(), 2);
+    profDTO2.setProfAtt1("FooFrstName222");
+    profDTO2.setProfAtt2("FooLastName222");
+    profDAO.insert(profDTO2);
+    assertEquals(profDTO2.getId(), 2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -69,16 +70,16 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    EmployeeDTO employeeDTOX = (EmployeeDTO) employeeDAO.loadById(1);
-    assertTrue(compareDTO(employeeDTO1, employeeDTOX));
-    assertNotSame(employeeDTO1, employeeDTOX);
+    ProfDTO profDTOX = (ProfDTO) profDAO.loadById(1);
+    assertTrue(compareDTO(profDTO1, profDTOX));
+    assertNotSame(profDTO1, profDTOX);
 
-    EmployeeDTO employeeDTOY = (EmployeeDTO) employeeDAO.loadById(2);
-    assertTrue(compareDTO(employeeDTO2, employeeDTOY));
-    assertNotSame(employeeDTO2, employeeDTOY);
+    ProfDTO profDTOY = (ProfDTO) profDAO.loadById(2);
+    assertTrue(compareDTO(profDTO2, profDTOY));
+    assertNotSame(profDTO2, profDTOY);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -87,7 +88,7 @@ public class TestEmployee extends TestCase {
 
   public void testUpdateLoad() throws Exception {
     ConnectionBean connectionBean;
-    EmployeeDAO employeeDAO;
+    ProfDAO profDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -97,26 +98,26 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    employeeDAO.createTable();
+    profDAO.createTable();
 
-    EmployeeDTO employeeDTO1 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO1 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO1.setFrstName("FooFrstName111");
-    employeeDTO1.setLastName("FooLastName111");
-    employeeDAO.insert(employeeDTO1);
-    assertEquals(employeeDTO1.getId(), 1);
+    profDTO1.setProfAtt1("FooFrstName111");
+    profDTO1.setProfAtt2("FooLastName111");
+    profDAO.insert(profDTO1);
+    assertEquals(profDTO1.getId(), 1);
 
-    EmployeeDTO employeeDTO2 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO2 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO2.setFrstName("FooFrstName222");
-    employeeDTO2.setLastName("FooLastName222");
-    employeeDAO.insert(employeeDTO2);
-    assertEquals(employeeDTO2.getId(), 2);
+    profDTO2.setProfAtt1("FooFrstName222");
+    profDTO2.setProfAtt2("FooLastName222");
+    profDAO.insert(profDTO2);
+    assertEquals(profDTO2.getId(), 2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -126,18 +127,18 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    EmployeeDTO employeeDTOX = (EmployeeDTO) employeeDAO.loadById(1);
-    employeeDTOX.setFrstName("FooFrstNameXXX");
-    employeeDTOX.setLastName("FooLastNameXXX");
-    employeeDAO.update(employeeDTOX); // Changes the 111
+    ProfDTO profDTOX = (ProfDTO) profDAO.loadById(1);
+    profDTOX.setProfAtt1("FooFrstNameXXX");
+    profDTOX.setProfAtt2("FooLastNameXXX");
+    profDAO.update(profDTOX); // Changes the 111
 
-    EmployeeDTO employeeDTOY = (EmployeeDTO) employeeDAO.loadById(2);
-    employeeDTOY.setFrstName("FooFrstNameYYY");
-    employeeDTOY.setLastName("FooLastNameYYY");
-    employeeDAO.update(employeeDTOY); // Changes the 222
+    ProfDTO profDTOY = (ProfDTO) profDAO.loadById(2);
+    profDTOY.setProfAtt1("FooFrstNameYYY");
+    profDTOY.setProfAtt2("FooLastNameYYY");
+    profDAO.update(profDTOY); // Changes the 222
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -147,16 +148,16 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    EmployeeDTO employeeDTOA = (EmployeeDTO) employeeDAO.loadById(1);
-    assertTrue(compareDTO(employeeDTOX, employeeDTOA));
-    assertNotSame(employeeDTOX, employeeDTOA);
+    ProfDTO profDTOA = (ProfDTO) profDAO.loadById(1);
+    assertTrue(compareDTO(profDTOX, profDTOA));
+    assertNotSame(profDTOX, profDTOA);
 
-    EmployeeDTO employeeDTOB = (EmployeeDTO) employeeDAO.loadById(2);
-    assertTrue(compareDTO(employeeDTOY, employeeDTOB));
-    assertNotSame(employeeDTOY, employeeDTOB);
+    ProfDTO profDTOB = (ProfDTO) profDAO.loadById(2);
+    assertTrue(compareDTO(profDTOY, profDTOB));
+    assertNotSame(profDTOY, profDTOB);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -165,7 +166,7 @@ public class TestEmployee extends TestCase {
 
   public void testDeleteLoad() throws Exception {
     ConnectionBean connectionBean;
-    EmployeeDAO employeeDAO;
+    ProfDAO profDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -175,26 +176,26 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    employeeDAO.createTable();
+    profDAO.createTable();
 
-    EmployeeDTO employeeDTO1 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO1 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO1.setFrstName("FooFrstName111");
-    employeeDTO1.setLastName("FooLastName111");
-    employeeDAO.insert(employeeDTO1);
-    assertEquals(employeeDTO1.getId(), 1);
+    profDTO1.setProfAtt1("FooFrstName111");
+    profDTO1.setProfAtt2("FooLastName111");
+    profDAO.insert(profDTO1);
+    assertEquals(profDTO1.getId(), 1);
 
-    EmployeeDTO employeeDTO2 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO2 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO2.setFrstName("FooFrstName222");
-    employeeDTO2.setLastName("FooLastName222");
-    employeeDAO.insert(employeeDTO2);
-    assertEquals(employeeDTO2.getId(), 2);
+    profDTO2.setProfAtt1("FooFrstName222");
+    profDTO2.setProfAtt2("FooLastName222");
+    profDAO.insert(profDTO2);
+    assertEquals(profDTO2.getId(), 2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -204,14 +205,14 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    EmployeeDTO employeeDTOX = (EmployeeDTO) employeeDAO.loadById(1);
-    employeeDAO.delete(employeeDTOX);
+    ProfDTO profDTOX = (ProfDTO) profDAO.loadById(1);
+    profDAO.delete(profDTOX);
 
-    EmployeeDTO employeeDTOY = (EmployeeDTO) employeeDAO.loadById(2);
-    employeeDAO.delete(employeeDTOY);
+    ProfDTO profDTOY = (ProfDTO) profDAO.loadById(2);
+    profDAO.delete(profDTOY);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -221,14 +222,14 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    EmployeeDTO employeeDTOA = (EmployeeDTO) employeeDAO.loadById(1);
-    assertNull(employeeDTOA);
+    ProfDTO profDTOA = (ProfDTO) profDAO.loadById(1);
+    assertNull(profDTOA);
 
-    EmployeeDTO employeeDTOB = (EmployeeDTO) employeeDAO.loadById(2);
-    assertNull(employeeDTOB);
+    ProfDTO profDTOB = (ProfDTO) profDAO.loadById(2);
+    assertNull(profDTOB);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -237,7 +238,7 @@ public class TestEmployee extends TestCase {
 
   public void testCacheLoad() throws Exception {
     ConnectionBean connectionBean;
-    EmployeeDAO employeeDAO;
+    ProfDAO profDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -247,26 +248,26 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    employeeDAO.createTable();
+    profDAO.createTable();
 
-    EmployeeDTO employeeDTO1 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO1 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO1.setFrstName("FooFrstName111");
-    employeeDTO1.setLastName("FooLastName111");
-    employeeDAO.insert(employeeDTO1);
-    assertEquals(employeeDTO1.getId(), 1);
+    profDTO1.setProfAtt1("FooFrstName111");
+    profDTO1.setProfAtt2("FooLastName111");
+    profDAO.insert(profDTO1);
+    assertEquals(profDTO1.getId(), 1);
 
-    EmployeeDTO employeeDTO2 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO2 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO2.setFrstName("FooFrstName222");
-    employeeDTO2.setLastName("FooLastName222");
-    employeeDAO.insert(employeeDTO2);
-    assertEquals(employeeDTO2.getId(), 2);
+    profDTO2.setProfAtt1("FooFrstName222");
+    profDTO2.setProfAtt2("FooLastName222");
+    profDAO.insert(profDTO2);
+    assertEquals(profDTO2.getId(), 2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -276,18 +277,18 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    EmployeeDTO employeeDTOX = (EmployeeDTO) employeeDAO.loadById(1);
-    EmployeeDTO employeeDTOA = (EmployeeDTO) employeeDAO.loadById(1);
-    assertTrue(compareDTO(employeeDTOX, employeeDTOA));
-    assertSame(employeeDTOX, employeeDTOA);
+    ProfDTO profDTOX = (ProfDTO) profDAO.loadById(1);
+    ProfDTO profDTOA = (ProfDTO) profDAO.loadById(1);
+    assertTrue(compareDTO(profDTOX, profDTOA));
+    assertSame(profDTOX, profDTOA);
 
-    EmployeeDTO employeeDTOY = (EmployeeDTO) employeeDAO.loadById(2);
-    EmployeeDTO employeeDTOB = (EmployeeDTO) employeeDAO.loadById(2);
-    assertTrue(compareDTO(employeeDTOY, employeeDTOB));
-    assertSame(employeeDTOY, employeeDTOB);
+    ProfDTO profDTOY = (ProfDTO) profDAO.loadById(2);
+    ProfDTO profDTOB = (ProfDTO) profDAO.loadById(2);
+    assertTrue(compareDTO(profDTOY, profDTOB));
+    assertSame(profDTOY, profDTOB);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -296,7 +297,7 @@ public class TestEmployee extends TestCase {
 
   public void testDeleteReInsert() throws Exception {
     ConnectionBean connectionBean;
-    EmployeeDAO employeeDAO;
+    ProfDAO profDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -306,18 +307,18 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    employeeDAO.createTable();
+    profDAO.createTable();
 
-    EmployeeDTO employeeDTO1 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO1 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO1.setFrstName("FooFrstName");
-    employeeDTO1.setLastName("FooLastName");
-    employeeDAO.insert(employeeDTO1);
-    assertEquals(employeeDTO1.getId(), 1);
+    profDTO1.setProfAtt1("FooFrstName");
+    profDTO1.setProfAtt2("FooLastName");
+    profDAO.insert(profDTO1);
+    assertEquals(profDTO1.getId(), 1);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -327,14 +328,14 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    EmployeeDTO employeeDTOX = (EmployeeDTO) employeeDAO.loadById(1);
-    employeeDAO.delete(employeeDTOX);
+    ProfDTO profDTOX = (ProfDTO) profDAO.loadById(1);
+    profDAO.delete(profDTOX);
 
     try {
-      employeeDAO.insert(employeeDTOX);
+      profDAO.insert(profDTOX);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -348,7 +349,7 @@ public class TestEmployee extends TestCase {
 
   public void testDeleteReUpdate() throws Exception {
     ConnectionBean connectionBean;
-    EmployeeDAO employeeDAO;
+    ProfDAO profDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -358,18 +359,18 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    employeeDAO.createTable();
+    profDAO.createTable();
 
-    EmployeeDTO employeeDTO1 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO1 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO1.setFrstName("FooFrstName");
-    employeeDTO1.setLastName("FooLastName");
-    employeeDAO.insert(employeeDTO1);
-    assertEquals(employeeDTO1.getId(), 1);
+    profDTO1.setProfAtt1("FooFrstName");
+    profDTO1.setProfAtt2("FooLastName");
+    profDAO.insert(profDTO1);
+    assertEquals(profDTO1.getId(), 1);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -379,14 +380,14 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    EmployeeDTO employeeDTOX = (EmployeeDTO) employeeDAO.loadById(1);
-    employeeDAO.delete(employeeDTOX);
+    ProfDTO profDTOX = (ProfDTO) profDAO.loadById(1);
+    profDAO.delete(profDTOX);
 
     try {
-      employeeDAO.update(employeeDTOX);
+      profDAO.update(profDTOX);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -400,7 +401,7 @@ public class TestEmployee extends TestCase {
 
   public void testDeleteReDelete() throws Exception {
     ConnectionBean connectionBean;
-    EmployeeDAO employeeDAO;
+    ProfDAO profDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -410,18 +411,18 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    employeeDAO.createTable();
+    profDAO.createTable();
 
-    EmployeeDTO employeeDTO1 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO1 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO1.setFrstName("FooFrstName");
-    employeeDTO1.setLastName("FooLastName");
-    employeeDAO.insert(employeeDTO1);
-    assertEquals(employeeDTO1.getId(), 1);
+    profDTO1.setProfAtt1("FooFrstName");
+    profDTO1.setProfAtt2("FooLastName");
+    profDAO.insert(profDTO1);
+    assertEquals(profDTO1.getId(), 1);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -431,14 +432,14 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    EmployeeDTO employeeDTOX = (EmployeeDTO) employeeDAO.loadById(1);
-    employeeDAO.delete(employeeDTOX);
+    ProfDTO profDTOX = (ProfDTO) profDAO.loadById(1);
+    profDAO.delete(profDTOX);
 
     try {
-      employeeDAO.delete(employeeDTOX);
+      profDAO.delete(profDTOX);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -452,7 +453,7 @@ public class TestEmployee extends TestCase {
 
   public void testCacheCrash() throws Exception {
     ConnectionBean connectionBean;
-    EmployeeDAO employeeDAO;
+    ProfDAO profDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -462,29 +463,29 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    employeeDAO.createTable();
+    profDAO.createTable();
 
-    EmployeeDTO employeeDTO1 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO1 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO1.setFrstName("FooFrstName111");
-    employeeDTO1.setLastName("FooLastName111");
+    profDTO1.setProfAtt1("FooFrstName111");
+    profDTO1.setProfAtt2("FooLastName111");
 
-    EmployeeDTO employeeDTO2 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO2 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO2.setFrstName("FooFrstName222");
-    employeeDTO2.setLastName("FooLastName222");
+    profDTO2.setProfAtt1("FooFrstName222");
+    profDTO2.setProfAtt2("FooLastName222");
 
     // ----------------------------------------
     // UPDATE NON INSERTED
     // ----------------------------------------
 
     try {
-      employeeDAO.update(employeeDTO1);
+      profDAO.update(profDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -496,7 +497,7 @@ public class TestEmployee extends TestCase {
     // ----------------------------------------
 
     try {
-      employeeDAO.delete(employeeDTO1);
+      profDAO.delete(profDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
@@ -508,13 +509,13 @@ public class TestEmployee extends TestCase {
     // ----------------------------------------
 
     try {
-      employeeDTO1.setId(1); // TAMPERED ID
-      employeeDAO.insert(employeeDTO1);
+      profDTO1.setId(1); // TAMPERED ID
+      profDAO.insert(profDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      employeeDTO1.setId(0); // UNTAMPER ID
+      profDTO1.setId(0); // UNTAMPER ID
     }
 
     // ----------------------------------------
@@ -522,13 +523,13 @@ public class TestEmployee extends TestCase {
     // ----------------------------------------
 
     try {
-      employeeDTO1.setId(1); // TAMPERED ID
-      employeeDAO.update(employeeDTO1);
+      profDTO1.setId(1); // TAMPERED ID
+      profDAO.update(profDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      employeeDTO1.setId(0); // UNTAMPER ID
+      profDTO1.setId(0); // UNTAMPER ID
     }
 
     // ----------------------------------------
@@ -536,34 +537,34 @@ public class TestEmployee extends TestCase {
     // ----------------------------------------
 
     try {
-      employeeDTO1.setId(1); // TAMPERED ID
-      employeeDAO.delete(employeeDTO1);
+      profDTO1.setId(1); // TAMPERED ID
+      profDAO.delete(profDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      employeeDTO1.setId(0); // UNTAMPER ID
+      profDTO1.setId(0); // UNTAMPER ID
     }
 
     // ----------------------------------------
     // DTO INSERT
     // ----------------------------------------
 
-    employeeDAO.insert(employeeDTO1); // WORKS
-    employeeDAO.insert(employeeDTO2); // WORKS
+    profDAO.insert(profDTO1); // WORKS
+    profDAO.insert(profDTO2); // WORKS
 
     // ----------------------------------------
     // RE-INSERT TAMPERED
     // ----------------------------------------
 
     try {
-      employeeDTO1.setId(0); // TAMPERED ID
-      employeeDAO.insert(employeeDTO1);
+      profDTO1.setId(0); // TAMPERED ID
+      profDAO.insert(profDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      employeeDTO1.setId(1); // UNTAMPER ID
+      profDTO1.setId(1); // UNTAMPER ID
     }
 
     // ----------------------------------------
@@ -571,13 +572,13 @@ public class TestEmployee extends TestCase {
     // ----------------------------------------
 
     try {
-      employeeDTO1.setId(2); // TAMPERED ID
-      employeeDAO.update(employeeDTO1);
+      profDTO1.setId(2); // TAMPERED ID
+      profDAO.update(profDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      employeeDTO1.setId(1); // UNTAMPER ID
+      profDTO1.setId(1); // UNTAMPER ID
     }
 
     // ----------------------------------------
@@ -585,13 +586,13 @@ public class TestEmployee extends TestCase {
     // ----------------------------------------
 
     try {
-      employeeDTO1.setId(2); // TAMPERED ID
-      employeeDAO.delete(employeeDTO1);
+      profDTO1.setId(2); // TAMPERED ID
+      profDAO.delete(profDTO1);
       fail("Should raise an IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       // Exception (test OK)
       System.err.println(e.getClass() + " : " + e.getMessage());
-      employeeDTO1.setId(1); // UNTAMPER ID
+      profDTO1.setId(1); // UNTAMPER ID
     }
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
@@ -601,7 +602,7 @@ public class TestEmployee extends TestCase {
 
   public void testCount() throws Exception {
     ConnectionBean connectionBean;
-    EmployeeDAO employeeDAO;
+    ProfDAO profDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -611,24 +612,24 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    employeeDAO.createTable();
+    profDAO.createTable();
 
-    EmployeeDTO employeeDTO1 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO1 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO1.setFrstName("FooFrstName111");
-    employeeDTO1.setLastName("FooLastName111");
-    employeeDAO.insert(employeeDTO1);
+    profDTO1.setProfAtt1("FooFrstName111");
+    profDTO1.setProfAtt2("FooLastName111");
+    profDAO.insert(profDTO1);
 
-    EmployeeDTO employeeDTO2 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO2 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO2.setFrstName("FooFrstName222");
-    employeeDTO2.setLastName("FooLastName222");
-    employeeDAO.insert(employeeDTO2);
+    profDTO2.setProfAtt1("FooFrstName222");
+    profDTO2.setProfAtt2("FooLastName222");
+    profDAO.insert(profDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -638,10 +639,10 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    assertEquals(2, employeeDAO.countAll());
+    assertEquals(2, profDAO.countAll());
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -650,7 +651,7 @@ public class TestEmployee extends TestCase {
 
   public void testListAll() throws Exception {
     ConnectionBean connectionBean;
-    EmployeeDAO employeeDAO;
+    ProfDAO profDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -660,24 +661,24 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    employeeDAO.createTable();
+    profDAO.createTable();
 
-    EmployeeDTO employeeDTO1 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO1 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO1.setFrstName("FooFrstName111");
-    employeeDTO1.setLastName("FooLastName111");
-    employeeDAO.insert(employeeDTO1);
+    profDTO1.setProfAtt1("FooFrstName111");
+    profDTO1.setProfAtt2("FooLastName111");
+    profDAO.insert(profDTO1);
 
-    EmployeeDTO employeeDTO2 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO2 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO2.setFrstName("FooFrstName222");
-    employeeDTO2.setLastName("FooLastName222");
-    employeeDAO.insert(employeeDTO2);
+    profDTO2.setProfAtt1("FooFrstName222");
+    profDTO2.setProfAtt2("FooLastName222");
+    profDAO.insert(profDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -687,12 +688,12 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    List<IDTO> employeeList = employeeDAO.listAll();
-    assertTrue(compareDTO(employeeDTO1, (EmployeeDTO) employeeList.get(0)));
-    assertTrue(compareDTO(employeeDTO2, (EmployeeDTO) employeeList.get(1)));
+    List<IDTO> profList = profDAO.listAll();
+    assertTrue(compareDTO(profDTO1, (ProfDTO) profList.get(0)));
+    assertTrue(compareDTO(profDTO2, (ProfDTO) profList.get(1)));
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }
@@ -701,7 +702,7 @@ public class TestEmployee extends TestCase {
 
   public void testListAllLimOff() throws Exception {
     ConnectionBean connectionBean;
-    EmployeeDAO employeeDAO;
+    ProfDAO profDAO;
 
     FactoryDAO fd = AbstractFactoryDAO.getFactoryDAO();
 
@@ -711,24 +712,24 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    employeeDAO.createTable();
+    profDAO.createTable();
 
-    EmployeeDTO employeeDTO1 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO1 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO1.setFrstName("FooFrstName111");
-    employeeDTO1.setLastName("FooLastName111");
-    employeeDAO.insert(employeeDTO1);
+    profDTO1.setProfAtt1("FooFrstName111");
+    profDTO1.setProfAtt2("FooLastName111");
+    profDAO.insert(profDTO1);
 
-    EmployeeDTO employeeDTO2 = (EmployeeDTO) fd.getDTO( //
-        EmployeeDTO.class, connectionBean);
+    ProfDTO profDTO2 = (ProfDTO) fd.getDTO( //
+        ProfDTO.class, connectionBean);
 
-    employeeDTO2.setFrstName("FooFrstName222");
-    employeeDTO2.setLastName("FooLastName222");
-    employeeDAO.insert(employeeDTO2);
+    profDTO2.setProfAtt1("FooFrstName222");
+    profDTO2.setProfAtt2("FooLastName222");
+    profDAO.insert(profDTO2);
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
 
@@ -738,18 +739,18 @@ public class TestEmployee extends TestCase {
 
     connectionBean = ConnectionFactory.getConnectionBean();
 
-    employeeDAO = (EmployeeDAO) fd.getDAO( //
-        EmployeeDAO.class, connectionBean);
+    profDAO = (ProfDAO) fd.getDAO( //
+        ProfDAO.class, connectionBean);
 
-    List<IDTO> employeeList;
+    List<IDTO> profList;
 
-    employeeList = employeeDAO.listAll(1, 0);
-    assertEquals(1, employeeList.size());
-    assertTrue(compareDTO(employeeDTO1, (EmployeeDTO) employeeList.get(0)));
+    profList = profDAO.listAll(1, 0);
+    assertEquals(1, profList.size());
+    assertTrue(compareDTO(profDTO1, (ProfDTO) profList.get(0)));
 
-    employeeList = employeeDAO.listAll(1, 1);
-    assertEquals(1, employeeList.size());
-    assertTrue(compareDTO(employeeDTO2, (EmployeeDTO) employeeList.get(0)));
+    profList = profDAO.listAll(1, 1);
+    assertEquals(1, profList.size());
+    assertTrue(compareDTO(profDTO2, (ProfDTO) profList.get(0)));
 
     ConnectionFactory.closeConnection(connectionBean.getConnection());
   }

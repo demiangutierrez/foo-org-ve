@@ -6,10 +6,10 @@ import java.util.List;
 
 import dao.base.impl.BaseDTO;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.DepartmentDAO;
-import dao.example.base.DepartmentDTO;
-import dao.example.base.EmployeeDAO;
-import dao.example.base.EmployeeDTO;
+import dao.example.base.DeptDAO;
+import dao.example.base.DeptDTO;
+import dao.example.base.ProfDAO;
+import dao.example.base.ProfDTO;
 
 /**
  * @author Demián Gutierrez
@@ -19,73 +19,73 @@ import dao.example.base.EmployeeDTO;
 // so we need to make it public.
 // It's also a nice example on when and why use package visibility.
 public//
-class DepartmentDTOImpl extends BaseDTO implements DepartmentDTO {
+class DeptDTOImpl extends BaseDTO implements DeptDTO {
 
-  private String name;
-  private String description;
-
-  // --------------------------------------------------------------------------------
-
-  private List<EmployeeDTO> employeeDTOList;
+  private String deptAtt1;
+  private String deptAtt2;
 
   // --------------------------------------------------------------------------------
 
-  public DepartmentDTOImpl() {
-    super(DepartmentDAO.class);
+  private List<ProfDTO> profDTOList;
+
+  // --------------------------------------------------------------------------------
+
+  public DeptDTOImpl() {
+    super(DeptDAO.class);
   }
 
   // --------------------------------------------------------------------------------
-  // DepartmentDTO
+  // DeptDTO
   // --------------------------------------------------------------------------------
 
   @Override
-  public String getName() {
-    return name;
+  public String getDeptAtt1() {
+    return deptAtt1;
   }
 
   @Override
-  public void setName(String name) {
-    this.name = name;
+  public void setDeptAtt1(String deptAtt1) {
+    this.deptAtt1 = deptAtt1;
   }
 
   // --------------------------------------------------------------------------------
 
   @Override
-  public String getDescription() {
-    return description;
+  public String getDeptAtt2() {
+    return deptAtt2;
   }
 
   @Override
-  public void setDescription(String description) {
-    this.description = description;
+  public void setDeptAtt2(String deptAtt2) {
+    this.deptAtt2 = deptAtt2;
   }
 
   // --------------------------------------------------------------------------------
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<EmployeeDTO> getEmployeeDTOList() {
-    if (employeeDTOList == null) {
+  public List<ProfDTO> getProfDTOList() {
+    if (profDTOList == null) {
       try {
 
         // Lazy load the list
-        EmployeeDAO employeeDAO = (EmployeeDAO) AbstractFactoryDAO.getFactoryDAO(). //
-            getDAO(EmployeeDAO.class, connectionBean);
+        ProfDAO profDAO = (ProfDAO) AbstractFactoryDAO.getFactoryDAO(). //
+            getDAO(ProfDAO.class, connectionBean);
 
-        employeeDTOList = new ArrayList<EmployeeDTO>();
-        employeeDTOList.addAll((Collection<? extends EmployeeDTO>) //
-            employeeDAO.listBy(EmployeeDTOImpl.DEPARTMENT_ID, id));
+        profDTOList = new ArrayList<ProfDTO>();
+        profDTOList.addAll((Collection<? extends ProfDTO>) //
+            profDAO.listBy(ProfDTOImpl.DEPT_DTO_REF, id));
 
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
     }
 
-    return employeeDTOList;
+    return profDTOList;
   }
 
   @Override
-  public void setEmployeeDTOList(List<EmployeeDTO> employeeDTOList) {
+  public void setProfDTOList(List<ProfDTO> profDTOList) {
     throw new UnsupportedOperationException();
   }
 }

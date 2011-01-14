@@ -5,7 +5,6 @@
  * @date   25/03/2010
  * 
  */
-
 package dao.demo;
 
 import java.sql.SQLException;
@@ -15,8 +14,8 @@ import dao.base.api.IDAO;
 import dao.connection.ConnectionBean;
 import dao.connection.ConnectionFactory;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.DepartmentDAO;
-import dao.example.base.DepartmentDTO;
+import dao.example.base.DeptDAO;
+import dao.example.base.DeptDTO;
 
 public class Test1 {
 
@@ -28,34 +27,34 @@ public class Test1 {
 
     ConnectionBean conn = ConnectionFactory.getConnectionBean();
 
-    FactoryDAO factoryDAO = AbstractFactoryDAO.getFactoryDAO();
-
-    // --------------------------------------------------------------------------------
-    // Instanciar DAO
-    // --------------------------------------------------------------------------------
-
-    IDAO dd = factoryDAO.getDAO( //
-        DepartmentDAO.class, conn);
-
-    // --------------------------------------------------------------------------------
-    // CREATE TABLE
-    // --------------------------------------------------------------------------------
-
-    dd.createTable();
-
     try {
-      for (int i = 1; i < 11; i++) {
-        DepartmentDTO ddo = (DepartmentDTO) factoryDAO.getDTO( //
-            DepartmentDTO.class, conn);
+      FactoryDAO factoryDAO = AbstractFactoryDAO.getFactoryDAO();
 
-        ddo.setName("Foo" + i);
-        ddo.setDescription("Faa" + i);
+      // --------------------------------------------------------------------------------
+      // Instanciar DAO
+      // --------------------------------------------------------------------------------
+
+      IDAO deptDao = factoryDAO.getDAO( //
+          DeptDAO.class, conn);
+
+      // --------------------------------------------------------------------------------
+      // CREATE TABLE
+      // --------------------------------------------------------------------------------
+
+      deptDao.createTable();
+
+      for (int i = 1; i < 11; i++) {
+        DeptDTO deptDto = (DeptDTO) factoryDAO.getDTO( //
+            DeptDTO.class, conn);
+
+        deptDto.setDeptAtt1("Foo" + i);
+        deptDto.setDeptAtt2("Faa" + i);
 
         // --------------------------------------------------------------------------------
         // INSERT
         // --------------------------------------------------------------------------------
 
-        dd.insert(ddo);
+        deptDao.insert(deptDto);
       }
     } catch (SQLException e) {
       e.printStackTrace();

@@ -1,19 +1,18 @@
 /**
- * Ejemplo de CREATE TABLE y INSERT usando Framework DAO
+ * Ejemplo de CREATE TABLE y INSERT (Sin usar el factory)
  * 
- * @author Preparador Hugo Morillo
- * @date   25/03/2010
+ * @author Demián Gutierrez
+ * @date   26/10/2010
  * 
  */
-
 package dao.demo;
 
 import java.sql.SQLException;
 
 import dao.connection.ConnectionBean;
 import dao.connection.ConnectionFactory;
-import dao.example.mysql.DepartmentDAOImpl;
-import dao.example.mysql.DepartmentDTOImpl;
+import dao.example.mysql.DeptDAOImpl;
+import dao.example.mysql.DeptDTOImpl;
 
 public class Test0 {
 
@@ -26,37 +25,31 @@ public class Test0 {
 
     ConnectionBean conn = ConnectionFactory.getConnectionBean();
 
-    // FactoryDAO factoryDAO = AbstractFactoryDAO.getFactoryDAO();
-
     // --------------------------------------------------------------------------------
     // Instanciar DAO
     // --------------------------------------------------------------------------------
 
-    //    DataAccessObject dd = factoryDAO.getDAO( //
-    //        DepartmentDAO.class, conn);
-    DepartmentDAOImpl dd = new DepartmentDAOImpl();
-    dd.init(conn);
-
-    // --------------------------------------------------------------------------------
-    // CREATE TABLE
-    // --------------------------------------------------------------------------------
-
-    dd.createTable();
-
     try {
+      DeptDAOImpl deptDao = new DeptDAOImpl();
+      deptDao.init(conn);
+
+      // --------------------------------------------------------------------------------
+      // CREATE TABLE
+      // --------------------------------------------------------------------------------
+
+      deptDao.createTable();
+
+      // --------------------------------------------------------------------------------
+      // INSERT
+      // --------------------------------------------------------------------------------
+
       for (int i = 0; i < 11; i++) {
-        //        DepartmentDTO ddo = (DepartmentDTO) factoryDAO.getDTO( //
-        //            DepartmentDTO.class, conn);
-        DepartmentDTOImpl ddo = new DepartmentDTOImpl();
+        DeptDTOImpl deptDto = new DeptDTOImpl();
 
-        ddo.setName("Foo" + i);
-        ddo.setDescription("Faa" + i);
+        deptDto.setDeptAtt1("Foo" + i);
+        deptDto.setDeptAtt2("Faa" + i);
 
-        // --------------------------------------------------------------------------------
-        // INSERT
-        // --------------------------------------------------------------------------------
-
-        dd.insert(ddo);
+        deptDao.insert(deptDto);
       }
     } catch (SQLException e) {
       e.printStackTrace();

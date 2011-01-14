@@ -5,7 +5,6 @@
  * @date   13/04/2010
  * 
  */
-
 package dao.demo;
 
 import java.sql.SQLException;
@@ -17,12 +16,13 @@ import dao.base.api.IDTO;
 import dao.connection.ConnectionBean;
 import dao.connection.ConnectionFactory;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.DepartmentDAO;
-import dao.example.base.DepartmentDTO;
-import dao.example.base.EmployeeDTO;
+import dao.example.base.DeptDAO;
+import dao.example.base.DeptDTO;
+import dao.example.base.ProfDTO;
 
 public class Test5 {
 
+  // TODO: Check this example, there is something wrong with it
   public static void main(String[] args) throws Exception {
 
     // --------------------------------------------------------------------------------
@@ -31,52 +31,37 @@ public class Test5 {
 
     ConnectionBean conn = ConnectionFactory.getConnectionBean();
 
-    FactoryDAO factoryDAO = AbstractFactoryDAO.getFactoryDAO();
-
-    // --------------------------------------------------------------------------------
-    // Instanciar DAO
-    // --------------------------------------------------------------------------------
-
-    IDAO dd = factoryDAO.getDAO( //
-        DepartmentDAO.class, conn);
-
     try {
+      FactoryDAO factoryDAO = AbstractFactoryDAO.getFactoryDAO();
 
-      List<IDTO> compList = dd.listAll();
+      // --------------------------------------------------------------------------------
+      // Instanciar DAO
+      // --------------------------------------------------------------------------------
 
-      if (compList.isEmpty()) {
+      IDAO deptDao = factoryDAO.getDAO( //
+          DeptDAO.class, conn);
+
+      List<IDTO> dataList = deptDao.listAll();
+
+      if (dataList.isEmpty()) {
         return;
       }
 
-      DepartmentDTO departmentDTO = (DepartmentDTO) compList.get(0);
-      System.err.println("El nombre del departamento es: " + departmentDTO.getName());
-      System.err.println("La descripción del departamento es: " + departmentDTO.getDescription());
+      DeptDTO deptDTO = (DeptDTO) dataList.get(0);
 
-      // Ahora necesitamos la lista de los empleados asociados al departamento...
-      // Pero la lista est{a vacia, hay que cargarla...
-      System.err.println(departmentDTO.getEmployeeDTOList().size());
+      System.err.println("Att1: " + deptDTO.getDeptAtt1());
+      System.err.println("Att2: " + deptDTO.getDeptAtt2());
 
-      // Tiene sentido tratar de crear un nuevo departamento y tratar de añadirlo
-      // a la lista aquí antes de cargar la lista???
+      System.err.println("ProfDTO list size: " + deptDTO.getProfDTOList().size());
 
-      // XXX: Not needed right now
-      // dd.loadEmployeeList(departmentDTO); // Se carga la lista de empleados...
-      System.err.println(departmentDTO.getEmployeeDTOList().size());
+      ProfDTO profDto = (ProfDTO) factoryDAO.getDTO( //
+          ProfDTO.class, conn);
 
-      EmployeeDTO doEmp = (EmployeeDTO) factoryDAO.getDTO( //
-          EmployeeDTO.class, conn);
+      profDto.setProfAtt1("ProfAtt1 XXX");
+      profDto.setProfAtt1("ProfAtt2 XXX");
 
-      doEmp.setFrstName("NombreCCC ");
-      doEmp.setLastName("ApellidoCCC ");
-      departmentDTO.getEmployeeDTOList().add(doEmp);
-      doEmp.setDepartmentDTORef(departmentDTO);
-      // INSERT
-
-      for (EmployeeDTO employeeDTO : departmentDTO.getEmployeeDTOList()) {
-        System.err.println("******************************>");
-        System.err.println("Nombre: " + employeeDTO.getFrstName());
-        System.err.println("Apellido: " + employeeDTO.getLastName());
-      }
+      deptDTO.getProfDTOList().add(profDto);
+      profDto.setDeptDTORef(deptDTO);
 
     } catch (SQLException e) {
       e.printStackTrace();

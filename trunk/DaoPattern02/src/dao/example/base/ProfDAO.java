@@ -5,6 +5,6 @@ import dao.base.api.IDAO;
 /**
  * @author Demián Gutierrez
  */
-public interface EmployeeDAO extends IDAO {
+public interface ProfDAO extends IDAO {
   // Empty
 }

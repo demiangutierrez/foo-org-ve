@@ -123,7 +123,7 @@ abstract class PgSQLBaseDAO extends BaseDAO {
     strbuf.append(createUpdateValues(dto));
 
     strbuf.append(" WHERE ");
-    strbuf.append(DepartmentDTOImpl.ID);
+    strbuf.append(DeptDTOImpl.ID);
     strbuf.append(" = ");
     strbuf.append(dto.getId());
 

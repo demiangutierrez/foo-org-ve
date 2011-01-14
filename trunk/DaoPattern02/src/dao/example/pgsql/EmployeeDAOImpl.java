@@ -5,18 +5,18 @@ import java.sql.ResultSet;
 import dao.base.api.IDTO;
 import dao.base.impl.Reference;
 import dao.example.base.AbstractFactoryDAO;
-import dao.example.base.DepartmentDAO;
-import dao.example.base.DepartmentDTO;
-import dao.example.base.EmployeeDAO;
-import dao.example.base.EmployeeDTO;
+import dao.example.base.DeptDAO;
+import dao.example.base.DeptDTO;
+import dao.example.base.ProfDAO;
+import dao.example.base.ProfDTO;
 
 /**
  * @author Demián Gutierrez
  */
-class EmployeeDAOImpl extends PgSQLBaseDAO implements EmployeeDAO {
+class ProfDAOImpl extends PgSQLBaseDAO implements ProfDAO {
 
-  public EmployeeDAOImpl() {
-    super(EmployeeDTOImpl.class);
+  public ProfDAOImpl() {
+    super(ProfDTOImpl.class);
   }
 
   // --------------------------------------------------------------------------------
@@ -27,19 +27,19 @@ class EmployeeDAOImpl extends PgSQLBaseDAO implements EmployeeDAO {
   protected String createTableColumns() throws Exception {
     StringBuffer strbuf = new StringBuffer();
 
-    DepartmentDAO departmentDAO = (DepartmentDAO) //
+    DeptDAO deptDAO = (DeptDAO) //
     AbstractFactoryDAO.getFactoryDAO().getDAO( //
-        DepartmentDAO.class, connectionBean);
+        DeptDAO.class, connectionBean);
 
-    strbuf.append(EmployeeDTOImpl.ID);
+    strbuf.append(ProfDTOImpl.ID);
     strbuf.append(" INT PRIMARY KEY, ");
-    strbuf.append(EmployeeDTOImpl.FRST_NAME);
+    strbuf.append(ProfDTOImpl.FRST_NAME);
     strbuf.append(" VARCHAR(100),    ");
-    strbuf.append(EmployeeDTOImpl.LAST_NAME);
+    strbuf.append(ProfDTOImpl.LAST_NAME);
     strbuf.append(" VARCHAR(100),    ");
-    strbuf.append(EmployeeDTOImpl.DEPARTMENT_ID);
+    strbuf.append(ProfDTOImpl.DEPARTMENT_ID);
     strbuf.append(" INT REFERENCES   ");
-    strbuf.append(departmentDAO.getTableName());
+    strbuf.append(deptDAO.getTableName());
 
     return strbuf.toString();
   }
@@ -50,18 +50,18 @@ class EmployeeDAOImpl extends PgSQLBaseDAO implements EmployeeDAO {
   protected String createInsertValues(IDTO dto) //
       throws Exception {
 
-    EmployeeDTOImpl employeeDTOImpl = (EmployeeDTOImpl) dto;
+    ProfDTOImpl profDTOImpl = (ProfDTOImpl) dto;
 
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(employeeDTOImpl.getId());
+    strbuf.append(profDTOImpl.getId());
     strbuf.append(", ");
-    strbuf.append(singleQuotes(employeeDTOImpl.getFrstName()));
+    strbuf.append(singleQuotes(profDTOImpl.getFrstName()));
     strbuf.append(", ");
-    strbuf.append(singleQuotes(employeeDTOImpl.getLastName()));
+    strbuf.append(singleQuotes(profDTOImpl.getLastName()));
     strbuf.append(", ");
 
-    Reference<DepartmentDTO> ref = employeeDTOImpl.getDepartmentRef();
+    Reference<DeptDTO> ref = profDTOImpl.getDeptRef();
     ref.checkInsert();
     strbuf.append(ref.getIdAsString());
 
@@ -73,26 +73,26 @@ class EmployeeDAOImpl extends PgSQLBaseDAO implements EmployeeDAO {
   protected String createUpdateValues(IDTO dto) //
       throws Exception {
 
-    EmployeeDTOImpl employeeDTOImpl = (EmployeeDTOImpl) dto;
+    ProfDTOImpl profDTOImpl = (ProfDTOImpl) dto;
 
     StringBuffer strbuf = new StringBuffer();
 
-    strbuf.append(EmployeeDTOImpl.FRST_NAME);
+    strbuf.append(ProfDTOImpl.FRST_NAME);
     strbuf.append(" = ");
-    strbuf.append(singleQuotes(employeeDTOImpl.getFrstName()));
+    strbuf.append(singleQuotes(profDTOImpl.getFrstName()));
 
     strbuf.append(", ");
 
-    strbuf.append(EmployeeDTOImpl.LAST_NAME);
+    strbuf.append(ProfDTOImpl.LAST_NAME);
     strbuf.append(" = ");
-    strbuf.append(singleQuotes(employeeDTOImpl.getLastName()));
+    strbuf.append(singleQuotes(profDTOImpl.getLastName()));
 
     strbuf.append(", ");
 
-    strbuf.append(EmployeeDTOImpl.DEPARTMENT_ID);
+    strbuf.append(ProfDTOImpl.DEPARTMENT_ID);
     strbuf.append(" = ");
 
-    Reference<DepartmentDTO> ref = employeeDTOImpl.getDepartmentRef();
+    Reference<DeptDTO> ref = profDTOImpl.getDeptRef();
     ref.checkUpdate();
     strbuf.append(ref.getIdAsString());
 
@@ -101,26 +101,26 @@ class EmployeeDAOImpl extends PgSQLBaseDAO implements EmployeeDAO {
 
   // --------------------------------------------------------------------------------
 
-  protected EmployeeDTOImpl resultSetToDTO(ResultSet rs) throws Exception {
-    EmployeeDTOImpl ret = //
-    (EmployeeDTOImpl) dtaSession.getDtaByKey( //
-        EmployeeDTOImpl.class, rs.getInt(EmployeeDTOImpl.ID));
+  protected ProfDTOImpl resultSetToDTO(ResultSet rs) throws Exception {
+    ProfDTOImpl ret = //
+    (ProfDTOImpl) dtaSession.getDtaByKey( //
+        ProfDTOImpl.class, rs.getInt(ProfDTOImpl.ID));
 
     if (ret != null) {
       return ret;
     }
 
-    ret = (EmployeeDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
-        getDTO(EmployeeDTO.class, connectionBean);
+    ret = (ProfDTOImpl) AbstractFactoryDAO.getFactoryDAO(). //
+        getDTO(ProfDTO.class, connectionBean);
 
-    ret.setId/*      */(rs.getInt(EmployeeDTOImpl.ID));
-    ret.setFrstName/**/(rs.getString(EmployeeDTOImpl.FRST_NAME));
-    ret.setLastName/**/(rs.getString(EmployeeDTOImpl.LAST_NAME));
+    ret.setId/*      */(rs.getInt(ProfDTOImpl.ID));
+    ret.setFrstName/**/(rs.getString(ProfDTOImpl.FRST_NAME));
+    ret.setLastName/**/(rs.getString(ProfDTOImpl.LAST_NAME));
 
-    Reference<DepartmentDTO> ref = ret.getDepartmentRef();
-    ref.setRefIdent(rs.getInt(EmployeeDTOImpl.DEPARTMENT_ID));
+    Reference<DeptDTO> ref = ret.getDeptRef();
+    ref.setRefIdent(rs.getInt(ProfDTOImpl.DEPARTMENT_ID));
     ref.setRefValue(null);
 
-    return (EmployeeDTOImpl) dtaSession.add(ret);
+    return (ProfDTOImpl) dtaSession.add(ret);
   }
 }

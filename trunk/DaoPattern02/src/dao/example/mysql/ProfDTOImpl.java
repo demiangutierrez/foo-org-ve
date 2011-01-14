@@ -1,4 +1,4 @@
-package dao.example.pgsql;
+package dao.example.mysql;
 
 import dao.base.impl.BaseDTO;
 import dao.base.impl.Reference;
@@ -13,16 +13,12 @@ import dao.example.base.ProfDTO;
  */
 class ProfDTOImpl extends BaseDTO implements ProfDTO {
 
-  public static final String FRST_NAME/* */= "frstName";
-  public static final String LAST_NAME/* */= "lastName";
-  public static final String DEPARTMENT_ID = "deptId";
+  private String profAtt1;
+  private String profAtt2;
 
   // --------------------------------------------------------------------------------
 
-  private String frstName;
-  private String lastName;
-
-  private final Reference<DeptDTO> deptRef = //
+  private final Reference<DeptDTO> deptDTORef = //
   new Reference<DeptDTO>();
 
   // --------------------------------------------------------------------------------
@@ -36,41 +32,41 @@ class ProfDTOImpl extends BaseDTO implements ProfDTO {
   // --------------------------------------------------------------------------------
 
   @Override
-  public String getFrstName() {
-    return frstName;
+  public String getProfAtt1() {
+    return profAtt1;
   }
 
   @Override
-  public void setFrstName(String frstName) {
-    this.frstName = frstName;
+  public void setProfAtt1(String profAtt1) {
+    this.profAtt1 = profAtt1;
   }
 
   // --------------------------------------------------------------------------------
 
   @Override
-  public String getLastName() {
-    return lastName;
+  public String getProfAtt2() {
+    return profAtt2;
   }
 
   @Override
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
+  public void setProfAtt2(String profAtt2) {
+    this.profAtt2 = profAtt2;
   }
 
   // --------------------------------------------------------------------------------
 
   @Override
   public DeptDTO getDeptDTORef() {
-    if (deptRef.getRefValue() == null) {
-      if (deptRef.getRefIdent() != 0) {
+    if (deptDTORef.getRefValue() == null) {
+      if (deptDTORef.getRefIdent() != 0) {
         try {
 
           // Lazy load the deptDTORef
           DeptDAO deptDAO = (DeptDAO) AbstractFactoryDAO.getFactoryDAO(). //
               getDAO(DeptDAO.class, connectionBean);
 
-          deptRef.setRefValue( //
-              (DeptDTO) deptDAO.loadById(deptRef.getRefIdent()));
+          deptDTORef.setRefValue( //
+              (DeptDTO) deptDAO.loadById(deptDTORef.getRefIdent()));
 
         } catch (Exception e) {
           e.printStackTrace();
@@ -79,21 +75,17 @@ class ProfDTOImpl extends BaseDTO implements ProfDTO {
       }
     }
 
-    return deptRef.getRefValue();
+    return deptDTORef.getRefValue();
   }
 
   @Override
   public void setDeptDTORef(DeptDTO deptDTORef) {
-    this.deptRef.setRefValue(deptDTORef);
+    this.deptDTORef.setRefValue(deptDTORef);
   }
 
   // --------------------------------------------------------------------------------
 
-  public Reference<DeptDTO> getDeptRef() {
-    return deptRef;
+  public Reference<DeptDTO> getInternalDeptDTORef() {
+    return deptDTORef;
   }
-
-  //  public void setDeptRef(Reference<DeptDTO> deptRef) {
-  //    this.deptRef = deptRef;
-  //  }
 }

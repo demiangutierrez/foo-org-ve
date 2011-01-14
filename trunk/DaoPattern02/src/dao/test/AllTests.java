@@ -11,9 +11,9 @@ public class AllTests {
   public static Test suite() {
     TestSuite suite = new TestSuite("Test for dao.test");
     //$JUnit-BEGIN$
-    suite.addTestSuite(TestEmployee.class);
-    suite.addTestSuite(TestDepartment.class);
-    suite.addTestSuite(TestDepartmentEmployee.class);
+    suite.addTestSuite(TestProf.class);
+    suite.addTestSuite(TestDept.class);
+    suite.addTestSuite(TestDeptProf.class);
     //    suite.addTestSuite(TestPublication.class);
     //    suite.addTestSuite(TestBook.class);
     //$JUnit-END$
