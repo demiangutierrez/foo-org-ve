@@ -250,6 +250,31 @@
 		<url-pattern>/imagesdata</url-pattern>
 	</servlet-mapping>
 
+	<!--
+		********************************************************************************
+		********************************************************************************
+	-->
+
+	<servlet>
+		<servlet-name>DynImagesAppServlet</servlet-name>
+		<servlet-class>com.tutorial.imagesdyn.DynImagesAppServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>DynImagesAppServlet</servlet-name>
+		<url-pattern>/imagesdynapp.echo</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>DynImagesDataServlet</servlet-name>
+		<servlet-class>com.tutorial.imagesdyn.DynImagesDataServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>DynImagesDataServlet</servlet-name>
+		<url-pattern>/imagesdyn</url-pattern>
+	</servlet-mapping>
+
 
 	<!--
 		********************************************************************************
