@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<!-- **************************************** -->
+	<!-- description                              -->
+	<!-- **************************************** -->
+
+	<xs:element name="description">
+		<xs:complexType mixed="true" />
+	</xs:element>
+
+	<!-- **************************************** -->
+	<!-- priv                                     -->
+	<!-- **************************************** -->
+	
+	<xs:element name="priv">
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:NMTOKEN" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- **************************************** -->
+	<!-- role                                     -->
+	<!-- **************************************** -->
+
+	<xs:element name="role">
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:NMTOKEN" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- **************************************** -->
+	<!-- prof                                     -->
+	<!-- **************************************** -->
+	
+	<xs:element name="prof">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="description" />
+				<xs:element ref="priv" maxOccurs="unbounded" />
+				<xs:element ref="role" maxOccurs="unbounded" />
+			</xs:sequence>
+
+			<xs:attribute name="name" type="xs:NMTOKEN" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- **************************************** -->
+	<!-- prof-list                                -->
+	<!-- **************************************** -->
+
+	<xs:element name="prof-list">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="prof" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>
