@@ -1,0 +1,45 @@
+<!-- Copyright 2004 Minotauro C.A. Reservados todos los derechos. -->
+
+<project name="FundamentosJava21" default="war" basedir=".">
+
+	<property name="src_ejemplos" location="src_ejemplos"/>
+	<property name="src_chess" location="src_chess"/>
+	<property name="build" location="build"/>
+	<property name="dist" location="dist"/>
+
+	<target name="init" depends="clean">
+		<tstamp/>
+		<mkdir dir="${build}"/>
+	</target>
+
+	<target name="compile" depends="init">
+		<javac	srcdir="${src_ejemplos}" destdir="${build}" classpath="lib/servlet-api.jar"/>
+		<javac	srcdir="${src_chess}" destdir="${build}"/>
+	</target>
+
+	<target name="war" depends="compile,zip_ejemplos">
+		<war destfile="FundamentosJava21.war" webxml="WEB-INF/web.xml">
+			<fileset dir="${src_ejemplos}"/>
+			<fileset dir="${src_chess}"/>
+			<fileset dir="." includes="FundamentosJava21.tar.gz"/>
+			<classes dir="build/"/>
+		</war>
+		<delete file="FundamentosJava21.tar"/>
+		<delete file="FundamentosJava21.tar.gz"/>
+	</target>
+
+	<target name="zip_ejemplos">
+		<tar destfile="FundamentosJava21.tar"  basedir="."/>
+		<gzip src="FundamentosJava21.tar" zipfile="FundamentosJava21.tar.gz"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build}"/>
+		<delete dir="${dist}"/>
+		<delete dir="bin"/>
+		<delete file="FundamentosJava21.war"/>
+		<delete file="FundamentosJava21.tar"/>
+		<delete file="FundamentosJava21.tar.gz"/>
+	</target>
+
+</project>
