@@ -1,0 +1,16 @@
+<!-- Copyright 2004 Minotauro C.A. Reservados todos los derechos. -->
+
+<web-app>
+	<display-name>Fundamentos de Java 20</display-name>
+	<description>Fundamentos de Java 20</description>
+
+	<servlet>
+		<servlet-name>MuestraCodigo</servlet-name>
+		<servlet-class>MuestraCodigo</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>MuestraCodigo</servlet-name>
+		<url-pattern>/MuestraCodigo</url-pattern>
+	</servlet-mapping>
+</web-app>
