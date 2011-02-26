@@ -1,42 +1,79 @@
 package boxpush4;
 
-import org.cyrano.util.PointDbl;
-
 public class ScrollInfo {
-
-  private int X_MIN_VIEW = 5 * MultiPanel.TILE_W;
-  private int X_MAX_VIEW = 7 * MultiPanel.TILE_H;
-
-  private int Y_MIN_VIEW = 5 * MultiPanel.TILE_W;
-  private int Y_MAX_VIEW = 6 * MultiPanel.TILE_H;
 
   public int xView = 0;
   public int yView = 0;
 
-  private int X_MIN_PORT = 0;
-  private int X_MAX_PORT = 0;
+  private int topIns;
+  private int botIns;
 
-  private int Y_MIN_PORT = 0;
-  private int Y_MAX_PORT = 0;
+  private int lftIns;
+  private int rghIns;
 
-  public ScrollInfo(TextMap textMap) {
-    X_MAX_PORT = (textMap.getW() - MultiMain.SCREEN_W_IN_TILES/**/) * MultiPanel.TILE_W;
-    Y_MAX_PORT = (textMap.getH() - MultiMain.SCREEN_H_IN_TILES + 1) * MultiPanel.TILE_H;
+  private int lvlW;
+  private int lvlH;
+
+  private int scrW;
+  private int scrH;
+
+  // --------------------------------------------------------------------------------
+
+  public ScrollInfo( //
+      int topIns, int botIns, int lftIns, int rghIns, //
+      int lvlW, int lvlH, //
+      int scrW, int scrH) {
+
+    this.topIns = topIns;
+    this.botIns = botIns;
+    this.lftIns = lftIns;
+    this.rghIns = rghIns;
+
+    this.lvlW = lvlW;
+    this.lvlH = lvlH;
+    this.scrW = scrW;
+    this.scrH = scrH;
   }
 
-  void updateScrollInfo(PointDbl scrCurr) {
-    if ((scrCurr.x - X_MIN_VIEW) < xView && xView > X_MIN_PORT) {
-      xView = (int) (scrCurr.x - X_MIN_VIEW);
-    }
-    if ((scrCurr.x - X_MAX_VIEW) > xView && xView < X_MAX_PORT) {
-      xView = (int) (scrCurr.x - X_MAX_VIEW);
+  // --------------------------------------------------------------------------------
+
+  void updateScrollInfo(Box box) {
+    if (box.minX() < (xView + lftIns)) {
+      xView = box.minX() - lftIns;
     }
 
-    if ((scrCurr.y - Y_MIN_VIEW) < yView && yView > Y_MIN_PORT) {
-      yView = (int) (scrCurr.y - Y_MIN_VIEW);
+    if (xView < 0) {
+      xView = 0;
     }
-    if ((scrCurr.y - Y_MAX_VIEW) > yView && yView < Y_MAX_PORT) {
-      yView = (int) (scrCurr.y - Y_MAX_VIEW);
+
+    // ----------------------------------------
+
+    if (box.minY() < (yView + topIns)) {
+      yView = box.minY() - topIns;
+    }
+
+    if (yView < 0) {
+      yView = 0;
+    }
+
+    // ----------------------------------------
+
+    if (box.maxX() > (xView + scrW - rghIns)) {
+      xView = box.maxX() - scrW + rghIns;
+    }
+
+    if (xView > (lvlW - scrW)) {
+      xView = lvlW - scrW;
+    }
+
+    // ----------------------------------------
+
+    if (box.maxY() > (yView + scrH - botIns)) {
+      yView = box.maxY() - scrH + botIns;
+    }
+
+    if (yView > (lvlH - scrH)) {
+      yView = lvlH - scrH;
     }
   }
 }

@@ -41,7 +41,7 @@ public class MultiPanel extends JPanel implements Runnable {
       @Override
       public void keyPressed(KeyEvent evt) {
         super.keyPressed(evt);
-        MultiPanel.this.keyPressed(evt);
+        ScrollPanel.this.keyPressed(evt);
       }
 
       @Override
@@ -49,7 +49,7 @@ public class MultiPanel extends JPanel implements Runnable {
         super.keyReleased(evt);
 
         if (getReleased()) {
-          MultiPanel.this.keyReleased(evt);
+          ScrollPanel.this.keyReleased(evt);
         }
       }
     });
