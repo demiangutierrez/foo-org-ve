@@ -10,7 +10,10 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
+import org.cyrano.util.Hwh;
 import org.cyrano.util.TimedKeyListener;
+
+import scroll.ScrollPanel;
 
 public class MultiPanel extends JPanel implements Runnable {
 
@@ -24,6 +27,8 @@ public class MultiPanel extends JPanel implements Runnable {
   public static final int DW = 4;
 
   // --------------------------------------------------------------------------------
+
+  boolean init;
 
   private Map<Character, Sprite> spriteMap = //
   new HashMap<Character, Sprite>();
@@ -83,7 +88,6 @@ public class MultiPanel extends JPanel implements Runnable {
       throw new RuntimeException(e);
     }
 
-    scrollInfo = new ScrollInfo(textMap);
     //    X_MAX_PORT = textMap.getW() - MultiMain.SCREEN_W_IN_TILES;
     //    Y_MAX_PORT = textMap.getH() - MultiMain.SCREEN_H_IN_TILES + 1;
 
@@ -107,11 +111,7 @@ public class MultiPanel extends JPanel implements Runnable {
     sprite = initSprite(/* */5,/* */5,/* */3, 3, Color.MAGENTA,/**/'A');
 
     playerSprite = sprite;
-    playerSprite.scrollInfo = scrollInfo;
 
-      scrollInfo.updateScrollInfo(playerSprite.scrCurr);
-
-    
     // ----------------------------------------
     // Start thread
     // ----------------------------------------
@@ -221,15 +221,25 @@ public class MultiPanel extends JPanel implements Runnable {
 
   @Override
   public void update(Graphics g) {
+    if (!init) {
+      scrollInfo = new ScrollInfo(100, 100, 100, 100, //
+          textMap.getW() * MultiPanel.TILE_W, //
+          textMap.getH() * MultiPanel.TILE_H, //
+          Hwh.getW(this), Hwh.getH(this));
+      scrollInfo.updateScrollInfo(playerSprite);
+      playerSprite.scrollInfo = scrollInfo;
+      init = true;
+    }
+
     Graphics2D g2d = (Graphics2D) g;
+
+    g2d.setBackground(Color.BLACK);
+    g2d.clearRect(0, 0, Hwh.getW(this), Hwh.getH(this));
 
     AffineTransform prevAt = g2d.getTransform();
 
     AffineTransform at = AffineTransform.getTranslateInstance(-scrollInfo.xView, -scrollInfo.yView);
     g2d.transform(at);
-
-    g2d.setBackground(Color.BLACK);
-    g2d.clearRect(0, 0, getWidth(), getHeight());
 
     for (int y = 0; y < textMap.getH(); y++) {
       for (int x = 0; x < textMap.getW(); x++) {

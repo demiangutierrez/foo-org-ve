@@ -11,7 +11,7 @@ import org.cyrano.util.PointInt;
 
 import boxpush1.MultiPanel;
 
-public class Sprite {
+public class Sprite implements Box {
 
   protected PointDbl scrCurr = new PointDbl();
   protected PointDbl scrNext = new PointDbl();
@@ -145,19 +145,19 @@ public class Sprite {
 
   // --------------------------------------------------------------------------------
 
-  protected int minX() {
+  protected int minGrdX() {
     return grdCurr.x;
   }
 
-  protected int minY() {
+  protected int minGrdY() {
     return grdCurr.y;
   }
 
-  protected int maxX() {
+  protected int maxGrdX() {
     return grdCurr.x + w - 1;
   }
 
-  protected int maxY() {
+  protected int maxGrdY() {
     return grdCurr.y + h - 1;
   }
 
@@ -244,7 +244,7 @@ public class Sprite {
         scrCurr.x = scrNext.x;
         scrCurr.y = scrNext.y;
         if (scrollInfo != null) {
-          scrollInfo.updateScrollInfo(scrCurr);
+          scrollInfo.updateScrollInfo(this);
         }
 
         initMap(' ', mapChar);
@@ -266,7 +266,7 @@ public class Sprite {
         scrCurr.x += speed * dx * dt;
         scrCurr.y += speed * dy * dt;
         if (scrollInfo != null) {
-          scrollInfo.updateScrollInfo(scrCurr);
+          scrollInfo.updateScrollInfo(this);
         }
 
         dt = 0;
@@ -301,7 +301,7 @@ public class Sprite {
     scrCurr.x = grdCurr.x * MultiPanel.TILE_W;
     scrCurr.y = grdCurr.y * MultiPanel.TILE_H;
     if (scrollInfo != null) {
-      scrollInfo.updateScrollInfo(scrCurr);
+      scrollInfo.updateScrollInfo(this);
     }
 
     scrNext.x = grdNext.x * MultiPanel.TILE_W;
@@ -323,8 +323,8 @@ public class Sprite {
   protected boolean createSpritePushSet(Set<Sprite> spritePushSet, int direction) {
     switch (direction) {
       case MultiPanel.LF :
-        for (int i = minY(); i <= maxY(); i++) {
-          char nextChar = textMap.getData()[minX() - 1][i];
+        for (int i = minGrdY(); i <= maxGrdY(); i++) {
+          char nextChar = textMap.getData()[minGrdX() - 1][i];
 
           if (nextChar == 'X') {
             return false;
@@ -343,8 +343,8 @@ public class Sprite {
         }
         break;
       case MultiPanel.RG :
-        for (int i = minY(); i <= maxY(); i++) {
-          char nextChar = textMap.getData()[maxX() + 1][i];
+        for (int i = minGrdY(); i <= maxGrdY(); i++) {
+          char nextChar = textMap.getData()[maxGrdX() + 1][i];
 
           if (nextChar == 'X') {
             return false;
@@ -363,8 +363,8 @@ public class Sprite {
         }
         break;
       case MultiPanel.UP :
-        for (int i = minX(); i <= maxX(); i++) {
-          char nextChar = textMap.getData()[i][minY() - 1];
+        for (int i = minGrdX(); i <= maxGrdX(); i++) {
+          char nextChar = textMap.getData()[i][minGrdY() - 1];
 
           if (nextChar == 'X') {
             return false;
@@ -383,8 +383,8 @@ public class Sprite {
         }
         break;
       case MultiPanel.DW :
-        for (int i = minX(); i <= maxX(); i++) {
-          char nextChar = textMap.getData()[i][maxY() + 1];
+        for (int i = minGrdX(); i <= maxGrdX(); i++) {
+          char nextChar = textMap.getData()[i][maxGrdY() + 1];
 
           if (nextChar == 'X') {
             return false;
@@ -428,5 +428,35 @@ public class Sprite {
   @Override
   public String toString() {
     return mapChar + "-->" + super.toString();
+  }
+
+  @Override
+  public int maxX() {
+    return (int) (scrCurr.x + w * MultiPanel.TILE_W);
+  }
+
+  @Override
+  public int maxY() {
+    return (int) (scrCurr.y + h * MultiPanel.TILE_H);
+  }
+
+  @Override
+  public int minX() {
+    return (int) scrCurr.x;
+  }
+
+  @Override
+  public int minY() {
+    return (int) scrCurr.y;
+  }
+
+  @Override
+  public int velX() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int velY() {
+    throw new UnsupportedOperationException();
   }
 }
