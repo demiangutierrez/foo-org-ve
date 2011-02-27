@@ -13,22 +13,7 @@ import javax.swing.JPanel;
 import org.cyrano.util.Hwh;
 import org.cyrano.util.TimedKeyListener;
 
-import scroll.ScrollPanel;
-
 public class MultiPanel extends JPanel implements Runnable {
-
-  public static final int TILE_W = 25;
-  public static final int TILE_H = 25;
-
-  public static final int NO = 0;
-  public static final int LF = 1;
-  public static final int RG = 2;
-  public static final int UP = 3;
-  public static final int DW = 4;
-
-  // --------------------------------------------------------------------------------
-
-  boolean init;
 
   private Map<Character, Sprite> spriteMap = //
   new HashMap<Character, Sprite>();
@@ -39,20 +24,6 @@ public class MultiPanel extends JPanel implements Runnable {
 
   private boolean running;
 
-  //  private int xView = 0;
-  //  private int yView = 0;
-  //
-  //  private int X_MIN_PORT = 0;
-  //  private int X_MAX_PORT = 0;
-  //
-  //  private int Y_MIN_PORT = 0;
-  //  private int Y_MAX_PORT = 0;
-  //
-  //  private int X_MIN_VIEW = 5;
-  //  private int X_MAX_VIEW = 7;
-  //
-  //  private int Y_MIN_VIEW = 5;
-  //  private int Y_MAX_VIEW = 6;
   private ScrollInfo scrollInfo;
 
   // --------------------------------------------------------------------------------
@@ -77,7 +48,7 @@ public class MultiPanel extends JPanel implements Runnable {
     });
 
     // ----------------------------------------
-    // Init path
+    // Init level
     // ----------------------------------------
 
     textMap = new TextMap();
@@ -87,9 +58,6 @@ public class MultiPanel extends JPanel implements Runnable {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-
-    //    X_MAX_PORT = textMap.getW() - MultiMain.SCREEN_W_IN_TILES;
-    //    Y_MAX_PORT = textMap.getH() - MultiMain.SCREEN_H_IN_TILES + 1;
 
     // ----------------------------------------
     // Init sprite
@@ -127,12 +95,13 @@ public class MultiPanel extends JPanel implements Runnable {
       int x, int y, int w, int h, Color color, char mapChar) {
 
     Sprite sprite = new Sprite();
-    sprite.setW(w);
-    sprite.setH(h);
-    sprite.setColor(color);
 
-    sprite.setX(x);
-    sprite.setY(y);
+    sprite.setGrdX(x);
+    sprite.setGrdY(y);
+    sprite.setGrdW(w);
+    sprite.setGrdH(h);
+
+    sprite.setColor(color);
 
     sprite.setMapChar(mapChar);
     sprite.setTextMap(textMap);
@@ -152,7 +121,7 @@ public class MultiPanel extends JPanel implements Runnable {
       case KeyEvent.VK_K :
       case KeyEvent.VK_J :
       case KeyEvent.VK_L :
-        playerSprite.setDirection(NO);
+        playerSprite.setDirection(Constants.NO);
         break;
     }
   }
@@ -162,19 +131,19 @@ public class MultiPanel extends JPanel implements Runnable {
   protected void keyPressed(KeyEvent evt) {
     switch (evt.getKeyCode()) {
       case KeyEvent.VK_I :
-        playerSprite.setDirection(UP);
+        playerSprite.setDirection(Constants.UP);
         break;
       case KeyEvent.VK_K :
-        playerSprite.setDirection(DW);
+        playerSprite.setDirection(Constants.DW);
         break;
       case KeyEvent.VK_J :
-        playerSprite.setDirection(LF);
+        playerSprite.setDirection(Constants.LF);
         break;
       case KeyEvent.VK_L :
-        playerSprite.setDirection(RG);
+        playerSprite.setDirection(Constants.RG);
         break;
       default :
-        playerSprite.setDirection(NO);
+        playerSprite.setDirection(Constants.NO);
         break;
     }
   }
@@ -212,6 +181,19 @@ public class MultiPanel extends JPanel implements Runnable {
 
   // --------------------------------------------------------------------------------
 
+  protected void initScrollInfo() {
+    scrollInfo = new ScrollInfo(//
+        Constants.TILE_H * 4, Constants.TILE_H * 4, //
+        Constants.TILE_W * 4, Constants.TILE_W * 4, //
+        textMap.getW() * Constants.TILE_W, //
+        textMap.getH() * Constants.TILE_H, //
+        Hwh.getW(this), Hwh.getH(this));
+    scrollInfo.updateScrollInfo(playerSprite);
+    playerSprite.scrollInfo = scrollInfo;
+  }
+
+  // --------------------------------------------------------------------------------
+
   @Override
   public void paint(Graphics g) {
     update(g);
@@ -221,14 +203,8 @@ public class MultiPanel extends JPanel implements Runnable {
 
   @Override
   public void update(Graphics g) {
-    if (!init) {
-      scrollInfo = new ScrollInfo(100, 100, 100, 100, //
-          textMap.getW() * MultiPanel.TILE_W, //
-          textMap.getH() * MultiPanel.TILE_H, //
-          Hwh.getW(this), Hwh.getH(this));
-      scrollInfo.updateScrollInfo(playerSprite);
-      playerSprite.scrollInfo = scrollInfo;
-      init = true;
+    if (scrollInfo == null) {
+      initScrollInfo();
     }
 
     Graphics2D g2d = (Graphics2D) g;
@@ -245,15 +221,20 @@ public class MultiPanel extends JPanel implements Runnable {
       for (int x = 0; x < textMap.getW(); x++) {
         if (textMap.getData()[x][y] == 'X') {
           g2d.setColor(Color.GRAY);
-          g2d.fillRect(x * TILE_W, y * TILE_H, TILE_W, TILE_H);
+          g2d.fillRect(x * Constants.TILE_W, y * Constants.TILE_H, //
+              Constants.TILE_W, Constants.TILE_H);
+
           g2d.setColor(Color.RED);
-          g2d.drawRect(x * TILE_W, y * TILE_H, TILE_W, TILE_H);
+          g2d.drawRect(x * Constants.TILE_W, y * Constants.TILE_H, //
+              Constants.TILE_W, Constants.TILE_H);
         }
         if (textMap.getData()[x][y] == ' ') {
           g2d.setColor(Color.BLACK);
-          g2d.fillRect(x * TILE_W, y * TILE_H, TILE_W, TILE_H);
+          g2d.fillRect(x * Constants.TILE_W, y * Constants.TILE_H, //
+              Constants.TILE_W, Constants.TILE_H);
           g2d.setColor(Color.RED);
-          g2d.drawRect(x * TILE_W, y * TILE_H, TILE_W, TILE_H);
+          g2d.drawRect(x * Constants.TILE_W, y * Constants.TILE_H, //
+              Constants.TILE_W, Constants.TILE_H);
         }
       }
     }
@@ -266,7 +247,7 @@ public class MultiPanel extends JPanel implements Runnable {
       for (int x = 0; x < textMap.getW(); x++) {
         g2d.drawString( //
             Character.toString(textMap.getData()[x][y]), //
-            x * TILE_W + 10, y * TILE_H + 15);
+            x * Constants.TILE_W + 10, y * Constants.TILE_H + 15);
       }
     }
 

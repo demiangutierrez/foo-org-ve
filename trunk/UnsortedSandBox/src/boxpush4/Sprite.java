@@ -22,8 +22,8 @@ public class Sprite implements Box {
 
   protected char mapChar;
 
-  protected int w;
-  protected int h;
+  protected int grdW;
+  protected int grdH;
 
   protected Map<Character, Sprite> spriteMap;
 
@@ -59,22 +59,22 @@ public class Sprite implements Box {
 
   // --------------------------------------------------------------------------------
 
-  public int getW() {
-    return w;
+  public int getGrdW() {
+    return grdW;
   }
 
-  public void setW(int w) {
-    this.w = w;
+  public void setGrdW(int grdW) {
+    this.grdW = grdW;
   }
 
   // --------------------------------------------------------------------------------
 
-  public int getH() {
-    return h;
+  public int getGrdH() {
+    return grdH;
   }
 
-  public void setH(int h) {
-    this.h = h;
+  public void setGrdH(int grdH) {
+    this.grdH = grdH;
   }
 
   // --------------------------------------------------------------------------------
@@ -119,27 +119,27 @@ public class Sprite implements Box {
 
   // --------------------------------------------------------------------------------
 
-  public void setX(int x) {
+  public void setGrdX(int x) {
     grdCurr.x = x;
     grdNext.x = x;
     scrCurr.x = x * MultiPanel.TILE_W;
     scrNext.x = x * MultiPanel.TILE_W;
   }
 
-  public int getX() {
+  public int getGrdX() {
     return grdCurr.x;
   }
 
   // --------------------------------------------------------------------------------
 
-  public void setY(int y) {
+  public void setGrdY(int y) {
     grdCurr.y = y;
     grdNext.y = y;
     scrCurr.y = y * MultiPanel.TILE_H;
     scrNext.y = y * MultiPanel.TILE_H;
   }
 
-  public int getY() {
+  public int getGrdY() {
     return grdCurr.y;
   }
 
@@ -154,18 +154,18 @@ public class Sprite implements Box {
   }
 
   protected int maxGrdX() {
-    return grdCurr.x + w - 1;
+    return grdCurr.x + grdW - 1;
   }
 
   protected int maxGrdY() {
-    return grdCurr.y + h - 1;
+    return grdCurr.y + grdH - 1;
   }
 
   // --------------------------------------------------------------------------------
 
   public void initMap(char initChar, char chckChar) {
-    for (int y = 0; y < h; y++) {
-      for (int x = 0; x < w; x++) {
+    for (int y = 0; y < grdH; y++) {
+      for (int x = 0; x < grdW; x++) {
         if (textMap.getData()[grdCurr.x + x][grdCurr.y + y] == chckChar || //
             chckChar == Character.MAX_VALUE) {
           textMap.getData()[grdCurr.x + x][grdCurr.y + y] = initChar;
@@ -177,8 +177,8 @@ public class Sprite implements Box {
   // --------------------------------------------------------------------------------
 
   public void paint(Graphics2D g2d) {
-    for (int y = 0; y < h; y++) {
-      for (int x = 0; x < w; x++) {
+    for (int y = 0; y < grdH; y++) {
+      for (int x = 0; x < grdW; x++) {
         g2d.setColor(color);
         g2d.fillRect(//
             (int) (scrCurr.x + x * MultiPanel.TILE_W), //
@@ -243,6 +243,7 @@ public class Sprite implements Box {
 
         scrCurr.x = scrNext.x;
         scrCurr.y = scrNext.y;
+
         if (scrollInfo != null) {
           scrollInfo.updateScrollInfo(this);
         }
@@ -265,6 +266,7 @@ public class Sprite implements Box {
 
         scrCurr.x += speed * dx * dt;
         scrCurr.y += speed * dy * dt;
+
         if (scrollInfo != null) {
           scrollInfo.updateScrollInfo(this);
         }
@@ -277,6 +279,7 @@ public class Sprite implements Box {
   // --------------------------------------------------------------------------------
 
   protected void updateSpriteDirection(int direction2) {
+
     switch (direction2) {
       case MultiPanel.LF :
         grdNext.x = grdCurr.x - 1;
@@ -295,11 +298,12 @@ public class Sprite implements Box {
         grdNext.y = grdCurr.y + 1;
         break;
       default :
-        //throw new IllegalArgumentException();
+        // throw new IllegalArgumentException();
     }
 
     scrCurr.x = grdCurr.x * MultiPanel.TILE_W;
     scrCurr.y = grdCurr.y * MultiPanel.TILE_H;
+
     if (scrollInfo != null) {
       scrollInfo.updateScrollInfo(this);
     }
@@ -403,7 +407,7 @@ public class Sprite implements Box {
         }
         break;
       default :
-        //throw new IllegalArgumentException();
+        // throw new IllegalArgumentException();
     }
 
     return true;
@@ -430,14 +434,28 @@ public class Sprite implements Box {
     return mapChar + "-->" + super.toString();
   }
 
+  // --------------------------------------------------------------------------------
+  // Box
+  // --------------------------------------------------------------------------------
+
+  @Override
+  public int getW() {
+    return grdW * MultiPanel.TILE_W;
+  }
+
+  @Override
+  public int getH() {
+    return grdW * MultiPanel.TILE_H;
+  }
+
   @Override
   public int maxX() {
-    return (int) (scrCurr.x + w * MultiPanel.TILE_W);
+    return (int) (scrCurr.x + grdW * MultiPanel.TILE_W);
   }
 
   @Override
   public int maxY() {
-    return (int) (scrCurr.y + h * MultiPanel.TILE_H);
+    return (int) (scrCurr.y + grdH * MultiPanel.TILE_H);
   }
 
   @Override
