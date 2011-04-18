@@ -1,0 +1,7 @@
+6 6
+AAAAAA
+A     
+AAAA A
+     A
+AAAAAA
+A    A

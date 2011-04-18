@@ -65,8 +65,8 @@ public class BoxReader {
       box.bh = Integer.parseInt(data[i++]);
       box.vx = Integer.parseInt(data[i++]);
       box.vy = Integer.parseInt(data[i++]);
-      box.ax = Integer.parseInt(data[i++]);
-      box.ay = Integer.parseInt(data[i++]);
+      /*box.ax =*/Integer.parseInt(data[i++]);
+      /*box.ay =*/Integer.parseInt(data[i++]);
 
       box.color = new Color( //
           Integer.parseInt(data[i++]), //
