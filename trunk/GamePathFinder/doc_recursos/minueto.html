@@ -1,0 +1,525 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><!-- Article Template for Crossroads -->
+<!-- Written by Gabriel Saldaña, February 15 2006 -->
+
+
+   
+      <meta http-equiv="Content-Type" content="text/html; 
+charset=ISO-8859-1">
+      <title>
+         Avoid Common Pitfalls when Programming 2D Graphics in
+         Java: Lessons Learnt from Implementing the Minueto Toolkit
+      </title>
+      <!-- Dont forget to put this line, where it embeds the proper style sheet -->
+      <link rel="stylesheet" href="minueto_files/article.css" 
+type="text/css"><!-- my style sheets -->
+
+<style type="text/css">
+/*<![CDATA[*/
+code {color: #222288;font-size: 105%;}
+/*]]>*/
+</style>
+      <meta name="keywords" content="article,content,keywords">
+      <meta name="description" content="article brief description">
+   </head><body>
+      <!--This is where the header of the pages is set. This two lines will do it -->
+        <!-- Begin Top -->
+<div id="container">
+<div id="banner">
+<a href="http://www.acm.org/crossroads"><img 
+src="minueto_files/xrdslogo.gif" alt="Crossroads Logo" 
+title="Crossroads, The ACM Student Magazine"></a>
+<h1><a href="http://www.acm.org/crossroads">Crossroads</a></h1>
+<h2><a href="http://www.acm.org/crossroads">The ACM Student Magazine</a></h2>
+</div> <!--banner-->
+
+<div id="center">
+<div class="content">
+<!-- End Top -->
+
+
+      <a href="http://www.acm.org/">ACM</a> /&nbsp;<a 
+href="http://www.acm.org/crossroads/">Crossroads</a>&nbsp;/&nbsp;<a 
+href="http://www.acm.org/crossroads/xrds13-3/">Xrds13-3</a>&nbsp;/&nbsp;
+      
+      <h1>
+         Avoid Common Pitfalls when Programming 2D Graphics in
+         Java: Lessons Learnt from Implementing the Minueto Toolkit
+      </h1>
+      <p>
+         <img src="minueto_files/articleglyph.html" alt="Article Glyph" 
+style="float: right;">
+      </p>
+      <p>
+         by <a href="#bio"><em>Alexandre Denault</em></a> and
+         <a href="#bio"><em>Jörg Kienzle</em></a>
+      </p>
+      <p>
+         <em>This paper presents the core knowledge required to
+         properly develop 2D games in Java. We describe the common
+         pitfalls that can easily degrade graphics performance and
+         show how we achieved impressive frames-per-second display
+         updates when implementing Minueto, a game development
+         framework.</em>
+      </p>
+      <h2>
+         1. Introduction
+      </h2>
+      <p>
+         Java provides two frameworks for designing graphical user
+         interfaces: AWT and Swing. Although these frameworks are
+         ideal for data manipulation, they render much too slowly
+         to be used in game development. The following article
+         presents the core knowledge required to develop fast 2D
+         games in Java without using Swing or AWT. This article
+         also describes the mistakes commonly made by beginner Java
+         2D programmers that can easily degrade display
+         performance. These lessons we learned while developing
+         Minueto[<a href="#ref1">1</a>, <a href="#ref5">5</a>], a
+         game development tool for McGill undergraduate students.
+      </p>
+      <h3>
+         1.1 Basic Building Blocks
+      </h3>
+      <p>
+         There are 2 basic building blocks for graphics in a 2D
+         game, a <em>drawing canvas</em> and a collection of
+         <em>images</em>. The canvas can either be displayed on the
+         screen as a window, or encompass the entire screen. Images
+         are the building blocks that get drawn on the canvas. They
+         are drawn repetitively on the screen to produce animation.
+      </p>
+      <p>
+         In Java, the canvas is either a <strong>Frame</strong> or
+         a <strong>JFrame</strong> object. The images are stored in
+         <strong>BufferedImage</strong> objects. Images can be
+         drawn on the canvas or over other images through the use
+         of a <strong>Graphics2D</strong> object. The following
+         sections explain how to properly build your canvas
+         (section 2) and your images (section 3).
+      </p>
+      <h2>
+         2. The Canvas
+      </h2>
+      <p>
+         As previously mentioned, the drawing canvas should be a
+         simple JFrame. To insure flicker free performance, the
+         "ignore repaint" property should be enabled
+         (using the <strong>setIgnoreRepaint</strong> method). This
+         prevents the Java virtual machine (JVM) from trying to
+         modify the content of the canvas.
+      </p>
+      <h3>
+         2.1 Graphic Device and Configuration
+      </h3>
+      <p>
+         The <strong>GraphicsDevice</strong> class is used to
+         describe graphic output devices, such are your
+         computer's graphic card. It contains a collection of
+         <strong>GraphicsConfiguration</strong> objects that
+         describe all the possible configurations for the graphic
+         card, i.e. all the supported resolutions and color modes.
+      </p>
+      <blockquote>
+         <p>
+            <code>// Acquiring the current Graphics Device and
+            Graphics Configuration<br>
+            GraphicsEnvironment graphEnv =
+            GraphicsEnvironment.getLocalGraphicsEnvironment();<br>
+
+            GraphicsDevice graphDevice =
+            graphEnv.getDefaultScreenDevice();<br>
+            GraphicsConfiguration graphicConf =
+            graphDevice.getDefaultConfiguration();<br></code>
+         </p>
+      </blockquote>
+      <p>
+         When creating a new JFrame, we highly suggest passing the
+         current graphic configuration constructor as a parameter.
+         This allows the JFrame to be specially constructed for
+         that graphic configuration and avoids common color mode
+         problems (as described in section 3.3).
+      </p>
+      <blockquote>
+         <p>
+            <code>//Creating the JFrame<br>
+            JFrame jFrame = new JFrame(graphicConf);<br>
+            jFrame.setIgnoreRepaint(true);<br>
+            jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);<br>
+
+            jFrame.setTitle("Minueto");<br>
+            jFrame.setFocusTraversalKeysEnabled(false);<br></code>
+         </p>
+      </blockquote>
+      <p>
+         In addition, the current graphic configuration is needed
+         to produce hardware accelerated images (as described in
+         section 3.4).
+      </p>
+      <h3>
+         2.2 Proper Size for a Window
+      </h3>
+      <p>
+         Creating a drawing surface of a specific size can be
+         tricky with a normal windowed frame. A 640 by 480 pixels
+         JFrame will have a drawing surface of approximately 630 by
+         440 pixels (see figure 1). This loss of space can be
+         explained by the title bar and the window borders which
+         are include in the original size of 640 by 480 pixels
+         [<a href="#ref6">6</a>].
+      </p>
+      <p>
+         An easy solution to this problem is to insert a 640x480
+         <strong>Canvas</strong> object (with ignore repaint set to
+         true) inside the JFrame. This will force the JFrame to
+         contain a true 640 by 480 drawing surface, regardless of
+         the size of the title bar or windows border. Note that
+         this solution requires all drawing to be done on the
+         Canvas, instead of the JFrame. We found that this solution
+         is practical and has no impact on performance.
+      </p>
+      <p style="text-align: center;">
+         <img src="minueto_files/goodJava2D1.png" alt="Difference 
+between a 640x480 window and a 640x480 drawing area." height="233" 
+width="600"><br>
+
+         Figure 1 : Difference between a 640x480 window and a
+         640x480 drawing area.
+      </p>
+      <p>
+         Note: This problem does not exist for full screen windows
+         or border-less windows, as they don't have borders or
+         title bars to reduce the size of the drawing area.
+      </p>
+      <h3>
+         2.3 Fullscreen Window and Changing the Resolution
+      </h3>
+      <p>
+         The GraphicsDevice object can also be used to change the
+         resolution of the screen or transform a frame so it covers
+         the whole screen (full screen mode). We found that
+         resolution changes using a pre-1.5 JVM are dangerous and
+         could cause the process to crash [<a href="#ref6">6</a>].
+         In addition, resolution changes are not supported with a
+         pre-1.4 JVM under Linux.
+      </p>
+      <blockquote>
+         <p>
+            <code>//Switching Resolution and to Full Screen<br>
+            DisplayMode disMode = new DisplayMode( width, height,
+            32, DisplayMode.REFRESH_RATE_UNKNOWN);<br>
+            graphDevice.setFullScreenWindow(jFrame);<br>
+            graphDevice.setDisplayMode(disMode);<br></code>
+         </p>
+      </blockquote>
+      <p>
+         <br>
+      </p>
+      <h3>
+         2.4 Double Buffering
+      </h3>
+      <p>
+         The key to smooth animation in Java is to use double
+         buffering. Double buffering is a technique where a
+         <strong>memory buffer</strong> is created as a workspace
+         for changes to appear on the screen. The content of this
+         buffer is displayed on screen only once all the changes to
+         the current frame have been completed (see figure 2). This
+         avoids flickering and other graphic artifacts commonly
+         produced by the progressive updating of the screen. Double
+         buffering also allows the synchronization of the screen
+         updates with the refresh rate of the monitor.
+      </p>
+      <p style="text-align: center;">
+         <img src="minueto_files/goodJava2D2.png" alt="Double Buffering"
+ height="300" width="600"><br>
+         Figure 2 : Double Buffering.
+      </p>
+      <p>
+         In Java, double buffering is provided by the
+         <strong>BufferStrategy</strong> class. Although
+         BufferStrategy allows for n-buffering, we found that
+         double-buffering (that is, creating a BufferStrategy with
+         2 buffers) was optimal.
+      </p>
+      <blockquote>
+         <p>
+            <code>//Setting up Double Buffering<br>
+            jFrame.createBufferStrategy(2);<br>
+            BufferStrategy bufferStrategy =
+            jFrame.getBufferStrategy();<br>
+            Graphics2D graph2D =
+            (Graphics2D)bufferStrategy.getDrawGraphics();<br></code>
+         </p>
+      </blockquote>
+      <p>
+         <br>
+      </p>
+      <h2>
+         3. Buffered Images
+      </h2>
+      <p>
+         Chet Haase, an engineer on the Java 2D team, documented no
+         less than 38 different methods to create an image with the
+         Java 1.4 API [<a href="#ref2">2</a>]. These different
+         methods produce images with various characteristics. We
+         found that the optimal methods for producing efficient
+         BufferedImage object were found in the
+         GraphicsConfiguration object [<a href="#ref3">3</a>] used
+         to create the JFrame (as describe in the section 2.1).
+         They assure greatest compatibility between the images and
+         the drawing canvas.
+      </p>
+      <blockquote>
+         <p>
+            <code>// Creating a hardware accelerated image with
+            bitmask transparencies.<br>
+            BufferedImage imageBitMask =
+            graphicConf.createCompatibleImage(x,y,
+            Transparency.BITMASK);<br></code>
+         </p>
+      </blockquote>
+      <p>
+         <br>
+      </p>
+      <h3>
+         3.1 Volatile Images vs. Managed Images
+      </h3>
+      <p>
+         Two types of images in Java are hardware accelerated:
+         volatile images and managed images. Volatile images are
+         stored only in video memory and are extremely fast.
+         However, if the video memory is overwritten by another
+         application, the content is lost. Managed images are
+         stored in both video memory and conventional memory, thus
+         do not suffer from the "content lost" problem.
+         Although this redundancy incurs a performance cost, we
+         found manually managing volatile images would be too much
+         overhead.
+      </p>
+      <p>
+         Certain operations that can be applied to a BufferedImage
+         object, such as manipulating the image at the pixel level,
+         can make an object lose it's hardware accelerated
+         features. When this occurs, the image is no longer stored
+         in video memory. To make it regain its hardware
+         acceleration, a manipulated image should be copied to a
+         new accelerated BufferedImage before it is used.
+      </p>
+      <h3>
+         3.2 Color Mode
+      </h3>
+      <p>
+         The key to successful image acceleration is to create an
+         image with the same characteristics as the current
+         display. For example, if the current display is switched
+         to RBGA 32-bit color mode, then all images should be
+         created, loaded and/or converted to this color mode. To
+         this extent, we copy every loaded image into a new
+         accelerated BufferedImage, which automatically has the
+         correct color mode.
+      </p>
+      <p>
+         If this is not done and images are loaded and stored using
+         different color modes, those images need to be converted
+         to the screen's color mode every time they are drawn
+         to the canvas, causing tremendous slowdowns.
+      </p>
+      <h3>
+         3.3 Transparencies
+      </h3>
+      <p>
+         Java supports three type of transparencies: opaque (no
+         transparencies), bitmask (a pixel is either transparent or
+         not) and alpha (variable level of transparency for each
+         pixel). We found the use of either opaque or bitmask
+         transparencies produces impressive performance, even on
+         modest graphic hardware. Alpha transparencies are much
+         slower, especially when using graphic cards that do not
+         provide hardware support for aplpha transparencies. We
+         therefore recommend avoiding alpha transparencies, unless
+         they are specifically needed.
+      </p>
+      <blockquote>
+         <p>
+            <code>// Creating a hardware accelerated image with
+            bitmask alpha.<br>
+            BufferedImage imageAlpha =
+            graphicConf.createCompatibleImage(x,y,
+            Transparency.TRANSLUCENT);<br></code>
+         </p>
+      </blockquote>
+      <p>
+         <br>
+      </p>
+      <h3>
+         3.4 Rendering to the screen
+      </h3>
+      <p>
+         As previously mentioned in section 2.4, images should
+         first be drawn on the memory buffer.
+      </p>
+      <blockquote>
+         <p>
+            <code>//Drawing an image on the memory buffer<br>
+            graph2D.drawImage(bufferedImage, x, y,
+            null);<br></code>
+         </p>
+      </blockquote>
+      <p>
+         Once the frame is ready, we can render the content of the
+         memory buffer to the screen.
+      </p>
+      <blockquote>
+         <p>
+            <code>// Rendering the current buffer to screen<br>
+            graph2D.dispose();<br>
+            bufferStrategy.show();<br>
+            graph2D =
+            (Graphics2D)bufferStrategy.getDrawGraphics();<br></code>
+         </p>
+      </blockquote>
+      <p>
+         <br>
+      </p>
+      <h2>
+         5. Conclusion and Future Work
+      </h2>
+      <p>
+         Despite our initial apprehension about using Java for game
+         development, Java 2D has shown to be very efficient, if
+         used properly. Two years of using Minueto for the game
+         development of COMP-361 projects, the Systems Development
+         Project course at McGill, has shown that it performs
+         extremely well, thanks to the different optimizations
+         presented in this article. Our future work in this area
+         will focus on efficient ways to combine Swing and Java 2D
+         technology.
+      </p>
+      <h2>
+         References
+      </h2>
+      <dl>
+         <dt>
+            <strong>1</strong><a name="ref1" id="ref1"></a>
+         </dt>
+         <dd>
+            Alexandre Denault, <em>Minueto, an Undergraduate
+            Teaching Development Framework</em>, Master's
+            Thesis, McGill University, August 2005.
+         </dd>
+         <dt>
+            <strong>2</strong><a name="ref2" id="ref2"></a>
+         </dt>
+         <dd>
+            Chet Haase, <em>BufferedImage as Good as Butter Part
+            1</em>, August 14, 2003, &lt;<a 
+href="http://weblogs.java.net/blog/chet/">http://weblogs.java.net/blog/chet/</a>&gt;.
+
+         </dd>
+         <dt>
+            <strong>3</strong><a name="ref3" id="ref3"></a>
+         </dt>
+         <dd>
+            Chet Haase, <em>ToolkitBufferedVolatileManagedImage
+            Strategies</em>, August 11, 2004, &lt;<a 
+href="http://weblogs.java.net/blog/chet/">http://weblogs.java.net/blog/chet/</a>&gt;.
+
+         </dd>
+         <dt>
+            <strong>4</strong><a name="ref4" id="ref4"></a>
+         </dt>
+         <dd>
+            Clingman / Kendall / Mesdaghi, <em>Practical Java Game
+            Programming</em>, Charles River Media, June 2004, 508
+            pages.
+         </dd>
+         <dt>
+            <strong>5</strong><a name="ref5" id="ref5"></a>
+         </dt>
+         <dd>
+            <em>Minueto</em>, &lt;<a href="http://minueto.cs.mcgill.ca/">http://minueto.cs.mcgill.ca/</a>&gt;.
+
+         </dd>
+         <dt>
+            <strong>6</strong><a name="ref6" id="ref6"></a>
+         </dt>
+         <dd>
+            <em>JavaGaming Forums</em>, &lt;<a 
+href="http://www.javagaming.org/">http://www.javagaming.org</a>&gt;.
+         </dd>
+      </dl>
+      <hr>
+      <p>
+         <a name="bio" id="bio"></a>
+      </p>
+      <h2>
+         Biography
+      </h2>
+      <p>
+         Alexandre Denault ( <a 
+href="mailto:alexandre.denault@mail.mcgill.ca">Alexandre.Denault@mail.mcgill.ca</a>
+         ) is a PhD student in the School of Computer Science at
+         McGill University. His research interests include fault
+         tolerant distributed environments, teaching tools and game
+         development (specifically content generation and cheat
+         prevention). He is an active member of both the Mammoth
+         research project and CSGames, an inter-university computer
+         science competition.
+      </p>
+      <p>
+         Jörg Kienzle ( <a 
+href="http://www.acm.org/crossroads/xrds13-3/joerg.kienzle@mcgill.ca">Joerg.Kienzle@mcgill.ca</a>
+ ) is
+         an assistant professor at the School of Computer Science
+         at McGill Universiy in Montreal, Canada, where he is
+         leading the Software Engineering Laboratory. He holds a
+         Ph.D. and engineering diploma from the Swiss Federal
+         Institute of Technology in Lausanne (EPFL). His current
+         research interests include fault tolerance, software
+         development methods, aspect-orientation and computer
+         games.
+      </p>
+      <!-- Begin Bottom --><!-- Begin Side --></div> <!--content--></div>
+ <!--center--></div> <!--container-->
+<!-- Begin Bottom -->
+
+<h4 style="text-align: center;">
+<a href="http://www.acm.org/crossroads/includes/copyright.html">Copyright
+ 
+2010, The Association for Computing Machinery, Inc.</a>
+</h4>
+<div id="footerlinks">
+<div id="bottomlinks">
+ <div class="w3cbutton3">
+  <a href="http://validator.w3.org/check/referer">
+    <span class="w3c">W3C</span>
+    <span class="spec">XHTML 1.0</span>
+  </a>
+</div>
+
+ <div class="w3cbutton3">
+  <a href="http://jigsaw.w3.org/css-validator/">
+    <span class="w3c">W3C</span>
+    <span class="spec">CSS 2.0</span>
+  </a>
+</div>
+
+ <div class="w3cbutton3">
+  <a href="http://www.w3.org/WAI/WCAG1AAA-Conformance">
+    <span class="w3c">W3C</span>
+    <span class="spec">WCAG 1.0</span>
+  </a>
+</div>
+</div>
+</div>
+
+<!-- End Bottom -->
+<script src="minueto_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-248272-1";
+urchinTracker();
+</script>
+
+   </body></html>

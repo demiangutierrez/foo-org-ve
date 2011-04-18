@@ -1,0 +1,50 @@
+45 43
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+X  *                 *X*                 *  X
+X X XXXXXXXXXXXXXXXXX X XXXXXXXXXXXXXXXXX X X
+X X                                       X X
+X X.XXXXXXXX XXXXXXXX.X.XXXXXXXX XXXXXXXX.X X
+X X.X*.............*X.X.X*.............*X.X X
+X X.X.XXXXXXXXXXXXX.X.X.X.XXXXXXXXXXXXX.X.X X
+X X.X.X*.........*X.X.X.X.X*.........*X.X.X X
+X X.X.X.XXXX XXXX.X.X.X.X.X.XXXX XXXX.X.X.X X
+X X.X.X.X.......X.X.X.X.X.X.X.......X.X.X.X X
+X X.X.X.X.XXXXX.X.X.X.X.X.X.X.XXXXX.X.X.X.X X
+X X. .X.X.X   X.X.X. . . .X.X.X   X.X.X. .X X
+X X. .X.X.X   X.X.X. . . .X.X.X   X.X.X. .X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X...............X.X.X...............X.X X
+X X.XXXXXXXX XXXXXXXX.X.XXXXXXXX XXXXXXXX.X X
+X  ...................P...................  X
+X XXXXXXXXXX XXXXXXXXXXXXXXXXXXX XXXXXXXXXX X
+X  *                 *X*                 *  X
+X X XXXXXXXXXXXXXXXXX X XXXXXXXXXXXXXXXXX X X
+X X                                       X X
+X X.XXXXXXXX XXXXXXXX.X.XXXXXXXX XXXXXXXX.X X
+X X.X*.............*X.X.X*.............*X.X X
+X X.X.XXXXXXXXXXXXX.X.X.X.XXXXXXXXXXXXX.X.X X
+X X.X.X*.........*X.X.X.X.X*.........*X.X.X X
+X X.X.X.XXXX XXXX.X.X.X.X.X.XXXX XXXX.X.X.X X
+X X.X.X.X.......X.X.X.X.X.X.X.......X.X.X.X X
+X X.X.X.X.XXXXX.X.X.X.X.X.X.X.XXXXX.X.X.X.X X
+X X. .X.X.X   X.X.X. . . .X.X.X   X.X.X. .X X
+X X. .X.X.X   X.X.X. . . .X.X.X   X.X.X. .X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X...............X.X.X...............X.X X
+X X.XXXXXXXX XXXXXXXX.X.XXXXXXXX XXXXXXXX.X X
+X  ................... ...................  X
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+org.cyrano.pacman3.GhostSpriteB  1  1 150
+org.cyrano.pacman3.GhostSpriteB 43  1 150
+org.cyrano.pacman3.GhostSpriteC  1 41 140
+org.cyrano.pacman3.GhostSpriteC 43 41 140
+layers
+org.cyrano.pacman3.KeyItemSprite 30 30

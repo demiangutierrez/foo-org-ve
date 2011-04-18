@@ -1,0 +1,113 @@
+body {    margin: 0px 0px 20px 0px;    background-color: #999999;}
+a {    text-decoration: underline;    font-weight: bold;}
+a:link {    color: #000066;}
+a:visited {    color: #666666;}
+a:active {    color: #000066;}
+a:hover {    color: #CC6600;}
+h1, h2, h3 {    margin: 0px;    padding: 0px;    font-weight: bold;}
+#container {    line-height: 140%;    background-color: #CCCCCC;}
+/* Edited by Gabriel Saldana on Feb 22, 2007
+/*#banner {    font-family: 'Verdana', sans-serif;    color: #FFFFFF;    background-color: #000066;    text-align: left;    padding: 15px;    height: 40px;}
+#banner a {    color: #FFFFFF;    text-decoration: none;}
+#banner h1 {    font-size: x-large;    font-weight: bold;}
+#banner h2 {    font-size: small;}
+*/
+#banner {
+    font-family: 'Verdana', sans-serif;
+    color: #FFFFFF;
+    background: #000066 url("../images/header_bg.gif") repeat-x top left;
+    text-align: left;
+    padding: 15px;
+    height: 40px;
+}
+
+#banner a {
+    color: #FFFFFF;
+    text-decoration: none;
+    display: block;
+	 width: 196px;
+	 /*height: 97px;*/
+}
+
+#banner img {
+	position: absolute;
+	border: 0px;
+	right: 20px;
+
+}
+
+#banner h1 {
+    font-size: x-large;
+    font-weight: bold;
+    height: 27px;
+    background: transparent url("../images/crossroads_title.gif") top left no-repeat;
+    text-indent: -9999px;
+    width:205px;
+}
+
+#banner h1 span {
+	 display: none;
+}
+
+#banner h2 {
+    font-size: small;
+    padding-bottom: 0;
+}
+#center {    margin-right: 0px;    overflow: hidden;}
+.content {    padding: 15px 15px 5px 15px;    background: #FFFFFF url("../images/body_bg.gif") repeat-x top left;    color: #333;    font-family: Verdana, Arial, sans-serif;    font-size: small;}
+.content p {    color: #333;    font-family: Verdana, Arial, sans-serif;    font-size: small;    font-weight: normal;    line-height: 150%;    text-align: left;    margin-bottom: 10px;}
+.content blockquote {    line-height: 150%;}
+.content li {    line-height: 150%;}
+.content h2 {    color: #006699;    font-family: 'Trebuchet MS', Verdana, sans-serif;    font-size: medium;    text-align: left;    font-weight: bold;    margin-bottom: 10px;}
+.content h3 {    color: #000000;    font-family: 'Trebuchet MS', Verdana, sans-serif;    font-size: medium;    text-align: left;    font-weight: bold;    margin-bottom: 10px;}
+.content p.posted {    color: #006688;    font-family: 'Trebuchet MS', Verdana, sans-serif;    font-size: x-small;    border-bottom: 1px dashed #666666;    text-align: right;    font-weight: bold;    margin-bottom: 25px;    line-height: normal;    padding: 3px;}
+col, colgroup, table, tbody, td, tfoot, th, thead, tr {    /* Changed by Bill */    margin-left: auto;    margin-right: auto;     padding-left: 0px;    padding-right: 0px;    border-left: 0px none;    border-right: 0px none;    float: none;    clear: none;}
+
+table {    text-align: left;    border-left: 1px solid;    border-right: 1px solid;    border-top: 1px solid;    border-bottom: 1px solid;}    td {    text-align: left;    padding-left: 2px;    padding-right: 2px;    border-left: 1px solid;    border-right: 1px solid;    border-top: 1px solid;    border-bottom: 1px solid;}
+th {    text-align: left;}
+caption {    text-align: left;}
+/* bottom stuff */
+.copyright a {
+	color: #afafaf;
+	text-align: center;
+}
+ .w3cbutton3 {
+  text-align: left;
+  margin: 1em 0;
+  width: 9em;
+  border: 1px solid #ccc;
+  font-family: helvetica,arial,sans-serif;
+  font-size: 70%;
+  font-weight: bold;
+}
+.w3cbutton3 a, .w3cbutton3 h4 {
+  display: block;
+  width: 100%;
+}
+.w3cbutton3 a:link,
+.w3cbutton3 a:visited,
+.w3cbutton3 a:hover {
+  background-color: #fc6;
+  color: #000;
+  text-decoration: none;
+}
+.w3cbutton3 span.w3c {
+  padding: 0 0.4em;
+  background-color: #fff;
+  color: #0c479d;
+}
+#bottomlinks ul {
+ text-align: center;
+}
+#bottomlinks div{
+display: inline;
+float: left;
+margin-left: 10px;
+margin-right: 10px;
+margin-top: 0;
+
+}
+#footerlinks {
+width: 370px;
+margin: auto;
+}
