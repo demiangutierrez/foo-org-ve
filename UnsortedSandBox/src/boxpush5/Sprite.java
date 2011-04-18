@@ -1,4 +1,4 @@
-package boxpush4;
+package boxpush5;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -20,14 +20,16 @@ public class Sprite implements Box {
   protected PointInt grdCurr = new PointInt();
   protected PointInt grdNext = new PointInt();
 
-  protected char mapChar;
+  protected char playChar;
 
-  protected int grdW;
-  protected int grdH;
+  //  protected int grdW;
+  //  protected int grdH;
 
   protected Map<Character, Sprite> spriteMap;
 
   protected TextMap textMap;
+
+  protected TextMap playMap;
 
   protected int direction;
 
@@ -49,33 +51,33 @@ public class Sprite implements Box {
 
   // --------------------------------------------------------------------------------
 
-  public char getMapChar() {
-    return mapChar;
+  public char getPlayChar() {
+    return playChar;
   }
 
-  public void setMapChar(char mapChar) {
-    this.mapChar = mapChar;
+  public void setPlayChar(char playChar) {
+    this.playChar = playChar;
   }
 
   // --------------------------------------------------------------------------------
 
   public int getGrdW() {
-    return grdW;
+    return playMap.getW();
   }
 
-  public void setGrdW(int grdW) {
-    this.grdW = grdW;
-  }
+  //  public void setGrdW(int grdW) {
+  //    this.grdW = grdW;
+  //  }
 
   // --------------------------------------------------------------------------------
 
   public int getGrdH() {
-    return grdH;
+    return playMap.getH();
   }
 
-  public void setGrdH(int grdH) {
-    this.grdH = grdH;
-  }
+  //  public void setGrdH(int grdH) {
+  //    this.grdH = grdH;
+  //  }
 
   // --------------------------------------------------------------------------------
 
@@ -95,6 +97,16 @@ public class Sprite implements Box {
 
   public void setTextMap(TextMap textMap) {
     this.textMap = textMap;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public TextMap getPlayMap() {
+    return playMap;
+  }
+
+  public void setPlayMap(TextMap playMap) {
+    this.playMap = playMap;
   }
 
   // --------------------------------------------------------------------------------
@@ -154,18 +166,22 @@ public class Sprite implements Box {
   }
 
   protected int maxGrdX() {
-    return grdCurr.x + grdW - 1;
+    return grdCurr.x + getGrdW() - 1;
   }
 
   protected int maxGrdY() {
-    return grdCurr.y + grdH - 1;
+    return grdCurr.y + getGrdH() - 1;
   }
 
   // --------------------------------------------------------------------------------
 
   public void initMap(char initChar, char chckChar) {
-    for (int y = 0; y < grdH; y++) {
-      for (int x = 0; x < grdW; x++) {
+    for (int y = 0; y < getGrdH(); y++) {
+      for (int x = 0; x < getGrdW(); x++) {
+        if (playMap.getData()[x][y] != playChar) {
+          continue;
+        }
+
         if (textMap.getData()[grdCurr.x + x][grdCurr.y + y] == chckChar || //
             chckChar == Character.MAX_VALUE) {
           textMap.getData()[grdCurr.x + x][grdCurr.y + y] = initChar;
@@ -177,8 +193,12 @@ public class Sprite implements Box {
   // --------------------------------------------------------------------------------
 
   public void paint(Graphics2D g2d) {
-    for (int y = 0; y < grdH; y++) {
-      for (int x = 0; x < grdW; x++) {
+    for (int y = 0; y < playMap.getH(); y++) {
+      for (int x = 0; x < playMap.getW(); x++) {
+        if (playMap.getData()[x][y] != playChar) {
+          continue;
+        }
+
         g2d.setColor(color);
         g2d.fillRect(//
             (int) (scrCurr.x + x * MultiPanel.TILE_W), //
@@ -215,8 +235,10 @@ public class Sprite implements Box {
       }
     }
 
-    for (Sprite pushedSprite : spritePushSet) {
-      pushedSprite.updatePos(dt);
+    if (!spritePushSet.contains(this)) {
+      for (Sprite pushedSprite : spritePushSet) {
+        pushedSprite.updatePos(dt);
+      }
     }
 
     // ----------------------------------------
@@ -248,12 +270,12 @@ public class Sprite implements Box {
           scrollInfo.updateScrollInfo(this);
         }
 
-        initMap(' ', mapChar);
+        initMap(' ', playChar);
 
         grdCurr.x = grdNext.x;
         grdCurr.y = grdNext.y;
 
-        initMap(mapChar, Character.MAX_VALUE);
+        initMap(playChar, Character.MAX_VALUE);
 
         internalCalcNext(direction);
 
@@ -324,88 +346,68 @@ public class Sprite implements Box {
 
   // --------------------------------------------------------------------------------
 
+  // XXX: I think DX, DY can be calculated from direction
+  protected boolean createSpritePushSetXY( //
+      Set<Sprite> spritePushSet, int direction, int dx, int dy) {
+
+    // ---------------------------------------------
+    // goes through all the rectangle of this sprite
+    // ---------------------------------------------
+
+    for (int y = minGrdY(); y < minGrdY() + playMap.getH(); y++) {
+      for (int x = minGrdX(); x < minGrdX() + playMap.getW(); x++) {
+
+        char nextChar = textMap.getData()[x + dx][y + dy];
+        char currChar = textMap.getData()[x/* */][y/* */];
+
+        if (currChar != playChar) {
+          continue;
+        }
+
+        if (nextChar == playChar) {
+          continue;
+        }
+
+        if (nextChar == 'X') {
+          return false;
+        }
+
+        if (nextChar == ' ') {
+          continue;
+        }
+
+        Sprite sprite = spriteMap.get(nextChar);
+
+        if (!spritePushSet.contains(sprite)) {
+          spritePushSet.add(sprite);
+
+          // ---------------------------------------------
+          // recursively check the pushed sprite
+          // ---------------------------------------------
+
+          if (!sprite.createSpritePushSet(spritePushSet, direction)) {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+
+  // --------------------------------------------------------------------------------
+
   protected boolean createSpritePushSet(Set<Sprite> spritePushSet, int direction) {
+    System.err.println("createSpritePushSet: " + playChar);
     switch (direction) {
       case MultiPanel.LF :
-        for (int i = minGrdY(); i <= maxGrdY(); i++) {
-          char nextChar = textMap.getData()[minGrdX() - 1][i];
-
-          if (nextChar == 'X') {
-            return false;
-          }
-
-          if (nextChar == ' ') {
-            continue;
-          }
-
-          Sprite sprite = spriteMap.get(nextChar);
-          spritePushSet.add(sprite);
-
-          if (!sprite.createSpritePushSet(spritePushSet, direction)) {
-            return false;
-          }
-        }
-        break;
+        return createSpritePushSetXY(spritePushSet, direction, -1, +0);
       case MultiPanel.RG :
-        for (int i = minGrdY(); i <= maxGrdY(); i++) {
-          char nextChar = textMap.getData()[maxGrdX() + 1][i];
-
-          if (nextChar == 'X') {
-            return false;
-          }
-
-          if (nextChar == ' ') {
-            continue;
-          }
-
-          Sprite sprite = spriteMap.get(nextChar);
-          spritePushSet.add(sprite);
-
-          if (!sprite.createSpritePushSet(spritePushSet, direction)) {
-            return false;
-          }
-        }
-        break;
+        return createSpritePushSetXY(spritePushSet, direction, +1, +0);
       case MultiPanel.UP :
-        for (int i = minGrdX(); i <= maxGrdX(); i++) {
-          char nextChar = textMap.getData()[i][minGrdY() - 1];
-
-          if (nextChar == 'X') {
-            return false;
-          }
-
-          if (nextChar == ' ') {
-            continue;
-          }
-
-          Sprite sprite = spriteMap.get(nextChar);
-          spritePushSet.add(sprite);
-
-          if (!sprite.createSpritePushSet(spritePushSet, direction)) {
-            return false;
-          }
-        }
-        break;
+        return createSpritePushSetXY(spritePushSet, direction, +0, -1);
       case MultiPanel.DW :
-        for (int i = minGrdX(); i <= maxGrdX(); i++) {
-          char nextChar = textMap.getData()[i][maxGrdY() + 1];
-
-          if (nextChar == 'X') {
-            return false;
-          }
-
-          if (nextChar == ' ') {
-            continue;
-          }
-
-          Sprite sprite = spriteMap.get(nextChar);
-          spritePushSet.add(sprite);
-
-          if (!sprite.createSpritePushSet(spritePushSet, direction)) {
-            return false;
-          }
-        }
-        break;
+        return createSpritePushSetXY(spritePushSet, direction, +0, +1);
       default :
         // throw new IllegalArgumentException();
     }
@@ -424,6 +426,12 @@ public class Sprite implements Box {
 
     updateSpritePushSetDirection(spritePushSet, direction);
 
+    // ----------------------------------------------------
+    // remove the player sprite to avoid infinite recursion 
+    // ----------------------------------------------------
+
+    spritePushSet.remove(this);
+
     return true;
   }
 
@@ -431,7 +439,7 @@ public class Sprite implements Box {
 
   @Override
   public String toString() {
-    return mapChar + "-->" + super.toString();
+    return playChar + "-->" + super.toString();
   }
 
   // --------------------------------------------------------------------------------
@@ -440,22 +448,22 @@ public class Sprite implements Box {
 
   @Override
   public int getW() {
-    return grdW * MultiPanel.TILE_W;
+    return getGrdW() * MultiPanel.TILE_W;
   }
 
   @Override
   public int getH() {
-    return grdH * MultiPanel.TILE_H;
+    return getGrdH() * MultiPanel.TILE_H;
   }
 
   @Override
   public int maxX() {
-    return (int) (scrCurr.x + grdW * MultiPanel.TILE_W);
+    return (int) (scrCurr.x + getGrdW() * MultiPanel.TILE_W);
   }
 
   @Override
   public int maxY() {
-    return (int) (scrCurr.y + grdH * MultiPanel.TILE_H);
+    return (int) (scrCurr.y + getGrdH() * MultiPanel.TILE_H);
   }
 
   @Override
