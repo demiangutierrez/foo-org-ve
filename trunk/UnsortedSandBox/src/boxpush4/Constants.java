@@ -8,7 +8,6 @@ public interface Constants {
   public static final int TILE_W = 25;
   public static final int TILE_H = 25;
 
-  
   public static final int NO = 0;
   public static final int LF = 1;
   public static final int RG = 2;
