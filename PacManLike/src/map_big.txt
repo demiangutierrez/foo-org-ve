@@ -1,0 +1,54 @@
+45 43
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+X  *                 *X*                 *  X
+X X XXXXXXXXXXXXXXXXX X XXXXXXXXXXXXXXXXX X X
+X X                                       X X
+X X.XXXXXXXX XXXXXXXX.X.XXXXXXXX XXXXXXXX.X X
+X X.X*.............*X.X.X*.............*X.X X
+X X.X.XXXXXXXXXXXXX.X.X.X.XXXXXXXXXXXXX.X.X X
+X X.X.X*.........*X.X.X.X.X*.........*X.X.X X
+X X.X.X.XXXX XXXX.X.X.X.X.X.XXXX XXXX.X.X.X X
+X X.X.X.X.......X.X.X.X.X.X.X.......X.X.X.X X
+X X.X.X.X.XXXXX.X.X.X.X.X.X.X.XXXXX.X.X.X.X X
+X X. .X.X.X   X.X.X. . . .X.X.X   X.X.X. .X X
+X X. .X.X.X   X.X.X. . . .X.X.X   X.X.X. .X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X...............X.X.X...............X.X X
+X X.XXXXXXXX XXXXXXXX.X.XXXXXXXX XXXXXXXX.X X
+X  ................... ...................  X
+X XXXXXXXXXX XXXXXXXXXXXXXXXXXXX XXXXXXXXXX X
+X  *                 *X*                 *  X
+X X XXXXXXXXXXXXXXXXX X XXXXXXXXXXXXXXXXX X X
+X X                                       X X
+X X.XXXXXXXX XXXXXXXX.X.XXXXXXXX XXXXXXXX.X X
+X X.X*.............*X.X.X*.............*X.X X
+X X.X.XXXXXXXXXXXXX.X.X.X.XXXXXXXXXXXXX.X.X X
+X X.X.X*.........*X.X.X.X.X*.........*X.X.X X
+X X.X.X.XXXX XXXX.X.X.X.X.X.XXXX XXXX.X.X.X X
+X X.X.X.X.......X.X.X.X.X.X.X.......X.X.X.X X
+X X.X.X.X.XXXXX.X.X.X.X.X.X.X.XXXXX.X.X.X.X X
+X X. .X.X.X   X.X.X. . . .X.X.X   X.X.X. .X X
+X X. .X.X.X   X.X.X. . . .X.X.X   X.X.X. .X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X.X.X.X   X.X.X.X.X.X.X.X.X   X.X.X.X.X X
+X X.X...............X.X.X...............X.X X
+X X.XXXXXXXX XXXXXXXX.X.XXXXXXXX XXXXXXXX.X X
+X  ................... ...................  X
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+#dyna:
+org.cyrano.pacman.game.PacManSprite  20 22 150
+org.cyrano.pacman.game.KeyItemSprite 21 22 0
+org.cyrano.pacman.game.SwitchItemSprite 16 22 0 10 22
+org.cyrano.pacman.game.DoorItemSprite 10 22 0
+org.cyrano.pacman.game.TeleportPadSprite 12 16 0 8 22
+org.cyrano.pacman.game.KeyDoorItemSprite 10 24 0
+
+#sta1:
+#sta2:
