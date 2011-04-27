@@ -43,7 +43,8 @@ public class Panel1 extends Row {
     btnB.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent arg0) {
-        firePanel1Event(new MyCustomEvent(Panel1.this, txtData.getText()), MyCustomListener.METHOD_DISPARADO_EVENTO_B_O_C);
+        firePanel1Event(new MyCustomEvent(Panel1.this, txtData.getText()),
+            MyCustomListener.METHOD_DISPARADO_EVENTO_B_O_C);
       }
     });
     add(btnB);
@@ -53,7 +54,8 @@ public class Panel1 extends Row {
     btnC.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent arg0) {
-        firePanel1Event(new MyCustomEvent(Panel1.this, txtData.getText()), MyCustomListener.METHOD_DISPARADO_EVENTO_B_O_C);
+        firePanel1Event(new MyCustomEvent(Panel1.this, txtData.getText()),
+            MyCustomListener.METHOD_DISPARADO_EVENTO_B_O_C);
       }
     });
     add(btnC);
