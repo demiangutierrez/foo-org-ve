@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stateMachine:StateMachine xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:stateMachine="http://stateMachine/1.0" name="Global" package="com.minotauro.state.demo.protocol" initial="//@stateList.0">
+  <eventList name="creg"/>
+  <eventList name="abeg"/>
+  <eventList name="pass"/>
+  <eventList name="turn"/>
+  <eventList name="time"/>
+  <eventList name="cbid"/>
+  <eventList name="next"/>
+  <stateList name="INIT">
+    <transList event="//@eventList.0" target="//@stateList.0"/>
+    <transList event="//@eventList.1" target="//@stateList.1"/>
+  </stateList>
+  <stateList name="RUN0">
+    <transList event="//@eventList.2" target="//@stateList.5"/>
+    <transList event="//@eventList.5" target="//@stateList.2"/>
+  </stateList>
+  <stateList name="RUN1">
+    <transList event="//@eventList.2" target="//@stateList.3"/>
+    <transList event="//@eventList.4" target="//@stateList.2"/>
+    <transList event="//@eventList.5" target="//@stateList.2"/>
+    <transList event="//@eventList.3" target="//@stateList.4"/>
+  </stateList>
+  <stateList name="CHK1">
+    <transList event="//@eventList.6" target="//@stateList.2"/>
+    <transList event="//@eventList.3" target="//@stateList.4"/>
+  </stateList>
+  <stateList name="RUN2">
+    <transList event="//@eventList.2" target="//@stateList.7"/>
+    <transList event="//@eventList.5" target="//@stateList.2"/>
+  </stateList>
+  <stateList name="CHK0">
+    <transList event="//@eventList.6" target="//@stateList.1"/>
+    <transList event="//@eventList.3" target="//@stateList.6"/>
+  </stateList>
+  <stateList name="NOSA"/>
+  <stateList name="CHK2">
+    <transList event="//@eventList.6" target="//@stateList.4"/>
+    <transList event="//@eventList.3" target="//@stateList.8"/>
+  </stateList>
+  <stateList name="SALE"/>
+</stateMachine:StateMachine>
