@@ -8,7 +8,7 @@ public class HolaMundoServlet extends WebContainerServlet {
 
   // En este método retorna la ApplicationInstance que
   // representa toda la aplicación
-  
+
   public ApplicationInstance newApplicationInstance() {
     return new HolaMundoApp();
   }
