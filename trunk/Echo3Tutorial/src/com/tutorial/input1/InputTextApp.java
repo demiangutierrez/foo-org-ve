@@ -62,9 +62,10 @@ public class InputTextApp extends ApplicationInstance {
 
   public Window init() {
     Window window = new Window();
-    window.setTitle("Hello World");
+    window.setTitle("Input1");
 
     ContentPane contentPane = new ContentPane();
+
     Label label = new Label("Enter name:");
 
     windowPane = new WindowPane(WindowPane.PROPERTY_MINIMIZE_ICON, PX_400, PX_200);
@@ -83,10 +84,11 @@ public class InputTextApp extends ApplicationInstance {
 
     ok.setActionCommand("submit name");
     ok.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(ActionEvent evt) {
         // Esto usualmente es una mala práctica
         // Normalmente esto debería ir a una funcion
         // delegada (Ver mas abajo)
+        System.err.println(evt.getActionCommand());
         input = nameField.getText();
         welcomeLabel.setText("Hello " + input);
         windowPane.userClose();

@@ -291,4 +291,23 @@
 		<url-pattern>/filetransfer.echo</url-pattern>
 	</servlet-mapping>
 
+	<!--
+		********************************************************************************
+		********************************************************************************
+	-->
+
+	<servlet>
+		<servlet-name>ServerPushServlet</servlet-name>
+		<servlet-class>com.tutorial.serverpush.ServerPushServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServerPushServlet</servlet-name>
+		<url-pattern>/serverpush.echo</url-pattern>
+	</servlet-mapping>
+
+
+
+
+
 </web-app>
