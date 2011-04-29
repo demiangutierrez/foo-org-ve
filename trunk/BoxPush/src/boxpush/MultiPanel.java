@@ -149,7 +149,7 @@ public class MultiPanel extends JPanel implements Runnable {
       case KeyEvent.VK_K :
       case KeyEvent.VK_J :
       case KeyEvent.VK_L :
-        playerSprite.setDirection(Constants.NO);
+        playerSprite.setInstDirection(Constants.NO);
         break;
     }
   }
@@ -159,19 +159,19 @@ public class MultiPanel extends JPanel implements Runnable {
   protected void keyPressed(KeyEvent evt) {
     switch (evt.getKeyCode()) {
       case KeyEvent.VK_I :
-        playerSprite.setDirection(Constants.UP);
+        playerSprite.setInstDirection(Constants.UP);
         break;
       case KeyEvent.VK_K :
-        playerSprite.setDirection(Constants.DW);
+        playerSprite.setInstDirection(Constants.DW);
         break;
       case KeyEvent.VK_J :
-        playerSprite.setDirection(Constants.LF);
+        playerSprite.setInstDirection(Constants.LF);
         break;
       case KeyEvent.VK_L :
-        playerSprite.setDirection(Constants.RG);
+        playerSprite.setInstDirection(Constants.RG);
         break;
       default :
-        playerSprite.setDirection(Constants.NO);
+        playerSprite.setInstDirection(Constants.NO);
         break;
     }
   }
