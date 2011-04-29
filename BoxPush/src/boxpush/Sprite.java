@@ -13,23 +13,18 @@ public class Sprite implements Box {
 
   protected PointDbl scrCurr = new PointDbl();
   protected PointDbl scrNext = new PointDbl();
-  protected PointDbl scrLook = new PointDbl();
 
   protected PointInt grdCurr = new PointInt();
   protected PointInt grdNext = new PointInt();
 
-  protected char playChar;
-
-  //  protected int grdW;
-  //  protected int grdH;
-
   protected Map<Character, Sprite> spriteMap;
 
   protected TextMap textMap;
-
   protected TextMap playMap;
 
-  protected int direction;
+  protected char playChar;
+
+  protected int instDirection;
 
   protected Color color;
 
@@ -37,9 +32,9 @@ public class Sprite implements Box {
 
   protected Set<Sprite> spritePushSet = new HashSet<Sprite>();
 
-  protected int speed = 75;
-
   protected ScrollInfo scrollInfo;
+
+  protected int speed = 75;
 
   // --------------------------------------------------------------------------------
 
@@ -63,44 +58,20 @@ public class Sprite implements Box {
     return playMap.getW();
   }
 
-  //  public void setGrdW(int grdW) {
-  //    this.grdW = grdW;
-  //  }
-
   // --------------------------------------------------------------------------------
 
   public int getGrdH() {
     return playMap.getH();
   }
 
-  //  public void setGrdH(int grdH) {
-  //    this.grdH = grdH;
-  //  }
-
   // --------------------------------------------------------------------------------
-
-  public Map<Character, Sprite> getSpriteMap() {
-    return spriteMap;
-  }
 
   public void setSpriteMap(Map<Character, Sprite> spriteMap) {
     this.spriteMap = spriteMap;
   }
 
-  // --------------------------------------------------------------------------------
-
-  public TextMap getTextMap() {
-    return textMap;
-  }
-
   public void setTextMap(TextMap textMap) {
     this.textMap = textMap;
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public TextMap getPlayMap() {
-    return playMap;
   }
 
   public void setPlayMap(TextMap playMap) {
@@ -109,18 +80,8 @@ public class Sprite implements Box {
 
   // --------------------------------------------------------------------------------
 
-  public synchronized int getDirection() {
-    return direction;
-  }
-
-  public synchronized void setDirection(int direction) {
-    this.direction = direction;
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public Color getColor() {
-    return color;
+  public synchronized void setInstDirection(int instDirection) {
+    this.instDirection = instDirection;
   }
 
   public void setColor(Color color) {
@@ -136,10 +97,6 @@ public class Sprite implements Box {
     scrNext.x = x * MultiPanel.TILE_W;
   }
 
-  public int getGrdX() {
-    return grdCurr.x;
-  }
-
   // --------------------------------------------------------------------------------
 
   public void setGrdY(int y) {
@@ -147,10 +104,6 @@ public class Sprite implements Box {
     grdNext.y = y;
     scrCurr.y = y * MultiPanel.TILE_H;
     scrNext.y = y * MultiPanel.TILE_H;
-  }
-
-  public int getGrdY() {
-    return grdCurr.y;
   }
 
   // --------------------------------------------------------------------------------
@@ -219,7 +172,7 @@ public class Sprite implements Box {
 
   // --------------------------------------------------------------------------------
 
-  public double internalUpdatePos(double dt) {
+  protected double internalUpdatePos(double dt) {
     double dst2go = speed * dt;
 
     double dstTgt = Math.sqrt( //
@@ -227,14 +180,15 @@ public class Sprite implements Box {
             (scrCurr.y - scrNext.y) * (scrCurr.y - scrNext.y));
 
     if (dstTgt < dst2go) {
+
+      // ----------------------------------------
+      // more time than distance
+      // ----------------------------------------
+
       dt -= dstTgt / speed;
 
       scrCurr.x = scrNext.x;
       scrCurr.y = scrNext.y;
-
-      if (scrollInfo != null) {
-        scrollInfo.updateScrollInfo(this);
-      }
 
       initMap(' ', playChar);
 
@@ -242,57 +196,50 @@ public class Sprite implements Box {
       grdCurr.y = grdNext.y;
 
       initMap(playChar, Character.MAX_VALUE);
+
     } else {
+
+      // ----------------------------------------
+      // less time than distance
+      // ----------------------------------------
+
       double dx = (scrNext.x - scrCurr.x) / dstTgt;
       double dy = (scrNext.y - scrCurr.y) / dstTgt;
-
-      System.err.println(speed * dx * dt + ";" + speed * dy * dt);
 
       scrCurr.x += speed * dx * dt;
       scrCurr.y += speed * dy * dt;
 
-      System.err.println(scrCurr);
-
-      if (scrollInfo != null) {
-        scrollInfo.updateScrollInfo(this);
-      }
-
       dt = 0;
     }
-    //    }
-    return dt;
 
+    if (scrollInfo != null) {
+      scrollInfo.updateScrollInfo(this);
+    }
+
+    return dt;
   }
 
   // --------------------------------------------------------------------------------
 
   public synchronized void updatePos(double dt) {
     do {
-      if (!needToMove()) {
-        internalCalcNext(direction);
-      }
-
-      System.err.println("************" + spritePushSet.size());
-
-      if (spritePushSet.size() > 0) {
-        System.err.println("jojojo");
-      }
-
       if (needToMove()) {
         for (Sprite sprite : spritePushSet) {
           sprite.internalUpdatePos(dt);
         }
 
         dt = internalUpdatePos(dt);
+      } else {
+        internalCalcNext(instDirection);
       }
     } while (dt > 0 && needToMove());
   }
 
   // --------------------------------------------------------------------------------
 
-  protected void updateSpriteDirection(int direction2) {
+  protected void updateSpriteDirection(int currDirection) {
 
-    switch (direction2) {
+    switch (currDirection) {
       case MultiPanel.LF :
         grdNext.x = grdCurr.x - 1;
         grdNext.y = grdCurr.y;
@@ -313,9 +260,6 @@ public class Sprite implements Box {
         // throw new IllegalArgumentException();
     }
 
-    //    scrCurr.x = grdCurr.x * MultiPanel.TILE_W;
-    //    scrCurr.y = grdCurr.y * MultiPanel.TILE_H;
-
     if (scrollInfo != null) {
       scrollInfo.updateScrollInfo(this);
     }
@@ -326,19 +270,30 @@ public class Sprite implements Box {
 
   // --------------------------------------------------------------------------------
 
-  protected void updateSpritePushSetDirection(Set<Sprite> spritePushSet, int direction) {
-    for (Sprite sprite : spritePushSet) {
-      sprite.updateSpriteDirection(direction);
+  protected boolean createSpritePushSet(Set<Sprite> spritePushSet, int currDirection) {
+    int dx = 0;
+    int dy = 0;
+
+    switch (currDirection) {
+      case MultiPanel.LF :
+        dx = -1;
+        dy = +0;
+        break;
+      case MultiPanel.RG :
+        dx = +1;
+        dy = +0;
+        break;
+      case MultiPanel.UP :
+        dx = +0;
+        dy = -1;
+        break;
+      case MultiPanel.DW :
+        dx = +0;
+        dy = +1;
+        break;
+      default :
+        // throw new IllegalArgumentException();
     }
-
-    updateSpriteDirection(direction);
-  }
-
-  // --------------------------------------------------------------------------------
-
-  // XXX: I think DX, DY can be calculated from direction
-  protected boolean createSpritePushSetXY( //
-      Set<Sprite> spritePushSet, int direction, int dx, int dy) {
 
     // ---------------------------------------------
     // goes through all the rectangle of this sprite
@@ -375,7 +330,7 @@ public class Sprite implements Box {
           // recursively check the pushed sprite
           // ---------------------------------------------
 
-          if (!sprite.createSpritePushSet(spritePushSet, direction)) {
+          if (!sprite.createSpritePushSet(spritePushSet, currDirection)) {
             return false;
           }
         }
@@ -387,39 +342,22 @@ public class Sprite implements Box {
 
   // --------------------------------------------------------------------------------
 
-  protected boolean createSpritePushSet(Set<Sprite> spritePushSet, int direction) {
-    System.err.println("createSpritePushSet: " + playChar);
-    switch (direction) {
-      case MultiPanel.LF :
-        return createSpritePushSetXY(spritePushSet, direction, -1, +0);
-      case MultiPanel.RG :
-        return createSpritePushSetXY(spritePushSet, direction, +1, +0);
-      case MultiPanel.UP :
-        return createSpritePushSetXY(spritePushSet, direction, +0, -1);
-      case MultiPanel.DW :
-        return createSpritePushSetXY(spritePushSet, direction, +0, +1);
-      default :
-        // throw new IllegalArgumentException();
-    }
-
-    return true;
-  }
-
-  // --------------------------------------------------------------------------------
-
-  protected boolean internalCalcNext(int direction) {
-    System.err.println(direction);
+  protected boolean internalCalcNext(int currDirection) {
     spritePushSet.clear();
 
-    if (!createSpritePushSet(spritePushSet, direction)) {
+    if (!createSpritePushSet(spritePushSet, currDirection)) {
       return false;
     }
 
-    updateSpritePushSetDirection(spritePushSet, direction);
+    for (Sprite sprite : spritePushSet) {
+      sprite.updateSpriteDirection(currDirection);
+    }
 
-    // ----------------------------------------------------
-    // remove the player sprite to avoid infinite recursion 
-    // ----------------------------------------------------
+    updateSpriteDirection(currDirection);
+
+    // ---------------------------------------------
+    // remove the player to avoid infinite recursion 
+    // ---------------------------------------------
 
     spritePushSet.remove(this);
 
