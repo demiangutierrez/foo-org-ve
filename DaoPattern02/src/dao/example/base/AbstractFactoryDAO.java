@@ -8,12 +8,12 @@ import dao.base.api.FactoryDAO;
 public class AbstractFactoryDAO {
 
   private enum DBType {
-    PGSQL, MYSQL
+    HIBERNATE, PGSQL, MYSQL
   }
 
   // --------------------------------------------------------------------------------
 
-  private static final DBType dbType = DBType.MYSQL;
+  private static final DBType dbType = DBType.HIBERNATE;
 
   // --------------------------------------------------------------------------------
 
@@ -25,6 +25,9 @@ public class AbstractFactoryDAO {
 
   public static FactoryDAO getFactoryDAO() {
     switch (dbType) {
+      case HIBERNATE :
+        return new dao.example.hibernate.FactoryDAOImpl();
+
       case PGSQL :
         return new dao.example.pgsql.FactoryDAOImpl();
 

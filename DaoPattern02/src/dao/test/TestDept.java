@@ -62,7 +62,7 @@ public class TestDept extends TestCase {
     deptDAO.insert(deptDTO2);
     assertEquals(deptDTO2.getId(), 2);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
 
     // ----------------------------------------
     // LOAD
@@ -81,7 +81,7 @@ public class TestDept extends TestCase {
     assertTrue(compareDTO(deptDTO2, deptDTOY));
     assertNotSame(deptDTO2, deptDTOY);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
   }
 
   // --------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ public class TestDept extends TestCase {
     deptDAO.insert(deptDTO2);
     assertEquals(deptDTO2.getId(), 2);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
 
     // ----------------------------------------
     // LOAD / UPDATE
@@ -140,7 +140,7 @@ public class TestDept extends TestCase {
     deptDTOY.setDeptAtt2("FooDescriptionYYY");
     deptDAO.update(deptDTOY); // Changes the 222
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
 
     // ----------------------------------------
     // LOAD
@@ -159,7 +159,7 @@ public class TestDept extends TestCase {
     assertTrue(compareDTO(deptDTOY, deptDTOB));
     assertNotSame(deptDTOY, deptDTOB);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
   }
 
   // --------------------------------------------------------------------------------
@@ -197,7 +197,7 @@ public class TestDept extends TestCase {
     deptDAO.insert(deptDTO2);
     assertEquals(deptDTO2.getId(), 2);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
 
     // ----------------------------------------
     // LOAD / DELETE
@@ -214,7 +214,7 @@ public class TestDept extends TestCase {
     DeptDTO deptDTOY = (DeptDTO) deptDAO.loadById(2);
     deptDAO.delete(deptDTOY);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
 
     // ----------------------------------------
     // LOAD
@@ -231,7 +231,7 @@ public class TestDept extends TestCase {
     DeptDTO deptDTOB = (DeptDTO) deptDAO.loadById(2);
     assertNull(deptDTOB);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
   }
 
   // --------------------------------------------------------------------------------
@@ -269,7 +269,7 @@ public class TestDept extends TestCase {
     deptDAO.insert(deptDTO2);
     assertEquals(deptDTO2.getId(), 2);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
 
     // ----------------------------------------
     // LOAD / RE-LOAD
@@ -290,7 +290,7 @@ public class TestDept extends TestCase {
     assertTrue(compareDTO(deptDTOY, deptDTOB));
     assertSame(deptDTOY, deptDTOB);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
   }
 
   // --------------------------------------------------------------------------------
@@ -320,7 +320,7 @@ public class TestDept extends TestCase {
     deptDAO.insert(deptDTO1);
     assertEquals(deptDTO1.getId(), 1);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
 
     // ----------------------------------------
     // LOAD / DELETE / RE-INSERT
@@ -342,7 +342,7 @@ public class TestDept extends TestCase {
       System.err.println(e.getClass() + " : " + e.getMessage());
     }
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
   }
 
   // --------------------------------------------------------------------------------
@@ -372,7 +372,7 @@ public class TestDept extends TestCase {
     deptDAO.insert(deptDTO1);
     assertEquals(deptDTO1.getId(), 1);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
 
     // ----------------------------------------
     // LOAD / DELETE / RE-INSERT
@@ -394,7 +394,7 @@ public class TestDept extends TestCase {
       System.err.println(e.getClass() + " : " + e.getMessage());
     }
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
   }
 
   // --------------------------------------------------------------------------------
@@ -424,7 +424,7 @@ public class TestDept extends TestCase {
     deptDAO.insert(deptDTO1);
     assertEquals(deptDTO1.getId(), 1);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
 
     // ----------------------------------------
     // LOAD / DELETE / RE-DELETE
@@ -446,7 +446,7 @@ public class TestDept extends TestCase {
       System.err.println(e.getClass() + " : " + e.getMessage());
     }
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
   }
 
   // --------------------------------------------------------------------------------
@@ -595,7 +595,7 @@ public class TestDept extends TestCase {
       deptDTO1.setId(1); // UNTAMPER ID
     }
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
   }
 
   // --------------------------------------------------------------------------------
@@ -631,7 +631,7 @@ public class TestDept extends TestCase {
     deptDTO2.setDeptAtt2("FooDescription222");
     deptDAO.insert(deptDTO2);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
 
     // ----------------------------------------
     // COUNT
@@ -644,7 +644,7 @@ public class TestDept extends TestCase {
 
     assertEquals(2, deptDAO.countAll());
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
   }
 
   // --------------------------------------------------------------------------------
@@ -680,7 +680,7 @@ public class TestDept extends TestCase {
     deptDTO2.setDeptAtt2("FooDescription222");
     deptDAO.insert(deptDTO2);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
 
     // ----------------------------------------
     // COUNT
@@ -695,7 +695,7 @@ public class TestDept extends TestCase {
     assertTrue(compareDTO(deptDTO1, (DeptDTO) deptList.get(0)));
     assertTrue(compareDTO(deptDTO2, (DeptDTO) deptList.get(1)));
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
   }
 
   // --------------------------------------------------------------------------------
@@ -731,7 +731,7 @@ public class TestDept extends TestCase {
     deptDTO2.setDeptAtt2("FooDescription222");
     deptDAO.insert(deptDTO2);
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
 
     // ----------------------------------------
     // COUNT
@@ -752,6 +752,6 @@ public class TestDept extends TestCase {
     assertEquals(1, deptList.size());
     assertTrue(compareDTO(deptDTO2, (DeptDTO) deptList.get(0)));
 
-    ConnectionFactory.closeConnection(connectionBean.getConnection());
+    ConnectionFactory.closeConnection(connectionBean);
   }
 }

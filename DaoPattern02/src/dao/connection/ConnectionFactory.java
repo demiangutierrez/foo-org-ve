@@ -7,8 +7,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.hibernate.Session;
+
+import dao.hibernate.CledaConnector;
+
 /**
- * @author Hugo Morillo
+ * @author Demián Gutierrez
  */
 public class ConnectionFactory {
 
@@ -50,6 +54,34 @@ public class ConnectionFactory {
 
     properties.load(is);
 
+    if (properties.get("type") != null) {
+      if (properties.get("type").equals("jdbc")) {
+        return getJDBCConnectionBean(properties);
+      }
+
+      if (properties.get("type").equals("hibe")) {
+        return getHibeConnectionBean(properties);
+      }
+
+      throw new IllegalArgumentException(properties.get("type").toString());
+    } else {
+      throw new IllegalArgumentException("type");
+    }
+  }
+
+  // --------------------------------------------------------------------------------
+
+  private static ConnectionBean getHibeConnectionBean(Properties properties) //
+      throws SQLException, ClassNotFoundException, IOException {
+    Session session = CledaConnector.getInstance().getSession();
+    session.beginTransaction();
+    return new ConnectionBean(session);
+  }
+
+  // --------------------------------------------------------------------------------
+
+  private static ConnectionBean getJDBCConnectionBean(Properties properties) //
+      throws SQLException, ClassNotFoundException, IOException {
     System.err.println("driver: " + properties.getProperty("driver"));
     System.err.println("url:    " + properties.getProperty("url"));
     System.err.println("user:   " + properties.getProperty("user"));
@@ -74,9 +106,14 @@ public class ConnectionFactory {
     return new ConnectionBean(new DtaSession(), connection);
   }
 
-  // --------------------------------------------------------------------------------
+  public static void closeConnection(ConnectionBean connectionBean) throws SQLException {
+    if (connectionBean.getConnection() != null) {
+      connectionBean.getConnection().close();
+    }
 
-  public static void closeConnection(Connection connection) throws SQLException {
-    connection.close();
+    if (connectionBean.getSession() != null) {
+      connectionBean.getSession().getTransaction().commit();
+      connectionBean.getSession().close();
+    }
   }
 }
