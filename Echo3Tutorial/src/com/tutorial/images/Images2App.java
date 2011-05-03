@@ -106,13 +106,6 @@ public class Images2App extends ApplicationInstance {
 
     col.add(g);
 
-    Column buttonColumn = new Column();
-    Button button1 = new Button("First Button");
-    buttonColumn.add(button1);
-    Button button2 = new Button("Second Button");
-    button2.setBackground(Color.GREEN);
-    buttonColumn.add(button2);
-
     return window;
   }
 

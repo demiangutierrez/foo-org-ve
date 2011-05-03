@@ -10,6 +10,7 @@ import nextapp.echo.app.Extent;
 import nextapp.echo.app.Font;
 import nextapp.echo.app.Font.Typeface;
 import nextapp.echo.app.Grid;
+import nextapp.echo.app.ImageReference;
 import nextapp.echo.app.Insets;
 import nextapp.echo.app.Label;
 import nextapp.echo.app.Row;
@@ -84,8 +85,11 @@ public class Images3App extends ApplicationInstance {
 
     for (int i = 0; i < labelCount; i++) {
       // XXX El cache usando un singleton resuelve el problema de mantener la traza de todas las imágenes
-      labelArray[i] = new Label( //
-          ImageReferenceCache.getInstance().getImageReference(imagePath[currentImageIndex]));
+
+      ImageReferenceCache irc = ImageReferenceCache.getInstance();
+      ImageReference ir = irc.getImageReference(imagePath[currentImageIndex]);
+
+      labelArray[i] = new Label(ir);
       GridLayoutData gld = new GridLayoutData();
       gld.setInsets(new Insets(3, 3, 3, 3));
       labelArray[i].setLayoutData(gld);
@@ -93,13 +97,6 @@ public class Images3App extends ApplicationInstance {
     }
 
     col.add(g);
-
-    Column buttonColumn = new Column();
-    Button button1 = new Button("First Button");
-    buttonColumn.add(button1);
-    Button button2 = new Button("Second Button");
-    button2.setBackground(Color.GREEN);
-    buttonColumn.add(button2);
 
     return window;
   }
