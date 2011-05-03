@@ -68,6 +68,21 @@
 		********************************************************************************
 	-->
 
+	<servlet>
+		<servlet-name>ListenerServlet</servlet-name>
+		<servlet-class>com.tutorial.listener.ListenerServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ListenerServlet</servlet-name>
+		<url-pattern>/listener.echo</url-pattern>
+	</servlet-mapping>
+
+	<!--
+		********************************************************************************
+		********************************************************************************
+	-->
+
 	<!--
 		DMI: TemplatePane ***no esta funcionando*** en Echo3 (Usar HtmlLayout)
 	-->
