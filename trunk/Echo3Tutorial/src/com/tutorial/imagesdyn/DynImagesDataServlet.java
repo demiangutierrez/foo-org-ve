@@ -20,11 +20,12 @@ public class DynImagesDataServlet extends HttpServlet {
 
   // Here we create a buffered image dynamically and then we transform it
   // to a byte array in order to stream it to the client.
-  private byte[] loadImage(String name, List<Planet> planetList) throws IOException {
+  private byte[] loadImage(List<Planet> planetList) throws IOException {
     BufferedImage bimg = new BufferedImage(400, 400, BufferedImage.TYPE_3BYTE_BGR);
 
     Graphics2D g2d = (Graphics2D) bimg.getGraphics();
 
+    // g2d.setBackground(Color.CYAN);
     g2d.clearRect(0, 0, bimg.getWidth(), bimg.getHeight());
 
     for (Planet planet : planetList) {
@@ -61,7 +62,7 @@ public class DynImagesDataServlet extends HttpServlet {
     }
 
     List<Planet> planetList = PlanetLoader.loadData(userIdInt);
-    byte[] data = loadImage("acercademinotauroh1.jpg", planetList);
+    byte[] data = loadImage(planetList);
 
     res.setContentType("image/png");
     res.getOutputStream().write(data);
