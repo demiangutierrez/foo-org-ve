@@ -3,6 +3,7 @@
 	<name>Echo3Tutorial</name>
 	<comment></comment>
 	<projects>
+		<project>CledaEcho3Table</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

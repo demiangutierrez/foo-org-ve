@@ -3,6 +3,9 @@
     <wb-module deploy-name="Echo3Tutorial">
         <wb-resource deploy-path="/" source-path="/WebContent"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="CledaEcho3Table.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/CledaEcho3Table/CledaEcho3Table">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="Echo3Tutorial"/>
         <property name="java-output-path" value="/Echo3Tutorial/build/classes"/>
     </wb-module>
