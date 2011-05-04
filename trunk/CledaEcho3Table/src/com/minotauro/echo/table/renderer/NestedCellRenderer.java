@@ -6,12 +6,9 @@ package com.minotauro.echo.table.renderer;
 import java.util.ArrayList;
 import java.util.List;
 
-import nextapp.echo.app.Alignment;
 import nextapp.echo.app.Component;
 import nextapp.echo.app.Extent;
-import nextapp.echo.app.Insets;
 import nextapp.echo.app.Row;
-import nextapp.echo.app.layout.GridLayoutData;
 
 import com.minotauro.echo.table.base.CellRenderer;
 import com.minotauro.echo.table.base.ETable;
@@ -19,13 +16,10 @@ import com.minotauro.echo.table.base.ETable;
 /**
  * @author Demián Gutierrez
  */
-public class NestedCellRenderer implements CellRenderer {
+public class NestedCellRenderer extends BaseCellRenderer {
 
   protected List<CellRenderer> cellRendererList = //
   new ArrayList<CellRenderer>();
-
-  protected Alignment alignment = new Alignment( //
-      Alignment.RIGHT, Alignment.DEFAULT);
 
   // --------------------------------------------------------------------------------
 
@@ -56,30 +50,11 @@ public class NestedCellRenderer implements CellRenderer {
 
   // --------------------------------------------------------------------------------
 
-  @Override
-  public GridLayoutData getGridLayoutData() {
-    GridLayoutData gridLayoutData = new GridLayoutData();
-    gridLayoutData.setInsets(new Insets(5, 5, 5, 5));
-    return gridLayoutData;
-  }
-
-  // --------------------------------------------------------------------------------
-
   public List<CellRenderer> getCellRendererList() {
     return cellRendererList;
   }
 
   public void setCellRendererList(List<CellRenderer> cellRendererList) {
     this.cellRendererList = cellRendererList;
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public Alignment getAlignment() {
-    return alignment;
-  }
-
-  public void setAlignment(Alignment alignment) {
-    this.alignment = alignment;
   }
 }

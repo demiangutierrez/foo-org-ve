@@ -3,6 +3,8 @@
  */
 package com.minotauro.echo.table.base;
 
+import nextapp.echo.app.Alignment;
+import nextapp.echo.app.Color;
 import nextapp.echo.app.Component;
 import nextapp.echo.app.layout.GridLayoutData;
 
@@ -17,4 +19,22 @@ public interface CellRenderer {
   // --------------------------------------------------------------------------------
 
   public GridLayoutData getGridLayoutData();
+
+  // --------------------------------------------------------------------------------
+
+  public Color getBackground();
+
+  public void setBackground(Color background);
+
+  // --------------------------------------------------------------------------------
+
+  public Color getForeground();
+
+  public void setForeground(Color foreground);
+
+  // --------------------------------------------------------------------------------
+
+  public Alignment getAlignment();
+
+  public void setAlignment(Alignment alignment);
 }

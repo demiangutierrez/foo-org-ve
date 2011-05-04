@@ -7,17 +7,14 @@ import java.text.DateFormat;
 import java.util.Calendar;
 
 import nextapp.echo.app.Component;
-import nextapp.echo.app.Insets;
 import nextapp.echo.app.Label;
-import nextapp.echo.app.layout.GridLayoutData;
 
-import com.minotauro.echo.table.base.CellRenderer;
 import com.minotauro.echo.table.base.ETable;
 
 /**
  * @author Demián Gutierrez
  */
-public class CalendarCellRenderer implements CellRenderer {
+public class CalendarCellRenderer extends BaseCellRenderer {
 
   protected DateFormat dateFormat;
 
@@ -47,15 +44,6 @@ public class CalendarCellRenderer implements CellRenderer {
     }
 
     return ret;
-  }
-
-  // --------------------------------------------------------------------------------
-
-  @Override
-  public GridLayoutData getGridLayoutData() {
-    GridLayoutData gridLayoutData = new GridLayoutData();
-    gridLayoutData.setInsets(new Insets(5, 5, 5, 5));
-    return gridLayoutData;
   }
 
   // --------------------------------------------------------------------------------

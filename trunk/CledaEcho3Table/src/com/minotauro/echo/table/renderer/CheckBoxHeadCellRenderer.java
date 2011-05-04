@@ -7,14 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nextapp.echo.app.CheckBox;
-import nextapp.echo.app.Color;
 import nextapp.echo.app.Component;
-import nextapp.echo.app.Insets;
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
-import nextapp.echo.app.layout.GridLayoutData;
 
-import com.minotauro.echo.table.base.CellRenderer;
 import com.minotauro.echo.table.base.ETable;
 import com.minotauro.echo.table.base.TableDtaModel;
 import com.minotauro.echo.table.base.TableSelModel;
@@ -24,17 +20,14 @@ import com.minotauro.echo.table.event.TableSelModelListener;
 /**
  * @author Demián Gutierrez
  */
-public class CheckBoxHeadCellRenderer implements CellRenderer {
-
-  protected GridLayoutData gridLayoutData = new GridLayoutData();
+public class CheckBoxHeadCellRenderer extends BaseCellRenderer {
 
   protected boolean editable;
 
   // --------------------------------------------------------------------------------
 
   public CheckBoxHeadCellRenderer() {
-    gridLayoutData.setInsets(new Insets(5, 5, 5, 5));
-    gridLayoutData.setBackground(Color.PINK);
+    // Empty
   }
 
   // --------------------------------------------------------------------------------
@@ -114,13 +107,6 @@ public class CheckBoxHeadCellRenderer implements CellRenderer {
     }
 
     checkBox.setSelected(selected);
-  }
-
-  // --------------------------------------------------------------------------------
-
-  @Override
-  public GridLayoutData getGridLayoutData() {
-    return gridLayoutData;
   }
 
   // --------------------------------------------------------------------------------
