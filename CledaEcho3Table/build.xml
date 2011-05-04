@@ -4,7 +4,7 @@
 	**** Common properties
 	**************************************** -->
 
-	<property name="version" value="0.9.0" />
+	<property name="version" value="0.9.1" />
 
 	<property name="dst.dir" value="bin" />
 	<property name="src.dir" value="src" />
@@ -13,7 +13,7 @@
 	<property name="dst.jar" value="${ant.project.name}-${version}.jar" />
 	<property name="dst.zip" value="${ant.project.name}-${version}.zip" />
 
-    <property name="lib.dir" value="../Echo3Tutorial/lib" />
+    <property name="lib.dir" value="../Echo3Tutorial/WebContent/WEB-INF/lib" />
 	<!-- <property name="lib.dir" value="../CledaJars/lib" /> -->
 
 	<property name="cleda-commons.dir" value="../CledaCommons/bin" />
@@ -27,10 +27,12 @@
 
 	<path id="lib.path">
 		<fileset dir="${lib.dir}" />
+		<!--
 		<fileset dir="${cleda-commons.dir}" />
 		<fileset dir="${cleda-i18n.dir}" />
 		<fileset dir="${cleda-base.dir}" />
 		<fileset dir="${cleda-query.dir}" />
+		-->
 	</path>
 
 	<!-- ****************************************
