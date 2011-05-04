@@ -1,5 +1,6 @@
 package com.tutorial.table;
 
+import nextapp.echo.app.Alignment;
 import nextapp.echo.app.Border;
 import nextapp.echo.app.Button;
 import nextapp.echo.app.Color;
@@ -20,6 +21,7 @@ import com.minotauro.echo.table.base.TableColModel;
 import com.minotauro.echo.table.base.TableColumn;
 import com.minotauro.echo.table.base.TableSelModel;
 import com.minotauro.echo.table.renderer.BaseCellRenderer;
+import com.minotauro.echo.table.renderer.ButtonCellRenderer;
 import com.minotauro.echo.table.renderer.LabelCellRenderer;
 import com.minotauro.echo.table.renderer.NestedCellRenderer;
 
@@ -47,7 +49,6 @@ public class Desktop extends ContentPane {
     setInsets(new Insets(2, 2, 2, 2));
 
     Grid col = new Grid(1);
-    //    col.setCellSpacing(new Extent(4));
     add(col);
 
     col.add(initTopRow());
@@ -141,11 +142,20 @@ public class Desktop extends ContentPane {
     tableColumn.setHeadValue("Frst Name");
 
     lcr = new LabelCellRenderer();
+    lcr.setAlignment(new Alignment( //
+        Alignment.LEFT, Alignment.DEFAULT));
+
     lcr.setBackground(Color.BLUE);
     lcr.setForeground(Color.WHITE);
     tableColumn.setHeadCellRenderer(lcr);
 
-    tableColumn.setDataCellRenderer(new LabelCellRenderer());
+    lcr = new LabelCellRenderer();
+    lcr.setAlignment(new Alignment( //
+        Alignment.LEFT, Alignment.DEFAULT));
+    lcr.setBackground(Color.CYAN);
+    lcr.setForeground(Color.DARKGRAY);
+
+    tableColumn.setDataCellRenderer(lcr);
     tableColModel.getTableColumnList().add(tableColumn);
 
     tableColumn = new TableColumn() {
@@ -187,6 +197,9 @@ public class Desktop extends ContentPane {
 
   private NestedCellRenderer initNestedCellRenderer() {
     NestedCellRenderer nestedCellRenderer = new NestedCellRenderer();
+    nestedCellRenderer.setAlignment(new Alignment( //
+        Alignment.LEFT, Alignment.DEFAULT));
+
     nestedCellRenderer.getCellRendererList().add(new BaseCellRenderer() {
       @Override
       public Component getCellRenderer( //
@@ -208,25 +221,40 @@ public class Desktop extends ContentPane {
       }
     });
 
-    nestedCellRenderer.getCellRendererList().add(new BaseCellRenderer() {
-      @Override
-      public Component getCellRenderer( //
-          final ETable table, final Object value, final int col, final int row) {
+    //    nestedCellRenderer.getCellRendererList().add(new BaseCellRenderer() {
+    //      @Override
+    //      public Component getCellRenderer( //
+    //          final ETable table, final Object value, final int col, final int row) {
+    //
+    //        boolean editable = ((TestTableModel) table.getTableDtaModel()).getEditable();
+    //
+    //        Button ret = new Button("Del");
+    //        ret.setStyle(GUIStyles.DEFAULT_STYLE);
+    //        ret.setEnabled(editable);
+    //        ret.setToolTipText("Del");
+    //        ret.addActionListener(new ActionListener() {
+    //          public void actionPerformed(ActionEvent e) {
+    //            btnDelClicked(row);
+    //          }
+    //        });
+    //        return ret;
+    //      }
+    //    });
 
-        boolean editable = ((TestTableModel) table.getTableDtaModel()).getEditable();
+    ButtonCellRenderer bcr = new ButtonCellRenderer();
+    bcr.setStyle(GUIStyles.DEFAULT_STYLE);
+    bcr.setText("Del");
+    bcr.setActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent evt) {
 
-        Button ret = new Button("Del");
-        ret.setStyle(GUIStyles.DEFAULT_STYLE);
-        ret.setEnabled(editable);
-        ret.setToolTipText("Del");
-        ret.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            btnDelClicked(row);
-          }
-        });
-        return ret;
+        // ----------------------------------------
+        // Row comes in the  action command
+        // ----------------------------------------
+
+        btnDelClicked(Integer.parseInt(evt.getActionCommand()));
       }
     });
+    nestedCellRenderer.getCellRendererList().add(bcr);
 
     return nestedCellRenderer;
   }

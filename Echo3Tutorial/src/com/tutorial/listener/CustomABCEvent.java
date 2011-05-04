@@ -4,15 +4,15 @@ import java.util.EventObject;
 
 public class CustomABCEvent extends EventObject {
 
-	private String someData;
+  private String someData;
 
-	public CustomABCEvent(Object source, String someData) {
-		super(source);
+  public CustomABCEvent(Object source, String someData) {
+    super(source);
 
-		this.someData = someData;
-	}
+    this.someData = someData;
+  }
 
-	public String getSomeData() {
-		return someData;
-	}
+  public String getSomeData() {
+    return someData;
+  }
 }
