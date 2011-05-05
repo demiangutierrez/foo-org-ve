@@ -11,8 +11,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.cyrano.boxcollision.base.CollisionDetector.CollisionInfo;
-import org.cyrano.boxcollision.base.CollisionDetector.Side;
+import org.cyrano.math.ConvexHull;
 import org.cyrano.util.Hwh;
 import org.cyrano.util.PointInt;
 
@@ -108,34 +107,24 @@ public class GamePanel extends JPanel {
   // --------------------------------------------------------------------------------
 
   private void drawPol(Graphics2D g2d, Polygon pol, Color color) {
-
     g2d.setColor(pol.getColor());
+
+    drawPol(g2d, pol.getSrcPointList(), color);
+    drawPol(g2d, pol.getTgtPointList(), Color.CYAN);
+
+    PointInt[] theFuckingLine = calculateTheFuckingLine(pol);
+    g2d.setColor(Color.WHITE);
+    g2d.drawLine(theFuckingLine[0].x, theFuckingLine[0].y, theFuckingLine[1].x, theFuckingLine[1].y);
+    g2d.drawLine(theFuckingLine[2].x, theFuckingLine[2].y, theFuckingLine[3].x, theFuckingLine[3].y);
+  }
+
+  private void drawPol(Graphics2D g2d, List<PointInt> ch, Color color) {
+    g2d.setColor(color);
 
     PointInt frstPoint = null;
     PointInt prevPoint = null;
 
-    for (PointInt currPoint : pol.getSrcPointList()) {
-      if (prevPoint != null) {
-        g2d.drawLine(prevPoint.x, prevPoint.y, currPoint.x, currPoint.y);
-      }
-
-      if (frstPoint == null) {
-        frstPoint = currPoint;
-      }
-
-      prevPoint = currPoint;
-    }
-
-    g2d.drawLine(prevPoint.x, prevPoint.y, frstPoint.x, frstPoint.y);
-
-    // Second
-
-    g2d.setColor(Color.CYAN);
-
-    frstPoint = null;
-    prevPoint = null;
-
-    for (PointInt currPoint : pol.getTgtPointList()) {
+    for (PointInt currPoint : ch) {
       if (prevPoint != null) {
         g2d.drawLine(prevPoint.x, prevPoint.y, currPoint.x, currPoint.y);
       }
@@ -150,64 +139,58 @@ public class GamePanel extends JPanel {
     g2d.drawLine(prevPoint.x, prevPoint.y, frstPoint.x, frstPoint.y);
   }
 
-  // --------------------------------------------------------------------------------
+  private PointInt[] calculateTheFuckingLine(Polygon pol) {
+    List<PointInt> ret = new ArrayList<PointInt>();
 
-  private void drawBox(Graphics2D g2d, BoxImpl box, Color color, CollisionInfo ci) {
-    int x, y, w, h;
+    List<PointInt> allPointIntList = new ArrayList<PointInt>();
+    allPointIntList.addAll(pol.getSrcPointList());
+    allPointIntList.addAll(pol.getTgtPointList());
 
-    if (ci.time != Double.MAX_VALUE) {
-      x = (int) (box.cx + box.vx * ci.time * grayTimeFactor);
-      y = (int) (box.cy + box.vy * ci.time * grayTimeFactor);
-    } else {
-      x = (int) (box.cx + box.vx * 1 * grayTimeFactor);
-      y = (int) (box.cy + box.vy * 1 * grayTimeFactor);
-    }
+    List<PointInt> convexHull = //
+    ConvexHull.convexHull(allPointIntList.toArray(new PointInt[0]));
 
-    w = box.bw;
-    h = box.bh;
+    PointInt frstPoint = null;
+    PointInt prevPoint = null;
 
-    g2d.setColor(Color.GRAY);
-    g2d.drawRect(x, y, w, h);
+    for (PointInt currPoint : convexHull) {
+      if (prevPoint != null) {
+        if (pol.getSrcPointList().contains(prevPoint) && //
+            pol.getTgtPointList().contains(currPoint)) {
+          ret.add(prevPoint);
+          ret.add(currPoint);
+        }
 
-    x = (int) (box.cx + box.vx * ci.time);
-    y = (int) (box.cy + box.vy * ci.time);
-    w = box.bw;
-    h = box.bh;
-
-    g2d.setColor(color);
-    g2d.drawRect(x, y, w, h);
-
-    Side side = null;
-
-    if (box == ci.box1) {
-      side = ci.box1Side;
-    }
-
-    if (box == ci.box2) {
-      side = ci.box2Side;
-    }
-
-    if (side != null) {
-      g2d.setColor(Color.WHITE);
-
-      switch (side) {
-        case LFT :
-          g2d.drawLine(x,/* */y,/* */x,/* */y + h);
-          break;
-
-        case RGH :
-          g2d.drawLine(x + w, y,/* */x + w, y + h);
-          break;
-
-        case TOP :
-          g2d.drawLine(x,/* */y,/* */x + w, y/**/);
-          break;
-
-        case BOT :
-          g2d.drawLine(x,/* */y + h, x + w, y + h);
-          break;
+        if (pol.getSrcPointList().contains(currPoint) && //
+            pol.getTgtPointList().contains(prevPoint)) {
+          ret.add(prevPoint);
+          ret.add(currPoint);
+        }
       }
+
+      if (frstPoint == null) {
+        frstPoint = currPoint;
+      }
+
+      prevPoint = currPoint;
     }
+
+    if (pol.getSrcPointList().contains(prevPoint) && //
+        pol.getTgtPointList().contains(frstPoint)) {
+      ret.add(prevPoint);
+      ret.add(frstPoint);
+    }
+
+    if (pol.getSrcPointList().contains(frstPoint) && //
+        pol.getTgtPointList().contains(prevPoint)) {
+      ret.add(prevPoint);
+      ret.add(frstPoint);
+    }
+
+    if (ret.size() != 4) {
+      throw new IllegalStateException("ret.size() != 4");
+    }
+
+    return ret.toArray(new PointInt[0]);
   }
 
   // --------------------------------------------------------------------------------
