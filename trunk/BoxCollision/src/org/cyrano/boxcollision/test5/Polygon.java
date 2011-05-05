@@ -6,7 +6,7 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cyrano.linemath.LineMath;
+import org.cyrano.math.LineMath;
 import org.cyrano.util.PointInt;
 
 // This class sucks, two polygons concepts in the same class
@@ -142,52 +142,4 @@ public class Polygon {
       tgtPointList.add(tgtPoint);
     }
   }
-
-  //  public PointInt[] calculateOneLine(PointInt src, PointInt tgt) {
-  //
-  //    PointInt frstPoint = null;
-  //    PointInt prevPoint = null;
-  //
-  //    int count = 0;
-  //
-  //    for (PointInt currPoint : pointList) {
-  //      if (prevPoint != null) {
-  //      }
-  //
-  //      if (frstPoint == null) {
-  //        frstPoint = currPoint;
-  //      }
-  //
-  //      prevPoint = currPoint;
-  //    }
-  //
-  //    for (PointInt currPoint : pointList) {
-  //      if (prevPoint != null) {
-  //      }
-  //
-  //      if (frstPoint == null) {
-  //        frstPoint = currPoint;
-  //      }
-  //
-  //      prevPoint = currPoint;
-  //    }
-  //
-  //    return null;
-  //  }
-  //
-  //  public PointInt[] calculateTheFuckingLines() {
-  //    PointInt src1;
-  //    PointInt tgt1;
-  //
-  //    PointInt src2;
-  //    PointInt tgt2;
-  //
-  //    for (PointInt srcPointInt : srcPointList) {
-  //      for (PointInt tgtPointInt : tgtPointList) {
-  //
-  //      }
-  //    }
-  //
-  //    return null;
-  //  }
 }
