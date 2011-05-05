@@ -1,9 +1,8 @@
-package org.cyrano.linemath;
+package org.cyrano.convexhull.test;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,9 +12,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.cyrano.boxcollision.base.Box;
-import org.cyrano.boxcollision.test5.Polygon;
-import org.cyrano.masscenter.MassCenterCalculator;
+import org.cyrano.math.ConvexHull;
 import org.cyrano.util.Hwh;
 import org.cyrano.util.PointInt;
 
@@ -24,24 +21,24 @@ import org.cyrano.util.PointInt;
  */
 public class GamePanel extends JPanel {
 
+  private List<PointInt> pointIntList = new ArrayList<PointInt>();
+
+  private PointInt dragPoint;
+
   private int dx;
   private int dy;
-
-  private List<PointInt> pointIntList = new ArrayList<PointInt>();
-  
-  PointInt dragPoint;
 
   // --------------------------------------------------------------------------------
 
   public GamePanel() {
-
-    pointIntList.add(new PointInt(200, 100));
-    pointIntList.add(new PointInt(100, 50));
-    pointIntList.add(new PointInt(200, 10));
-    pointIntList.add(new PointInt(5, 250));
-    pointIntList.add(new PointInt(50, 400));
-    pointIntList.add(new PointInt(500, 400));
-    pointIntList.add(new PointInt(100, 111));
+    pointIntList.add(new PointInt(/**/200, /**/100));
+    pointIntList.add(new PointInt(/**/100, /* */50));
+    pointIntList.add(new PointInt(/**/200, /* */10));
+    pointIntList.add(new PointInt(/*  */5, /**/250));
+    pointIntList.add(new PointInt(/* */50, /**/400));
+    pointIntList.add(new PointInt(/**/500, /**/400));
+    pointIntList.add(new PointInt(/**/100, /**/111));
+    pointIntList.add(new PointInt(/**/150, /**/150));
 
     // ----------------------------------------
 
@@ -66,16 +63,6 @@ public class GamePanel extends JPanel {
   }
 
   // --------------------------------------------------------------------------------
-
-  //  public void setGrayTimeFactor(double grayTimeFactor) {
-  //    this.grayTimeFactor = grayTimeFactor;
-  //
-  //    repaint();
-  //  }
-
-  // --------------------------------------------------------------------------------
-
-  // --------------------------------------------------------------------------------
   // JPanel
   // --------------------------------------------------------------------------------
 
@@ -96,13 +83,15 @@ public class GamePanel extends JPanel {
       g2d.drawOval(pointInt.x - 5, pointInt.y - 5, 10, 10);
     }
 
-    List<PointInt> ch = LineMath.convexHull(pointIntList.toArray(new PointInt[0]));
-    drawPol(g2d, ch, Color.CYAN);
+    List<PointInt> convexHull = //
+    ConvexHull.convexHull(pointIntList.toArray(new PointInt[0]));
 
+    drawPol(g2d, convexHull, Color.CYAN);
   }
 
-  private void drawPol(Graphics2D g2d, List<PointInt> ch, Color color) {
+  // --------------------------------------------------------------------------------
 
+  private void drawPol(Graphics2D g2d, List<PointInt> ch, Color color) {
     g2d.setColor(color);
 
     PointInt frstPoint = null;
@@ -121,7 +110,6 @@ public class GamePanel extends JPanel {
     }
 
     g2d.drawLine(prevPoint.x, prevPoint.y, frstPoint.x, frstPoint.y);
-
   }
 
   // --------------------------------------------------------------------------------
@@ -129,43 +117,35 @@ public class GamePanel extends JPanel {
   // --------------------------------------------------------------------------------
 
   private void mousePressed(MouseEvent evt) {
-        for (PointInt pointInt : pointIntList) {
-          Rectangle r;
-    
-          r = new Rectangle(pointInt.x - 5, pointInt.y - 5, 10, 10);
-    
-          if (r.contains(evt.getPoint())) {
-            dx = evt.getPoint().x - pointInt.x;
-            dy = evt.getPoint().y - pointInt.y;
-            dragPoint = pointInt;
-            return;
-          }
-        }
+    for (PointInt pointInt : pointIntList) {
+      Rectangle r = new Rectangle( //
+          pointInt.x - 5, pointInt.y - 5, 10, 10);
+
+      if (r.contains(evt.getPoint())) {
+        dx = evt.getPoint().x - pointInt.x;
+        dy = evt.getPoint().y - pointInt.y;
+        dragPoint = pointInt;
+        return;
+      }
+    }
   }
 
   // --------------------------------------------------------------------------------
 
   private void mouseReleased(MouseEvent e) {
-        dragPoint = null;
+    dragPoint = null;
   }
 
   // --------------------------------------------------------------------------------
 
   private void mouseDragged(MouseEvent evt) {
-        if (dragPoint == null) {
-          return;
-        }
-    
-        //    if (start) {
-        dragPoint.x = evt.getPoint().x - dx;
-        dragPoint.y = evt.getPoint().y - dy;
-        //    } else {
-        //      dragBox.sx = evt.getPoint().x - dx;
-        //      dragBox.sy = evt.getPoint().y - dy;
-        //    }
-    
-        //    dragBox.calcV();
-    
-        repaint();
+    if (dragPoint == null) {
+      return;
+    }
+
+    dragPoint.x = evt.getPoint().x - dx;
+    dragPoint.y = evt.getPoint().y - dy;
+
+    repaint();
   }
 }
