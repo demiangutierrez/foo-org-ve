@@ -6,7 +6,6 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cyrano.math.LineMath;
 import org.cyrano.util.PointInt;
 
 // This class sucks, two polygons concepts in the same class
@@ -14,6 +13,9 @@ public class Polygon {
 
   private List<PointInt> srcPointList = new ArrayList<PointInt>();
   private List<PointInt> tgtPointList = new ArrayList<PointInt>();
+
+  public int/* */vx;
+  public int/* */vy;
 
   private Color color;
 
@@ -41,6 +43,13 @@ public class Polygon {
 
   public Polygon() {
     // Empty
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public void calcV() {
+    vx = tgtPointList.get(0).x - srcPointList.get(0).x;
+    vy = tgtPointList.get(0).y - srcPointList.get(0).y;
   }
 
   // --------------------------------------------------------------------------------

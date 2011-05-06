@@ -42,7 +42,7 @@ public class GamePanelMove extends JPanel implements //
     setFocusable(true);
     grabFocus();
 
-    // PLayer...
+    // Player...
 
     playerBox = new Player();
 
