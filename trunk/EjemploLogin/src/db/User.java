@@ -11,53 +11,53 @@ import org.hibernate.annotations.Proxy;
 @Table(name = "user")
 @Proxy(lazy = false)
 public class User {
-	
-	private int id;
-	private String nick;
-	private String pass;
-	private String name;
-	private String email;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
 
-	public void setNick(String nick) {
-		this.nick = nick;
-	}
+  private int id;
+  private String nick;
+  private String pass;
+  private String name;
+  private String email;
 
-	public String getNick() {
-		return nick;
-	}
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  public int getId() {
+    return id;
+  }
 
-	public void setPass(String pass) {
-		this.pass = pass;
-	}
+  public void setId(int id) {
+    this.id = id;
+  }
 
-	public String getPass() {
-		return pass;
-	}
+  public void setNick(String nick) {
+    this.nick = nick;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getNick() {
+    return nick;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public void setPass(String pass) {
+    this.pass = pass;
+  }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  public String getPass() {
+    return pass;
+  }
 
-	public String getEmail() {
-		return email;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getEmail() {
+    return email;
+  }
 
 }
