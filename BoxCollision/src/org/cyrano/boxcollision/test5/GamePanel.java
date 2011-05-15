@@ -1,8 +1,10 @@
 package org.cyrano.boxcollision.test5;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -11,6 +13,9 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.cyrano.axis.Axis;
+import org.cyrano.axis.PointDib;
+import org.cyrano.boxcollision.test5.CollisionDetector.CollisionInfo;
 import org.cyrano.math.ConvexHull;
 import org.cyrano.util.Hwh;
 import org.cyrano.util.PointInt;
@@ -117,7 +122,7 @@ public class GamePanel extends JPanel {
     for (PointInt currPoint : pointListList) {
       if (prevPoint != null) {
         Axis axis = new Axis();
-        axis.calculateFromSide(prevPoint, currPoint);
+        axis.initFromSideNor(prevPoint, currPoint);
         axisList.add(axis);
       }
 
@@ -129,7 +134,7 @@ public class GamePanel extends JPanel {
     }
 
     Axis axis = new Axis();
-    axis.calculateFromSide(prevPoint, frstPoint);
+    axis.initFromSideNor(prevPoint, frstPoint);
     axisList.add(axis);
 
     return axisList;
@@ -137,6 +142,7 @@ public class GamePanel extends JPanel {
 
   private void drawPol(Graphics2D g2d, Polygon pol, Color color) {
     g2d.setColor(pol.getColor());
+    g2d.setStroke(new BasicStroke(1));
 
     drawPol(g2d, pol.getSrcPointList(), 0, 0, color);
     drawPol(g2d, pol.getTgtPointList(), 0, 0, Color.CYAN);
@@ -152,23 +158,59 @@ public class GamePanel extends JPanel {
     g2d.drawLine(theFuckingLine[2].x, theFuckingLine[2].y, theFuckingLine[3].x, theFuckingLine[3].y);
   }
 
-  private void drawProjectedFor(Graphics2D g2d, Axis axis, List<PointInt> pointListList) {
-    for (PointInt pointInt : pointListList) {
-      axis.projectPoint(pointInt);
+  private void drawPol(Graphics2D g2d, Polygon pol, Color color, CollisionInfo ci) {
+    if (ci.time == Double.MAX_VALUE) {
+      return;
     }
 
-    for (PointInt pointInt : axis.projectedPointList) {
-      g2d.setColor(Color.PINK);
-      g2d.drawOval(pointInt.x - 5, pointInt.y - 5, 10, 10);
-    }
+    g2d.setColor(pol.getColor());
+
+    drawPol(g2d, pol.getSrcPointList(), 0, 0, color);
+    drawPol(g2d, pol.getTgtPointList(), 0, 0, Color.CYAN);
+
+    int dx = (int) (pol.vx * 1 * ci.time);
+    int dy = (int) (pol.vy * 1 * ci.time);
+
+    drawPol(g2d, pol.getSrcPointList(), dx, dy, Color.LIGHT_GRAY);
+
+    //    PointInt[] theFuckingLine = calculateTheFuckingLine(pol);
+    //    g2d.setColor(Color.WHITE);
+    //    g2d.drawLine(theFuckingLine[0].x, theFuckingLine[0].y, theFuckingLine[1].x, theFuckingLine[1].y);
+    //    g2d.drawLine(theFuckingLine[2].x, theFuckingLine[2].y, theFuckingLine[3].x, theFuckingLine[3].y);
+  }
+
+  //  private void drawProjectedFor(Graphics2D g2d, Axis axis, List<PointInt> pointListList) {
+  //    for (PointInt pointInt : pointListList) {
+  //      axis.projectPoint(pointInt);
+  //    }
+  //
+  //    for (PointInt pointInt : axis.projectedPointList) {
+  //      g2d.setColor(Color.PINK);
+  //      g2d.drawOval(pointInt.x - 5, pointInt.y - 5, 10, 10);
+  //    }
+  //  }
+
+  private void drawProjectedFor(Graphics2D g2d, AxisProblem axisProblem, Color c1, Color c2) {
+    new PointDib(axisProblem.pBegPol1XY, c2).paint(g2d);
+    new PointDib(axisProblem.pEndPol1XY, c2).paint(g2d);
+
+    new PointDib(axisProblem.pBegPol2XY, c1).paint(g2d);
+    new PointDib(axisProblem.pEndPol2XY, c1).paint(g2d);
+
+    g2d.setStroke(new BasicStroke(3));
+    g2d.setColor(c2);
+    g2d.drawLine( //
+        (int) axisProblem.pBegPol1XY.x, (int) axisProblem.pBegPol1XY.y, //
+        (int) axisProblem.pEndPol1XY.x, (int) axisProblem.pEndPol1XY.y);
+    g2d.setColor(c1);
+    g2d.drawLine( //
+        (int) axisProblem.pBegPol2XY.x, (int) axisProblem.pBegPol2XY.y, //
+        (int) axisProblem.pEndPol2XY.x, (int) axisProblem.pEndPol2XY.y);
   }
 
   private void drawAxisList(Graphics2D g2d, List<Axis> axisList) {
     for (Axis axis : axisList) {
-      g2d.setColor(Color.YELLOW);
-      g2d.drawLine(//
-          axis.p1.x, axis.p1.y, //
-          axis.p2.x, axis.p2.y);
+      axis.paint(g2d, axis.pSrc, 50, Color.YELLOW);
     }
   }
 
@@ -278,7 +320,13 @@ public class GamePanel extends JPanel {
     drawAxisList(g2d, axisList1);
 
     for (Axis axis : axisList1) {
-      drawProjectedFor(g2d, axis, pol2.getSrcPointList());
+      AxisProblem axisProblem = new AxisProblem();
+      axisProblem.axis = axis;
+      axisProblem.pol1 = pol1;
+      axisProblem.pol2 = pol2;
+      axisProblem.calcProjection();
+
+      drawProjectedFor(g2d, axisProblem, pol1.getColor(), pol2.getColor());
     }
 
     drawPol(g2d, pol2, BOX2_COLOR);
@@ -287,10 +335,24 @@ public class GamePanel extends JPanel {
     drawAxisList(g2d, axisList2);
 
     for (Axis axis : axisList2) {
-      drawProjectedFor(g2d, axis, pol1.getSrcPointList());
+      AxisProblem axisProblem = new AxisProblem();
+      axisProblem.axis = axis;
+      axisProblem.pol1 = pol1;
+      axisProblem.pol2 = pol2;
+      axisProblem.calcProjection();
+
+      drawProjectedFor(g2d, axisProblem, pol1.getColor(), pol2.getColor());
     }
     //    drawBox(g2d, pol1, BOX1_COLOR, ci);
     //    drawBox(g2d, box2, BOX2_COLOR, ci);
+
+    //    CollisionInfo ci = new CollisionInfo(pol1, axisList1, pol2, axisList2);
+    //    CollisionDetector.calcTimeToCollide(ci);
+    //
+    //    System.err.println(ci);
+    //
+    //    drawPol(g2d, pol1, BOX1_COLOR, ci);
+    //    drawPol(g2d, pol2, BOX1_COLOR, ci);
   }
 
   // --------------------------------------------------------------------------------
