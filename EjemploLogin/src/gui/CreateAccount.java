@@ -26,198 +26,205 @@ import db.User;
 
 public class CreateAccount extends ContentPane {
 
-	private TextField txtNick;
-	private TextField txtName;
-	private PasswordField txtPass;
-	private TextField txtEmail;
+  private TextField txtNick;
+  private TextField txtName;
+  private PasswordField txtPass;
+  private TextField txtEmail;
 
-	public CreateAccount() {
-		initGUI();
-	}
+  public CreateAccount() {
+    initGUI();
+  }
 
-	private void initGUI() {
-		setBackground(new Color(117, 145, 118));
-		
-		Column col = new Column();
-		col.add(new Label("Ïntroduzca sus datos para registrarse...!"));
+  private void initGUI() {
+    setBackground(new Color(117, 145, 118));
 
-		Grid grid = new Grid(2);
+    Column col = new Column();
+    col.add(new Label("Ïntroduzca sus datos para registrarse...!"));
 
-		txtNick = new TextField();
-		Label lblNick = new Label("Nick/Apodo");
-		grid.add(lblNick);
-		grid.add(txtNick);
+    Grid grid = new Grid(2);
 
-		txtName = new TextField();
-		Label lblName = new Label("Nombre");
-		grid.add(lblName);
-		grid.add(txtName);
+    txtNick = new TextField();
+    Label lblNick = new Label("Nick/Apodo");
+    grid.add(lblNick);
+    grid.add(txtNick);
 
-		txtPass = new PasswordField();
-		Label lblPass = new Label("Contraseña");
-		grid.add(lblPass);
-		grid.add(txtPass);
+    txtName = new TextField();
+    Label lblName = new Label("Nombre");
+    grid.add(lblName);
+    grid.add(txtName);
 
-		txtEmail = new TextField();
-		Label lblEmail = new Label("Email");
-		grid.add(lblEmail);
-		grid.add(txtEmail);
+    txtPass = new PasswordField();
+    Label lblPass = new Label("Contraseña");
+    grid.add(lblPass);
+    grid.add(txtPass);
 
-		Button btnCreateAccount = new Button("Crear Cuenta");
-		btnCreateAccount.setBorder(new Border(new Extent(2), Color.BLACK, 1));
-		btnCreateAccount.setBackground(new Color(197, 217, 161));
-		btnCreateAccount.setAlignment(new Alignment(Alignment.CENTER, Alignment.CENTER));
-		btnCreateAccount.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				bntCreateAccountClicked();
-			}
-		});
+    txtEmail = new TextField();
+    Label lblEmail = new Label("Email");
+    grid.add(lblEmail);
+    grid.add(txtEmail);
 
-		Button btnCancel = new Button("Cancelar");
-		btnCancel.setBorder(new Border(new Extent(2), Color.BLACK, 1));
-		btnCancel.setBackground(new Color(197, 217, 161));
-		btnCancel.setAlignment(new Alignment(Alignment.CENTER, Alignment.CENTER));
-		btnCancel.setWidth(new Extent(60));
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				btnCancelClicked();
-			}
-		});
+    Button btnCreateAccount = new Button("Crear Cuenta");
+    btnCreateAccount.setBorder(new Border(new Extent(2), Color.BLACK, 1));
+    btnCreateAccount.setBackground(new Color(197, 217, 161));
+    btnCreateAccount.setAlignment(new Alignment(Alignment.CENTER, Alignment.CENTER));
+    btnCreateAccount.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent arg0) {
+        bntCreateAccountClicked();
+      }
+    });
 
-		grid.add(btnCreateAccount);
-		grid.add(btnCancel);
+    Button btnCancel = new Button("Cancelar");
+    btnCancel.setBorder(new Border(new Extent(2), Color.BLACK, 1));
+    btnCancel.setBackground(new Color(197, 217, 161));
+    btnCancel.setAlignment(new Alignment(Alignment.CENTER, Alignment.CENTER));
+    btnCancel.setWidth(new Extent(60));
+    btnCancel.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent arg0) {
+        btnCancelClicked();
+      }
+    });
 
-		col.add(grid);
-		add(col);
+    grid.add(btnCreateAccount);
+    grid.add(btnCancel);
 
-	}
+    col.add(grid);
+    add(col);
 
-	protected void btnCancelClicked() {
-		removeAll();
-		add(new Welcome());
-	}
+  }
 
-	protected void bntCreateAccountClicked() {
-		final WindowPane windowPane = new WindowPane();
-		windowPane.setModal(true);
-		windowPane.setTitleBackground(new Color(11, 46, 5));
-		windowPane.setTitleForeground(Color.WHITE);
-		windowPane.setBackground(new Color(197, 217, 161));
+  protected void btnCancelClicked() {
+    removeAll();
+    add(new Welcome());
+  }
 
-		Column col = new Column();
-		col.setCellSpacing(new Extent(8));
+  protected void bntCreateAccountClicked() {
+    final WindowPane windowPane = new WindowPane();
+    windowPane.setModal(true);
+    windowPane.setTitleBackground(new Color(11, 46, 5));
+    windowPane.setTitleForeground(Color.WHITE);
+    windowPane.setBackground(new Color(197, 217, 161));
 
-		Button btnOK = new Button("Aceptar");
-		btnOK.setAlignment(new Alignment(Alignment.CENTER, Alignment.CENTER));
-		btnOK.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				windowPane.userClose();
-			}
-		});
+    Column col = new Column();
+    col.setCellSpacing(new Extent(8));
 
-		Label lbl = new Label();
+    Button btnOK = new Button("Aceptar");
+    btnOK.setAlignment(new Alignment(Alignment.CENTER, Alignment.CENTER));
+    btnOK.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent arg0) {
+        windowPane.userClose();
+      }
+    });
 
-		if (!validateFields()) {
+    Label lbl = new Label();
 
-			windowPane.setTitle("Campos Obligatorios");
+    if (!validateFields()) {
 
-			lbl.setText("Faltan algunos campos por rellenar. Por favor ingrese todos sus datos");
+      windowPane.setTitle("Campos Obligatorios");
 
-			col.add(lbl);
-			col.add(btnOK);
-			windowPane.add(col);
-			add(windowPane);
+      lbl.setText("Faltan algunos campos por rellenar. Por favor ingrese todos sus datos");
 
-			return;
-		}
+      col.add(lbl);
+      col.add(btnOK);
+      windowPane.add(col);
+      add(windowPane);
 
-		if (checkUser()) {
-			windowPane.setTitle("Nick existente");
+      return;
+    }
 
-			lbl.setText("Este nick ya existe. Intente con otro diferente");
+    // XXX: Here you have a problem, you are checking user
+    // and registering below in two different sessions / transactions.
+    // In response to user event (for example click in a button) you
+    // should open/use/close only one session and one transaccion
+    // ("only one" is the the key phrase here). This way, checkUser
+    // and register below should share the same session / transaction.
+    if (checkUser()) {
+      windowPane.setTitle("Nick existente");
 
-			col.add(lbl);
-			col.add(btnOK);
-			windowPane.add(col);
+      lbl.setText("Este nick ya existe. Intente con otro diferente");
 
-			add(windowPane);
-			return;
+      col.add(lbl);
+      col.add(btnOK);
+      windowPane.add(col);
 
-		}
+      add(windowPane);
+      return;
 
-		register();
+    }
 
-		removeAll();
-		add(new Welcome());
+    register();
 
-		windowPane.setTitle("Usuario registrado");
-		lbl.setText("Usteda ha sido registrado satisfactoriamente");
+    removeAll();
+    add(new Welcome());
 
-		col.add(lbl);
-		col.add(btnOK);
-		windowPane.add(col);
+    windowPane.setTitle("Usuario registrado");
+    lbl.setText("Usteda ha sido registrado satisfactoriamente");
 
-		add(windowPane);
-		return;
+    col.add(lbl);
+    col.add(btnOK);
+    windowPane.add(col);
 
-	}
+    add(windowPane);
+    return;
 
-	private void register() {
-		Configuration configuration = new AnnotationConfiguration();
-		configuration.configure("/db/hibernate.cfg.xml");
-		SessionFactory sessionFactory = configuration.buildSessionFactory();
+  }
 
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
+  private void register() {
+    // XXX: To a singleton
+    Configuration configuration = new AnnotationConfiguration();
+    configuration.configure("/db/hibernate.cfg.xml");
+    SessionFactory sessionFactory = configuration.buildSessionFactory();
 
-		User bean = new User();
-		bean.setNick(txtNick.getText());
-		bean.setPass(txtPass.getText());
-		bean.setName(txtName.getText());
-		bean.setEmail(txtEmail.getText());
-		session.save(bean);
+    // OK
+    Session session = sessionFactory.openSession();
+    session.beginTransaction();
 
-		session.getTransaction().commit();
-		session.close();
+    User bean = new User();
+    bean.setNick(txtNick.getText());
+    bean.setPass(txtPass.getText());
+    bean.setName(txtName.getText());
+    bean.setEmail(txtEmail.getText());
+    session.save(bean);
 
-	}
+    session.getTransaction().commit();
+    session.close();
+  }
 
-	private boolean checkUser() {
-		Configuration configuration = new AnnotationConfiguration();
-		configuration.configure("/db/hibernate.cfg.xml");
-		SessionFactory sessionFactory = configuration.buildSessionFactory();
+  private boolean checkUser() {
+    // XXX: Check message above, share with register
+    // XXX: To a singleton
+    Configuration configuration = new AnnotationConfiguration();
+    configuration.configure("/db/hibernate.cfg.xml");
+    SessionFactory sessionFactory = configuration.buildSessionFactory();
 
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
+    Session session = sessionFactory.openSession();
+    session.beginTransaction();
 
-		Criteria criteria = session.createCriteria(User.class).add(
-				Restrictions.eq("nick", txtNick.getText()));
-		if (criteria.list().size() == 0){
-			session.getTransaction().commit();
-			session.close();
-			return false;
-		}
-		else{
-			session.getTransaction().commit();
-			session.close();
-			return true;
-		}
-	}
+    Criteria criteria = session.createCriteria(User.class).add(Restrictions.eq("nick", txtNick.getText()));
+    if (criteria.list().size() == 0) {
+      session.getTransaction().commit();
+      session.close();
+      return false;
+    } else {
+      session.getTransaction().commit();
+      session.close();
+      return true;
+    }
+  }
 
-	private boolean validateFields() {
-		if (txtNick.getText().equals("")) {
-			return false;
-		}
-		if (txtName.getText().equals("")) {
-			return false;
-		}
-		if (txtPass.getText().equals("")) {
-			return false;
-		}
-		if (txtEmail.getText().equals("")) {
-			return false;
-		}
-		return true;
-	}
+  private boolean validateFields() {
+    if (txtNick.getText().equals("")) {
+      return false;
+    }
+    if (txtName.getText().equals("")) {
+      return false;
+    }
+    if (txtPass.getText().equals("")) {
+      return false;
+    }
+    if (txtEmail.getText().equals("")) {
+      return false;
+    }
+    return true;
+  }
 
 }
