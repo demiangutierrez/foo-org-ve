@@ -34,7 +34,14 @@ public class CollisionDetector {
     Box box1 = collisionInfo.box1;
     Box box2 = collisionInfo.box2;
 
+    // --------------------------------------------------------------
+    // [time_to_beg_col, time_to_end_col] x axis, null if moving away
+    // --------------------------------------------------------------
     Point2D crashX = calcTimesToPotImpactX(box1, box2);
+
+    // --------------------------------------------------------------
+    // [time_to_beg_col, time_to_end_col] y axis, null if moving away
+    // --------------------------------------------------------------
     Point2D crashY = calcTimesToPotImpactY(box1, box2);
 
     TimeMarkBean[] overlay;

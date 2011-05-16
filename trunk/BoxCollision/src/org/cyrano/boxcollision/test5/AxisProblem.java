@@ -36,7 +36,7 @@ public class AxisProblem {
     for (PointAbs pointAbs : pol.getSrcPointList()) {
       PointDbl pCur = new PointDbl();
 
-      axis.calcProjectionXY(pointAbs, pCur);
+      axis.calcPointProjectionXY(pointAbs, pCur);
 
       if (!begSet) {
         pBeg.setDX(pCur.x);
@@ -79,18 +79,18 @@ public class AxisProblem {
     for (PointAbs pointAbs : pol.getSrcPointList()) {
       PointDbl pCur = new PointDbl();
 
-      axis.calcProjectionOX(pointAbs, pCur);
+      axis.calcPointProjectionOX(pointAbs, pCur);
 
       if (!begSet) {
         pBeg.setDX(pCur.x);
-        pBeg.setDY(pCur.y);
+        //pBeg.setDY(pCur.y);
         begSet = true;
         continue;
       }
 
       if (!endSet) {
         pEnd.setDX(pCur.x);
-        pEnd.setDY(pCur.y);
+        //pEnd.setDY(pCur.y);
         endSet = true;
         continue;
       }
@@ -101,13 +101,13 @@ public class AxisProblem {
 
       if (d0 < d1 && d2 <= d1) {
         pEnd.setDX(pCur.x);
-        pEnd.setDY(pCur.y);
+        //pEnd.setDY(pCur.y);
         continue;
       }
 
       if (d0 < d2 && d1 <= d2) {
         pBeg.setDX(pCur.x);
-        pBeg.setDY(pCur.y);
+        //pBeg.setDY(pCur.y);
         continue;
       }
     }
@@ -121,5 +121,19 @@ public class AxisProblem {
 
     calcProjectionOXForPolygon(pol1, pBegPol1OX, pEndPol1OX);
     calcProjectionOXForPolygon(pol2, pBegPol2OX, pEndPol2OX);
+
+    PointDbl vPol1 = new PointDbl();
+    vPol1.setIX(pol1.vx);
+    vPol1.setIY(pol1.vy);
+    PointDbl vRes1 = new PointDbl();
+    axis.calcPointProjectionOX2(vPol1, vRes1);
+    pol1VOX = vRes1.getDX();
+
+    PointDbl vPol2 = new PointDbl();
+    vPol2.setIX(pol2.vx);
+    vPol2.setIY(pol2.vy);
+    PointDbl vRes2 = new PointDbl();
+    axis.calcPointProjectionOX2(vPol2, vRes2);
+    pol2VOX = vRes2.getDX();
   }
 }

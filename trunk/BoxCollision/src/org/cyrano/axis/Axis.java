@@ -57,19 +57,45 @@ public class Axis {
 
   // --------------------------------------------------------------------------------
 
-  public void calcProjectionXY(PointAbs ptp, PointAbs res) {
+  public void calcPointProjectionXY(PointAbs ptp, PointAbs res) {
     double modPtp = ((ptp.getDX() - pSrc.x) * unit.x + (ptp.getDY() - pSrc.y) * unit.y);
 
     res.setDX(unit.x * modPtp + pSrc.x);
     res.setDY(unit.y * modPtp + pSrc.y);
   }
 
+  //  // --------------------------------------------------------------------------------
+  //
+  //  public void calcVectorProjectionOX(PointAbs vec, PointAbs res) {
+  //    double modPtp = ((ptp.getDX() - pSrc.x) * unit.x + (ptp.getDY() - pSrc.y) * unit.y);
+  //
+  //    res.setDX(modPtp + pSrc.x);
+  //    res.setDY(pSrc.y);
+  //  }
+  //
+  //  // --------------------------------------------------------------------------------
+  //
+  //  public void calcVectorProjectionXY(PointAbs vec, PointAbs res) {
+  //    double modPtp = ((ptp.getDX() - pSrc.x) * unit.x + (ptp.getDY() - pSrc.y) * unit.y);
+  //
+  //    res.setDX(unit.x * modPtp + pSrc.x);
+  //    res.setDY(unit.y * modPtp + pSrc.y);
+  //  }
+  //
   // --------------------------------------------------------------------------------
 
-  public void calcProjectionOX(PointAbs ptp, PointAbs res) {
+  public void calcPointProjectionOX(PointAbs ptp, PointAbs res) {
     double modPtp = ((ptp.getDX() - pSrc.x) * unit.x + (ptp.getDY() - pSrc.y) * unit.y);
 
     res.setDX(modPtp + pSrc.x);
+    res.setDY(pSrc.y);
+  }
+
+  // This is a vector proyection
+  public void calcPointProjectionOX2(PointAbs ptp, PointAbs res) {
+    double modPtp = ((ptp.getDX()) * unit.x + (ptp.getDY()) * unit.y);
+
+    res.setDX(modPtp);
     res.setDY(pSrc.y);
   }
 
