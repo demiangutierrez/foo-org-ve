@@ -8,7 +8,7 @@ import java.util.List;
 public class CollisionDetector {
 
   private enum Mark {
-    BEGX, ENDX, BEGY, ENDY
+    BEG, END
   }
 
   public enum Side {
@@ -33,73 +33,91 @@ public class CollisionDetector {
   // --------------------------------------------------------------------------------
 
   public static void calcTimeToCollide(CollisionInfo collisionInfo) {
-    Polygon box1 = collisionInfo.pol1;
-    Polygon box2 = collisionInfo.pol2;
 
+    // -----------------------------------------------------------------
+    // [time_to_beg_col, time_to_end_col] n-th axis, null if moving away
+    // -----------------------------------------------------------------
     List<Point2D> crashList = new ArrayList<Point2D>();
 
-    for (Axis axis : collisionInfo.axisList1) {
+    for (AxisProblem axis : collisionInfo.axisList1) {
       Point2D crash = calcTimesToPotImpactAxis(axis);
+
+      if (crash == null) {
+        collisionInfo.time = Double.MAX_VALUE;
+        return;
+      }
+
       crashList.add(crash);
     }
 
-    for (Axis axis : collisionInfo.axisList2) {
+    for (AxisProblem axis : collisionInfo.axisList2) {
       Point2D crash = calcTimesToPotImpactAxis(axis);
+
+      if (crash == null) {
+        collisionInfo.time = Double.MAX_VALUE;
+        return;
+      }
+
       crashList.add(crash);
     }
 
     TimeMarkBean[] overlay;
 
-    if (crashX == null || crashY == null) {
-      collisionInfo.time = Double.MAX_VALUE;
-      return;
-    }
-
-    overlay = calcOverlayArray(crashX, crashY);
+    overlay = calcOverlayArray(crashList);
 
     if (overlay == null) {
       return;
     }
 
-    collisionInfo.time = overlay[1].time;
+    double time = Double.MAX_VALUE;
 
-    calcCollisionSide(collisionInfo, overlay);
-  }
-
-  // --------------------------------------------------------------------------------
-
-  private static void calcCollisionSide( //
-      CollisionInfo collisionInfo, TimeMarkBean[] overlay) {
-
-    switch (overlay[1].mark) {
-      case BEGX :
-        if (collisionInfo.pol1.minX() < collisionInfo.pol2.minX()) {
-          collisionInfo.box1Side = Side.RGH;
-          collisionInfo.box2Side = Side.LFT;
-        } else {
-          collisionInfo.box1Side = Side.LFT;
-          collisionInfo.box2Side = Side.RGH;
-        }
-        break;
-
-      case BEGY :
-        if (collisionInfo.pol1.minY() < collisionInfo.pol2.minY()) {
-          collisionInfo.box1Side = Side.BOT;
-          collisionInfo.box2Side = Side.TOP;
-        } else {
-          collisionInfo.box1Side = Side.TOP;
-          collisionInfo.box2Side = Side.BOT;
-        }
-        break;
+    for (int i = 0; i < overlay.length / 2; i++) {
+      if (overlay[i].mark == Mark.END) {
+        collisionInfo.time = Double.MAX_VALUE;
+        return;
+      }
+      time = overlay[i].time;
     }
+
+    collisionInfo.time = time;
+
+    //calcCollisionSide(collisionInfo, overlay);
   }
 
   // --------------------------------------------------------------------------------
 
-  private static Point getPts1OverAxis(Axis axis) {
-    
-//    return new Point(box.minX(), box.maxX());
-  }
+  //  private static void calcCollisionSide( //
+  //      CollisionInfo collisionInfo, TimeMarkBean[] overlay) {
+  //
+  //    switch (overlay[1].mark) {
+  //      case BEGX :
+  //        if (collisionInfo.pol1.minX() < collisionInfo.pol2.minX()) {
+  //          collisionInfo.box1Side = Side.RGH;
+  //          collisionInfo.box2Side = Side.LFT;
+  //        } else {
+  //          collisionInfo.box1Side = Side.LFT;
+  //          collisionInfo.box2Side = Side.RGH;
+  //        }
+  //        break;
+  //
+  //      case BEGY :
+  //        if (collisionInfo.pol1.minY() < collisionInfo.pol2.minY()) {
+  //          collisionInfo.box1Side = Side.BOT;
+  //          collisionInfo.box2Side = Side.TOP;
+  //        } else {
+  //          collisionInfo.box1Side = Side.TOP;
+  //          collisionInfo.box2Side = Side.BOT;
+  //        }
+  //        break;
+  //    }
+  //  }
+
+  // --------------------------------------------------------------------------------
+
+  //  private static Point getPts1OverAxis(Axis axis) {
+  //
+  //    //    return new Point(box.minX(), box.maxX());
+  //  }
 
   // --------------------------------------------------------------------------------
 
@@ -116,11 +134,18 @@ public class CollisionDetector {
   //return calcTimesToPotImpact(bp1, bp2, box1.velX(), box2.velX());
   //}
 
-  private static Point2D calcTimesToPotImpactAxis(Axis axis) {
-    Point bp1 = getPts1OverAxis(axis);
-    Point bp2 = getBoxOverX(box2);
+  private static Point2D calcTimesToPotImpactAxis(AxisProblem axisProblem) {
+    // XXX: Beware with casts to int
+    Point bp1 = new Point(
+        Math.min((int) axisProblem.pBegPol1OX.x, (int) axisProblem.pEndPol1OX.x),
+        Math.max((int) axisProblem.pBegPol1OX.x, (int) axisProblem.pEndPol1OX.x)
+        );
+    Point bp2 = new Point(
+        Math.min((int) axisProblem.pBegPol2OX.x, (int) axisProblem.pEndPol2OX.x),
+        Math.max((int) axisProblem.pBegPol2OX.x, (int) axisProblem.pEndPol2OX.x)
+            );
 
-    return calcTimesToPotImpact(bp1, bp2, box1.velX(), box2.velX());
+    return calcTimesToPotImpact(bp1, bp2, (int) axisProblem.pol1VOX, (int) axisProblem.pol2VOX);
   }
 
   // --------------------------------------------------------------------------------
@@ -193,16 +218,20 @@ public class CollisionDetector {
 
   // --------------------------------------------------------------------------------
 
-  private static TimeMarkBean[] calcOverlayArray(Point2D crashX, Point2D crashY) {
-    if ((crashX.getX() > crashY.getY() || crashX.getY() < crashY.getX())) {
-      return null;
+  private static TimeMarkBean[] calcOverlayArray(List<Point2D> crashList) {
+
+    //    if ((crashX.getX() > crashY.getY() || crashX.getY() < crashY.getX())) {
+    //      return null;
+    //    }
+
+    List<TimeMarkBean> timeMarkBeanList = new ArrayList<TimeMarkBean>();
+
+    for (Point2D crash : crashList) {
+      timeMarkBeanList.add(new TimeMarkBean(crash.getX(), Mark.BEG));
+      timeMarkBeanList.add(new TimeMarkBean(crash.getY(), Mark.END));
     }
 
-    TimeMarkBean[] ret = new TimeMarkBean[]{ //
-    /**/new TimeMarkBean(crashX.getX(), Mark.BEGX), //
-        new TimeMarkBean(crashX.getY(), Mark.ENDX), //
-        new TimeMarkBean(crashY.getX(), Mark.BEGY), //
-        new TimeMarkBean(crashY.getY(), Mark.ENDY)};
+    TimeMarkBean[] ret = timeMarkBeanList.toArray(new TimeMarkBean[0]);
 
     // ----------------------------------------
     // A primitive sort...
@@ -283,11 +312,11 @@ public class CollisionDetector {
 
     //    public Side/*  */box1Side;
     public Polygon/*   */pol1;
-    public List<Axis> axisList1;
+    public List<AxisProblem> axisList1;
 
     //    public Side/*  */box2Side;
     public Polygon/*   */pol2;
-    public List<Axis> axisList2;
+    public List<AxisProblem> axisList2;
 
     // ----------------------------------------
 
@@ -296,8 +325,8 @@ public class CollisionDetector {
     // ----------------------------------------
 
     public CollisionInfo( //
-        Polygon box1, List<Axis> axisList1, //
-        Polygon box2, List<Axis> axisList2) {
+        Polygon box1, List<AxisProblem> axisList1, //
+        Polygon box2, List<AxisProblem> axisList2) {
 
       this.pol1 = box1;
       this.axisList1 = axisList1;

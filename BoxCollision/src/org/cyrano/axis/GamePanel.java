@@ -24,22 +24,6 @@ import org.cyrano.util.PointInt;
  */
 public class GamePanel extends JPanel {
 
-  //  public static final Color BOX1_COLOR = new Color(255, 0, 0);
-  //  public static final Color BOX2_COLOR = new Color(0, 255, 0);
-  //
-  //
-  //  private BoxImpl box1;
-  //  private BoxImpl box2;
-  //
-  //  private boolean start;
-  //
-  //  private BoxImpl dragBox;
-  //
-  //  private int dx;
-  //  private int dy;
-  //
-  //  private double grayTimeFactor = 1;
-
   private List<PointDib> pointList = new ArrayList<PointDib>();
 
   private PointInt pAxis1;
@@ -47,6 +31,9 @@ public class GamePanel extends JPanel {
 
   private PointInt pProj1;
   private PointInt pProj2;
+
+  private PointInt pVel1;
+  private PointInt pVel2;
 
   private Axis axis;
 
@@ -88,6 +75,22 @@ public class GamePanel extends JPanel {
     pProj2.y = 200;
 
     pointList.add(new PointDib(pProj2, Color.RED));
+
+    // ----------------------------------------
+
+    pVel1 = new PointInt();
+
+    pVel1.x = 0;
+    pVel1.y = 0;
+
+    //pointList.add(new PointDib(pVel1, Color.MAGENTA));
+
+    pVel2 = new PointInt();
+
+    pVel2.x = 150;
+    pVel2.y = 150;
+
+    pointList.add(new PointDib(pVel2, Color.MAGENTA));
 
     // ----------------------------------------
 
@@ -156,6 +159,12 @@ public class GamePanel extends JPanel {
       point.paint(g2d);
     }
 
+    new PointDib(pVel1, Color.MAGENTA).paint(g2d);
+
+    g2d.setColor(Color.MAGENTA);
+    g2d.setStroke(new BasicStroke(3));
+    g2d.drawLine(pVel1.getIX(), pVel1.getIY(), pVel2.getIX(), pVel2.getIY());
+
     g2d.setColor(Color.YELLOW);
     g2d.drawLine(pAxis1.x, pAxis1.y, pAxis2.x, pAxis2.y);
 
@@ -167,24 +176,37 @@ public class GamePanel extends JPanel {
     axis.initFromSideNor(pAxis1, pAxis2);
     axis.paint(g2d, axis.pSrc, 50, Color.YELLOW);
 
-    PointDbl resXY1 = new PointDbl();
-    axis.calcProjectionXY(pProj1, resXY1);
-    new PointDib(resXY1, Color.GREEN).paint(g2d);
+    PointDbl pVelResXY2 = new PointDbl();
+    axis.calcPointProjectionOX2(pVel2, pVelResXY2);
+    new PointDib(pVelResXY2, Color.GREEN).paint(g2d);
+    
+//    PointDbl pVelResXY1 = new PointDbl();
+//    axis.calcProjectionXY(pProj1, pVelResXY1);
+//    new PointDib(pVelResXY1, Color.GREEN).paint(g2d);
+    
+    
+    PointDbl pProjResXY1 = new PointDbl();
+    axis.calcPointProjectionXY(pProj1, pProjResXY1);
+    new PointDib(pProjResXY1, Color.GREEN).paint(g2d);
 
-    PointDbl resXY2 = new PointDbl();
-    axis.calcProjectionXY(pProj2, resXY2);
-    new PointDib(resXY2, Color.GREEN).paint(g2d);
+    PointDbl pProjResXY2 = new PointDbl();
+    axis.calcPointProjectionXY(pProj2, pProjResXY2);
+    new PointDib(pProjResXY2, Color.GREEN).paint(g2d);
 
-    PointDbl resOX1 = new PointDbl();
-    axis.calcProjectionOX(pProj1, resOX1);
-    new PointDib(resOX1, Color.CYAN).paint(g2d);
+    PointDbl pProjResOX1 = new PointDbl();
+    axis.calcPointProjectionOX(pProj1, pProjResOX1);
+    new PointDib(pProjResOX1, Color.CYAN).paint(g2d);
 
-    PointDbl resOX2 = new PointDbl();
-    axis.calcProjectionOX(pProj2, resOX2);
-    new PointDib(resOX2, Color.CYAN).paint(g2d);
+    PointDbl pProjResOX2 = new PointDbl();
+    axis.calcPointProjectionOX(pProj2, pProjResOX2);
+    new PointDib(pProjResOX2, Color.CYAN).paint(g2d);
 
-    double d1 = PointAbs.dist(resXY1, resXY2);
-    double d2 = PointAbs.dist(resOX1, resOX2);
+    g2d.setColor(Color.CYAN);
+    g2d.setStroke(new BasicStroke(3));
+    g2d.drawLine(pProjResOX1.getIX(), pProjResOX1.getIY(), pProjResOX2.getIX(), pProjResOX2.getIY());
+
+    double d1 = PointAbs.dist(pProjResXY1, pProjResXY2);
+    double d2 = PointAbs.dist(pProjResOX1, pProjResOX2);
 
     if (!MathUtil.betweenO(d1 - 0.00001, d2, d1 + 0.00001)) {
       System.err.println("Opps***********************");
@@ -194,7 +216,7 @@ public class GamePanel extends JPanel {
 
     g2d.setColor(Color.GREEN);
     g2d.setStroke(new BasicStroke(3));
-    g2d.drawLine(resXY1.getIX(), resXY1.getIY(), resXY2.getIX(), resXY2.getIY());
+    g2d.drawLine(pProjResXY1.getIX(), pProjResXY1.getIY(), pProjResXY2.getIX(), pProjResXY2.getIY());
 
     g2d.setColor(Color.LIGHT_GRAY);
 
@@ -202,8 +224,8 @@ public class GamePanel extends JPanel {
         BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, //
         1, new float[]{4, 4}, 0));
 
-    g2d.drawLine(resXY1.getIX(), resXY1.getIY(), pProj1.x, pProj1.y);
-    g2d.drawLine(resXY2.getIX(), resXY2.getIY(), pProj2.x, pProj2.y);
+    g2d.drawLine(pProjResXY1.getIX(), pProjResXY1.getIY(), pProj1.x, pProj1.y);
+    g2d.drawLine(pProjResXY2.getIX(), pProjResXY2.getIY(), pProj2.x, pProj2.y);
 
     g2d.setTransform(prev);
   }
