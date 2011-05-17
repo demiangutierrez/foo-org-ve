@@ -7,6 +7,9 @@ import java.awt.Graphics2D;
 import org.cyrano.util.MathUtil;
 import org.cyrano.util.PointAbs;
 
+/**
+ * @author Demián Gutierrez
+ */
 public class PointDib {
 
   public int extX = 5;

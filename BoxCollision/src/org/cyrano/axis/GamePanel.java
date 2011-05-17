@@ -177,14 +177,13 @@ public class GamePanel extends JPanel {
     axis.paint(g2d, axis.pSrc, 50, Color.YELLOW);
 
     PointDbl pVelResXY2 = new PointDbl();
-    axis.calcPointProjectionOX2(pVel2, pVelResXY2);
+    axis.calcVectorProjectionOX(pVel2, pVelResXY2);
     new PointDib(pVelResXY2, Color.GREEN).paint(g2d);
-    
-//    PointDbl pVelResXY1 = new PointDbl();
-//    axis.calcProjectionXY(pProj1, pVelResXY1);
-//    new PointDib(pVelResXY1, Color.GREEN).paint(g2d);
-    
-    
+
+    //    PointDbl pVelResXY1 = new PointDbl();
+    //    axis.calcProjectionXY(pProj1, pVelResXY1);
+    //    new PointDib(pVelResXY1, Color.GREEN).paint(g2d);
+
     PointDbl pProjResXY1 = new PointDbl();
     axis.calcPointProjectionXY(pProj1, pProjResXY1);
     new PointDib(pProjResXY1, Color.GREEN).paint(g2d);

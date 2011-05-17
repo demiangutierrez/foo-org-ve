@@ -1,18 +1,16 @@
 package org.cyrano.boxcollision.test5;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Demián Gutierrez
+ */
 public class CollisionDetector {
 
   private enum Mark {
     BEG, END
-  }
-
-  public enum Side {
-    LFT, RGH, TOP, BOT
   }
 
   public enum AxisProyP {
@@ -37,6 +35,7 @@ public class CollisionDetector {
     // -----------------------------------------------------------------
     // [time_to_beg_col, time_to_end_col] n-th axis, null if moving away
     // -----------------------------------------------------------------
+
     List<Point2D> crashList = new ArrayList<Point2D>();
 
     for (AxisProblem axis : collisionInfo.axisList1) {
@@ -61,9 +60,9 @@ public class CollisionDetector {
       crashList.add(crash);
     }
 
-    TimeMarkBean[] overlay;
+    // -----------------------------------------------------------------
 
-    overlay = calcOverlayArray(crashList);
+    TimeMarkBean[] overlay = calcOverlayArray(crashList);
 
     if (overlay == null) {
       return;
@@ -76,6 +75,7 @@ public class CollisionDetector {
         collisionInfo.time = Double.MAX_VALUE;
         return;
       }
+
       time = overlay[i].time;
     }
 
@@ -88,113 +88,59 @@ public class CollisionDetector {
 
   //  private static void calcCollisionSide( //
   //      CollisionInfo collisionInfo, TimeMarkBean[] overlay) {
-  //
-  //    switch (overlay[1].mark) {
-  //      case BEGX :
-  //        if (collisionInfo.pol1.minX() < collisionInfo.pol2.minX()) {
-  //          collisionInfo.box1Side = Side.RGH;
-  //          collisionInfo.box2Side = Side.LFT;
-  //        } else {
-  //          collisionInfo.box1Side = Side.LFT;
-  //          collisionInfo.box2Side = Side.RGH;
-  //        }
-  //        break;
-  //
-  //      case BEGY :
-  //        if (collisionInfo.pol1.minY() < collisionInfo.pol2.minY()) {
-  //          collisionInfo.box1Side = Side.BOT;
-  //          collisionInfo.box2Side = Side.TOP;
-  //        } else {
-  //          collisionInfo.box1Side = Side.TOP;
-  //          collisionInfo.box2Side = Side.BOT;
-  //        }
-  //        break;
-  //    }
   //  }
-
-  // --------------------------------------------------------------------------------
-
-  //  private static Point getPts1OverAxis(Axis axis) {
-  //
-  //    //    return new Point(box.minX(), box.maxX());
-  //  }
-
-  // --------------------------------------------------------------------------------
-
-  //  private static Point getBoxOverY(Box box) {
-  //    return new Point(box.minY(), box.maxY());
-  //  }
-
-  // --------------------------------------------------------------------------------
-
-  //private static Point2D calcTimesToPotImpactX(Box box1, Box box2) {
-  //Point bp1 = getBoxOverX(box1);
-  //Point bp2 = getBoxOverX(box2);
-  //
-  //return calcTimesToPotImpact(bp1, bp2, box1.velX(), box2.velX());
-  //}
 
   private static Point2D calcTimesToPotImpactAxis(AxisProblem axisProblem) {
-    // XXX: Beware with casts to int
-    Point bp1 = new Point(
-        Math.min((int) axisProblem.pBegPol1OX.x, (int) axisProblem.pEndPol1OX.x),
-        Math.max((int) axisProblem.pBegPol1OX.x, (int) axisProblem.pEndPol1OX.x)
-        );
-    Point bp2 = new Point(
-        Math.min((int) axisProblem.pBegPol2OX.x, (int) axisProblem.pEndPol2OX.x),
-        Math.max((int) axisProblem.pBegPol2OX.x, (int) axisProblem.pEndPol2OX.x)
-            );
 
-    return calcTimesToPotImpact(bp1, bp2, (int) axisProblem.pol1VOX, (int) axisProblem.pol2VOX);
+    Point2D bp1 = new Point2D.Double( //
+        Math.min(axisProblem.pBegPol1OX.x, axisProblem.pEndPol1OX.x), //
+        Math.max(axisProblem.pBegPol1OX.x, axisProblem.pEndPol1OX.x));
+
+    Point2D bp2 = new Point2D.Double( //
+        Math.min(axisProblem.pBegPol2OX.x, axisProblem.pEndPol2OX.x), //
+        Math.max(axisProblem.pBegPol2OX.x, axisProblem.pEndPol2OX.x));
+
+    return calcTimesToPotImpact(bp1, bp2, axisProblem.pol1VOX, axisProblem.pol2VOX);
   }
 
   // --------------------------------------------------------------------------------
 
-  //  private static Point2D calcTimesToPotImpactY(Box box1, Box box2) {
-  //    Point bp1 = getBoxOverY(box1);
-  //    Point bp2 = getBoxOverY(box2);
-  //
-  //    return calcTimesToPotImpact(bp1, bp2, box1.velY(), box2.velY());
-  //  }
-
-  // --------------------------------------------------------------------------------
-
   private static Point2D calcTimesToPotImpact( //
-      Point bp1, Point bp2, int ve1, int ve2) {
+      Point2D bp1, Point2D bp2, double ve1, double ve2) {
 
-    int vRel;
+    double vRel;
 
     AxisProyP boxYPos = calcBoxPos(bp1, bp2);
 
     switch (boxYPos) {
       case B1_OO_B2 :
       case B1_B2_OO :
-        vRel = (int) (ve1 - ve2);
+        vRel = ve1 - ve2;
         break;
       case B2_OO_B1 :
       case B2_B1_OO :
-        vRel = (int) (ve2 - ve1);
+        vRel = ve2 - ve1;
         break;
       case B1_B2_B1 :
       case B2_B1_B2 :
-        vRel = (int) (ve1 - ve2);
+        vRel = ve1 - ve2;
         vRel = -Math.abs(vRel);
         break;
       default :
         throw new IllegalStateException();
     }
 
-    int distCrash1 = Math.abs(bp1.x - bp2.y) - 1;
-    int distCrash2 = Math.abs(bp1.y - bp2.x) - 1;
+    double distCrash1 = Math.abs(bp1.getX() - bp2.getY()) - 1;
+    double distCrash2 = Math.abs(bp1.getY() - bp2.getX()) - 1;
 
-    int distCrashMin = Math.min(distCrash1, distCrash2);
-    int distCrashMax = Math.max(distCrash1, distCrash2);
+    double distCrashMin = Math.min(distCrash1, distCrash2);
+    double distCrashMax = Math.max(distCrash1, distCrash2);
 
     if (boxYPos == AxisProyP.B1_B2_B1 || boxYPos == AxisProyP.B2_B1_B2 || //
         boxYPos == AxisProyP.B1_B2_OO || boxYPos == AxisProyP.B2_B1_OO) {
       if (vRel < 0) {
         return new Point2D.Double( //
-            0, Math.abs(distCrashMin / (double) vRel));
+            0, Math.abs(distCrashMin / vRel));
       }
 
       if (vRel == 0) {
@@ -204,7 +150,7 @@ public class CollisionDetector {
 
       if (vRel > 0) {
         return new Point2D.Double( //
-            0, Math.abs(distCrashMax / (double) vRel));
+            0, Math.abs(distCrashMax / vRel));
       }
     }
 
@@ -213,17 +159,12 @@ public class CollisionDetector {
     }
 
     return new Point2D.Double( //
-        (distCrashMin / (double) vRel), distCrashMax / (double) vRel);
+        (distCrashMin / vRel), distCrashMax / vRel);
   }
 
   // --------------------------------------------------------------------------------
 
   private static TimeMarkBean[] calcOverlayArray(List<Point2D> crashList) {
-
-    //    if ((crashX.getX() > crashY.getY() || crashX.getY() < crashY.getX())) {
-    //      return null;
-    //    }
-
     List<TimeMarkBean> timeMarkBeanList = new ArrayList<TimeMarkBean>();
 
     for (Point2D crash : crashList) {
@@ -260,28 +201,28 @@ public class CollisionDetector {
 
   // --------------------------------------------------------------------------------
 
-  public static AxisProyP calcBoxPos(Point p1, Point p2) {
-    if (p1.x <= p2.x && p2.y <= p1.y) {
+  public static AxisProyP calcBoxPos(Point2D p1, Point2D p2) {
+    if (p1.getX() <= p2.getX() && p2.getY() <= p1.getY()) {
       return AxisProyP.B1_B2_B1;
     }
 
-    if (p2.x <= p1.x && p1.y <= p2.y) {
+    if (p2.getX() <= p1.getX() && p1.getY() <= p2.getY()) {
       return AxisProyP.B2_B1_B2;
     }
 
-    if (p1.x < p2.x && p2.x < p1.y) {
+    if (p1.getX() < p2.getX() && p2.getX() < p1.getY()) {
       return AxisProyP.B1_B2_OO;
     }
 
-    if (p2.x < p1.x && p1.x < p2.y) {
+    if (p2.getX() < p1.getX() && p1.getX() < p2.getY()) {
       return AxisProyP.B2_B1_OO;
     }
 
-    if (p1.x < p2.x) {
+    if (p1.getX() < p2.getX()) {
       return AxisProyP.B1_OO_B2;
     }
 
-    if (p1.x > p2.x) {
+    if (p1.getX() > p2.getX()) {
       return AxisProyP.B2_OO_B1;
     }
 
@@ -290,48 +231,28 @@ public class CollisionDetector {
 
   // --------------------------------------------------------------------------------
 
-  //  public static AxisProyP calcBoxXPos(Box box1, Box box2) {
-  //    return calcBoxPos( //
-  //        new Point(box1.minX(), box1.maxX()), //
-  //        new Point(box2.minX(), box2.maxX()));
-  //  }
-
-  // --------------------------------------------------------------------------------
-
-  //  public static AxisProyP calcBoxYPos(Box box1, Box box2) {
-  //    return calcBoxPos( //
-  //        new Point(box1.minY(), box1.maxY()), //
-  //        new Point(box2.minY(), box2.maxY()));
-  //  }
-
-  // --------------------------------------------------------------------------------
-
   public static class CollisionInfo {
 
-    // ----------------------------------------
-
-    //    public Side/*  */box1Side;
-    public Polygon/*   */pol1;
     public List<AxisProblem> axisList1;
+    public Polygon/*       */pol1;
 
-    //    public Side/*  */box2Side;
-    public Polygon/*   */pol2;
     public List<AxisProblem> axisList2;
+    public Polygon/*       */pol2;
 
     // ----------------------------------------
 
-    public double/**/time = Double.MAX_VALUE;
+    public double time = Double.MAX_VALUE;
 
     // ----------------------------------------
 
     public CollisionInfo( //
-        Polygon box1, List<AxisProblem> axisList1, //
-        Polygon box2, List<AxisProblem> axisList2) {
+        Polygon pol1, List<AxisProblem> axisList1, //
+        Polygon pol2, List<AxisProblem> axisList2) {
 
-      this.pol1 = box1;
+      this.pol1 = pol1;
       this.axisList1 = axisList1;
 
-      this.pol2 = box2;
+      this.pol2 = pol2;
       this.axisList2 = axisList2;
     }
 
@@ -347,14 +268,8 @@ public class CollisionDetector {
       ret.append("\n\tbox1 : ");
       ret.append(pol1);
 
-      //      ret.append("\n\tbox1Side : ");
-      //      ret.append(box1Side);
-
       ret.append("\n\tbox2 : ");
       ret.append(pol2);
-
-      //      ret.append("\n\tbox2Side : ");
-      //      ret.append(box2Side);
 
       ret.append("]");
 

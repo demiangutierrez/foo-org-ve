@@ -11,6 +11,9 @@ import java.util.regex.Pattern;
 
 import org.cyrano.boxcollision.base.Box;
 
+/**
+ * @author Demián Gutierrez
+ */
 public class BoxReader {
 
   private BoxReader() {

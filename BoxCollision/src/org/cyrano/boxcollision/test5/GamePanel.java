@@ -24,6 +24,9 @@ import org.cyrano.util.PointInt;
  */
 public class GamePanel extends JPanel {
 
+  public static final boolean SHOW_AXIS = true;
+  public static final boolean SHOW_PROJ = true;
+
   public static final Color BOX1_COLOR = new Color(255, 0, 0);
   public static final Color BOX2_COLOR = new Color(0, 255, 0);
 
@@ -44,78 +47,85 @@ public class GamePanel extends JPanel {
   // --------------------------------------------------------------------------------
 
   public GamePanel() {
-        pol1 = new Polygon();
-    
-        pol1.setColor(Color.GREEN);
-        pol1.getSrcPointList().add(new PointInt(/* */20,/* */50));
-        pol1.getSrcPointList().add(new PointInt(/**/100,/**/150));
-        pol1.getSrcPointList().add(new PointInt(/**/150,/* */60));
-        pol1.getSrcPointList().add(new PointInt(/**/140,/* */20));
-        pol1.getSrcPointList().add(new PointInt(/* */60,/* */20));
-    
-        pol1.setSrcX(+200);
-        pol1.setSrcY(+200);
-    
-        pol1.initTgt();
-        //pol1.tgtMove(+200, +200);
-        pol1.calcV();
-    
-        polList.add(pol1);
-    
-        pol2 = new Polygon();
-    
-        pol2.setColor(Color.RED);
-        pol2.getSrcPointList().add(new PointInt(/**/300,/**/150));
-        pol2.getSrcPointList().add(new PointInt(/**/380,/**/220));
-        pol2.getSrcPointList().add(new PointInt(/**/400,/* */60));
-        pol2.getSrcPointList().add(new PointInt(/**/340,/* */60));
-    
-        pol2.setSrcX(-200);
-        pol2.setSrcY(+200);
-    
-        pol2.initTgt();
-        pol2.calcV();
-    
-        //pol2.tgtMove(-200, +200);
-    
-        polList.add(pol2);
 
     // ----------------------------------------
+    // Two polygons
+    // ----------------------------------------
 
-//    pol1 = new Polygon();
-//
-//    pol1.setColor(Color.GREEN);
-//    pol1.getSrcPointList().add(new PointInt(/* */50,/* */60));
-//    pol1.getSrcPointList().add(new PointInt(/**/100,/* */60));
-//    pol1.getSrcPointList().add(new PointInt(/**/100,/**/110));
-//    pol1.getSrcPointList().add(new PointInt(/* */50,/**/110));
-//
-//    pol1.setSrcX(+200);
-//    pol1.setSrcY(+200);
-//
-//    pol1.initTgt();
-//    //pol1.tgtMove(+200, +200);
-//    pol1.calcV();
-//
-//    polList.add(pol1);
-//
-//    pol2 = new Polygon();
-//
-//    pol2.setColor(Color.RED);
-//
-//    pol2.getSrcPointList().add(new PointInt(/**/250,/* */50));
-//    pol2.getSrcPointList().add(new PointInt(/**/300,/* */50));
-//    pol2.getSrcPointList().add(new PointInt(/**/300,/**/100));
-//    pol2.getSrcPointList().add(new PointInt(/**/250,/**/100));
-//
-//    pol2.setSrcX(-200);
-//    pol2.setSrcY(+200);
-//
-//    pol2.initTgt();
-//    //pol2.tgtMove(-200, +200);
-//    pol2.calcV();
-//
-//    polList.add(pol2);
+    pol1 = new Polygon();
+
+    pol1.setColor(Color.GREEN);
+    pol1.getSrcPointList().add(new PointInt(/* */20,/* */50));
+    pol1.getSrcPointList().add(new PointInt(/**/100,/**/150));
+    pol1.getSrcPointList().add(new PointInt(/**/150,/* */60));
+    pol1.getSrcPointList().add(new PointInt(/**/140,/* */20));
+    pol1.getSrcPointList().add(new PointInt(/* */60,/* */20));
+
+    pol1.setSrcX(+200);
+    pol1.setSrcY(+200);
+
+    pol1.initTgt();
+    //pol1.tgtMove(+200, +200);
+    pol1.calcV();
+
+    polList.add(pol1);
+
+    pol2 = new Polygon();
+
+    pol2.setColor(Color.RED);
+    pol2.getSrcPointList().add(new PointInt(/**/300,/**/150));
+    pol2.getSrcPointList().add(new PointInt(/**/380,/**/220));
+    pol2.getSrcPointList().add(new PointInt(/**/400,/* */60));
+    pol2.getSrcPointList().add(new PointInt(/**/340,/* */60));
+
+    pol2.setSrcX(-200);
+    pol2.setSrcY(+200);
+
+    pol2.initTgt();
+    pol2.calcV();
+
+    //pol2.tgtMove(-200, +200);
+
+    polList.add(pol2);
+
+    // ----------------------------------------
+    // Two boxes
+    // ----------------------------------------
+
+    //    pol1 = new Polygon();
+    //
+    //    pol1.setColor(Color.GREEN);
+    //    pol1.getSrcPointList().add(new PointInt(/* */50,/* */60));
+    //    pol1.getSrcPointList().add(new PointInt(/**/100,/* */60));
+    //    pol1.getSrcPointList().add(new PointInt(/**/100,/**/110));
+    //    pol1.getSrcPointList().add(new PointInt(/* */50,/**/110));
+    //
+    //    pol1.setSrcX(+200);
+    //    pol1.setSrcY(+200);
+    //
+    //    pol1.initTgt();
+    //    //pol1.tgtMove(+200, +200);
+    //    pol1.calcV();
+    //
+    //    polList.add(pol1);
+    //
+    //    pol2 = new Polygon();
+    //
+    //    pol2.setColor(Color.RED);
+    //
+    //    pol2.getSrcPointList().add(new PointInt(/**/250,/* */50));
+    //    pol2.getSrcPointList().add(new PointInt(/**/300,/* */50));
+    //    pol2.getSrcPointList().add(new PointInt(/**/300,/**/100));
+    //    pol2.getSrcPointList().add(new PointInt(/**/250,/**/100));
+    //
+    //    pol2.setSrcX(-200);
+    //    pol2.setSrcY(+200);
+    //
+    //    pol2.initTgt();
+    //    //pol2.tgtMove(-200, +200);
+    //    pol2.calcV();
+    //
+    //    polList.add(pol2);
 
     // ----------------------------------------
 
@@ -176,55 +186,45 @@ public class GamePanel extends JPanel {
     return axisList;
   }
 
+  // --------------------------------------------------------------------------------
+
   private void drawPol(Graphics2D g2d, Polygon pol, Color color) {
-    g2d.setColor(pol.getColor());
     g2d.setStroke(new BasicStroke(1));
 
-    drawPol(g2d, pol.getSrcPointList(), 0, 0, color);
     drawPol(g2d, pol.getTgtPointList(), 0, 0, Color.CYAN);
 
-    int dx = (int) (pol.vx * 1 * grayTimeFactor);
-    int dy = (int) (pol.vy * 1 * grayTimeFactor);
-
-    drawPol(g2d, pol.getSrcPointList(), dx, dy, Color.LIGHT_GRAY);
+    drawPol(g2d, pol.getSrcPointList(), 0, 0, color);
 
     PointInt[] theFuckingLine = calculateTheFuckingLine(pol);
+
     g2d.setColor(Color.WHITE);
     g2d.drawLine(theFuckingLine[0].x, theFuckingLine[0].y, theFuckingLine[1].x, theFuckingLine[1].y);
     g2d.drawLine(theFuckingLine[2].x, theFuckingLine[2].y, theFuckingLine[3].x, theFuckingLine[3].y);
   }
 
+  // --------------------------------------------------------------------------------
+
   private void drawPol(Graphics2D g2d, Polygon pol, Color color, CollisionInfo ci) {
-    if (ci.time == Double.MAX_VALUE) {
-      return;
+    int dx;
+    int dy;
+
+    if (ci.time != Double.MAX_VALUE) {
+      dx = (int) (pol.vx * ci.time * grayTimeFactor);
+      dy = (int) (pol.vy * ci.time * grayTimeFactor);
+    } else {
+      dx = (int) (pol.vx * 1 * grayTimeFactor);
+      dy = (int) (pol.vy * 1 * grayTimeFactor);
     }
-
-    g2d.setColor(pol.getColor());
-
-    drawPol(g2d, pol.getSrcPointList(), 0, 0, color);
-    drawPol(g2d, pol.getTgtPointList(), 0, 0, Color.CYAN);
-
-    int dx = (int) (pol.vx * 1 * ci.time);
-    int dy = (int) (pol.vy * 1 * ci.time);
 
     drawPol(g2d, pol.getSrcPointList(), dx, dy, Color.LIGHT_GRAY);
 
-    //    PointInt[] theFuckingLine = calculateTheFuckingLine(pol);
-    //    g2d.setColor(Color.WHITE);
-    //    g2d.drawLine(theFuckingLine[0].x, theFuckingLine[0].y, theFuckingLine[1].x, theFuckingLine[1].y);
-    //    g2d.drawLine(theFuckingLine[2].x, theFuckingLine[2].y, theFuckingLine[3].x, theFuckingLine[3].y);
+    dx = (int) (pol.vx * ci.time);
+    dy = (int) (pol.vy * ci.time);
+
+    drawPol(g2d, pol.getSrcPointList(), dx, dy, color);
   }
 
-  //  private void drawProjectedFor(Graphics2D g2d, Axis axis, List<PointInt> pointListList) {
-  //    for (PointInt pointInt : pointListList) {
-  //      axis.projectPoint(pointInt);
-  //    }
-  //
-  //    for (PointInt pointInt : axis.projectedPointList) {
-  //      g2d.setColor(Color.PINK);
-  //      g2d.drawOval(pointInt.x - 5, pointInt.y - 5, 10, 10);
-  //    }
-  //  }
+  // --------------------------------------------------------------------------------
 
   private void drawProjectedFor(Graphics2D g2d, AxisProblem axisProblem, Color c1, Color c2) {
     new PointDib(axisProblem.pBegPol1XY, c2).paint(g2d);
@@ -244,11 +244,15 @@ public class GamePanel extends JPanel {
         (int) axisProblem.pEndPol2XY.x, (int) axisProblem.pEndPol2XY.y);
   }
 
+  // --------------------------------------------------------------------------------
+
   private void drawAxisList(Graphics2D g2d, List<Axis> axisList) {
     for (Axis axis : axisList) {
       axis.paint(g2d, axis.pSrc, 50, Color.YELLOW);
     }
   }
+
+  // --------------------------------------------------------------------------------
 
   private void drawPol(Graphics2D g2d, List<PointInt> ch, int dx, int dy, Color color) {
     g2d.setColor(color);
@@ -274,6 +278,8 @@ public class GamePanel extends JPanel {
         prevPoint.x + dx, prevPoint.y + dy, //
         frstPoint.x + dx, frstPoint.y + dy);
   }
+
+  // --------------------------------------------------------------------------------
 
   private PointInt[] calculateTheFuckingLine(Polygon pol) {
     List<PointInt> ret = new ArrayList<PointInt>();
@@ -345,15 +351,12 @@ public class GamePanel extends JPanel {
     g2d.setBackground(Color.BLACK);
     g2d.clearRect(0, 0, Hwh.getW(this), Hwh.getH(this));
 
-    //    CollisionInfo ci = new CollisionInfo(pol1, box2);
-    //    CollisionDetector.calcTimeToCollide(ci);
-
-    //    System.err.println(ci);
-
-    drawPol(g2d, pol1, BOX1_COLOR);
-
     List<Axis> axisList1 = calculatePolAxis(pol1.getSrcPointList());
-    drawAxisList(g2d, axisList1);
+
+    if (SHOW_AXIS) {
+      drawAxisList(g2d, axisList1);
+    }
+
     List<AxisProblem> axisProblemList1 = new ArrayList<AxisProblem>();
 
     for (Axis axis : axisList1) {
@@ -364,10 +367,11 @@ public class GamePanel extends JPanel {
       axisProblem.calcProjection();
 
       axisProblemList1.add(axisProblem);
-      //drawProjectedFor(g2d, axisProblem, pol1.getColor(), pol2.getColor());
-    }
 
-    drawPol(g2d, pol2, BOX2_COLOR);
+      if (SHOW_PROJ) {
+        drawProjectedFor(g2d, axisProblem, pol1.getColor(), pol2.getColor());
+      }
+    }
 
     List<Axis> axisList2 = calculatePolAxis(pol2.getSrcPointList());
     drawAxisList(g2d, axisList2);
@@ -381,11 +385,14 @@ public class GamePanel extends JPanel {
       axisProblem.calcProjection();
 
       axisProblemList2.add(axisProblem);
-      //drawProjectedFor(g2d, axisProblem, pol1.getColor(), pol2.getColor());
+
+      if (SHOW_PROJ) {
+        drawProjectedFor(g2d, axisProblem, pol1.getColor(), pol2.getColor());
+      }
     }
 
-    //    drawBox(g2d, pol1, BOX1_COLOR, ci);
-    //    drawBox(g2d, box2, BOX2_COLOR, ci);
+    drawPol(g2d, pol1, BOX1_COLOR);
+    drawPol(g2d, pol2, BOX2_COLOR);
 
     CollisionInfo ci = new CollisionInfo(pol1, axisProblemList1, pol2, axisProblemList2);
     CollisionDetector.calcTimeToCollide(ci);
@@ -403,7 +410,6 @@ public class GamePanel extends JPanel {
   private void mousePressed(MouseEvent evt) {
     for (Polygon pol : polList) {
       if (pol.srcContains(evt.getPoint())) {
-        System.err.println("INSIDE SRC: " + pol);
         dx = evt.getPoint().x - pol.getSrcPointList().get(0).x;
         dy = evt.getPoint().y - pol.getSrcPointList().get(0).y;
         dragPol = pol;
@@ -412,7 +418,6 @@ public class GamePanel extends JPanel {
       }
 
       if (pol.tgtContains(evt.getPoint())) {
-        System.err.println("INSIDE TGT: " + pol);
         dx = evt.getPoint().x - pol.getTgtPointList().get(0).x;
         dy = evt.getPoint().y - pol.getTgtPointList().get(0).y;
         dragPol = pol;
@@ -454,8 +459,6 @@ public class GamePanel extends JPanel {
     }
 
     dragPol.calcV();
-
-    System.err.println(dragPol.vx + ";" + dragPol.vy);
 
     repaint();
   }

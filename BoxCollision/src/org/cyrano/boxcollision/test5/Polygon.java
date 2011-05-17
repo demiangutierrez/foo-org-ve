@@ -8,6 +8,9 @@ import java.util.List;
 
 import org.cyrano.util.PointInt;
 
+/**
+ * @author Demián Gutierrez
+ */
 // This class sucks, two polygons concepts in the same class
 public class Polygon {
 

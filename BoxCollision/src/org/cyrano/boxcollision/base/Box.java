@@ -2,6 +2,9 @@ package org.cyrano.boxcollision.base;
 
 import java.awt.Graphics2D;
 
+/**
+ * @author Demián Gutierrez
+ */
 public interface Box {
 
   public int getW();
