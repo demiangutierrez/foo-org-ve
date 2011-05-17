@@ -7,11 +7,14 @@ import java.awt.Graphics2D;
 import org.cyrano.util.PointAbs;
 import org.cyrano.util.PointDbl;
 
+/**
+ * @author Demián Gutierrez
+ */
 public class Axis {
 
-  public PointDbl pSrc;
+  public PointAbs pSrc;
 
-  public PointDbl unit;
+  public PointAbs unit;
 
   // --------------------------------------------------------------------------------
 
@@ -31,18 +34,19 @@ public class Axis {
 
     pSrc = new PointDbl();
 
-    pSrc.x = sp1.getDX() + midx;
-    pSrc.y = sp1.getDY() + midy;
+    pSrc.setDX(sp1.getDX() + midx);
+    pSrc.setDY(sp1.getDY() + midy);
 
     unit = new PointDbl();
 
-    unit.x = -(sp2.getDY() - sp1.getDY());
-    unit.y = +(sp2.getDX() - sp1.getDX());
+    unit.setDX(-(sp2.getDY() - sp1.getDY()));
+    unit.setDY(+(sp2.getDX() - sp1.getDX()));
 
-    double mod = Math.sqrt(unit.x * unit.x + unit.y * unit.y);
+    double mod = Math.sqrt( //
+        unit.getDX() * unit.getDX() + unit.getDY() * unit.getDY());
 
-    unit.x /= mod;
-    unit.y /= mod;
+    unit.setDX(unit.getDX() / mod);
+    unit.setDY(unit.getDY() / mod);
   }
 
   // --------------------------------------------------------------------------------
@@ -58,45 +62,32 @@ public class Axis {
   // --------------------------------------------------------------------------------
 
   public void calcPointProjectionXY(PointAbs ptp, PointAbs res) {
-    double modPtp = ((ptp.getDX() - pSrc.x) * unit.x + (ptp.getDY() - pSrc.y) * unit.y);
+    double modPtp = //
+    /**/(ptp.getDX() - pSrc.getDX()) * unit.getDX() + //
+        (ptp.getDY() - pSrc.getDY()) * unit.getDY();
 
-    res.setDX(unit.x * modPtp + pSrc.x);
-    res.setDY(unit.y * modPtp + pSrc.y);
+    res.setDX(unit.getDX() * modPtp + pSrc.getDX());
+    res.setDY(unit.getDY() * modPtp + pSrc.getDY());
   }
-
-  //  // --------------------------------------------------------------------------------
-  //
-  //  public void calcVectorProjectionOX(PointAbs vec, PointAbs res) {
-  //    double modPtp = ((ptp.getDX() - pSrc.x) * unit.x + (ptp.getDY() - pSrc.y) * unit.y);
-  //
-  //    res.setDX(modPtp + pSrc.x);
-  //    res.setDY(pSrc.y);
-  //  }
-  //
-  //  // --------------------------------------------------------------------------------
-  //
-  //  public void calcVectorProjectionXY(PointAbs vec, PointAbs res) {
-  //    double modPtp = ((ptp.getDX() - pSrc.x) * unit.x + (ptp.getDY() - pSrc.y) * unit.y);
-  //
-  //    res.setDX(unit.x * modPtp + pSrc.x);
-  //    res.setDY(unit.y * modPtp + pSrc.y);
-  //  }
-  //
-  // --------------------------------------------------------------------------------
 
   public void calcPointProjectionOX(PointAbs ptp, PointAbs res) {
-    double modPtp = ((ptp.getDX() - pSrc.x) * unit.x + (ptp.getDY() - pSrc.y) * unit.y);
+    double modPtp = //
+    /**/(ptp.getDX() - pSrc.getDX()) * unit.getDX() + //
+        (ptp.getDY() - pSrc.getDY()) * unit.getDY();
 
-    res.setDX(modPtp + pSrc.x);
-    res.setDY(pSrc.y);
+    res.setDX(modPtp + pSrc.getDX());
+
+    res.setDY(pSrc.getDY()); // could be anything
   }
 
-  // This is a vector proyection
-  public void calcPointProjectionOX2(PointAbs ptp, PointAbs res) {
-    double modPtp = ((ptp.getDX()) * unit.x + (ptp.getDY()) * unit.y);
+  public void calcVectorProjectionOX(PointAbs ptp, PointAbs res) {
+    double modPtp = //
+    /**/(ptp.getDX()) * unit.getDX() + //
+        (ptp.getDY()) * unit.getDY();
 
     res.setDX(modPtp);
-    res.setDY(pSrc.y);
+
+    res.setDY(pSrc.getDY()); // could be anything
   }
 
   // --------------------------------------------------------------------------------
@@ -105,8 +96,8 @@ public class Axis {
     g2d.setColor(color);
     g2d.setStroke(new BasicStroke(1));
 
-    int tgtX = (int) (src.getIX() + unit.x * len);
-    int tgtY = (int) (src.getIY() + unit.y * len);
+    int tgtX = (int) (src.getIX() + unit.getDX() * len);
+    int tgtY = (int) (src.getIY() + unit.getDY() * len);
 
     g2d.drawLine(src.getIX(), src.getIY(), tgtX, tgtY);
   }

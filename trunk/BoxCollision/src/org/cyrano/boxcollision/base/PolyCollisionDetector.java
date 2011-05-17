@@ -3,6 +3,9 @@ package org.cyrano.boxcollision.base;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
+/**
+ * @author Demián Gutierrez
+ */
 public class PolyCollisionDetector {
 
   private enum Mark {

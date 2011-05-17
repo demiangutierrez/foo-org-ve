@@ -5,6 +5,9 @@ import java.awt.Graphics2D;
 
 import org.cyrano.boxcollision.base.Box;
 
+/**
+ * @author Demián Gutierrez
+ */
 public class BoxImpl implements Box {
 
   public boolean/**/mv;

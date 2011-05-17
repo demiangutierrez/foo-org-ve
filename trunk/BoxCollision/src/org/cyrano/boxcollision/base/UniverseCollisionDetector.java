@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.cyrano.boxcollision.base.CollisionDetector.CollisionInfo;
 
+/**
+ * @author Demián Gutierrez
+ */
 public class UniverseCollisionDetector {
 
   private UniverseCollisionDetector() {
