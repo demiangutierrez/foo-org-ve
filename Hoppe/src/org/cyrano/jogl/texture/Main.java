@@ -51,13 +51,10 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     GL gl = drawable.getGL();
 
-    gl.glDisable(GL.GL_CULL_FACE);
     gl.glEnable(GL.GL_DEPTH_TEST);
 
     gl.glEnable(GL.GL_BLEND);
     gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-
-    //PointListLoader pointListLoader = new PointListLoader();
 
     try {
       InputStream is;
@@ -86,28 +83,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
       is = ClassLoader.getSystemResourceAsStream("textures/alpine_w.bmp");
       textureData = TextureIO.newTextureData(is, false, "bmp");
       skybox_w = TextureIO.newTexture(textureData);
-
-      //pointListLoader.load("input_pts/cactus.3337.pts");
-      //pointListLoader.load("input_pts/cat10.10000.pts");
-      //pointListLoader.load("input_pts/club71.16864.pts");
-      //pointListLoader.load("input_pts/distcap.12745.pts");
-      //pointListLoader.load("input_pts/engine.11444.pts");
-      //pointListLoader.load("input_pts/fandisk2.sampled.pts");
-      //pointListLoader.load("input_pts/hypersheet.sampled.pts");
-      //pointListLoader.load("input_pts/knot108s.10000.pts");
-      //pointListLoader.load("input_pts/mannequin.12772.pts");
-      //pointListLoader.load("input_pts/mechpart.4102.pts");
-      //pointListLoader.load("input_pts/monkey2.sampled.pts");
-      //pointListLoader.load("input_p2 ts/nascar.20621.pts");
-      //pointListLoader.load("input_pts/oilpmp.30937.pts");
-      //pointListLoader.load("input_pts/teapot.26103.pts");
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-    //    pointListLoader.normalize();
-
-    //    pointList = pointListLoader.getPointList();
   }
 
   public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -134,96 +112,108 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     gl.glPushMatrix();
     gl.glLoadIdentity();
 
+    //glu.gluLookAt(0, 0, 0, 0, 0, 1, 0, 1, 0);
     glu.gluLookAt(0, 0, 2 * view_zoom, 0, 0, 1, 0, 1, 0);
 
     gl.glRotatef(view_rotx, 1.0f, 0.0f, 0.0f);
     gl.glRotatef(view_roty, 0.0f, 1.0f, 0.0f);
     gl.glRotatef(view_rotz, 0.0f, 0.0f, 1.0f);
 
+    double size = 2;
+
+    // ----------------------------
+    // D+-----+C  ** ^ Y (0, 1)
+    //  |     |   ** |+--+
+    //  |     |   ** ||  | TEXTURES
+    //  |     |   ** |+--+
+    // A+-----+B  ** *----->X (0,1)
+    // ----------------------------
+
+    // ---------------------------------------------------
+    // culling is done ccw (right hand rule defines front)
+    // ---------------------------------------------------
+    gl.glEnable(GL.GL_CULL_FACE);
+    // ----------------------------------------------------
+
     gl.glEnable(GL.GL_TEXTURE_2D);
+
     skybox_n.bind();
 
-    // D+-----+C
-    //  |     |
-    //  |     |
-    // A+-----+B
-
     gl.glBegin(GL.GL_QUADS);
-    gl.glNormal3f(0.0f, 0.0f, 1.0f);
     gl.glTexCoord2f(0f, 0f);
-    gl.glVertex3d(-1, -1, -1); // A
+    gl.glVertex3d(-1 * size, -1 * size, -1 * size); // A
     gl.glTexCoord2f(1f, 0f);
-    gl.glVertex3d(+1, -1, -1); // B
+    gl.glVertex3d(+1 * size, -1 * size, -1 * size); // B
     gl.glTexCoord2f(1f, 1f);
-    gl.glVertex3d(+1, +1, -1); // C
+    gl.glVertex3d(+1 * size, +1 * size, -1 * size); // C
     gl.glTexCoord2f(0f, 1f);
-    gl.glVertex3d(-1, +1, -1); // D
+    gl.glVertex3d(-1 * size, +1 * size, -1 * size); // D
     gl.glEnd();
 
     skybox_s.bind();
 
     gl.glBegin(GL.GL_QUADS);
-    gl.glNormal3f(0.0f, 0.0f, -1.0f);
-    gl.glTexCoord2f(1f, 0f);
-    gl.glVertex3d(-1, -1, 1); // A
     gl.glTexCoord2f(0f, 0f);
-    gl.glVertex3d(+1, -1, 1); // B
-    gl.glTexCoord2f(0f, 1f);
-    gl.glVertex3d(+1, +1, 1); // C
+    gl.glVertex3d(+1 * size, -1 * size, +1 * size); // A
+    gl.glTexCoord2f(1f, 0f);
+    gl.glVertex3d(-1 * size, -1 * size, +1 * size); // B
     gl.glTexCoord2f(1f, 1f);
-    gl.glVertex3d(-1, +1, 1); // D
+    gl.glVertex3d(-1 * size, +1 * size, +1 * size); // C
+    gl.glTexCoord2f(0f, 1f);
+    gl.glVertex3d(+1 * size, +1 * size, +1 * size); // D
     gl.glEnd();
 
     skybox_e.bind();
 
     gl.glBegin(GL.GL_QUADS);
-    gl.glNormal3f(1.0f, 0.0f, 0.0f);
     gl.glTexCoord2f(0f, 0f);
-    gl.glVertex3d(+1, -1, -1); // A
+    gl.glVertex3d(+1 * size, -1 * size, -1 * size); // A
     gl.glTexCoord2f(1f, 0f);
-    gl.glVertex3d(+1, -1, +1); // B
+    gl.glVertex3d(+1 * size, -1 * size, +1 * size); // B
     gl.glTexCoord2f(1f, 1f);
-    gl.glVertex3d(+1, +1, +1); // C
+    gl.glVertex3d(+1 * size, +1 * size, +1 * size); // C
     gl.glTexCoord2f(0f, 1f);
-    gl.glVertex3d(+1, +1, -1); // D
+    gl.glVertex3d(+1 * size, +1 * size, -1 * size); // D
     gl.glEnd();
 
     skybox_w.bind();
 
     gl.glBegin(GL.GL_QUADS);
-    gl.glNormal3f(-1.0f, 0.0f, 0.0f);
-    gl.glTexCoord2f(1f, 0f);
-    gl.glVertex3d(-1, -1, -1); // A
     gl.glTexCoord2f(0f, 0f);
-    gl.glVertex3d(-1, -1, +1); // B
-    gl.glTexCoord2f(0f, 1f);
-    gl.glVertex3d(-1, +1, +1); // C
+    gl.glVertex3d(-1 * size, -1 * size, +1 * size); // A
+    gl.glTexCoord2f(1f, 0f);
+    gl.glVertex3d(-1 * size, -1 * size, -1 * size); // B
     gl.glTexCoord2f(1f, 1f);
-    gl.glVertex3d(-1, +1, -1); // D
+    gl.glVertex3d(-1 * size, +1 * size, -1 * size); // C
+    gl.glTexCoord2f(0f, 1f);
+    gl.glVertex3d(-1 * size, +1 * size, +1 * size); // D
     gl.glEnd();
 
     skybox_d.bind();
 
     gl.glBegin(GL.GL_QUADS);
-    gl.glNormal3f(0.0f, 1.0f, 0.0f);
     gl.glTexCoord2f(0f, 0f);
-    gl.glVertex3d(-1, -1, -1); // A
-    gl.glTexCoord2f(0f, 1f);
-    gl.glVertex3d(-1, -1, +1); // B
+    gl.glVertex3d(-1 * size, -1 * size, +1 * size); // A
+    gl.glTexCoord2f(1f, 0f);
+    gl.glVertex3d(+1 * size, -1 * size, +1 * size); // B
     gl.glTexCoord2f(1f, 1f);
-    gl.glVertex3d(+1, -1, +1); // C
+    gl.glVertex3d(+1 * size, -1 * size, -1 * size); // C
     gl.glTexCoord2f(0f, 1f);
-    gl.glVertex3d(+1, -1, -1); // D
+    gl.glVertex3d(-1 * size, -1 * size, -1 * size); // D
     gl.glEnd();
 
-    //    gl.glPointSize(2);
-    //
-    //    for (double[] point : pointList) {
-    //      gl.glBegin(GL.GL_POINTS);
-    //      gl.glVertex3d(point[0], point[1], point[2]);
-    //      gl.glEnd();
-    //      gl.glFlush();
-    //    }
+    skybox_u.bind();
+
+    gl.glBegin(GL.GL_QUADS);
+    gl.glTexCoord2f(0f, 0f);
+    gl.glVertex3d(-1 * size, +1 * size, -1 * size); // C
+    gl.glTexCoord2f(1f, 0f);
+    gl.glVertex3d(+1 * size, +1 * size, -1 * size); // D
+    gl.glTexCoord2f(1f, 1f);
+    gl.glVertex3d(+1 * size, +1 * size, +1 * size); // A
+    gl.glTexCoord2f(0f, 1f);
+    gl.glVertex3d(-1 * size, +1 * size, +1 * size); // B
+    gl.glEnd();
   }
 
   public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
