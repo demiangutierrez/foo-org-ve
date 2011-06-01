@@ -321,8 +321,19 @@
 		<url-pattern>/serverpush.echo</url-pattern>
 	</servlet-mapping>
 
+	<!--
+		********************************************************************************
+		********************************************************************************
+	-->
 
+	<servlet>
+		<servlet-name>TabPaneServlet</servlet-name>
+		<servlet-class>com.tutorial.tabpane.TabPaneServlet</servlet-class>
+	</servlet>
 
-
+	<servlet-mapping>
+		<servlet-name>TabPaneServlet</servlet-name>
+		<url-pattern>/tabpane.echo</url-pattern>
+	</servlet-mapping>
 
 </web-app>
