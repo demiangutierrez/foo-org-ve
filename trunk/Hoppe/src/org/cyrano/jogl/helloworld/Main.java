@@ -1,4 +1,5 @@
 package org.cyrano.jogl.helloworld;
+
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

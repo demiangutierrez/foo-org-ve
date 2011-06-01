@@ -26,7 +26,7 @@ import com.sun.opengl.util.texture.TextureIO;
 /**
  * @author Demián Gutierrez
  */
-public class Main implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
+public class Main1 implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
 
   private float view_rotx = 0.0f, view_roty = 0.0f, view_rotz = 0.0f;
   private float view_zoom = 1;
@@ -34,8 +34,6 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
   private int prevMouseX, prevMouseY;
 
   private GLU glu = new GLU();
-
-  //  private List<double[]> pointList;
 
   private Texture skybox_u;
   private Texture skybox_d;
@@ -94,7 +92,6 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     gl.glMatrixMode(GL.GL_PROJECTION);
     gl.glLoadIdentity();
 
-    // ??? I really need to understand this better
     glu.gluPerspective(35, 1, 1, 3200);
   }
 
@@ -112,7 +109,6 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     gl.glPushMatrix();
     gl.glLoadIdentity();
 
-    //glu.gluLookAt(0, 0, 0, 0, 0, 1, 0, 1, 0);
     glu.gluLookAt(0, 0, 2 * view_zoom, 0, 0, 1, 0, 1, 0);
 
     gl.glRotatef(view_rotx, 1.0f, 0.0f, 0.0f);
@@ -290,9 +286,7 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     final Animator animator = new Animator(canvas);
 
     // TODO: Put in fs mode
-    // TODO: Refactor to a lego panel
-    // TODO: Pass model by command arguments
-    canvas.addGLEventListener(new Main());
+    canvas.addGLEventListener(new Main1());
     frame.add(canvas);
     frame.setSize(900, 900);
     frame.addWindowListener(new WindowAdapter() {

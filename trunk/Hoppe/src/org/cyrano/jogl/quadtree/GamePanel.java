@@ -27,6 +27,8 @@ public class GamePanel extends JPanel {
   private int dx;
   private int dy;
 
+  private QuadNode quadNode;
+
   // --------------------------------------------------------------------------------
 
   public GamePanel() {
@@ -38,7 +40,7 @@ public class GamePanel extends JPanel {
     pointDblList.add(new PointDbl(/**/500, /**/400));
     pointDblList.add(new PointDbl(/**/100, /**/111));
     pointDblList.add(new PointDbl(/**/150, /**/150));
-
+    
     // ----------------------------------------
 
     addMouseListener(new MouseAdapter() {
@@ -77,16 +79,24 @@ public class GamePanel extends JPanel {
     g2d.setBackground(Color.BLACK);
     g2d.clearRect(0, 0, Hwh.getW(this), Hwh.getH(this));
 
-    QuadNode quadNode = new QuadNode(0, 0, Hwh.getW(this), Hwh.getH(this));
-
+    if (quadNode == null) {
+      initQuadNode(); // Init here or there will be no w/h
+    }
+    
     for (PointDbl pointDbl : pointDblList) {
       g2d.setColor(Color.YELLOW);
       g2d.drawOval(pointDbl.getIX() - 5, pointDbl.getIY() - 5, 10, 10);
+    }
+    
+    quadNode.draw(g2d);
+  }
+  
+  private void initQuadNode() {
+    quadNode = new QuadNode(null, 0, 0, Hwh.getW(this), Hwh.getH(this));
 
+    for (PointDbl pointDbl : pointDblList) {
       quadNode.insert(pointDbl);
     }
-
-    quadNode.draw(g2d);
   }
 
   // --------------------------------------------------------------------------------
@@ -128,6 +138,10 @@ public class GamePanel extends JPanel {
         return;
       }
     }
+
+    QuadNode qn = quadNode.getQuadFor(new PointDbl(evt.getPoint().x, evt.getPoint().y));
+    qn.setColor(Color.GREEN);
+    repaint();
   }
 
   // --------------------------------------------------------------------------------
@@ -142,9 +156,11 @@ public class GamePanel extends JPanel {
     if (dragPoint == null) {
       return;
     }
-
+    
     dragPoint.x = evt.getPoint().x - dx;
     dragPoint.y = evt.getPoint().y - dy;
+
+    initQuadNode();
 
     repaint();
   }
