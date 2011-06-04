@@ -9,10 +9,6 @@ import nextapp.echo.webcontainer.WebContainerServlet;
  */
 public class Images3Servlet extends WebContainerServlet {
 
-  public ApplicationInstance newInstance() {
-    return new Images3App();
-  }
-
   @Override
   public ApplicationInstance newApplicationInstance() {
     return new Images3App();
