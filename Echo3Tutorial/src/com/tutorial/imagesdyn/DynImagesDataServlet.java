@@ -27,6 +27,10 @@ public class DynImagesDataServlet extends HttpServlet {
 
     Graphics2D g2d = (Graphics2D) bimg.getGraphics();
 
+    // Leer la imagen lo menos posible...
+    File file = new File(getClass().getResource("pulgoso.gif").getPath());
+    BufferedImage pulgoso = ImageIO.read(file);
+
     // g2d.setBackground(Color.CYAN);
     g2d.setBackground(Color.BLACK);
     g2d.clearRect(0, 0, bimg.getWidth(), bimg.getHeight());
@@ -34,10 +38,8 @@ public class DynImagesDataServlet extends HttpServlet {
     for (Planet planet : planetList) {
       g2d.setColor(planet.color);
       g2d.fillOval(planet.x - planet.r, planet.y - planet.r, //
-          planet.r, planet.r);
+          2 * planet.r, 2 * planet.r);
 
-      File file = new File(getClass().getResource("pulgoso.gif").getPath());
-      BufferedImage pulgoso = ImageIO.read(file);
       g2d.drawImage(pulgoso, planet.x, planet.y, null);
     }
 
