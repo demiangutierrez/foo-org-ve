@@ -9,10 +9,6 @@ import nextapp.echo.webcontainer.WebContainerServlet;
  */
 public class DynImagesAppServlet extends WebContainerServlet {
 
-  public ApplicationInstance newInstance() {
-    return new DynImagesApp();
-  }
-
   @Override
   public ApplicationInstance newApplicationInstance() {
     return new DynImagesApp();
