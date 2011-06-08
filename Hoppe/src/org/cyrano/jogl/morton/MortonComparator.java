@@ -26,9 +26,6 @@ public class MortonComparator implements Comparator<PointAbs> {
 
   @Override
   public int compare(PointAbs o1, PointAbs o2) {
-
-    // XXX: cast is temporal...
-
     if (PointGen.USEINT) {
       if (INTERLEAVE) {
         return compareINT((PointInt) o1, (PointInt) o2);

@@ -8,15 +8,15 @@ import org.cyrano.util.PointInt;
 
 public class PointGen {
 
-  public static final int RANDOM_AMOUNT = 50;
+  public static final int RANDOM_AMOUNT = 350;
 
-  public static double DBL_MAX_X = 0;
-  public static double DBL_MAX_Y = 0;
+  public static double DBL_MAX_X = 10;
+  public static double DBL_MAX_Y = 10;
 
   public static final int/**/INT_MAX_X = 512;
   public static final int/**/INT_MAX_Y = 512;
 
-  public static final boolean RANDOM = false;
+  public static final boolean RANDOM = true;
   public static final boolean LESSTZ = false;
   public static final boolean USEINT = false;
 
@@ -83,16 +83,20 @@ public class PointGen {
   }
 
   // --------------------------------------------------------------------------------
+  // TODO: improve this!
+  // --------------------------------------------------------------------------------
 
   private void initPointDblList() {
     pointSet = new PointSet();
 
     if (RANDOM) {
-      Random r = new Random(0);
+      Random r = new Random();
 
       for (int i = 0; i < RANDOM_AMOUNT; i++) {
         double x = r.nextDouble() * DBL_MAX_X;
         double y = r.nextDouble() * DBL_MAX_Y;
+        //        double x = nextDouble(r);
+        //        double y = nextDouble(r);
 
         if (LESSTZ) {
           x -= (DBL_MAX_X / 2);
