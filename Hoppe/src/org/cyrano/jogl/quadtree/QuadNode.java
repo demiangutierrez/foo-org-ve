@@ -1,22 +1,25 @@
 package org.cyrano.jogl.quadtree;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.cyrano.util.MathUtil;
 import org.cyrano.util.PointDbl;
 
 public class QuadNode {
 
-  private static final int MIN_W = 10;
+  private static final int MIN_W = 50;
   private static final int MIN_H = 10;
 
+  // TODO: Should be int and 2 powers initially
+  // that has to be checked somewhere!!!
   private double minX;
   private double minY;
   private double maxX;
   private double maxY;
 
-  private PointDbl curPointDbl;
+  //private PointDbl curPointDbl;
+  private List<PointDbl> pointDblList = new ArrayList<PointDbl>();
 
   private QuadNode parent;
 
@@ -24,8 +27,6 @@ public class QuadNode {
   private QuadNode ne;
   private QuadNode sw;
   private QuadNode se;
-
-  private Color color = Color.RED; // Just for testing purposes
 
   // --------------------------------------------------------------------------------
 
@@ -89,14 +90,32 @@ public class QuadNode {
 
   // --------------------------------------------------------------------------------
 
-  private boolean contains(PointDbl newPointDbl) {
+  public QuadNode getNw() {
+    return nw;
+  }
+
+  public QuadNode getNe() {
+    return ne;
+  }
+
+  public QuadNode getSw() {
+    return sw;
+  }
+
+  public QuadNode getSe() {
+    return se;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  private boolean rectContains(PointDbl newPointDbl) {
     return /**/MathUtil.betweenC(minX(), newPointDbl.getDX(), maxX()) && //
         /*   */MathUtil.betweenC(minY(), newPointDbl.getDY(), maxY());
   }
 
   // --------------------------------------------------------------------------------
 
-  private boolean hasChildren() {
+  public boolean hasChildren() {
     return //
     /**/nw != null && //
         ne != null && //
@@ -111,40 +130,44 @@ public class QuadNode {
       throw new IllegalArgumentException("newPointDbl == null");
     }
 
-    if (!contains(newPointDbl)) {
+    if (!rectContains(newPointDbl)) {
       return;
     }
 
-    if (curPointDbl == null && !hasChildren()) {
-      curPointDbl = newPointDbl;
+    if (hasChildren()) {
+      nw.insert(newPointDbl);
+      ne.insert(newPointDbl);
+      sw.insert(newPointDbl);
+      se.insert(newPointDbl);
       return;
     }
 
-    if (curPointDbl != null && !hasChildren()) {
-      nw = new QuadNode(this, minX(), minY(), midX(), midY());
-      ne = new QuadNode(this, midX(), minY(), maxX(), midY());
-
-      sw = new QuadNode(this, minX(), midY(), midX(), maxY());
-      se = new QuadNode(this, midX(), midY(), maxX(), maxY());
-
-      nw.insert(curPointDbl);
-      ne.insert(curPointDbl);
-      sw.insert(curPointDbl);
-      se.insert(curPointDbl);
+    if (pointDblList.isEmpty()) {
+      pointDblList.add(newPointDbl);
+      return;
     }
 
-    nw.insert(newPointDbl);
-    ne.insert(newPointDbl);
-    sw.insert(newPointDbl);
-    se.insert(newPointDbl);
+    if (getW() < MIN_W) {
+      pointDblList.add(newPointDbl);
+      return;
+    }
 
-    curPointDbl = null;
+    nw = new QuadNode(this, minX(), minY(), midX(), midY());
+    ne = new QuadNode(this, midX(), minY(), maxX(), midY());
+
+    sw = new QuadNode(this, minX(), midY(), midX(), maxY());
+    se = new QuadNode(this, midX(), midY(), maxX(), maxY());
+
+    PointDbl curPointDbl = pointDblList.remove(0);
+
+    insert(curPointDbl);
+    insert(newPointDbl);
   }
 
   // --------------------------------------------------------------------------------
 
   public QuadNode getQuadFor(PointDbl pt) {
-    if (!contains(pt)) {
+    if (!rectContains(pt)) {
       return null;
     }
 
@@ -195,36 +218,15 @@ public class QuadNode {
     }
 
     assert (dir != null);
-    
-    
+
   }
 
-  public void calculateJuJuXD() {
-    color = Color.GREEN;
+  //  public void calculateJuJuXD() {
+  //    color = Color.GREEN;
+  //
+  //    if (parent != null) {
+  //      calculateJuJuNorth(this, null, getW());
+  //    }
+  //  }
 
-    if (parent != null) {
-      calculateJuJuNorth(this, null, getW());
-    }
-  }
-
-  public void draw(Graphics2D g2d) {
-    g2d.setColor(color);
-
-    g2d.drawRect((int) minX(), (int) minY(), (int) getW(), (int) getH());
-
-    if (nw != null) {
-      nw.draw(g2d);
-      ne.draw(g2d);
-      sw.draw(g2d);
-      se.draw(g2d);
-    }
-  }
-
-  public Color getColor() {
-    return color;
-  }
-
-  public void setColor(Color color) {
-    this.color = color;
-  }
 }
