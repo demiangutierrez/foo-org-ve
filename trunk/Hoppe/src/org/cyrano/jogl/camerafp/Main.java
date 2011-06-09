@@ -1,4 +1,4 @@
-package org.cyrano.jogl.camera;
+package org.cyrano.jogl.camerafp;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -18,7 +18,7 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLJPanel;
 import javax.media.opengl.glu.GLU;
 
-import org.cyrano.jogl.camera.Camera.Direction;
+import org.cyrano.jogl.camerafp.Camera.Direction;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.texture.Texture;

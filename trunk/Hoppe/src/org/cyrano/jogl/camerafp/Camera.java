@@ -1,4 +1,4 @@
-package org.cyrano.jogl.camera;
+package org.cyrano.jogl.camerafp;
 
 import java.io.InputStream;
 
