@@ -9,7 +9,7 @@ import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
 import org.cyrano.pacman.base.LevelExec;
-import org.cyrano.util.base.ImageCache;
+import org.cyrano.util.ImageCache;
 import org.cyrano.util.game.Timer;
 
 public class PacManSprite extends BaseSprite {
@@ -23,15 +23,12 @@ public class PacManSprite extends BaseSprite {
   protected int destroy;
 
   public int yellowKey; // TODO, Private
-  
+
   // --------------------------------------------------------------------------------
 
   public PacManSprite() {
+    // Empty
   }
-
-  //  public PacManSprite(int grdX, int grdY, int speed, LevelLoad textMap) {
-  //    super(grdX, grdY, speed, textMap);
-  //  }
 
   // --------------------------------------------------------------------------------
 
@@ -217,6 +214,10 @@ public class PacManSprite extends BaseSprite {
 
   // --------------------------------------------------------------------------------
 
+  // logic here is akward, I mean, who steps on who? this is the target or
+  // wootwoot (change variable name by the way) is the target? This handles
+  // all or only char interactions 
+  
   @Override
   public void stepOn(BaseSprite wootwoot, Timer timer) {
     wootwoot.stepOn(this, timer); // XXX: This will cause problem if two pacmans!!!

@@ -2,8 +2,6 @@ package org.cyrano.pacman.game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import org.cyrano.pacman.base.BaseBean;

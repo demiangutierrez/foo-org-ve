@@ -5,7 +5,7 @@ import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.cyrano.util.base.PointInt;
+import org.cyrano.util.PointInt;
 
 public class PathCalculator {
 
@@ -168,7 +168,7 @@ public class PathCalculator {
   public static void main(String[] args) throws Exception {
     LevelLoad textMap = new LevelLoad();
     textMap.load(PathCalculator.class.getResource("map.txt").getPath());
-    textMap.dump(System.err);
+    //textMap.dump(System.err);
 
     char[][] data = textMap.getData();
 
@@ -195,6 +195,6 @@ public class PathCalculator {
 
     System.err.println("--------------------------------------------------------------------------------");
 
-    textMap.dump(System.err);
+    //textMap.dump(System.err);
   }
 }

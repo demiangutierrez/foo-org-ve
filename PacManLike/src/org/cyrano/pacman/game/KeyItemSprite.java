@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.LevelExec;
-import org.cyrano.util.base.ImageCache;
+import org.cyrano.util.ImageCache;
 import org.cyrano.util.game.Timer;
 
 public class KeyItemSprite extends BaseSprite {

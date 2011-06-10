@@ -21,9 +21,12 @@ import org.cyrano.pacman.base.Constants;
 import org.cyrano.pacman.base.LevelExec;
 import org.cyrano.pacman.base.LevelLoad;
 import org.cyrano.pacman.base.Log;
+import org.cyrano.pacman.game.GhostSprite;
 import org.cyrano.pacman.game.PacManSprite;
-import org.cyrano.util.base.Hwh;
+import org.cyrano.util.Hwh;
+import org.cyrano.util.PointInt;
 import org.cyrano.util.game.Timer;
+import org.cyrano.util.game.TimerBean;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -41,9 +44,6 @@ public class GamePanel extends JPanel implements Runnable {
 
   private LevelLoad levelLoad;
   private LevelExec levelExec;
-
-  //  private List<GhostSprite> ghsSpriteList = new ArrayList<GhostSprite>();
-  //  private List<BaseSprite> baseSpriteList = new ArrayList<BaseSprite>();
 
   private PacManSprite pacSprite;
 
@@ -161,33 +161,16 @@ public class GamePanel extends JPanel implements Runnable {
 
   private void handleExecNext(BaseSprite source, String command) {
 
-    BaseSprite[][] baseSpriteMatrix;
+    BaseSprite[][] baseSpriteMatrix = levelExec.getDyna();
+
     BaseSprite baseSprite;
 
-    //    PointInt pointInt = source.getGrdCurr();
-
     if (command != null && command.equals("die")) {
-
-      baseSpriteMatrix = levelExec.getDyna();
       source.stackDel(baseSpriteMatrix);
-
       levelExec.getDynaList().remove(source);
-
       return;
     }
 
-    baseSpriteMatrix = levelExec.getDyna();
-    baseSprite = baseSpriteMatrix[source.getGrdCurr().x][source.getGrdCurr().y];
-
-    if (baseSprite != null) {
-      List<BaseSprite> baseSpriteList = baseSprite.getStack();
-
-      for (BaseSprite currBaseSprite : baseSpriteList) {
-        currBaseSprite.stepOn(source, timer);
-      }
-    }
-
-    baseSpriteMatrix = levelExec.getSta1();
     baseSprite = baseSpriteMatrix[source.getGrdCurr().x][source.getGrdCurr().y];
 
     if (baseSprite != null) {
@@ -209,44 +192,53 @@ public class GamePanel extends JPanel implements Runnable {
       }
     }
 
-    ////    if (source instanceof PacManSprite) {
-    ////      PacManSprite pacManSprite = (PacManSprite) source;
-    ////
-    ////      PointInt grdCurr = pacManSprite.getGrdCurr();
-    ////
-    ////      char[][] data = levelLoad.getData();
-    ////
-    ////      switch (data[grdCurr.x][grdCurr.y]) {
-    ////        case '.' :
-    ////          data[grdCurr.x][grdCurr.y] = ' ';
-    ////          score += Constants.SML_SCORE;
-    ////          sml++;
-    ////          break;
-    ////        case '*' :
-    ////          data[grdCurr.x][grdCurr.y] = ' ';
-    ////          score += Constants.BIG_SCORE;
-    ////          big++;
-    ////
-    ////          pacManSprite.incDestroy();
-    ////
-    ////          for (GhostSprite ghsSprite : ghsSpriteList) {
-    ////            ghsSprite.decDestroy();
-    ////          }
-    ////
-    ////          ActionListener actionListener = new ActionListener() {
-    ////            @Override
-    ////            public void actionPerformed(ActionEvent evt) {
-    ////              GamePanel.this.pacSprite.decDestroy();
-    ////
-    ////              for (GhostSprite ghsSprite : ghsSpriteList) {
-    ////                ghsSprite.incDestroy();
-    ////              }
-    ////            }
-    ////          };
-    ////          timer.addTimerBean( //
-    ////              new TimerBean(actionListener, new ActionEvent(this, 0, null), 10));
-    ////          break;
-    //      }
+    if (source instanceof PacManSprite) {
+      PacManSprite pacManSprite = (PacManSprite) source;
+
+      PointInt grdCurr = pacManSprite.getGrdCurr();
+
+      char[][] data = levelLoad.getData();
+
+      switch (data[grdCurr.x][grdCurr.y]) {
+        case '.' :
+          data[grdCurr.x][grdCurr.y] = ' ';
+          score += Constants.SML_SCORE;
+          sml++;
+          break;
+        case '*' :
+          data[grdCurr.x][grdCurr.y] = ' ';
+          score += Constants.BIG_SCORE;
+          big++;
+
+          pacManSprite.incDestroy();
+
+          for (BaseSprite sprite : levelExec.getDynaList()) {
+            if (sprite instanceof GhostSprite) {
+              GhostSprite ghostSprite = (GhostSprite) sprite;
+              ghostSprite.incDestroy();
+            }
+          }
+
+          ActionListener actionListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+              GamePanel.this.pacSprite.decDestroy();
+
+              for (BaseSprite sprite : levelExec.getDynaList()) {
+                if (sprite instanceof GhostSprite) {
+                  GhostSprite ghostSprite = (GhostSprite) sprite;
+                  ghostSprite.decDestroy();
+                }
+              }
+            }
+          };
+          timer.addTimerBean( //
+              new TimerBean(actionListener, new ActionEvent(this, 0, null), 5));
+          timer.addTimerBean( //
+              new TimerBean(actionListener, new ActionEvent(this, 0, null), 10));
+          break;
+      }
+    }
 
     //      if (sml == levelLoad.getSmlCount() && big == levelLoad.getBigCount()) {
     //        won = true;
@@ -289,7 +281,6 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public int getH() {
-    // return textMap.getH() * Constants.TILE_H + Constants.SCORE_BAR_H;
     return levelLoad.getH() * Constants.TILE_H;
   }
 
@@ -343,7 +334,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   @Override
   public void run() {
-    long t1 = System.nanoTime();
+    long t1 = System.currentTimeMillis();
 
     int sleep = 20;
     int count = 0;
@@ -359,9 +350,9 @@ public class GamePanel extends JPanel implements Runnable {
         e.printStackTrace();
       }
 
-      long t2 = System.nanoTime();
+      long t2 = System.currentTimeMillis();
 
-      double dt = (t2 - t1) / 1000000000.0;
+      double dt = (t2 - t1) / 1000.0;
 
       // ----------------------------------------
       // Update Timer
@@ -421,7 +412,8 @@ public class GamePanel extends JPanel implements Runnable {
       ty = (h - getH()) / 2;
     }
 
-    AffineTransform at = AffineTransform.getTranslateInstance( //
+    AffineTransform at = //
+    AffineTransform.getTranslateInstance( //
         tx, ty);
 
     return at;
@@ -436,7 +428,8 @@ public class GamePanel extends JPanel implements Runnable {
     double tx = (w - getW()) / 2;
     double ty = (h - getH()) / 2;
 
-    AffineTransform at = AffineTransform.getTranslateInstance( //
+    AffineTransform at = //
+    AffineTransform.getTranslateInstance( //
         tx, ty);
 
     return at;
@@ -471,9 +464,14 @@ public class GamePanel extends JPanel implements Runnable {
       for (int j = 0; j < data[i].length; j++) {
         if (data[i][j] == 'X') {
           g2d.setColor(Color.WHITE);
-          g2d.fillRect(i * Constants.TILE_W, j * Constants.TILE_H, Constants.TILE_W, Constants.TILE_H);
+          g2d.fillRect( //
+              i * Constants.TILE_W, j * Constants.TILE_H, //
+              Constants.TILE_W, Constants.TILE_H);
+
           g2d.setColor(Color.BLACK);
-          g2d.drawRect(i * Constants.TILE_W, j * Constants.TILE_H, Constants.TILE_W, Constants.TILE_H);
+          g2d.drawRect( //
+              i * Constants.TILE_W, j * Constants.TILE_H, //
+              Constants.TILE_W, Constants.TILE_H);
         }
 
         if (data[i][j] == '.') {
@@ -489,22 +487,22 @@ public class GamePanel extends JPanel implements Runnable {
               (int) (Constants.TILE_H * f2));
         }
 
-        //        if (data[i][j] == '*') {
-        //          g2d.setColor(Color.WHITE);
-        //
-        //          double f1 = 0.3;
-        //          double f2 = 1 - 2 * f1;
-        //
-        //          g2d.fillOval( //
-        //              (int) (i * Constants.TILE_W + Constants.TILE_W * f1), //
-        //              (int) (j * Constants.TILE_H + Constants.TILE_H * f1), //
-        //              (int) (Constants.TILE_W * f2), //
-        //              (int) (Constants.TILE_H * f2));
-        //        }
+        if (data[i][j] == '*') {
+          g2d.setColor(Color.WHITE);
+
+          double f1 = 0.3;
+          double f2 = 1 - 2 * f1;
+
+          g2d.fillOval( //
+              (int) (i * Constants.TILE_W + Constants.TILE_W * f1), //
+              (int) (j * Constants.TILE_H + Constants.TILE_H * f1), //
+              (int) (Constants.TILE_W * f2), //
+              (int) (Constants.TILE_H * f2));
+        }
       }
     }
 
-    // ----------------------------------------
+    // ----------------------------------------------------------------------
 
     for (BaseSprite baseSprite : levelExec.getDynaList()) {
       if (Constants.DEBUG) {
@@ -530,7 +528,7 @@ public class GamePanel extends JPanel implements Runnable {
       pacSprite.paint(g2d);
     }
 
-    // ----------------------------------------
+    // ----------------------------------------------------------------------
 
     g2d.setTransform(prev);
 
@@ -543,12 +541,11 @@ public class GamePanel extends JPanel implements Runnable {
     drawNotStarted(g2d);
 
     g2d.setTransform(prev);
-
   }
 
   // --------------------------------------------------------------------------------
 
-  protected void drawScore(Graphics2D g2d) {
+  private void drawScore(Graphics2D g2d) {
     NumberFormat nfScore = NumberFormat.getInstance();
     nfScore.setMinimumIntegerDigits(10);
     nfScore.setGroupingUsed(false);
@@ -586,7 +583,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   // --------------------------------------------------------------------------------
 
-  protected void drawWon(Graphics2D g2d) {
+  private void drawWon(Graphics2D g2d) {
     if (!won) {
       return;
     }
@@ -611,7 +608,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   // --------------------------------------------------------------------------------
 
-  protected void drawDie(Graphics2D g2d) {
+  private void drawDie(Graphics2D g2d) {
     if (!die) {
       return;
     }
@@ -636,7 +633,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   // --------------------------------------------------------------------------------
 
-  protected void drawNotStarted(Graphics2D g2d) {
+  private void drawNotStarted(Graphics2D g2d) {
     if (started) {
       return;
     }

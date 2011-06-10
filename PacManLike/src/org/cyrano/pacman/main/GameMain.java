@@ -4,8 +4,8 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-import org.cyrano.util.base.Hwh;
-import org.cyrano.util.base.ImageCache;
+import org.cyrano.util.Hwh;
+import org.cyrano.util.ImageCache;
 
 public class GameMain extends JFrame {
 

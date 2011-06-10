@@ -5,13 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.sql.Time;
 
 import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
 import org.cyrano.pacman.base.LevelExec;
-import org.cyrano.util.base.ImageCache;
 import org.cyrano.util.game.Timer;
 import org.cyrano.util.game.TimerBean;
 

@@ -3,9 +3,9 @@ package org.cyrano.pacman.game;
 import java.util.List;
 
 import org.cyrano.pacman.base.BaseSprite;
-import org.cyrano.pacman.base.PathCalculator;
 import org.cyrano.pacman.base.LevelLoad;
-import org.cyrano.util.base.PointInt;
+import org.cyrano.pacman.base.PathCalculator;
+import org.cyrano.util.PointInt;
 
 public class GhostSpriteB extends GhostSprite {
 

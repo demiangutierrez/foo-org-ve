@@ -1,11 +1,15 @@
 package org.cyrano.pacman.game;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.PathCalculator;
-import org.cyrano.pacman.base.LevelLoad;
-import org.cyrano.util.base.PointInt;
+import org.cyrano.util.ImageCache;
+import org.cyrano.util.PointInt;
+import org.cyrano.util.game.Timer;
 
 public class GhostSpriteA extends GhostSprite {
 
@@ -13,8 +17,22 @@ public class GhostSpriteA extends GhostSprite {
 
   // --------------------------------------------------------------------------------
 
-  public GhostSpriteA(int grdX, int grdY, int speed, LevelLoad textMap, BaseSprite tgtSprite) {
-    super(grdX, grdY, speed, textMap, tgtSprite);
+  public GhostSpriteA() {
+    // Empty
+  }
+
+  protected void loadImgs() throws IOException {
+    super.loadImgs();
+
+    xPacList = new ArrayList<BufferedImage>();
+    xPacList.add(ImageCache.getInstance().getImage("xghsA1.png"));
+    xPacList.add(ImageCache.getInstance().getImage("xghsA2.png"));
+    xPacList.add(ImageCache.getInstance().getImage("xghsA3.png"));
+    xPacList.add(ImageCache.getInstance().getImage("xghsA4.png"));
+    xPacList.add(ImageCache.getInstance().getImage("xghsA5.png"));
+    xPacList.add(ImageCache.getInstance().getImage("xghsA6.png"));
+
+    bimgList = xPacList;
   }
 
   // --------------------------------------------------------------------------------
@@ -28,19 +46,18 @@ public class GhostSpriteA extends GhostSprite {
       grdNext = grdCurr;
       return;
     }
-
-    char[][] data = textMap.getData();
+    char[][] data = levelExec.getData();
 
     PathCalculator pathCalculator = new PathCalculator( //
-        data, textMap.getW(), textMap.getH(), false);
+        data, levelExec.getW(), levelExec.getH(), false);
 
     PointInt src = new PointInt();
     src.x = grdCurr.x;
     src.y = grdCurr.y;
 
     PointInt tgt = new PointInt();
-    tgt.x = tgtSprite.getGrdCurr().x;
-    tgt.y = tgtSprite.getGrdCurr().y;
+    tgt.x = levelExec.getPlaySprite().getGrdCurr().x;
+    tgt.y = levelExec.getPlaySprite().getGrdCurr().y;
 
     pathList = pathCalculator.calculate(src, tgt);
 
@@ -48,4 +65,16 @@ public class GhostSpriteA extends GhostSprite {
       grdNext = pathList.remove(0);
     }
   }
+
+  // --------------------------------------------------------------------------------
+
+  // logic here is akward, I mean, who steps on who? this is the target or
+  // wootwoot (change variable name by the way) is the target? This handles
+  // all or only char interactions 
+
+  @Override
+  public void stepOn(BaseSprite wootwoot, Timer timer) {
+    //    wootwoot.stepOn(this, timer); // XXX: This will cause problem if two pacmans!!!
+  }
+
 }
