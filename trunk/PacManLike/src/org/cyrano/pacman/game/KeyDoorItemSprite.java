@@ -58,14 +58,20 @@ public class KeyDoorItemSprite extends BaseSprite {
 
   @Override
   public void stepOn(BaseSprite wootwoot, Timer timer) {
+
+    // ----------------------------------------
+    // only character can open doors
+    // ----------------------------------------
+
     if (!(wootwoot instanceof PacManSprite)) {
-      return; // Only character can open doors
+      return;
     }
 
     PacManSprite pacManSprite = (PacManSprite) wootwoot;
 
     actionListenerProxy.fireActionEvent(new ActionEvent(this, 0, "die"));
 
+    // TODO: A nice way to handle the keys
     pacManSprite.yellowKey--;
   }
 

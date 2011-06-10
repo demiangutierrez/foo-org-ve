@@ -5,61 +5,50 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
-import org.cyrano.pacman.base.LevelLoad;
-import org.cyrano.util.base.ImageCache;
-import org.cyrano.util.base.PointDbl;
+import org.cyrano.pacman.base.LevelExec;
+import org.cyrano.util.ImageCache;
 
 public abstract class GhostSprite extends BaseSprite {
 
   protected List<BufferedImage> yPacList;
   protected List<BufferedImage> xPacList;
+  protected List<BufferedImage> zPacList;
+
   protected List<BufferedImage> dPacList;
 
-  protected int destroy = 1;
+  protected int destroy = 0;
   protected boolean dead;
 
-  protected BaseSprite tgtSprite;
-
   // --------------------------------------------------------------------------------
 
-  public GhostSprite(int grdX, int grdY, int speed, LevelLoad textMap, BaseSprite tgtSprite) {
-    super(grdX, grdY, speed, textMap);
-
-    scrLook = new PointDbl();
-    scrLook.x = grdX * Constants.TILE_W;
-    scrLook.y = grdY * Constants.TILE_H;
-
-    this.tgtSprite = tgtSprite;
+  public GhostSprite() {
+    lookRotate = false;
+    stepsPerSecond = 8;
   }
 
-  // --------------------------------------------------------------------------------
+  //  public GhostSprite(int grdX, int grdY, int speed, LevelLoad textMap, BaseSprite tgtSprite) {
+  //    super(grdX, grdY, speed, textMap);
+  //
+  //    scrLook = new PointDbl();
+  //    scrLook.x = grdX * Constants.TILE_W;
+  //    scrLook.y = grdY * Constants.TILE_H;
+  //
+  //    this.tgtSprite = tgtSprite;
+  //  }
 
   protected void loadImgs() throws IOException {
     yPacList = new ArrayList<BufferedImage>();
-    yPacList.add(ImageCache.getInstance().getImage("ypac1.png"));
-    yPacList.add(ImageCache.getInstance().getImage("ypac2.png"));
-    yPacList.add(ImageCache.getInstance().getImage("ypac3.png"));
-    yPacList.add(ImageCache.getInstance().getImage("ypac4.png"));
-    yPacList.add(ImageCache.getInstance().getImage("ypac5.png"));
-    yPacList.add(ImageCache.getInstance().getImage("ypac6.png"));
-    yPacList.add(ImageCache.getInstance().getImage("ypac5.png"));
-    yPacList.add(ImageCache.getInstance().getImage("ypac4.png"));
-    yPacList.add(ImageCache.getInstance().getImage("ypac3.png"));
-    yPacList.add(ImageCache.getInstance().getImage("ypac2.png"));
+    yPacList.add(ImageCache.getInstance().getImage("yghs1.png"));
+    yPacList.add(ImageCache.getInstance().getImage("yghs2.png"));
 
-    xPacList = new ArrayList<BufferedImage>();
-    xPacList.add(ImageCache.getInstance().getImage("xpac1.png"));
-    xPacList.add(ImageCache.getInstance().getImage("xpac2.png"));
-    xPacList.add(ImageCache.getInstance().getImage("xpac3.png"));
-    xPacList.add(ImageCache.getInstance().getImage("xpac4.png"));
-    xPacList.add(ImageCache.getInstance().getImage("xpac5.png"));
-    xPacList.add(ImageCache.getInstance().getImage("xpac6.png"));
-    xPacList.add(ImageCache.getInstance().getImage("xpac5.png"));
-    xPacList.add(ImageCache.getInstance().getImage("xpac4.png"));
-    xPacList.add(ImageCache.getInstance().getImage("xpac3.png"));
-    xPacList.add(ImageCache.getInstance().getImage("xpac2.png"));
+    zPacList = new ArrayList<BufferedImage>();
+    zPacList.add(ImageCache.getInstance().getImage("yghs1.png"));
+    zPacList.add(ImageCache.getInstance().getImage("zghs1.png"));
+    zPacList.add(ImageCache.getInstance().getImage("yghs2.png"));
+    zPacList.add(ImageCache.getInstance().getImage("zghs2.png"));
 
     dPacList = new ArrayList<BufferedImage>();
     dPacList.add(ImageCache.getInstance().getImage("grave.png"));
@@ -85,10 +74,16 @@ public abstract class GhostSprite extends BaseSprite {
     if (dead) {
       bimgList = dPacList;
     } else {
-      if (destroy > 0) {
-        bimgList = yPacList;
-      } else {
-        bimgList = xPacList;
+      switch (destroy) {
+        case 0 :
+          bimgList = xPacList;
+          break;
+        case 1 :
+          bimgList = zPacList;
+          break;
+        default :
+          bimgList = yPacList;
+          break;
       }
     }
   }
@@ -100,12 +95,14 @@ public abstract class GhostSprite extends BaseSprite {
   }
 
   public void incDestroy() {
-    destroy++;
+    destroy += 2;
+    System.err.println("destroy inc: " + destroy);
     updateBimgList();
   }
 
   public void decDestroy() {
     destroy--;
+    System.err.println("destroy dec: " + destroy);
     updateBimgList();
   }
 
@@ -119,4 +116,11 @@ public abstract class GhostSprite extends BaseSprite {
     this.dead = dead;
     updateBimgList();
   }
+
+  @Override
+  public void init(LevelExec levelExec, BaseBean baseBean, String[] parmArray) {
+    speed = Integer.parseInt(parmArray[0]);
+    init(baseBean.getX(), baseBean.getY(), speed, levelExec);
+  }
+
 }

@@ -10,9 +10,9 @@ import java.util.List;
 
 import javax.swing.event.EventListenerList;
 
-import org.cyrano.util.base.ActionListenerProxy;
-import org.cyrano.util.base.PointDbl;
-import org.cyrano.util.base.PointInt;
+import org.cyrano.util.ActionListenerProxy;
+import org.cyrano.util.PointDbl;
+import org.cyrano.util.PointInt;
 import org.cyrano.util.game.Timer;
 
 public abstract class BaseSprite {
@@ -103,9 +103,11 @@ public abstract class BaseSprite {
 
   protected int speed = 150;
 
+  protected boolean lookRotate = true;
+
   // --------------------------------------------------------------------------------
 
-  protected double steps = 2;
+  protected double stepsPerSecond = 16;
   protected double delta;
 
   protected int index;
@@ -153,9 +155,9 @@ public abstract class BaseSprite {
   // TODO: Better API
   public void init(int grdX, int grdY) {
     // This is to calculate Look
-    int deltaX = grdCurr.x - grdX; 
-    int deltaY = grdCurr.y - grdY; 
-    
+    int deltaX = grdCurr.x - grdX;
+    int deltaY = grdCurr.y - grdY;
+
     scrCurr = new PointDbl();
     scrCurr.x = grdX * Constants.TILE_W;
     scrCurr.y = grdY * Constants.TILE_H;
@@ -166,8 +168,8 @@ public abstract class BaseSprite {
     scrNext.y = grdY * Constants.TILE_H;
 
     scrLook = new PointDbl();
-    scrLook.x = scrLook.x+deltaX;
-    scrLook.y = scrLook.y+deltaY;
+    scrLook.x = scrLook.x + deltaX;
+    scrLook.y = scrLook.y + deltaY;
 
     grdCurr = new PointInt();
     grdCurr.x = grdX;
@@ -207,12 +209,14 @@ public abstract class BaseSprite {
 
     AffineTransform prev = g2d.getTransform();
 
-    AffineTransform at = AffineTransform.getRotateInstance( //
-        scrLook.x - scrCurr.x, //
-        scrLook.y - scrCurr.y, //
-        scrCurr.x + Constants.SPRITE_W / 2, //
-        scrCurr.y + Constants.SPRITE_H / 2);
-    g2d.transform(at);
+    if (lookRotate) {
+      AffineTransform at = AffineTransform.getRotateInstance( //
+          scrLook.x - scrCurr.x, //
+          scrLook.y - scrCurr.y, //
+          scrCurr.x + Constants.SPRITE_W / 2, //
+          scrCurr.y + Constants.SPRITE_H / 2);
+      g2d.transform(at);
+    }
 
     // ---------------------------------------------------------------
 
@@ -227,14 +231,14 @@ public abstract class BaseSprite {
   // --------------------------------------------------------------------------------
 
   public void updateSpr(double dt) {
-    int st;
-
     delta += dt;
 
-    st = (int) (delta * steps);
-    delta = delta * steps - st;
-
-    index += st;
+    double deltaPerStep = 1 / stepsPerSecond;
+    
+    while (delta > deltaPerStep) {
+      index++;
+      delta -= deltaPerStep;
+    }
   }
 
   // --------------------------------------------------------------------------------

@@ -106,4 +106,14 @@ public class LevelExec {
   public BaseSprite getPlaySprite() {
     return playSprite;
   }
+
+  // --------------------------------------------------------------------------------
+
+  public int getW() {
+    return levelLoad.getW();
+  }
+
+  public int getH() {
+    return levelLoad.getH();
+  }
 }
