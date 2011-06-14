@@ -5,18 +5,32 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.Proxy;
 
+/**
+ * @author Anna Lezama
+ */
+//DONE
 @Entity
-@Table(name = "user")
+@Table(name = "t_user")
 @Proxy(lazy = false)
 public class User {
 
   private int id;
+
   private String nick;
   private String pass;
   private String name;
-  private String email;
+  private String mail;
+
+  // --------------------------------------------------------------------------------
+
+  public User() {
+    // Empty
+  }
+
+  // --------------------------------------------------------------------------------
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,36 +42,43 @@ public class User {
     this.id = id;
   }
 
+  // --------------------------------------------------------------------------------
+
+  public String getNick() {
+    return nick;
+  }
+
   public void setNick(String nick) {
     this.nick = nick;
   }
 
-  public String getNick() {
-    return nick;
+  // --------------------------------------------------------------------------------
+
+  public String getPass() {
+    return pass;
   }
 
   public void setPass(String pass) {
     this.pass = pass;
   }
 
-  public String getPass() {
-    return pass;
+  // --------------------------------------------------------------------------------
+
+  public String getName() {
+    return name;
   }
 
   public void setName(String name) {
     this.name = name;
   }
 
-  public String getName() {
-    return name;
+  // --------------------------------------------------------------------------------
+
+  public String getMail() {
+    return mail;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public void setMail(String mail) {
+    this.mail = mail;
   }
-
-  public String getEmail() {
-    return email;
-  }
-
 }
