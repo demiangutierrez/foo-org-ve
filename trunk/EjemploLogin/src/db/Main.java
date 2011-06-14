@@ -5,6 +5,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
+/**
+ * @author Anna Lezama
+ */
+//DONE
 public class Main {
 
   public static void main(String[] args) {
@@ -15,12 +19,13 @@ public class Main {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
 
-    User bean = new User();
-    bean.setNick("annitap4");
-    bean.setPass("123");
-    bean.setName("Anna Lezama");
-    bean.setEmail("annitap4@gmail.com");
-    session.save(bean);
+    User userBean = new User();
+    userBean.setNick("usuario");
+    userBean.setPass("123456");
+    userBean.setName("Fulano de Tal");
+    userBean.setMail("usuario@freemail.com");
+
+    session.save(userBean);
 
     session.getTransaction().commit();
     session.close();
