@@ -44,7 +44,7 @@ public class KeyItemSprite extends BaseSprite {
   // --------------------------------------------------------------------------------
 
   @Override
-  public void stepOn(BaseSprite wootwoot, Timer timer) {
+  public void execStepOn(BaseSprite wootwoot, Timer timer) {
     if (wootwoot instanceof PacManSprite) {
       actionListenerProxy.fireActionEvent(new ActionEvent(this, 0, "die"));
       ((PacManSprite) wootwoot).yellowKey++;

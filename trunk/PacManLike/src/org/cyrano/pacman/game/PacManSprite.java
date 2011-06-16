@@ -8,6 +8,7 @@ import java.util.List;
 import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
+import org.cyrano.pacman.base.LayerMatrix;
 import org.cyrano.pacman.base.LevelExec;
 import org.cyrano.util.ImageCache;
 import org.cyrano.util.game.Timer;
@@ -65,44 +66,49 @@ public class PacManSprite extends BaseSprite {
   protected void calcNext() {
     char[][] data = levelExec.getData();
 
-    BaseSprite[][] dyna = levelExec.getDyna();
+    //    BaseSprite[][] dyna = levelExec.getDyna();
+    LayerMatrix layerArray = levelExec.getLayerArray();
 
     grdCurr.x = grdNext.x;
     grdCurr.y = grdNext.y;
 
     // --------------------------------------------------------------------------------
 
-    BaseSprite toBs = null;
+//    BaseSprite toBs = null;
 
     switch (wantDir) {
       case Constants.DIR_LF :
-        toBs = dyna[grdCurr.x - 1][grdCurr.y];
+        //toBs = dyna[grdCurr.x - 1][grdCurr.y];
         if (data[grdCurr.x - 1][grdCurr.y] != 'X') {
-          if (toBs == null || toBs.checkStackMoveOn(this)) {
+          //          if (toBs == null || toBs.checkStackMoveOn(this)) {
+          if (layerArray.testStepOn(grdCurr.x - 1, grdCurr.y, this)) {
             currDir = wantDir;
           }
         }
         break;
       case Constants.DIR_RG :
-        toBs = dyna[grdCurr.x + 1][grdCurr.y];
+        //toBs = dyna[grdCurr.x + 1][grdCurr.y];
         if (data[grdCurr.x + 1][grdCurr.y] != 'X') {
-          if (toBs == null || toBs.checkStackMoveOn(this)) {
+          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
+          if (layerArray.testStepOn(grdCurr.x + 1, grdCurr.y, this)) {
             currDir = wantDir;
           }
         }
         break;
       case Constants.DIR_UP :
-        toBs = dyna[grdCurr.x][grdCurr.y - 1];
+        //toBs = dyna[grdCurr.x][grdCurr.y - 1];
         if (data[grdCurr.x][grdCurr.y - 1] != 'X') {
-          if (toBs == null || toBs.checkStackMoveOn(this)) {
+          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
+          if (layerArray.testStepOn(grdCurr.x, grdCurr.y - 1, this)) {
             currDir = wantDir;
           }
         }
         break;
       case Constants.DIR_DW :
-        toBs = dyna[grdCurr.x][grdCurr.y + 1];
+        //toBs = dyna[grdCurr.x][grdCurr.y + 1];
         if (data[grdCurr.x][grdCurr.y + 1] != 'X') {
-          if (toBs == null || toBs.checkStackMoveOn(this)) {
+          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
+          if (layerArray.testStepOn(grdCurr.x, grdCurr.y + 1, this)) {
             currDir = wantDir;
           }
         }
@@ -113,33 +119,37 @@ public class PacManSprite extends BaseSprite {
 
     switch (currDir) {
       case Constants.DIR_LF :
-        toBs = dyna[grdCurr.x - 1][grdCurr.y];
+        //toBs = dyna[grdCurr.x - 1][grdCurr.y];
         if (data[grdCurr.x - 1][grdCurr.y] != 'X') {
-          if (toBs == null || toBs.checkStackMoveOn(this)) {
+          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
+          if (layerArray.testStepOn(grdCurr.x - 1, grdCurr.y, this)) {
             grdNext.x = grdCurr.x - 1;
           }
         }
         break;
       case Constants.DIR_RG :
-        toBs = dyna[grdCurr.x + 1][grdCurr.y];
+        //toBs = dyna[grdCurr.x + 1][grdCurr.y];
         if (data[grdCurr.x + 1][grdCurr.y] != 'X') {
-          if (toBs == null || toBs.checkStackMoveOn(this)) {
+          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
+          if (layerArray.testStepOn(grdCurr.x + 1, grdCurr.y, this)) {
             grdNext.x = grdCurr.x + 1;
           }
         }
         break;
       case Constants.DIR_UP :
-        toBs = dyna[grdCurr.x][grdCurr.y - 1];
+        //toBs = dyna[grdCurr.x][grdCurr.y - 1];
         if (data[grdCurr.x][grdCurr.y - 1] != 'X') {
-          if (toBs == null || toBs.checkStackMoveOn(this)) {
+          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
+          if (layerArray.testStepOn(grdCurr.x, grdCurr.y - 1, this)) {
             grdNext.y = grdCurr.y - 1;
           }
         }
         break;
       case Constants.DIR_DW :
-        toBs = dyna[grdCurr.x][grdCurr.y + 1];
+        //toBs = dyna[grdCurr.x][grdCurr.y + 1];
         if (data[grdCurr.x][grdCurr.y + 1] != 'X') {
-          if (toBs == null || toBs.checkStackMoveOn(this)) {
+          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
+          if (layerArray.testStepOn(grdCurr.x, grdCurr.y + 1, this)) {
             grdNext.y = grdCurr.y + 1;
           }
         }
@@ -217,9 +227,16 @@ public class PacManSprite extends BaseSprite {
   // logic here is akward, I mean, who steps on who? this is the target or
   // wootwoot (change variable name by the way) is the target? This handles
   // all or only char interactions 
-  
+
   @Override
-  public void stepOn(BaseSprite wootwoot, Timer timer) {
-    wootwoot.stepOn(this, timer); // XXX: This will cause problem if two pacmans!!!
+  public void execStepOn(BaseSprite wootwoot, Timer timer) {
+    if (wootwoot != this)
+      wootwoot.execStepOn(this, timer); // XXX: This will cause problem if two pacmans!!!
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public boolean isPlayer() {
+    return true;
   }
 }

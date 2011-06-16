@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
+import org.cyrano.pacman.base.LayerMatrix;
 import org.cyrano.pacman.base.LevelExec;
 import org.cyrano.util.game.Timer;
 
@@ -52,13 +53,20 @@ public class TeleportPadSprite extends BaseSprite {
   // --------------------------------------------------------------------------------
 
   @Override
-  public void stepOn(BaseSprite wootwoot, Timer timer) {
+  public void execStepOn(BaseSprite wootwoot, Timer timer) {
+
+    LayerMatrix layerMatrix = levelExec.getLayerArray();
+
+    layerMatrix.del(wootwoot.getGrdCurr().x, wootwoot.getGrdCurr().y, wootwoot);
+
     wootwoot.init(tgtX, tgtY);
+
+    layerMatrix.add(wootwoot.getGrdCurr().x, wootwoot.getGrdCurr().y, wootwoot);
   }
 
   @Override
   public void paint(Graphics2D g2d) {
-      g2d.setColor(Color.BLUE.darker().darker());
-      g2d.fill3DRect((int) scrCurr.x, (int) scrCurr.y, Constants.TILE_W, Constants.TILE_H, true);
+    g2d.setColor(Color.BLUE.darker().darker());
+    g2d.fill3DRect((int) scrCurr.x, (int) scrCurr.y, Constants.TILE_W, Constants.TILE_H, true);
   }
 }

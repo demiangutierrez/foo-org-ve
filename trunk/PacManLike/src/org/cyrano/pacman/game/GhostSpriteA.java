@@ -1,5 +1,6 @@
 package org.cyrano.pacman.game;
 
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,7 +74,24 @@ public class GhostSpriteA extends GhostSprite {
   // all or only char interactions 
 
   @Override
-  public void stepOn(BaseSprite wootwoot, Timer timer) {
+  public void execStepOn(BaseSprite wootwoot, Timer timer) {
+    
+    if (wootwoot instanceof PacManSprite) {
+      if (destroy > 0) {
+        dead = true;
+      } else {
+        PacManSprite pacManSprite = (PacManSprite) wootwoot;
+        
+
+        if (pacManSprite.destroy <= destroy) {
+          actionListenerProxy.fireActionEvent(new ActionEvent(pacManSprite, 0, "die"));
+        } else {
+          actionListenerProxy.fireActionEvent(new ActionEvent(this, 0, "die"));
+        }
+        
+      }
+    }
+    
     //    wootwoot.stepOn(this, timer); // XXX: This will cause problem if two pacmans!!!
   }
 

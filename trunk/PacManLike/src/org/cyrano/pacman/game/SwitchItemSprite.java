@@ -9,6 +9,7 @@ import java.io.IOException;
 import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
+import org.cyrano.pacman.base.LayerMatrix;
 import org.cyrano.pacman.base.LevelExec;
 import org.cyrano.util.game.Timer;
 import org.cyrano.util.game.TimerBean;
@@ -55,22 +56,37 @@ public class SwitchItemSprite extends BaseSprite {
   // --------------------------------------------------------------------------------
 
   @Override
-  public void stepOn(BaseSprite wootwoot, Timer timer) {
+  public void execStepOn(BaseSprite wootwoot, Timer timer) {
     count++;
 
     TimerBean tb = new TimerBean(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent evt) {
         count--;
-        DoorItemSprite door = (DoorItemSprite) levelExec.getDyna()[tgtX][tgtY];
-        door.close();
+
+        LayerMatrix layerArray = levelExec.getLayerArray();
+
+        for (BaseSprite baseSprite : layerArray.get(tgtX, tgtY)) {
+          if (baseSprite instanceof SwitchDoorSprite) {
+            SwitchDoorSprite switchDoorSprite = (SwitchDoorSprite) baseSprite;
+            switchDoorSprite.close();
+            break;
+          }
+        }
       }
     }, new ActionEvent(this, 0, null), 10);
     timer.addTimerBean(tb);
 
     // XXX: Fix this, will handle only a door there, was done this way just to proof it works
-    DoorItemSprite door = (DoorItemSprite) levelExec.getDyna()[tgtX][tgtY];
-    door.open();
+    LayerMatrix layerArray = levelExec.getLayerArray();
+
+    for (BaseSprite baseSprite : layerArray.get(tgtX, tgtY)) {
+      if (baseSprite instanceof SwitchDoorSprite) {
+        SwitchDoorSprite switchDoorSprite = (SwitchDoorSprite) baseSprite;
+        switchDoorSprite.open();
+        break;
+      }
+    }
 
     //    if (wootwoot instanceof PacManSprite) {
     //      actionListenerProxy.fireActionEvent(new ActionEvent(this, 0, "die"));

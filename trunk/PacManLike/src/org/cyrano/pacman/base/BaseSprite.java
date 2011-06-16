@@ -25,66 +25,6 @@ public abstract class BaseSprite {
 
   // --------------------------------------------------------------------------------
 
-  protected BaseSprite next;
-  protected BaseSprite prev;
-
-  // --------------------------------------------------------------------------------
-
-  public boolean checkStackMoveOn(BaseSprite baseSprite) {
-    if (!canMove(baseSprite, null)) {
-      return false;
-    }
-
-    if (next != null) {
-      return next.checkStackMoveOn(baseSprite);
-    }
-
-    return true;
-  }
-
-  public void stackAdd(BaseSprite sprt) {
-    if (next != null) {
-      next.stackAdd(sprt);
-    } else {
-      next = sprt;
-    }
-  }
-
-  public void stackDel(BaseSprite[][] baseSpriteMatrix) {
-    if (baseSpriteMatrix[grdCurr.x][grdCurr.y] == this) {
-      baseSpriteMatrix[grdCurr.x][grdCurr.y] = next;
-    }
-
-    if (prev != null) {
-      prev.next = next;
-    }
-
-    if (next != null) {
-      next.prev = prev;
-    }
-  }
-
-  public List<BaseSprite> getStack() {
-    List<BaseSprite> ret = new ArrayList<BaseSprite>();
-
-    BaseSprite baseSprite = this;
-
-    while (baseSprite != null) {
-      ret.add(baseSprite);
-      baseSprite = baseSprite.next;
-    }
-
-    return ret;
-  }
-
-  public abstract void stepOn(BaseSprite wootwoot, Timer timer);
-
-  public boolean canMove(BaseSprite wootwoot, Timer timer) {
-    return true;
-  }
-
-  // --------------------------------------------------------------------------------
-
   protected List<BufferedImage> bimgList = //
   new ArrayList<BufferedImage>();
 
@@ -107,7 +47,7 @@ public abstract class BaseSprite {
 
   // --------------------------------------------------------------------------------
 
-  protected double stepsPerSecond = 16;
+  protected double stepsPerSec = 16;
   protected double delta;
 
   protected int index;
@@ -233,11 +173,11 @@ public abstract class BaseSprite {
   public void updateSpr(double dt) {
     delta += dt;
 
-    double deltaPerStep = 1 / stepsPerSecond;
-    
-    while (delta > deltaPerStep) {
+    double deltaPerStp = 1 / stepsPerSec;
+
+    while (delta > deltaPerStp) {
       index++;
-      delta -= deltaPerStep;
+      delta -= deltaPerStp;
     }
   }
 
@@ -261,7 +201,7 @@ public abstract class BaseSprite {
         scrCurr.x = scrNext.x;
         scrCurr.y = scrNext.y;
 
-        internalCalcNext();
+        //internalCalcNext();
         internalExecNext();
       } else {
         double dx = (scrNext.x - scrCurr.x) / dstTgt;
@@ -293,6 +233,22 @@ public abstract class BaseSprite {
   // --------------------------------------------------------------------------------
 
   protected void internalExecNext() {
+    LayerMatrix layerArray = levelExec.getLayerArray();
+    //    BaseSprite[][] baseSpriteMatrix = levelExec.getDyna();
+
+    //    stackDel(baseSpriteMatrix);
+    layerArray.del(grdCurr.x, grdCurr.y, this);
+
+    internalCalcNext();
+
+    //    if (baseSpriteMatrix[grdCurr.x][grdCurr.y] != null) {
+    //      baseSpriteMatrix[grdCurr.x][grdCurr.y].stackAdd(this);
+    //    } else {
+    //      baseSpriteMatrix[grdCurr.x][grdCurr.y] = this;
+    //    }
+
+    layerArray.add(grdCurr.x, grdCurr.y, this);
+
     execNext();
   }
 
@@ -300,6 +256,22 @@ public abstract class BaseSprite {
 
   protected void execNext() {
     actionListenerProxy.fireActionEvent(new ActionEvent(this, 0, null));
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public boolean isPlayer() {
+    return false;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public boolean testStepOn(BaseSprite wootwoot, Timer timer) {
+    return true;
+  }
+
+  public void/**/execStepOn(BaseSprite wootwoot, Timer timer) {
+    // empty
   }
 
   // --------------------------------------------------------------------------------

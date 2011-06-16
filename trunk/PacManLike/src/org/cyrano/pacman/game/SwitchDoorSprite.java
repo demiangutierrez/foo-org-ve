@@ -10,32 +10,32 @@ import org.cyrano.pacman.base.Constants;
 import org.cyrano.pacman.base.LevelExec;
 import org.cyrano.util.game.Timer;
 
-public class DoorItemSprite extends BaseSprite {
+public class SwitchDoorSprite extends BaseSprite {
 
   private int count;
 
   // --------------------------------------------------------------------------------
 
-  public DoorItemSprite() {
-
-    //super(grdX, grdY, 0, null);
-
+  public SwitchDoorSprite() {
+    // empty
   }
 
   // --------------------------------------------------------------------------------
 
   protected void loadImgs() throws IOException {
-    //    bimgList.add(ImageCache.getInstance().getImage("key.png"));
+    // empty
   }
 
   // --------------------------------------------------------------------------------
 
   @Override
   protected void calcLook() {
+    // empty
   }
 
   @Override
   protected void calcNext() {
+    // empty
   }
 
   @Override
@@ -47,7 +47,7 @@ public class DoorItemSprite extends BaseSprite {
   // --------------------------------------------------------------------------------
 
   @Override
-  public boolean canMove(BaseSprite wootwoot, Timer timer) {
+  public boolean testStepOn(BaseSprite wootwoot, Timer timer) {
     if (count == 0) {
       return false;
     }
@@ -56,7 +56,7 @@ public class DoorItemSprite extends BaseSprite {
   }
 
   @Override
-  public void stepOn(BaseSprite wootwoot, Timer timer) {
+  public void execStepOn(BaseSprite wootwoot, Timer timer) {
   }
 
   public void open() {
@@ -71,10 +71,14 @@ public class DoorItemSprite extends BaseSprite {
   public void paint(Graphics2D g2d) {
     if (count > 0) {
       g2d.setColor(Color.RED.darker().darker());
-      g2d.fill3DRect((int) scrCurr.x, (int) scrCurr.y, Constants.TILE_W, Constants.TILE_H, false);
+      g2d.fill3DRect( //
+          (int) scrCurr.x, (int) scrCurr.y, //
+          Constants.TILE_W, Constants.TILE_H, false);
     } else {
       g2d.setColor(Color.RED.darker());
-      g2d.fill3DRect((int) scrCurr.x, (int) scrCurr.y, Constants.TILE_W, Constants.TILE_H, true);
+      g2d.fill3DRect( //
+          (int) scrCurr.x, (int) scrCurr.y, //
+          Constants.TILE_W, Constants.TILE_H, true);
     }
   }
 }

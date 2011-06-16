@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
+import org.cyrano.pacman.base.LayerMatrix;
 import org.cyrano.pacman.base.LevelExec;
 import org.cyrano.pacman.base.LevelLoad;
 import org.cyrano.pacman.base.Log;
@@ -161,34 +162,32 @@ public class GamePanel extends JPanel implements Runnable {
 
   private void handleExecNext(BaseSprite source, String command) {
 
-    BaseSprite[][] baseSpriteMatrix = levelExec.getDyna();
-
-    BaseSprite baseSprite;
-
     if (command != null && command.equals("die")) {
-      source.stackDel(baseSpriteMatrix);
+
+      LayerMatrix layerMatrix = levelExec.getLayerArray();
+
+      layerMatrix.del(source.getGrdCurr().x, source.getGrdCurr().y, source);
+
       levelExec.getDynaList().remove(source);
+
+      if (source instanceof PacManSprite) {
+        die = true;
+      }
+
       return;
     }
 
-    baseSprite = baseSpriteMatrix[source.getGrdCurr().x][source.getGrdCurr().y];
+    LayerMatrix layerArray = levelExec.getLayerArray();
 
-    if (baseSprite != null) {
-      List<BaseSprite> baseSpriteList = baseSprite.getStack();
+    List<BaseSprite> baseSpriteList = //
+    layerArray.get(source.getGrdCurr().x, source.getGrdCurr().y);
 
+    if (baseSpriteList != null) {
       for (BaseSprite currBaseSprite : baseSpriteList) {
-        currBaseSprite.stepOn(source, timer);
-      }
-    }
-
-    baseSpriteMatrix = levelExec.getSta2();
-    baseSprite = baseSpriteMatrix[source.getGrdCurr().x][source.getGrdCurr().y];
-
-    if (baseSprite != null) {
-      List<BaseSprite> baseSpriteList = baseSprite.getStack();
-
-      for (BaseSprite currBaseSprite : baseSpriteList) {
-        currBaseSprite.stepOn(source, timer);
+        if (currBaseSprite != source) {
+          System.err.println(currBaseSprite + " - step on " + source);
+          currBaseSprite.execStepOn(source, timer);
+        }
       }
     }
 
@@ -364,21 +363,29 @@ public class GamePanel extends JPanel implements Runnable {
       // Update Sprites
       // ----------------------------------------
 
-      pacSprite.updateSpr(dt);
-      pacSprite.updatePos(dt);
+      // XXX: already being updated using dyna list
+      // pacSprite.updateSpr(dt);
+      // pacSprite.updatePos(dt);
 
-      for (BaseSprite baseSprite : levelExec.getSta1List()) {
-        baseSprite.updateSpr(dt);
-      }
+      //      for (BaseSprite baseSprite : levelExec.getSta1List()) {
+      //        baseSprite.updateSpr(dt);
+      //      }
+      //
+      //      for (BaseSprite baseSprite : levelExec.getSta2List()) {
+      //        baseSprite.updateSpr(dt);
+      //      }
 
-      for (BaseSprite baseSprite : levelExec.getSta2List()) {
-        baseSprite.updateSpr(dt);
-      }
+      BaseSprite[] dynaArray = levelExec.getDynaList().toArray(new BaseSprite[0]);
 
-      for (BaseSprite baseSprite : levelExec.getDynaList()) {
+      for (BaseSprite baseSprite : dynaArray) {
         baseSprite.updateSpr(dt);
         baseSprite.updatePos(dt);
       }
+
+      //      for (BaseSprite baseSprite : levelExec.getDynaList()) {
+      //        baseSprite.updateSpr(dt);
+      //        baseSprite.updatePos(dt);
+      //      }
 
       t1 = t2;
     }
@@ -516,17 +523,17 @@ public class GamePanel extends JPanel implements Runnable {
       baseSprite.paint(g2d);
     }
 
-    if (!won && !die) {
-      if (Constants.DEBUG) {
-        g2d.setColor(Color.DARK_GRAY);
-        g2d.fillRect( //
-            pacSprite.getGrdCurr().x * Constants.TILE_W, //
-            pacSprite.getGrdCurr().y * Constants.TILE_H, //
-            Constants.TILE_W, Constants.TILE_H);
-      }
-
-      pacSprite.paint(g2d);
-    }
+    //    if (!won && !die) {
+    //      if (Constants.DEBUG) {
+    //        g2d.setColor(Color.DARK_GRAY);
+    //        g2d.fillRect( //
+    //            pacSprite.getGrdCurr().x * Constants.TILE_W, //
+    //            pacSprite.getGrdCurr().y * Constants.TILE_H, //
+    //            Constants.TILE_W, Constants.TILE_H);
+    //      }
+    //
+    //      //pacSprite.paint(g2d);
+    //    }
 
     // ----------------------------------------------------------------------
 
