@@ -96,11 +96,17 @@ public class LevelLoad {
 
       BaseBean baseBean = new BaseBean(line);
 
-      if (playBean != null) {
-        currList.add(baseBean);
-      } else {
-        playBean = baseBean;
-      }
+//      if (playBean == null) {
+//        playBean = baseBean;
+//      }
+
+      currList.add(baseBean);
+
+      //      if (playBean != null) {
+      //        currList.add(baseBean);
+      //      } else {
+      //        playBean = baseBean;
+      //      }
     }
   }
 
@@ -126,9 +132,9 @@ public class LevelLoad {
 
   // --------------------------------------------------------------------------------
 
-  public BaseBean getPlayBean() {
-    return playBean;
-  }
+//  public BaseBean getPlayBean() {
+//    return playBean;
+//  }
 
   // --------------------------------------------------------------------------------
 

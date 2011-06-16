@@ -26,7 +26,7 @@ public abstract class GhostSprite extends BaseSprite {
 
   public GhostSprite() {
     lookRotate = false;
-    stepsPerSecond = 8;
+    stepsPerSec = 8;
   }
 
   //  public GhostSprite(int grdX, int grdY, int speed, LevelLoad textMap, BaseSprite tgtSprite) {
@@ -122,5 +122,4 @@ public abstract class GhostSprite extends BaseSprite {
     speed = Integer.parseInt(parmArray[0]);
     init(baseBean.getX(), baseBean.getY(), speed, levelExec);
   }
-
 }

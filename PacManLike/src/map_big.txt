@@ -44,12 +44,12 @@ X  ................... ...................  X
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 #dyna:
 org.cyrano.pacman.game.PacManSprite  20 22 150
-org.cyrano.pacman.game.KeyItemSprite 21 22 0
-org.cyrano.pacman.game.SwitchItemSprite 16 22 0 10 22
-org.cyrano.pacman.game.DoorItemSprite 10 22 0
+org.cyrano.pacman.game.KeyItemSprite 12 15 0
+org.cyrano.pacman.game.SwitchItemSprite 12 17 0 10 22
+org.cyrano.pacman.game.SwitchDoorSprite 10 22 0
 org.cyrano.pacman.game.TeleportPadSprite 12 16 0 8 22
-org.cyrano.pacman.game.KeyDoorItemSprite 10 24 0
-org.cyrano.pacman.game.GhostSpriteA  1 1 150
+org.cyrano.pacman.game.KeyDoorSprite 10 24 0
+org.cyrano.pacman.game.GhostSpriteA   1  1 150
 
 #sta1:
 #sta2:
