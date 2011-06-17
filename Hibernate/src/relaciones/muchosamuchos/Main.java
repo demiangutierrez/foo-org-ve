@@ -2,7 +2,6 @@ package relaciones.muchosamuchos;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 /** 
@@ -12,18 +11,18 @@ import org.hibernate.cfg.Configuration;
 public class Main {
 
   public static void main(String[] args) {
-    Configuration configuration = new AnnotationConfiguration();
+    Configuration configuration = new Configuration();
     configuration.configure("/relaciones/muchosamuchos/hibernate.cfg.xml");
     SessionFactory sessionFactory = configuration.buildSessionFactory();
 
     Session session = sessionFactory.openSession();
     session.beginTransaction();
 
-    EntityA a = new EntityA();
+    MEntityA a = new MEntityA();
     for (int i = 0; i < 3; i++) {
-      EntityB b = new EntityB();
+      MEntityB b = new MEntityB();
 
-      AB ab = new AB();
+      MAB ab = new MAB();
 
       ab.setEntityARef(a);
       ab.setEntityBRef(b);
@@ -34,11 +33,11 @@ public class Main {
       session.save(b);
     }
 
-    EntityB b = (EntityB) session.load(EntityB.class, 1);
+    MEntityB b = (MEntityB) session.load(MEntityB.class, 1);
     for (int i = 0; i < 3; i++) {
-      a = new EntityA();
+      a = new MEntityA();
 
-      AB ab = new AB();
+      MAB ab = new MAB();
 
       ab.setEntityARef(a);
       ab.setEntityBRef(b);

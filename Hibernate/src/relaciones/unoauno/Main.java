@@ -2,7 +2,6 @@ package relaciones.unoauno;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 /** 
@@ -12,15 +11,15 @@ import org.hibernate.cfg.Configuration;
 public class Main {
 
   public static void main(String[] args) {
-    Configuration configuration = new AnnotationConfiguration();
+    Configuration configuration = new Configuration();
     configuration.configure("/relaciones/unoauno/hibernate.cfg.xml");
     SessionFactory sessionFactory = configuration.buildSessionFactory();
 
     Session session = sessionFactory.openSession();
     session.beginTransaction();
 
-    Persona p = new Persona();
-    Conyugue c = new Conyugue();
+    MPersona p = new MPersona();
+    MConyugue c = new MConyugue();
     c.setNombre("nombre");
 
     p.setConyugue(c);
@@ -34,7 +33,7 @@ public class Main {
     session = sessionFactory.openSession();
     session.beginTransaction();
 
-    p = (Persona) session.load(Persona.class, 1);
+    p = (MPersona) session.load(MPersona.class, 1);
     System.out.println(p.getConyugue().getNombre());
 
     session.getTransaction().commit();

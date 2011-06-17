@@ -2,7 +2,6 @@ package herencia;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 /** 
@@ -12,14 +11,14 @@ import org.hibernate.cfg.Configuration;
 public class Main {
 
   public static void main(String[] args) {
-    Configuration configuration = new AnnotationConfiguration();
+    Configuration configuration = new Configuration();
     configuration.configure("/herencia/hibernate.cfg.xml");
     SessionFactory sessionFactory = configuration.buildSessionFactory();
 
     Session session = sessionFactory.openSession();
     session.beginTransaction();
 
-    Estudiante est = new Estudiante();
+    MEstudiante est = new MEstudiante();
     est.setNombre("estudiante");
     est.setEdad(10);
     est.setNumMaterias(4);
@@ -27,7 +26,7 @@ public class Main {
 
     session.save(est);
 
-    Empleado emp = new Empleado();
+    MEmpleado emp = new MEmpleado();
     emp.setNombre("empleado");
     emp.setEdad(30);
     emp.setCargo("cargo");

@@ -3,7 +3,6 @@ package busqueda;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 /** 
@@ -13,7 +12,7 @@ import org.hibernate.cfg.Configuration;
 public class Hql {
 
   public static void main(String[] args) {
-    Configuration configuration = new AnnotationConfiguration();
+    Configuration configuration = new Configuration();
     configuration.configure("/busqueda/hibernate.cfg.xml");
     SessionFactory sessionFactory = configuration.buildSessionFactory();
 
@@ -23,15 +22,15 @@ public class Hql {
     String queryStr;
     Query query;
 
-    //    String queryStr = "FROM SearchObj";
+    //    String queryStr = "FROM MSearchObj";
     //    Query query = session.createQuery(queryStr);
     //    list(query, queryStr);
 
-    //    queryStr = "FROM SearchObj WHERE num > 7";
+    //    queryStr = "FROM MSearchObj WHERE num > 7";
     //    query = session.createQuery(queryStr);
     //    list(query, queryStr);
 
-    //        queryStr = "SELECT id FROM SearchObj WHERE num >= :numInf AND num < :numSup";
+    //        queryStr = "SELECT id FROM MSearchObj WHERE num >= :numInf AND num < :numSup";
     //        query = session.createQuery(queryStr);
     //        query.setInteger("numInf", 2);
     //        query.setInteger("numSup", 4);
@@ -43,7 +42,7 @@ public class Hql {
     // [1] => Departamento
     //    List<Object[]> list = query.list();
 
-    queryStr = "SELECT id, num FROM SearchObj WHERE num >= :numInf AND num < :numSup";
+    queryStr = "SELECT id, num FROM MSearchObj WHERE num >= :numInf AND num < :numSup";
     query = session.createQuery(queryStr);
     query.setInteger("numInf", 2);
     query.setInteger("numSup", 4);
@@ -55,7 +54,7 @@ public class Hql {
       System.out.println(objArray[0] + ";" + objArray[1]);
     }
 
-    //    queryStr = "FROM SearchObj AS obj WHERE obj.codigo LIKE :cod ORDER BY obj.num";
+    //    queryStr = "FROM MSearchObj AS obj WHERE obj.codigo LIKE :cod ORDER BY obj.num";
     //    query = session.createQuery(queryStr);
     //    query.setString("cod", "%ab");
     //    list(query, queryStr);
