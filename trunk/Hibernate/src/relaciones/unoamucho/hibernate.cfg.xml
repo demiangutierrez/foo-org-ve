@@ -16,6 +16,19 @@
 		-->
 
 		<!-- **************************************** -->
+        <!-- PostgreSQL                               -->
+        <!-- **************************************** -->
+
+        <!--
+            <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+            <property name="hibernate.connection.url">jdbc:postgresql://localhost/sch_test</property>
+            <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+            <property name="hibernate.connection.username">postgres</property>
+            <property name="hibernate.connection.password"></property>
+            <property name="hibernate.connection.pool_size">5</property>
+        -->
+
+		<!-- **************************************** -->
 		<!-- MySQL                                    -->
 		<!-- **************************************** -->
 
@@ -79,8 +92,8 @@
 
 		<!-- The mapping files -->
 
-		<mapping class="relaciones.unoamucho.Uno" />
-		<mapping class="relaciones.unoamucho.Muchos" />
+		<mapping class="relaciones.unoamucho.MUno" />
+		<mapping class="relaciones.unoamucho.MMuchos" />
 
 	</session-factory>
 </hibernate-configuration>

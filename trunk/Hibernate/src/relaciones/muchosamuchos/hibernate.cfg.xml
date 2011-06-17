@@ -79,9 +79,9 @@
 
 		<!-- The mapping files -->
 
-		<mapping class="relaciones.muchosamuchos.EntityA" />
-		<mapping class="relaciones.muchosamuchos.EntityB" />		
-		<mapping class="relaciones.muchosamuchos.AB" />
+		<mapping class="relaciones.muchosamuchos.MEntityA" />
+		<mapping class="relaciones.muchosamuchos.MEntityB" />		
+		<mapping class="relaciones.muchosamuchos.MAB" />
 
 	</session-factory>
 </hibernate-configuration>

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Example;
 
@@ -15,21 +14,24 @@ import org.hibernate.criterion.Example;
 public class ByExample {
 
   public static void main(String[] args) {
-    Configuration configuration = new AnnotationConfiguration();
+    Configuration configuration = new Configuration();
     configuration.configure("/busqueda/hibernate.cfg.xml");
     SessionFactory sessionFactory = configuration.buildSessionFactory();
 
     Session session = sessionFactory.openSession();
     session.beginTransaction();
 
-    SearchObj sObj = new SearchObj();
-    //    sObj.setCodigo("aoeu");
-    //    sObj.setId(99); // TODO: REVISAR, encuentra varios registros
+    MSearchObj sObj = new MSearchObj();
+    sObj.setCodigo("aoeu");
     sObj.setNum(1);
 
-    // FROM SearchObj WHERE codigo = 'aoeu'
-    List<SearchObj> results = //
-    session.createCriteria(SearchObj.class).add(Example.create(sObj)).list();
+    // XXX: hibernate ignores ids, relations and versions in
+    // queries by example (see documentation)
+    // sObj.setId(99); 
+
+    // FROM MSearchObj WHERE codigo = 'aoeu'
+    List<MSearchObj> results = //
+    session.createCriteria(MSearchObj.class).add(Example.create(sObj)).list();
 
     for (Object obj : results) {
       System.out.println(obj);
