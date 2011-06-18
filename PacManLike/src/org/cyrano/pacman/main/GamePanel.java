@@ -18,10 +18,10 @@ import javax.swing.JPanel;
 
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
-import org.cyrano.pacman.base.LayerMatrix;
 import org.cyrano.pacman.base.LevelExec;
 import org.cyrano.pacman.base.LevelLoad;
 import org.cyrano.pacman.base.Log;
+import org.cyrano.pacman.base.SpriteMatrix;
 import org.cyrano.pacman.game.GhostSprite;
 import org.cyrano.pacman.game.PacManSprite;
 import org.cyrano.util.Hwh;
@@ -87,7 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
     levelLoad = new LevelLoad();
     levelLoad.load(ClassLoader.getSystemResource(filename).getPath());
 
-    levelExec = new LevelExec(levelLoad);
+    levelExec = new LevelExec(levelLoad, timer);
     levelExec.init();
 
     // ----------------------------------------
@@ -104,7 +104,7 @@ public class GamePanel extends JPanel implements Runnable {
       }
     });
 
-    for (BaseSprite baseSprite : levelExec.getDynaList()) {
+    for (BaseSprite baseSprite : levelExec.getSpriteList()) {
       baseSprite.getActionListenerProxy().addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -164,11 +164,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     if (command != null && command.equals("die")) {
 
-      LayerMatrix layerMatrix = levelExec.getLayerArray();
+      SpriteMatrix layerMatrix = levelExec.getSpriteMatrix();
 
       layerMatrix.del(source.getGrdCurr().x, source.getGrdCurr().y, source);
 
-      levelExec.getDynaList().remove(source);
+      levelExec.getSpriteList().remove(source);
 
       if (source instanceof PacManSprite) {
         die = true;
@@ -177,7 +177,7 @@ public class GamePanel extends JPanel implements Runnable {
       return;
     }
 
-    LayerMatrix layerArray = levelExec.getLayerArray();
+    SpriteMatrix layerArray = levelExec.getSpriteMatrix();
 
     List<BaseSprite> baseSpriteList = //
     layerArray.get(source.getGrdCurr().x, source.getGrdCurr().y);
@@ -186,7 +186,7 @@ public class GamePanel extends JPanel implements Runnable {
       for (BaseSprite currBaseSprite : baseSpriteList) {
         if (currBaseSprite != source) {
           System.err.println(currBaseSprite + " - step on " + source);
-          currBaseSprite.execStepOn(source, timer);
+          currBaseSprite.execStepOn(source);
         }
       }
     }
@@ -211,7 +211,7 @@ public class GamePanel extends JPanel implements Runnable {
 
           pacManSprite.incDestroy();
 
-          for (BaseSprite sprite : levelExec.getDynaList()) {
+          for (BaseSprite sprite : levelExec.getSpriteList()) {
             if (sprite instanceof GhostSprite) {
               GhostSprite ghostSprite = (GhostSprite) sprite;
               ghostSprite.incDestroy();
@@ -223,7 +223,7 @@ public class GamePanel extends JPanel implements Runnable {
             public void actionPerformed(ActionEvent evt) {
               GamePanel.this.pacSprite.decDestroy();
 
-              for (BaseSprite sprite : levelExec.getDynaList()) {
+              for (BaseSprite sprite : levelExec.getSpriteList()) {
                 if (sprite instanceof GhostSprite) {
                   GhostSprite ghostSprite = (GhostSprite) sprite;
                   ghostSprite.decDestroy();
@@ -375,7 +375,7 @@ public class GamePanel extends JPanel implements Runnable {
       //        baseSprite.updateSpr(dt);
       //      }
 
-      BaseSprite[] dynaArray = levelExec.getDynaList().toArray(new BaseSprite[0]);
+      BaseSprite[] dynaArray = levelExec.getSpriteList().toArray(new BaseSprite[0]);
 
       for (BaseSprite baseSprite : dynaArray) {
         baseSprite.updateSpr(dt);
@@ -511,7 +511,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // ----------------------------------------------------------------------
 
-    for (BaseSprite baseSprite : levelExec.getDynaList()) {
+    for (BaseSprite baseSprite : levelExec.getSpriteList()) {
       if (Constants.DEBUG) {
         g2d.setColor(Color.DARK_GRAY);
         g2d.fillRect( //

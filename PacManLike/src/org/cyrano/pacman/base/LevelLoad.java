@@ -8,13 +8,10 @@ import java.util.regex.Pattern;
 
 public class LevelLoad {
 
-  private List<BaseBean> dynaList = new ArrayList<BaseBean>(); // Dyna Beans: Lay 3
-  private List<BaseBean> sta2List = new ArrayList<BaseBean>(); // Stat Beans: Lay 2
-  private List<BaseBean> sta1List = new ArrayList<BaseBean>(); // Stat Beans: Lay 1
+  private List<BaseBean> baseBeanList = //
+  new ArrayList<BaseBean>();
 
-  private char/**/[][] data; // Base Layer: Lay 0
-
-  private BaseBean playBean;
+  private char/**/[][] data;
 
   private int w;
   private int h;
@@ -80,48 +77,20 @@ public class LevelLoad {
       }
 
       if (line.equals("#dyna:")) {
-        currList = dynaList;
-        continue;
-      }
-
-      if (line.equals("#sta2:")) {
-        currList = sta2List;
-        continue;
-      }
-
-      if (line.equals("#sta1:")) {
-        currList = sta1List;
+        currList = baseBeanList;
         continue;
       }
 
       BaseBean baseBean = new BaseBean(line);
 
-//      if (playBean == null) {
-//        playBean = baseBean;
-//      }
-
       currList.add(baseBean);
-
-      //      if (playBean != null) {
-      //        currList.add(baseBean);
-      //      } else {
-      //        playBean = baseBean;
-      //      }
     }
   }
 
   // --------------------------------------------------------------------------------
 
-  public List<BaseBean> getDynaList() {
-    return dynaList;
-  }
-
-  public List<BaseBean> getSta2List() {
-    return sta2List;
-  }
-
-  public List<BaseBean> getSta1List() {
-    return sta1List;
+  public List<BaseBean> getBaseBeanList() {
+    return baseBeanList;
   }
 
   // --------------------------------------------------------------------------------
@@ -129,12 +98,6 @@ public class LevelLoad {
   public char[][] getData() {
     return data;
   }
-
-  // --------------------------------------------------------------------------------
-
-//  public BaseBean getPlayBean() {
-//    return playBean;
-//  }
 
   // --------------------------------------------------------------------------------
 

@@ -13,7 +13,6 @@ import javax.swing.event.EventListenerList;
 import org.cyrano.util.ActionListenerProxy;
 import org.cyrano.util.PointDbl;
 import org.cyrano.util.PointInt;
-import org.cyrano.util.game.Timer;
 
 public abstract class BaseSprite {
 
@@ -41,6 +40,10 @@ public abstract class BaseSprite {
 
   protected LevelExec levelExec;
 
+  public LevelExec getLevelExec() {
+    return levelExec;
+  }
+
   protected int speed = 150;
 
   protected boolean lookRotate = true;
@@ -63,6 +66,18 @@ public abstract class BaseSprite {
   public void init(int grdX, int grdY, int speed, LevelExec levelExec) {
     this.levelExec = levelExec;
 
+    this.speed = speed;
+
+    init(grdX, grdY);
+
+    try {
+      loadImgs();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void init(int grdX, int grdY) {
     scrCurr = new PointDbl();
     scrCurr.x = grdX * Constants.TILE_W;
     scrCurr.y = grdY * Constants.TILE_H;
@@ -74,42 +89,6 @@ public abstract class BaseSprite {
     scrLook = new PointDbl();
     scrLook.x = grdX * Constants.TILE_W;
     scrLook.y = grdY * Constants.TILE_H;
-
-    grdCurr = new PointInt();
-    grdCurr.x = grdX;
-    grdCurr.y = grdY;
-
-    grdNext = new PointInt();
-    grdNext.x = grdX;
-    grdNext.y = grdY;
-
-    this.speed = speed;
-
-    try {
-      loadImgs();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  // TODO: Better API
-  public void init(int grdX, int grdY) {
-    // This is to calculate Look
-    int deltaX = grdCurr.x - grdX;
-    int deltaY = grdCurr.y - grdY;
-
-    scrCurr = new PointDbl();
-    scrCurr.x = grdX * Constants.TILE_W;
-    scrCurr.y = grdY * Constants.TILE_H;
-
-    // Not moving
-    scrNext = new PointDbl();
-    scrNext.x = grdX * Constants.TILE_W;
-    scrNext.y = grdY * Constants.TILE_H;
-
-    scrLook = new PointDbl();
-    scrLook.x = scrLook.x + deltaX;
-    scrLook.y = scrLook.y + deltaY;
 
     grdCurr = new PointInt();
     grdCurr.x = grdX;
@@ -201,7 +180,6 @@ public abstract class BaseSprite {
         scrCurr.x = scrNext.x;
         scrCurr.y = scrNext.y;
 
-        //internalCalcNext();
         internalExecNext();
       } else {
         double dx = (scrNext.x - scrCurr.x) / dstTgt;
@@ -233,21 +211,11 @@ public abstract class BaseSprite {
   // --------------------------------------------------------------------------------
 
   protected void internalExecNext() {
-    LayerMatrix layerArray = levelExec.getLayerArray();
-    //    BaseSprite[][] baseSpriteMatrix = levelExec.getDyna();
+    SpriteMatrix spriteMatrix = levelExec.getSpriteMatrix();
 
-    //    stackDel(baseSpriteMatrix);
-    layerArray.del(grdCurr.x, grdCurr.y, this);
-
+    spriteMatrix.del(grdCurr.x, grdCurr.y, this);
     internalCalcNext();
-
-    //    if (baseSpriteMatrix[grdCurr.x][grdCurr.y] != null) {
-    //      baseSpriteMatrix[grdCurr.x][grdCurr.y].stackAdd(this);
-    //    } else {
-    //      baseSpriteMatrix[grdCurr.x][grdCurr.y] = this;
-    //    }
-
-    layerArray.add(grdCurr.x, grdCurr.y, this);
+    spriteMatrix.add(grdCurr.x, grdCurr.y, this);
 
     execNext();
   }
@@ -266,12 +234,12 @@ public abstract class BaseSprite {
 
   // --------------------------------------------------------------------------------
 
-  public boolean testStepOn(BaseSprite wootwoot, Timer timer) {
+  public boolean testStepOn(BaseSprite source) {
     return true;
   }
 
-  public void/**/execStepOn(BaseSprite wootwoot, Timer timer) {
-    // empty
+  public void/**/execStepOn(BaseSprite source) {
+    // Empty
   }
 
   // --------------------------------------------------------------------------------

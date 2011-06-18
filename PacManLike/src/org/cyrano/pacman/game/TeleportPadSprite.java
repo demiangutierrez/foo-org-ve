@@ -1,72 +1,65 @@
 package org.cyrano.pacman.game;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.io.IOException;
 
 import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
-import org.cyrano.pacman.base.Constants;
-import org.cyrano.pacman.base.LayerMatrix;
 import org.cyrano.pacman.base.LevelExec;
-import org.cyrano.util.game.Timer;
+import org.cyrano.pacman.base.SpriteMatrix;
+import org.cyrano.util.ImageCache;
 
 public class TeleportPadSprite extends BaseSprite {
 
-  private int count;
+  private int tgtX;
+  private int tgtY;
 
   // --------------------------------------------------------------------------------
 
   public TeleportPadSprite() {
-
-    //super(grdX, grdY, 0, null);
-
+    // Empty
   }
 
   // --------------------------------------------------------------------------------
 
   protected void loadImgs() throws IOException {
-    //    bimgList.add(ImageCache.getInstance().getImage("key.png"));
+    bimgList.add(ImageCache.getInstance().getImage("tport1.png"));
+    bimgList.add(ImageCache.getInstance().getImage("tport2.png"));
+    bimgList.add(ImageCache.getInstance().getImage("tport3.png"));
+    bimgList.add(ImageCache.getInstance().getImage("tport4.png"));
+    bimgList.add(ImageCache.getInstance().getImage("tport5.png"));
+    bimgList.add(ImageCache.getInstance().getImage("tport6.png"));
   }
 
   // --------------------------------------------------------------------------------
 
   @Override
   protected void calcLook() {
+    // Empty
   }
 
   @Override
   protected void calcNext() {
+    // Empty
   }
 
-  int tgtX;
-  int tgtY;
+  // --------------------------------------------------------------------------------
 
   @Override
   public void init(LevelExec levelExec, BaseBean baseBean, String[] parmArray) {
-    speed = Integer.parseInt(parmArray[0]);
-    tgtX = Integer.parseInt(parmArray[1]);
-    tgtY = Integer.parseInt(parmArray[2]);
+    tgtX = Integer.parseInt(parmArray[0]);
+    tgtY = Integer.parseInt(parmArray[1]);
+
     init(baseBean.getX(), baseBean.getY(), speed, levelExec);
   }
 
   // --------------------------------------------------------------------------------
 
   @Override
-  public void execStepOn(BaseSprite wootwoot, Timer timer) {
+  public void execStepOn(BaseSprite source) {
+    SpriteMatrix spriteMatrix = levelExec.getSpriteMatrix();
 
-    LayerMatrix layerMatrix = levelExec.getLayerArray();
-
-    layerMatrix.del(wootwoot.getGrdCurr().x, wootwoot.getGrdCurr().y, wootwoot);
-
-    wootwoot.init(tgtX, tgtY);
-
-    layerMatrix.add(wootwoot.getGrdCurr().x, wootwoot.getGrdCurr().y, wootwoot);
-  }
-
-  @Override
-  public void paint(Graphics2D g2d) {
-    g2d.setColor(Color.BLUE.darker().darker());
-    g2d.fill3DRect((int) scrCurr.x, (int) scrCurr.y, Constants.TILE_W, Constants.TILE_H, true);
+    spriteMatrix.del(source.getGrdCurr().x, source.getGrdCurr().y, source);
+    source.init(tgtX, tgtY);
+    spriteMatrix.add(source.getGrdCurr().x, source.getGrdCurr().y, source);
   }
 }

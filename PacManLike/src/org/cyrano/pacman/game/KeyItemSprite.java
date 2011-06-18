@@ -7,7 +7,6 @@ import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.LevelExec;
 import org.cyrano.util.ImageCache;
-import org.cyrano.util.game.Timer;
 
 public class KeyItemSprite extends BaseSprite {
 
@@ -44,7 +43,7 @@ public class KeyItemSprite extends BaseSprite {
   // --------------------------------------------------------------------------------
 
   @Override
-  public void execStepOn(BaseSprite wootwoot, Timer timer) {
+  public void execStepOn(BaseSprite wootwoot) {
     if (wootwoot instanceof PacManSprite) {
       actionListenerProxy.fireActionEvent(new ActionEvent(this, 0, "die"));
       ((PacManSprite) wootwoot).yellowKey++;

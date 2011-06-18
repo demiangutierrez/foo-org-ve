@@ -3,23 +3,28 @@ package org.cyrano.pacman.base;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cyrano.util.game.Timer;
+
 public class LevelExec {
+
+  private LevelLoad levelLoad;
 
   private List<BaseSprite> spriteList = //
   new ArrayList<BaseSprite>();
 
-  private LayerMatrix spriteMtrx;
+  private SpriteMatrix spriteMatrix;
 
   private BaseSprite playSprite;
 
-  private LevelLoad levelLoad;
+  private Timer timer;
 
   // --------------------------------------------------------------------------------
 
-  public LevelExec(LevelLoad levelLoad) {
+  public LevelExec(LevelLoad levelLoad, Timer timer) {
     this.levelLoad = levelLoad;
+    this.timer = timer;
 
-    spriteMtrx = new LayerMatrix( //
+    spriteMatrix = new SpriteMatrix( //
         levelLoad.getW(), levelLoad.getH());
   }
 
@@ -28,7 +33,7 @@ public class LevelExec {
   public void init() {
     spriteList.clear();
 
-    initLayer(levelLoad.getDynaList());
+    initLayer(levelLoad.getBaseBeanList());
   }
 
   // --------------------------------------------------------------------------------
@@ -46,20 +51,20 @@ public class LevelExec {
       }
 
       spriteList.add(baseSprite);
-      spriteMtrx.add(baseBean.getX(), baseBean.getY(), baseSprite);
+      spriteMatrix.add(baseBean.getX(), baseBean.getY(), baseSprite);
     }
   }
 
   // --------------------------------------------------------------------------------
 
-  public List<BaseSprite> getDynaList() {
+  public List<BaseSprite> getSpriteList() {
     return spriteList;
   }
 
   // --------------------------------------------------------------------------------
 
-  public LayerMatrix getLayerArray() {
-    return spriteMtrx;
+  public SpriteMatrix getSpriteMatrix() {
+    return spriteMatrix;
   }
 
   // --------------------------------------------------------------------------------
@@ -82,5 +87,11 @@ public class LevelExec {
 
   public int getH() {
     return levelLoad.getH();
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public Timer getTimer() {
+    return timer;
   }
 }
