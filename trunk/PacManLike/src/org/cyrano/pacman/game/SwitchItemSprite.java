@@ -9,100 +9,96 @@ import java.io.IOException;
 import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
-import org.cyrano.pacman.base.LayerMatrix;
 import org.cyrano.pacman.base.LevelExec;
-import org.cyrano.util.game.Timer;
+import org.cyrano.pacman.base.SpriteMatrix;
 import org.cyrano.util.game.TimerBean;
 
 public class SwitchItemSprite extends BaseSprite {
 
-  private int count;
+  private int tgtX;
+  private int tgtY;
 
   // --------------------------------------------------------------------------------
 
   public SwitchItemSprite() {
-
-    //super(grdX, grdY, 0, null);
-
+    // Empty
   }
 
   // --------------------------------------------------------------------------------
 
+  @Override
   protected void loadImgs() throws IOException {
-    //    bimgList.add(ImageCache.getInstance().getImage("key.png"));
+    // Empty
   }
 
   // --------------------------------------------------------------------------------
 
   @Override
   protected void calcLook() {
+    // Empty
   }
 
   @Override
   protected void calcNext() {
+    // Empty
   }
 
-  int tgtX;
-  int tgtY;
+  // --------------------------------------------------------------------------------
 
   @Override
   public void init(LevelExec levelExec, BaseBean baseBean, String[] parmArray) {
-    speed = Integer.parseInt(parmArray[0]);
-    tgtX = Integer.parseInt(parmArray[1]);
-    tgtY = Integer.parseInt(parmArray[2]);
+    tgtX = Integer.parseInt(parmArray[0]);
+    tgtY = Integer.parseInt(parmArray[1]);
+
     init(baseBean.getX(), baseBean.getY(), speed, levelExec);
   }
 
   // --------------------------------------------------------------------------------
 
   @Override
-  public void execStepOn(BaseSprite wootwoot, Timer timer) {
-    count++;
-
+  public void execStepOn(BaseSprite wootwoot) {
     TimerBean tb = new TimerBean(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent evt) {
-        count--;
-
-        LayerMatrix layerArray = levelExec.getLayerArray();
-
-        for (BaseSprite baseSprite : layerArray.get(tgtX, tgtY)) {
-          if (baseSprite instanceof SwitchDoorSprite) {
-            SwitchDoorSprite switchDoorSprite = (SwitchDoorSprite) baseSprite;
-            switchDoorSprite.close();
-            break;
-          }
-        }
+        getTarget().unLock();
       }
     }, new ActionEvent(this, 0, null), 10);
-    timer.addTimerBean(tb);
 
-    // XXX: Fix this, will handle only a door there, was done this way just to proof it works
-    LayerMatrix layerArray = levelExec.getLayerArray();
+    levelExec.getTimer().addTimerBean(tb);
 
-    for (BaseSprite baseSprite : layerArray.get(tgtX, tgtY)) {
-      if (baseSprite instanceof SwitchDoorSprite) {
-        SwitchDoorSprite switchDoorSprite = (SwitchDoorSprite) baseSprite;
-        switchDoorSprite.open();
-        break;
-      }
-    }
+    // ----------------------------------------
 
-    //    if (wootwoot instanceof PacManSprite) {
-    //      actionListenerProxy.fireActionEvent(new ActionEvent(this, 0, "die"));
-    //    }
-
-    //  wootwoot.stepOn(this); // XXX: This will cause problem if two pacmans!!!
+    getTarget().doLock();
   }
+
+  // --------------------------------------------------------------------------------
 
   @Override
   public void paint(Graphics2D g2d) {
-    if (count > 0) {
+    if (getTarget().isLocked()) {
       g2d.setColor(Color.GREEN.darker());
-      g2d.fill3DRect((int) scrCurr.x, (int) scrCurr.y, Constants.TILE_W, Constants.TILE_H, false);
+      g2d.fill3DRect( //
+          (int) scrCurr.x, (int) scrCurr.y, //
+          Constants.TILE_W, Constants.TILE_H, true);
     } else {
       g2d.setColor(Color.GREEN.darker().darker());
-      g2d.fill3DRect((int) scrCurr.x, (int) scrCurr.y, Constants.TILE_W, Constants.TILE_H, true);
+      g2d.fill3DRect( //
+          (int) scrCurr.x, (int) scrCurr.y, //
+          Constants.TILE_W, Constants.TILE_H, false);
     }
+  }
+
+  // --------------------------------------------------------------------------------
+
+  private SwitchDoorSprite getTarget() {
+    SpriteMatrix layerArray = levelExec.getSpriteMatrix();
+
+    for (BaseSprite baseSprite : layerArray.get(tgtX, tgtY)) {
+      if (baseSprite instanceof SwitchDoorSprite) {
+        return (SwitchDoorSprite) baseSprite;
+      }
+    }
+
+    throw new IllegalStateException();
   }
 }

@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cyrano.pacman.base.BaseSprite;
-import org.cyrano.pacman.base.PathCalculator;
+import org.cyrano.pacman.pathfinder.PathCalculator;
 import org.cyrano.util.ImageCache;
 import org.cyrano.util.PointInt;
-import org.cyrano.util.game.Timer;
 
 public class GhostSpriteA extends GhostSprite {
 
@@ -47,10 +46,10 @@ public class GhostSpriteA extends GhostSprite {
       grdNext = grdCurr;
       return;
     }
-    char[][] data = levelExec.getData();
 
     PathCalculator pathCalculator = new PathCalculator( //
-        data, levelExec.getW(), levelExec.getH(), false);
+        new GhostSpriteESS(this), //
+        levelExec.getW(), levelExec.getH(), false);
 
     PointInt src = new PointInt();
     src.x = grdCurr.x;
@@ -74,24 +73,23 @@ public class GhostSpriteA extends GhostSprite {
   // all or only char interactions 
 
   @Override
-  public void execStepOn(BaseSprite wootwoot, Timer timer) {
-    
+  public void execStepOn(BaseSprite wootwoot) {
+
     if (wootwoot instanceof PacManSprite) {
       if (destroy > 0) {
         dead = true;
       } else {
         PacManSprite pacManSprite = (PacManSprite) wootwoot;
-        
 
         if (pacManSprite.destroy <= destroy) {
           actionListenerProxy.fireActionEvent(new ActionEvent(pacManSprite, 0, "die"));
         } else {
           actionListenerProxy.fireActionEvent(new ActionEvent(this, 0, "die"));
         }
-        
+
       }
     }
-    
+
     //    wootwoot.stepOn(this, timer); // XXX: This will cause problem if two pacmans!!!
   }
 

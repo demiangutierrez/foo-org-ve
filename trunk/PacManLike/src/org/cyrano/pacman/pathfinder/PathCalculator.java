@@ -1,31 +1,35 @@
-package org.cyrano.pacman.base;
+package org.cyrano.pacman.pathfinder;
 
 import java.io.PrintStream;
 import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.cyrano.pacman.base.LevelLoad;
 import org.cyrano.util.PointInt;
 
 public class PathCalculator {
 
+  private EmptySpaceStrategy ess;
+
   private double/**/[][] dist;
-  private char/*  */[][] data;
+
+  private boolean diagonals;
 
   private int w;
   private int h;
 
-  private boolean allowDiagonals;
-
   // --------------------------------------------------------------------------------
 
-  public PathCalculator(char[][] data, int w, int h, boolean allowDiagonals) {
-    this.data = data;
+  public PathCalculator(EmptySpaceStrategy ess, //
+      int w, int h, boolean diagonals) {
+
+    this.ess = ess;
 
     this.w = w;
     this.h = h;
 
-    this.allowDiagonals = allowDiagonals;
+    this.diagonals = diagonals;
   }
 
   // --------------------------------------------------------------------------------
@@ -49,7 +53,7 @@ public class PathCalculator {
 
       for (int dy = -1; dy <= 1; dy++) {
         for (int dx = -1; dx <= 1; dx++) {
-          if (!allowDiagonals && dx != 0 && dy != 0) {
+          if (!diagonals && dx != 0 && dy != 0) {
             continue;
           }
 
@@ -62,7 +66,7 @@ public class PathCalculator {
             continue;
           }
 
-          if (!isEmptySpace(cp.x + dx, cp.y + dy)) {
+          if (!ess.isEmptySpace(cp.x + dx, cp.y + dy)) {
             continue;
           }
 
@@ -93,7 +97,7 @@ public class PathCalculator {
 
       for (int dy = -1; dy <= 1; dy++) {
         for (int dx = -1; dx <= 1; dx++) {
-          if (!allowDiagonals && dx != 0 && dy != 0) {
+          if (!diagonals && dx != 0 && dy != 0) {
             continue;
           }
 
@@ -106,7 +110,7 @@ public class PathCalculator {
             continue;
           }
 
-          if (!isEmptySpace(cp.x + dx, cp.y + dy)) {
+          if (!ess.isEmptySpace(cp.x + dx, cp.y + dy)) {
             continue;
           }
 
@@ -127,12 +131,6 @@ public class PathCalculator {
     }
 
     return ret;
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public boolean isEmptySpace(int x, int y) {
-    return data[x][y] != 'X';
   }
 
   // --------------------------------------------------------------------------------
@@ -173,7 +171,7 @@ public class PathCalculator {
     char[][] data = textMap.getData();
 
     PathCalculator pathCalculator = new PathCalculator( //
-        data, textMap.getW(), textMap.getH(), false);
+        new TestESS(data), textMap.getW(), textMap.getH(), false);
 
     PointInt src = new PointInt();
     src.x = 1;
@@ -196,5 +194,21 @@ public class PathCalculator {
     System.err.println("--------------------------------------------------------------------------------");
 
     //textMap.dump(System.err);
+  }
+
+  // --------------------------------------------------------------------------------
+
+  private static class TestESS implements EmptySpaceStrategy {
+
+    private char[][] data;
+
+    public TestESS(char[][] data) {
+      this.data = data;
+    }
+
+    @Override
+    public boolean isEmptySpace(int x, int y) {
+      return data[x][y] != 'X';
+    }
   }
 }

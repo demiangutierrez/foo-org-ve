@@ -29,16 +29,6 @@ public abstract class GhostSprite extends BaseSprite {
     stepsPerSec = 8;
   }
 
-  //  public GhostSprite(int grdX, int grdY, int speed, LevelLoad textMap, BaseSprite tgtSprite) {
-  //    super(grdX, grdY, speed, textMap);
-  //
-  //    scrLook = new PointDbl();
-  //    scrLook.x = grdX * Constants.TILE_W;
-  //    scrLook.y = grdY * Constants.TILE_H;
-  //
-  //    this.tgtSprite = tgtSprite;
-  //  }
-
   protected void loadImgs() throws IOException {
     yPacList = new ArrayList<BufferedImage>();
     yPacList.add(ImageCache.getInstance().getImage("yghs1.png"));

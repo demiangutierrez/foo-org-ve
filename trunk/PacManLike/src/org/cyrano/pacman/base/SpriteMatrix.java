@@ -6,56 +6,58 @@ import java.util.List;
 /**
  * @author Demián Gutierrez
  */
-public class LayerMatrix {
+public class SpriteMatrix {
 
-  private List<BaseSprite>[][] array;
+  private List<BaseSprite>[][] spriteListMatrix;
 
   // --------------------------------------------------------------------------------
 
   @SuppressWarnings("unchecked")
-  public LayerMatrix(int w, int h) {
-    array = new List[w][h];
+  public SpriteMatrix(int w, int h) {
+    spriteListMatrix = new List[w][h];
   }
 
   // --------------------------------------------------------------------------------
 
   public void add(int x, int y, BaseSprite baseSprite) {
-    if (array[x][y] == null) {
-      array[x][y] = new ArrayList<BaseSprite>();
+    if (spriteListMatrix[x][y] == null) {
+      spriteListMatrix[x][y] = new ArrayList<BaseSprite>();
     }
 
-    array[x][y].add(baseSprite);
+    spriteListMatrix[x][y].add(baseSprite);
   }
 
   // --------------------------------------------------------------------------------
 
   public void del(int x, int y, BaseSprite baseSprite) {
-    if (array[x][y] == null || !array[x][y].contains(baseSprite)) {
-      throw new IllegalArgumentException( //
-          "array[x][y] == null || !array[x][y].contains(baseSprite)");
+    if (/* */spriteListMatrix[x][y] == null || //
+        /**/!spriteListMatrix[x][y].contains(baseSprite)) {
+      throw new IllegalArgumentException();
     }
 
-    array[x][y].remove(baseSprite);
+    spriteListMatrix[x][y].remove(baseSprite);
 
-    if (array[x][y].isEmpty()) {
-      array[x][y] = null;
+    if (spriteListMatrix[x][y].isEmpty()) {
+      spriteListMatrix[x][y] = null;
     }
   }
 
   // --------------------------------------------------------------------------------
 
   public List<BaseSprite> get(int x, int y) {
-    return array[x][y];
+    return spriteListMatrix[x][y];
   }
 
   // --------------------------------------------------------------------------------
 
   public boolean testStepOn(int x, int y, BaseSprite baseSprite) {
-    if (array[x][y] != null) {
-      for (BaseSprite currSprite : array[x][y]) {
-        if (!currSprite.testStepOn(baseSprite, null)) {
-          return false;
-        }
+    if (spriteListMatrix[x][y] == null) {
+      return true;
+    }
+
+    for (BaseSprite currSprite : spriteListMatrix[x][y]) {
+      if (!currSprite.testStepOn(baseSprite)) {
+        return false;
       }
     }
 
@@ -65,10 +67,12 @@ public class LayerMatrix {
   // --------------------------------------------------------------------------------
 
   public boolean execStepOn(int x, int y, BaseSprite baseSprite) {
-    if (array[x][y] == null) {
-      for (BaseSprite currSprite : array[x][y]) {
-        currSprite.execStepOn(baseSprite, null);
-      }
+    if (spriteListMatrix[x][y] == null) {
+      return true;
+    }
+
+    for (BaseSprite currSprite : spriteListMatrix[x][y]) {
+      currSprite.execStepOn(baseSprite);
     }
 
     return true;

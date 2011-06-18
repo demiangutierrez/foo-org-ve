@@ -8,10 +8,9 @@ import java.util.List;
 import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
-import org.cyrano.pacman.base.LayerMatrix;
 import org.cyrano.pacman.base.LevelExec;
+import org.cyrano.pacman.base.SpriteMatrix;
 import org.cyrano.util.ImageCache;
-import org.cyrano.util.game.Timer;
 
 public class PacManSprite extends BaseSprite {
 
@@ -67,7 +66,7 @@ public class PacManSprite extends BaseSprite {
     char[][] data = levelExec.getData();
 
     //    BaseSprite[][] dyna = levelExec.getDyna();
-    LayerMatrix layerArray = levelExec.getLayerArray();
+    SpriteMatrix layerArray = levelExec.getSpriteMatrix();
 
     grdCurr.x = grdNext.x;
     grdCurr.y = grdNext.y;
@@ -229,9 +228,9 @@ public class PacManSprite extends BaseSprite {
   // all or only char interactions 
 
   @Override
-  public void execStepOn(BaseSprite wootwoot, Timer timer) {
+  public void execStepOn(BaseSprite wootwoot) {
     if (wootwoot != this)
-      wootwoot.execStepOn(this, timer); // XXX: This will cause problem if two pacmans!!!
+      wootwoot.execStepOn(this); // XXX: This will cause problem if two pacmans!!!
   }
 
   // --------------------------------------------------------------------------------

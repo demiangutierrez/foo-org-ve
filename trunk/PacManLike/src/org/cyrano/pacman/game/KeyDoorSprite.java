@@ -9,7 +9,6 @@ import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
 import org.cyrano.pacman.base.LevelExec;
-import org.cyrano.util.game.Timer;
 
 public class KeyDoorSprite extends BaseSprite {
 
@@ -46,7 +45,7 @@ public class KeyDoorSprite extends BaseSprite {
   // --------------------------------------------------------------------------------
 
   @Override
-  public boolean testStepOn(BaseSprite wootwoot, Timer timer) {
+  public boolean testStepOn(BaseSprite wootwoot) {
     if (!(wootwoot instanceof PacManSprite)) {
       return false; // Only character can open doors
     }
@@ -57,7 +56,7 @@ public class KeyDoorSprite extends BaseSprite {
   }
 
   @Override
-  public void execStepOn(BaseSprite wootwoot, Timer timer) {
+  public void execStepOn(BaseSprite wootwoot) {
 
     // ----------------------------------------
     // only character can open doors
