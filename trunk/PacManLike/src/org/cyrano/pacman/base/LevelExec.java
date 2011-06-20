@@ -3,11 +3,29 @@ package org.cyrano.pacman.base;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cyrano.pacman.map.CharMap;
+import org.cyrano.pacman.map.DynaMap;
+import org.cyrano.pacman.map.InteMap;
 import org.cyrano.util.game.Timer;
 
 public class LevelExec {
 
-  private LevelLoad levelLoad;
+  // --------------------------------------------------------------------------------
+  // Score counters 
+  // --------------------------------------------------------------------------------
+
+  private int score;
+
+  private int sml;
+  private int big;
+
+  // --------------------------------------------------------------------------------
+
+  private CharMap charMap;
+  private DynaMap dynaMap;
+  private InteMap inteMap;
+
+  // --------------------------------------------------------------------------------
 
   private List<BaseSprite> spriteList = //
   new ArrayList<BaseSprite>();
@@ -20,12 +38,18 @@ public class LevelExec {
 
   // --------------------------------------------------------------------------------
 
-  public LevelExec(LevelLoad levelLoad, Timer timer) {
-    this.levelLoad = levelLoad;
+  public LevelExec( //
+      CharMap charMap, DynaMap dynaMap, InteMap inteMap, //
+      Timer timer) {
+
+    this.charMap = charMap;
+    this.dynaMap = dynaMap;
+    this.inteMap = inteMap;
+
     this.timer = timer;
 
     spriteMatrix = new SpriteMatrix( //
-        levelLoad.getW(), levelLoad.getH());
+        charMap.getW(), charMap.getH());
   }
 
   // --------------------------------------------------------------------------------
@@ -33,7 +57,7 @@ public class LevelExec {
   public void init() {
     spriteList.clear();
 
-    initLayer(levelLoad.getBaseBeanList());
+    initLayer(dynaMap.getBaseBeanList());
   }
 
   // --------------------------------------------------------------------------------
@@ -57,6 +81,16 @@ public class LevelExec {
 
   // --------------------------------------------------------------------------------
 
+  public Interaction get(BaseSprite sprite1, BaseSprite sprite2) {
+    return inteMap.get(sprite1, sprite2);
+  }
+
+  public Interaction get(BaseSprite sprite1, char tilekey) {
+    return inteMap.get(sprite1, tilekey);
+  }
+
+  // --------------------------------------------------------------------------------
+
   public List<BaseSprite> getSpriteList() {
     return spriteList;
   }
@@ -70,7 +104,7 @@ public class LevelExec {
   // --------------------------------------------------------------------------------
 
   public char[][] getData() {
-    return levelLoad.getData();
+    return charMap.getData();
   }
 
   // --------------------------------------------------------------------------------
@@ -82,16 +116,46 @@ public class LevelExec {
   // --------------------------------------------------------------------------------
 
   public int getW() {
-    return levelLoad.getW();
+    return charMap.getW();
   }
 
   public int getH() {
-    return levelLoad.getH();
+    return charMap.getH();
   }
 
   // --------------------------------------------------------------------------------
 
   public Timer getTimer() {
     return timer;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public int getScore() {
+    return score;
+  }
+
+  public void setScore(int score) {
+    this.score = score;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public int getSml() {
+    return sml;
+  }
+
+  public void setSml(int sml) {
+    this.sml = sml;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public int getBig() {
+    return big;
+  }
+
+  public void setBig(int big) {
+    this.big = big;
   }
 }

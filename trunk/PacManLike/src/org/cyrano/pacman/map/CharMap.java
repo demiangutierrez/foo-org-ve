@@ -1,24 +1,19 @@
-package org.cyrano.pacman.base;
+package org.cyrano.pacman.map;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
-public class LevelLoad {
+public class CharMap {
 
-  private List<BaseBean> baseBeanList = //
-  new ArrayList<BaseBean>();
-
-  private char/**/[][] data;
+  private char[][] data;
 
   private int w;
   private int h;
 
   // --------------------------------------------------------------------------------
 
-  public LevelLoad() {
+  public CharMap() {
     // Empty
   }
 
@@ -44,10 +39,6 @@ public class LevelLoad {
       throw new IllegalArgumentException(line);
     }
 
-    // ----------------------------------------
-    // Load layer 0
-    // ----------------------------------------
-
     data = new char[w][h];
 
     for (int j = 0; j < h; j++) {
@@ -62,35 +53,6 @@ public class LevelLoad {
         data[i][j] = line.charAt(i);
       }
     }
-
-    // ----------------------------------------
-    // Load dyna/stat Layers
-    // ----------------------------------------
-
-    List<BaseBean> currList = null;
-
-    while ((line = rd.readLine()) != null) {
-      line = line.trim();
-
-      if (line.equals("")) {
-        continue;
-      }
-
-      if (line.equals("#dyna:")) {
-        currList = baseBeanList;
-        continue;
-      }
-
-      BaseBean baseBean = new BaseBean(line);
-
-      currList.add(baseBean);
-    }
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public List<BaseBean> getBaseBeanList() {
-    return baseBeanList;
   }
 
   // --------------------------------------------------------------------------------

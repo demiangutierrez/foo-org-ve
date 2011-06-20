@@ -18,32 +18,24 @@ import javax.swing.JPanel;
 
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
+import org.cyrano.pacman.base.Interaction;
 import org.cyrano.pacman.base.LevelExec;
-import org.cyrano.pacman.base.LevelLoad;
 import org.cyrano.pacman.base.Log;
 import org.cyrano.pacman.base.SpriteMatrix;
-import org.cyrano.pacman.game.GhostSprite;
 import org.cyrano.pacman.game.PacManSprite;
+import org.cyrano.pacman.map.CharMap;
+import org.cyrano.pacman.map.DynaMap;
+import org.cyrano.pacman.map.InteMap;
 import org.cyrano.util.Hwh;
 import org.cyrano.util.PointInt;
 import org.cyrano.util.game.Timer;
-import org.cyrano.util.game.TimerBean;
 
 public class GamePanel extends JPanel implements Runnable {
-
-  // --------------------------------------------------------------------------------
-  // Score counters 
-  // --------------------------------------------------------------------------------
-
-  public int score;
-  public int sml;
-  public int big;
 
   // --------------------------------------------------------------------------------
   // The map & sprite 
   // --------------------------------------------------------------------------------
 
-  private LevelLoad levelLoad;
   private LevelExec levelExec;
 
   private PacManSprite pacSprite;
@@ -78,23 +70,28 @@ public class GamePanel extends JPanel implements Runnable {
 
   // --------------------------------------------------------------------------------
 
-  public GamePanel(String filename) throws Exception {
+  public GamePanel(int level) throws Exception {
 
     // ----------------------------------------
     // Init map
     // ----------------------------------------
 
-    levelLoad = new LevelLoad();
-    levelLoad.load(ClassLoader.getSystemResource(filename).getPath());
+    CharMap charMap = new CharMap();
+    charMap.load(ClassLoader.getSystemResource("level" + level + "/char.txt").getPath());
 
-    levelExec = new LevelExec(levelLoad, timer);
+    DynaMap dynaMap = new DynaMap();
+    dynaMap.load(ClassLoader.getSystemResource("level" + level + "/dyna.txt").getPath());
+
+    InteMap inteMap = new InteMap();
+    inteMap.load(ClassLoader.getSystemResource("level" + level + "/inte.txt").getPath());
+
+    levelExec = new LevelExec(charMap, dynaMap, inteMap, timer);
     levelExec.init();
 
     // ----------------------------------------
     // Init sprite
     // ----------------------------------------
 
-    // XXX: This cast should be removed
     pacSprite = (PacManSprite) levelExec.getPlaySprite();
 
     pacSprite.getActionListenerProxy().addActionListener(new ActionListener() {
@@ -112,42 +109,6 @@ public class GamePanel extends JPanel implements Runnable {
         }
       });
     }
-
-    //    for (GhostBean ghsBean : levelLoad.getGhostBeanList()) {
-    //      Class<? extends GhostSprite> clazz = ghsBean.getClazz();
-    //
-    //      Constructor<? extends GhostSprite> constructor = clazz.getConstructor( //
-    //          new Class<?>[]{int.class, int.class, int.class, TextMap.class, BaseSprite.class});
-    //
-    //      GhostSprite ghsSprite = constructor.newInstance( //
-    //          new Object[]{ghsBean.getX(), ghsBean.getY(), ghsBean.getSpeed(), levelLoad, pacSprite});
-    //
-    //      ghsSprite.getActionListenerProxy().addActionListener(new ActionListener() {
-    //        @Override
-    //        public void actionPerformed(ActionEvent evt) {
-    //          handleExecNext((BaseSprite) evt.getSource());
-    //        }
-    //      });
-    //      ghsSpriteList.add(ghsSprite);
-    //    }
-
-    //    for (ItemBean itemBean : levelLoad.getItemBeanList()) {
-    //      Class<? extends BaseSprite> clazz = itemBean.getClazz();
-    //
-    //      Constructor<? extends BaseSprite> constructor = clazz.getConstructor( //
-    //          new Class<?>[]{int.class, int.class});
-    //
-    //      BaseSprite baseSprite = constructor.newInstance( //
-    //          new Object[]{itemBean.getX(), itemBean.getY()});
-    //
-    //      //      itemSprite.getActionListenerProxy().addActionListener(new ActionListener() {
-    //      //        @Override
-    //      //        public void actionPerformed(ActionEvent evt) {
-    //      //          handleExecNext((BaseSprite) evt.getSource());
-    //      //        }
-    //      //      });
-    //      baseSpriteList.add(baseSprite);
-    //    }
 
     setFocusable(true);
     addKeyListener(new KeyAdapter() {
@@ -191,52 +152,14 @@ public class GamePanel extends JPanel implements Runnable {
       }
     }
 
-    if (source instanceof PacManSprite) {
-      PacManSprite pacManSprite = (PacManSprite) source;
+    PointInt grdCurr = source.getGrdCurr();
+    char[][] data = levelExec.getData();
 
-      PointInt grdCurr = pacManSprite.getGrdCurr();
+    Interaction interaction = //
+    levelExec.get(source, data[grdCurr.x][grdCurr.y]);
 
-      char[][] data = levelLoad.getData();
-
-      switch (data[grdCurr.x][grdCurr.y]) {
-        case '.' :
-          data[grdCurr.x][grdCurr.y] = ' ';
-          score += Constants.SML_SCORE;
-          sml++;
-          break;
-        case '*' :
-          data[grdCurr.x][grdCurr.y] = ' ';
-          score += Constants.BIG_SCORE;
-          big++;
-
-          pacManSprite.incDestroy();
-
-          for (BaseSprite sprite : levelExec.getSpriteList()) {
-            if (sprite instanceof GhostSprite) {
-              GhostSprite ghostSprite = (GhostSprite) sprite;
-              ghostSprite.incDestroy();
-            }
-          }
-
-          ActionListener actionListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-              GamePanel.this.pacSprite.decDestroy();
-
-              for (BaseSprite sprite : levelExec.getSpriteList()) {
-                if (sprite instanceof GhostSprite) {
-                  GhostSprite ghostSprite = (GhostSprite) sprite;
-                  ghostSprite.decDestroy();
-                }
-              }
-            }
-          };
-          timer.addTimerBean( //
-              new TimerBean(actionListener, new ActionEvent(this, 0, null), 5));
-          timer.addTimerBean( //
-              new TimerBean(actionListener, new ActionEvent(this, 0, null), 10));
-          break;
-      }
+    if (interaction != null) {
+      interaction.interact(source, null);
     }
 
     //      if (sml == levelLoad.getSmlCount() && big == levelLoad.getBigCount()) {
@@ -276,11 +199,11 @@ public class GamePanel extends JPanel implements Runnable {
   // --------------------------------------------------------------------------------
 
   public int getW() {
-    return levelLoad.getW() * Constants.TILE_W;
+    return levelExec.getW() * Constants.TILE_W;
   }
 
   public int getH() {
-    return levelLoad.getH() * Constants.TILE_H;
+    return levelExec.getH() * Constants.TILE_H;
   }
 
   // --------------------------------------------------------------------------------
@@ -367,25 +290,12 @@ public class GamePanel extends JPanel implements Runnable {
       // pacSprite.updateSpr(dt);
       // pacSprite.updatePos(dt);
 
-      //      for (BaseSprite baseSprite : levelExec.getSta1List()) {
-      //        baseSprite.updateSpr(dt);
-      //      }
-      //
-      //      for (BaseSprite baseSprite : levelExec.getSta2List()) {
-      //        baseSprite.updateSpr(dt);
-      //      }
-
       BaseSprite[] dynaArray = levelExec.getSpriteList().toArray(new BaseSprite[0]);
 
       for (BaseSprite baseSprite : dynaArray) {
         baseSprite.updateSpr(dt);
         baseSprite.updatePos(dt);
       }
-
-      //      for (BaseSprite baseSprite : levelExec.getDynaList()) {
-      //        baseSprite.updateSpr(dt);
-      //        baseSprite.updatePos(dt);
-      //      }
 
       t1 = t2;
     }
@@ -465,7 +375,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // ----------------------------------------------------------------------
 
-    char[][] data = levelLoad.getData();
+    char[][] data = levelExec.getData();
 
     for (int i = 0; i < data.length; i++) {
       for (int j = 0; j < data[i].length; j++) {
@@ -557,9 +467,9 @@ public class GamePanel extends JPanel implements Runnable {
     nfScore.setMinimumIntegerDigits(10);
     nfScore.setGroupingUsed(false);
 
-    String scoreText = "Score: " + nfScore.format(score) + //
-        /*          */" Small: " + nfScore.format(sml) + //
-        /*          */" Big:   " + nfScore.format(big);
+    String scoreText = "Score: " + nfScore.format(levelExec.getScore()) + //
+        /*          */" Small: " + nfScore.format(levelExec.getSml()) + //
+        /*          */" Big:   " + nfScore.format(levelExec.getBig());
 
     if (scoreFont == null) {
       scoreFont = new Font("Monospaced", Font.BOLD, 18);

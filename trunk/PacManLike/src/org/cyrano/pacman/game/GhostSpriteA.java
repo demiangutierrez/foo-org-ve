@@ -1,12 +1,10 @@
 package org.cyrano.pacman.game;
 
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.pathfinder.PathCalculator;
 import org.cyrano.util.ImageCache;
 import org.cyrano.util.PointInt;
@@ -65,32 +63,4 @@ public class GhostSpriteA extends GhostSprite {
       grdNext = pathList.remove(0);
     }
   }
-
-  // --------------------------------------------------------------------------------
-
-  // logic here is akward, I mean, who steps on who? this is the target or
-  // wootwoot (change variable name by the way) is the target? This handles
-  // all or only char interactions 
-
-  @Override
-  public void execStepOn(BaseSprite wootwoot) {
-
-    if (wootwoot instanceof PacManSprite) {
-      if (destroy > 0) {
-        dead = true;
-      } else {
-        PacManSprite pacManSprite = (PacManSprite) wootwoot;
-
-        if (pacManSprite.destroy <= destroy) {
-          actionListenerProxy.fireActionEvent(new ActionEvent(pacManSprite, 0, "die"));
-        } else {
-          actionListenerProxy.fireActionEvent(new ActionEvent(this, 0, "die"));
-        }
-
-      }
-    }
-
-    //    wootwoot.stepOn(this, timer); // XXX: This will cause problem if two pacmans!!!
-  }
-
 }
