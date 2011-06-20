@@ -17,7 +17,7 @@ public class GameMain extends JFrame {
     GamePanel gamePanel;
 
     try {
-      gamePanel = new GamePanel("map_big.txt");
+      gamePanel = new GamePanel(1);
       //gamePanel = new GamePanel("map.txt");
     } catch (Exception e) {
       throw new RuntimeException(e);

@@ -5,7 +5,7 @@ import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.cyrano.pacman.base.LevelLoad;
+import org.cyrano.pacman.map.CharMap;
 import org.cyrano.util.PointInt;
 
 public class PathCalculator {
@@ -164,14 +164,14 @@ public class PathCalculator {
   // --------------------------------------------------------------------------------
 
   public static void main(String[] args) throws Exception {
-    LevelLoad textMap = new LevelLoad();
-    textMap.load(PathCalculator.class.getResource("map.txt").getPath());
+    CharMap charMap = new CharMap();
+    charMap.load(PathCalculator.class.getResource("map.txt").getPath());
     //textMap.dump(System.err);
 
-    char[][] data = textMap.getData();
+    char[][] data = charMap.getData();
 
     PathCalculator pathCalculator = new PathCalculator( //
-        new TestESS(data), textMap.getW(), textMap.getH(), false);
+        new TestESS(data), charMap.getW(), charMap.getH(), false);
 
     PointInt src = new PointInt();
     src.x = 1;

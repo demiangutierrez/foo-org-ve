@@ -73,40 +73,30 @@ public class PacManSprite extends BaseSprite {
 
     // --------------------------------------------------------------------------------
 
-//    BaseSprite toBs = null;
-
     switch (wantDir) {
       case Constants.DIR_LF :
-        //toBs = dyna[grdCurr.x - 1][grdCurr.y];
         if (data[grdCurr.x - 1][grdCurr.y] != 'X') {
-          //          if (toBs == null || toBs.checkStackMoveOn(this)) {
           if (layerArray.testStepOn(grdCurr.x - 1, grdCurr.y, this)) {
             currDir = wantDir;
           }
         }
         break;
       case Constants.DIR_RG :
-        //toBs = dyna[grdCurr.x + 1][grdCurr.y];
         if (data[grdCurr.x + 1][grdCurr.y] != 'X') {
-          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
           if (layerArray.testStepOn(grdCurr.x + 1, grdCurr.y, this)) {
             currDir = wantDir;
           }
         }
         break;
       case Constants.DIR_UP :
-        //toBs = dyna[grdCurr.x][grdCurr.y - 1];
         if (data[grdCurr.x][grdCurr.y - 1] != 'X') {
-          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
           if (layerArray.testStepOn(grdCurr.x, grdCurr.y - 1, this)) {
             currDir = wantDir;
           }
         }
         break;
       case Constants.DIR_DW :
-        //toBs = dyna[grdCurr.x][grdCurr.y + 1];
         if (data[grdCurr.x][grdCurr.y + 1] != 'X') {
-          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
           if (layerArray.testStepOn(grdCurr.x, grdCurr.y + 1, this)) {
             currDir = wantDir;
           }
@@ -118,36 +108,28 @@ public class PacManSprite extends BaseSprite {
 
     switch (currDir) {
       case Constants.DIR_LF :
-        //toBs = dyna[grdCurr.x - 1][grdCurr.y];
         if (data[grdCurr.x - 1][grdCurr.y] != 'X') {
-          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
           if (layerArray.testStepOn(grdCurr.x - 1, grdCurr.y, this)) {
             grdNext.x = grdCurr.x - 1;
           }
         }
         break;
       case Constants.DIR_RG :
-        //toBs = dyna[grdCurr.x + 1][grdCurr.y];
         if (data[grdCurr.x + 1][grdCurr.y] != 'X') {
-          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
           if (layerArray.testStepOn(grdCurr.x + 1, grdCurr.y, this)) {
             grdNext.x = grdCurr.x + 1;
           }
         }
         break;
       case Constants.DIR_UP :
-        //toBs = dyna[grdCurr.x][grdCurr.y - 1];
         if (data[grdCurr.x][grdCurr.y - 1] != 'X') {
-          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
           if (layerArray.testStepOn(grdCurr.x, grdCurr.y - 1, this)) {
             grdNext.y = grdCurr.y - 1;
           }
         }
         break;
       case Constants.DIR_DW :
-        //toBs = dyna[grdCurr.x][grdCurr.y + 1];
         if (data[grdCurr.x][grdCurr.y + 1] != 'X') {
-          //        if (toBs == null || toBs.checkStackMoveOn(this)) {
           if (layerArray.testStepOn(grdCurr.x, grdCurr.y + 1, this)) {
             grdNext.y = grdCurr.y + 1;
           }
@@ -219,18 +201,6 @@ public class PacManSprite extends BaseSprite {
   public void init(LevelExec levelExec, BaseBean baseBean, String[] parmArray) {
     speed = Integer.parseInt(parmArray[0]);
     init(baseBean.getX(), baseBean.getY(), speed, levelExec);
-  }
-
-  // --------------------------------------------------------------------------------
-
-  // logic here is akward, I mean, who steps on who? this is the target or
-  // wootwoot (change variable name by the way) is the target? This handles
-  // all or only char interactions 
-
-  @Override
-  public void execStepOn(BaseSprite wootwoot) {
-    if (wootwoot != this)
-      wootwoot.execStepOn(this); // XXX: This will cause problem if two pacmans!!!
   }
 
   // --------------------------------------------------------------------------------

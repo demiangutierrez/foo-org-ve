@@ -239,7 +239,11 @@ public abstract class BaseSprite {
   }
 
   public void/**/execStepOn(BaseSprite source) {
-    // Empty
+    Interaction interaction = levelExec.get(this, source);
+
+    if (interaction != null) {
+      interaction.interact(this, source);
+    }
   }
 
   // --------------------------------------------------------------------------------
