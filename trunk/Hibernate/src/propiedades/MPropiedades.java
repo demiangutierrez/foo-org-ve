@@ -15,9 +15,10 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Proxy;
 
-/** 
+/**
+ * @author Demián Gutierrez
  * @author Alejandro Salas 
- * <br> Created on Jun 19, 2008
+ * <br> Created on Jul 1, 2008
  */
 @Entity
 @Table(name = "t_propiedades")

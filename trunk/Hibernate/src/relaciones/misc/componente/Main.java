@@ -4,6 +4,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+/**
+ * @author Demián Gutierrez
+ * @author Alejandro Salas 
+ * <br> Created on Jul 1, 2008
+ */
 public class Main {
 
   public static void main(String[] args) {

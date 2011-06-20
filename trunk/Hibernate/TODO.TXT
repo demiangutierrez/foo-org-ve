@@ -1,0 +1,4 @@
+- Composed non abstract primary key (with one to many relation to test)
+- Checks and not null columns
+- Custom column names
+- More complex queries

@@ -16,9 +16,10 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
 
-/** 
+/**
+ * @author Demián Gutierrez
  * @author Alejandro Salas 
- * <br> Created on Jun 27, 2008
+ * <br> Created on Jul 1, 2008
  */
 @Entity
 @Table(name = "t_uno")
@@ -26,6 +27,9 @@ import org.hibernate.annotations.Proxy;
 public class MUno {
 
   private int id;
+
+  private String other;
+
   // ...
   private List<MMuchos> muchosList = new ArrayList<MMuchos>();
 
@@ -37,6 +41,14 @@ public class MUno {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public String getOther() {
+    return other;
+  }
+
+  public void setOther(String other) {
+    this.other = other;
   }
 
   @OneToMany(mappedBy = "unoRef", orphanRemoval = true)
