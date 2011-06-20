@@ -16,9 +16,10 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
 
-/** 
+/**
+ * @author Demián Gutierrez
  * @author Alejandro Salas 
- * <br> Created on Jun 27, 2008
+ * <br> Created on Jul 1, 2008
  */
 @Entity
 @Table(name = "t_entity_a")

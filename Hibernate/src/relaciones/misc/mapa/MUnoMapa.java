@@ -15,9 +15,10 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Proxy;
 
-/** 
+/**
+ * @author Demián Gutierrez
  * @author Alejandro Salas 
- * <br> Created on Jun 27, 2008
+ * <br> Created on Jul 1, 2008
  */
 @Entity
 @Table(name = "t_uno_mapa")

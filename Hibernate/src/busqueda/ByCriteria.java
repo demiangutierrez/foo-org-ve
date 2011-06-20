@@ -8,7 +8,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-/** 
+/**
+ * @author Demián Gutierrez
  * @author Alejandro Salas 
  * <br> Created on Jul 1, 2008
  */

@@ -7,7 +7,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Example;
 
-/** 
+/**
+ * @author Demián Gutierrez
  * @author Alejandro Salas 
  * <br> Created on Jul 1, 2008
  */

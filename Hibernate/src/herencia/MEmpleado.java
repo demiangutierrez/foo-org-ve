@@ -5,10 +5,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
 
-
-/** 
+/**
+ * @author Demián Gutierrez
  * @author Alejandro Salas 
- * <br> Created on Jun 30, 2008
+ * <br> Created on Jul 1, 2008
  */
 @Entity
 @Table(name = "t_empleado")

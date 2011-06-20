@@ -9,9 +9,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
 
-/** 
+/**
+ * @author Demián Gutierrez
  * @author Alejandro Salas 
- * <br> Created on Jun 27, 2008
+ * <br> Created on Jul 1, 2008
  */
 @Entity
 @Table(name = "t_muchos")
@@ -19,6 +20,9 @@ import org.hibernate.annotations.Proxy;
 public class MMuchos {
 
   private int id;
+
+  private String other;
+
   // ...
   private MUno unoRef;
 
@@ -30,6 +34,14 @@ public class MMuchos {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public String getOther() {
+    return other;
+  }
+
+  public void setOther(String other) {
+    this.other = other;
   }
 
   @ManyToOne

@@ -2,9 +2,10 @@ package relaciones.misc.componente;
 
 import javax.persistence.Embeddable;
 
-/** 
+/**
+ * @author Demián Gutierrez
  * @author Alejandro Salas 
- * <br> Created on Jul 2, 2008
+ * <br> Created on Jul 1, 2008
  */
 @Embeddable
 public class Componente {
