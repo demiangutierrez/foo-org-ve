@@ -94,13 +94,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     pacSprite = (PacManSprite) levelExec.getPlaySprite();
 
-    pacSprite.getActionListenerProxy().addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent evt) {
-        handleExecNext((BaseSprite) evt.getSource(), evt.getActionCommand());
-      }
-    });
-
     for (BaseSprite baseSprite : levelExec.getSpriteList()) {
       baseSprite.getActionListenerProxy().addActionListener(new ActionListener() {
         @Override
@@ -124,10 +117,8 @@ public class GamePanel extends JPanel implements Runnable {
   private void handleExecNext(BaseSprite source, String command) {
 
     if (command != null && command.equals("die")) {
-
-      SpriteMatrix layerMatrix = levelExec.getSpriteMatrix();
-
-      layerMatrix.del(source.getGrdCurr().x, source.getGrdCurr().y, source);
+      levelExec.getSpriteMatrix().del( //
+          source.getGrdCurr().x, source.getGrdCurr().y, source);
 
       levelExec.getSpriteList().remove(source);
 
@@ -146,7 +137,6 @@ public class GamePanel extends JPanel implements Runnable {
     if (baseSpriteList != null) {
       for (BaseSprite currBaseSprite : baseSpriteList) {
         if (currBaseSprite != source) {
-          System.err.println(currBaseSprite + " - step on " + source);
           currBaseSprite.execStepOn(source);
         }
       }

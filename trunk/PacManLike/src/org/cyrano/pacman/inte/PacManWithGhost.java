@@ -19,10 +19,10 @@ public class PacManWithGhost implements Interaction {
   }
 
   private void internalInteract(PacManSprite pacManSprite, GhostSprite ghostSprite) {
-    if (pacManSprite.getDestroy() <= ghostSprite.getDestroy()) {
-      pacManSprite.getActionListenerProxy().fireActionEvent(new ActionEvent(pacManSprite, 0, "die"));
-    } else {
+    if (pacManSprite.getDestroy() > 0) {
       pacManSprite.getActionListenerProxy().fireActionEvent(new ActionEvent(ghostSprite, 0, "die"));
+    } else {
+      pacManSprite.getActionListenerProxy().fireActionEvent(new ActionEvent(pacManSprite, 0, "die"));
     }
   }
 }
