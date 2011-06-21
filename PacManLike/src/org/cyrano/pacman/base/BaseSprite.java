@@ -120,6 +120,10 @@ public abstract class BaseSprite {
   // --------------------------------------------------------------------------------
 
   public void paint(Graphics2D g2d) {
+    if (bimgList == null) {
+      return;
+    }
+
     BufferedImage curr = bimgList.get(index % bimgList.size());
 
     // ---------------------------------------------------------------
