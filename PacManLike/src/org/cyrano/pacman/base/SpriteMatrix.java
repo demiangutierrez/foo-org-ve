@@ -32,7 +32,13 @@ public class SpriteMatrix {
   public void del(int x, int y, BaseSprite baseSprite) {
     if (/* */spriteListMatrix[x][y] == null || //
         /**/!spriteListMatrix[x][y].contains(baseSprite)) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException( //
+          baseSprite.getClass() + ", at (" + //
+              x + ", " + //
+              y + "), " + //
+              "it was at (" + //
+              baseSprite.getGrdCurr().x + ", " + //
+              baseSprite.getGrdCurr().y + ")");
     }
 
     spriteListMatrix[x][y].remove(baseSprite);
@@ -66,15 +72,15 @@ public class SpriteMatrix {
 
   // --------------------------------------------------------------------------------
 
-  public boolean execStepOn(int x, int y, BaseSprite baseSprite) {
-    if (spriteListMatrix[x][y] == null) {
-      return true;
-    }
-
-    for (BaseSprite currSprite : spriteListMatrix[x][y]) {
-      currSprite.execStepOn(baseSprite);
-    }
-
-    return true;
-  }
+  //  public boolean execStepOn(int x, int y, BaseSprite baseSprite) {
+  //    if (spriteListMatrix[x][y] == null) {
+  //      return true;
+  //    }
+  //
+  //    for (BaseSprite currSprite : spriteListMatrix[x][y]) {
+  //      currSprite.execStepOn(baseSprite);
+  //    }
+  //
+  //    return true;
+  //  }
 }
