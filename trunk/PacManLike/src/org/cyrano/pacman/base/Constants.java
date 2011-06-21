@@ -2,7 +2,7 @@ package org.cyrano.pacman.base;
 
 public interface Constants {
 
-  public static final boolean DEBUG = true;
+  public static final boolean DEBUG = false;
 
   public static final int SCORE_BAR_H = 50;
 
