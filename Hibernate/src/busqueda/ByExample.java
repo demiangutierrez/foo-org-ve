@@ -22,17 +22,17 @@ public class ByExample {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
 
-    MSearchObj sObj = new MSearchObj();
-    sObj.setCodigo("aoeu");
-    sObj.setNum(1);
+    MObjUno sObjUno = new MObjUno();
+    sObjUno.setCodigo("aoeu");
+    sObjUno.setNum(1);
 
     // XXX: hibernate ignores ids, relations and versions in
     // queries by example (see documentation)
     // sObj.setId(99); 
 
-    // FROM MSearchObj WHERE codigo = 'aoeu'
-    List<MSearchObj> results = //
-    session.createCriteria(MSearchObj.class).add(Example.create(sObj)).list();
+    // FROM MObjUno WHERE codigo = 'aoeu'
+    List<MObjUno> results = //
+    session.createCriteria(MObjUno.class).add(Example.create(sObjUno)).list();
 
     for (Object obj : results) {
       System.out.println(obj);
