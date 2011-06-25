@@ -76,7 +76,6 @@ public class Hql {
       Object[] objArray = (Object[]) obj;
       System.out.println(objArray[0] + ";" + objArray[1]);
     }
-
   }
 
   // --------------------------------------------------------------------------------
