@@ -92,7 +92,8 @@
 
 		<!-- The mapping files -->
 
-		<mapping class="busqueda.MSearchObj" />
+		<mapping class="busqueda.MObjUno" />
+		<mapping class="busqueda.MObjMuchos" />
 
 	</session-factory>
 </hibernate-configuration>

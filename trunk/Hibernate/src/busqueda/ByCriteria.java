@@ -23,32 +23,35 @@ public class ByCriteria {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
 
-    // FROM MSearchObj
-    Criteria criteria = session.createCriteria(MSearchObj.class);
+    // FROM MObjUno
+    Criteria criteria = session.createCriteria(MObjUno.class);
     list(criteria);
 
-    // FROM MSearchObj WHERE num > 7
-    criteria = session.createCriteria(MSearchObj.class).add(Restrictions.gt("num", 7));
+    // FROM MObjUno WHERE num > 7
+    criteria = session.createCriteria(MObjUno.class).add(Restrictions.gt("num", 7));
     list(criteria);
 
-    // SELECT id FROM MSearchObj WHERE num >= :numInf AND num < :numSup
-    criteria = session.createCriteria(MSearchObj.class).add(Restrictions.ge("num", 2)).add(Restrictions.lt("num", 4));
+    // SELECT id FROM MObjUno WHERE num >= :numInf AND num < :numSup
+    criteria = session.createCriteria(MObjUno.class).add(Restrictions.ge("num", 2)).add(Restrictions.lt("num", 4));
     criteria.setProjection(Projections.id());
     list(criteria);
 
-    // FROM MSearchObj AS obj WHERE obj.codigo LIKE :cod ORDER BY obj.num
-    criteria = session.createCriteria(MSearchObj.class).add(Restrictions.like("codigo", "%ab"))
-        .addOrder(Order.asc("num"));
+    // FROM MObjUno AS obj WHERE obj.codigo LIKE :cod ORDER BY obj.num
+    criteria = session.createCriteria(MObjUno.class).add(Restrictions.like("codigo", "%ab")).addOrder(Order.asc("num"));
     list(criteria);
 
     session.getTransaction().commit();
     session.close();
   }
 
+  // Just an utility that prints the results
   public static void list(Criteria criteria) {
+    System.out.println("Criteria: " + criteria);
+
     for (Object obj : criteria.list()) {
       System.out.println(obj);
     }
-    System.out.println();
+
+    System.out.println("----------------------------------------");
   }
 }

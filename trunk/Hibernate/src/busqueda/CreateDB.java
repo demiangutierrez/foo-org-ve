@@ -19,6 +19,9 @@ public class CreateDB {
   {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, //
       6, 6, 7, 7, 8, 8, 9, 9, 0, 0};
 
+  public static final String muchos[] = //
+  {"muchos_a", "muchos_b", "muchos_c"};
+
   public static void main(String[] args) {
     Configuration configuration = new Configuration();
     configuration.configure("/busqueda/hibernate.cfg.xml");
@@ -29,11 +32,21 @@ public class CreateDB {
 
     for (int i = 0; i < codes.length; i++) {
       for (int j = 0; j < nums.length; j++) {
-        MSearchObj obj = new MSearchObj();
-        obj.setCodigo(codes[i]);
-        obj.setNum(nums[j]);
+        MObjUno objUno = new MObjUno();
+        objUno.setCodigo(codes[i]);
+        objUno.setNum(nums[j]);
 
-        session.save(obj);
+        // Creates a few MObjMuchos for each MObjUno
+        for (int k = 0; k < muchos.length; k++) {
+          MObjMuchos objMuchos = new MObjMuchos();
+          objMuchos.setOther( //
+              objUno.getCodigo() + ";" + objUno.getNum() + ";" + muchos[k]);
+
+          objUno.getObjMuchosList().add(objMuchos);
+          objMuchos.setObjUnoRef(objUno);
+        }
+
+        session.save(objUno);
       }
     }
 
