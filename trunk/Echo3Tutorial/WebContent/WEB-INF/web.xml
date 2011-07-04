@@ -69,6 +69,21 @@
 	-->
 
 	<servlet>
+		<servlet-name>UICompServlet</servlet-name>
+		<servlet-class>com.tutorial.uicomp.UICompServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>UICompServlet</servlet-name>
+		<url-pattern>/uicomp.echo</url-pattern>
+	</servlet-mapping>
+
+	<!--
+		********************************************************************************
+		********************************************************************************
+	-->
+
+	<servlet>
 		<servlet-name>ListenerServlet</servlet-name>
 		<servlet-class>com.tutorial.listener.ListenerServlet</servlet-class>
 	</servlet>
