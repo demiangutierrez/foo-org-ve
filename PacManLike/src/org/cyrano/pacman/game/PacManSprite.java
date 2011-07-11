@@ -1,5 +1,7 @@
 package org.cyrano.pacman.game;
 
+import java.awt.KeyEventDispatcher;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import org.cyrano.pacman.base.Constants;
 import org.cyrano.pacman.base.LevelExec;
 import org.cyrano.pacman.base.Log;
 import org.cyrano.pacman.base.SpriteMatrix;
+import org.cyrano.util.keyboard.InputManager;
 import org.cyrano.util.misc.ImageCache;
 
 public class PacManSprite extends BaseSprite {
@@ -22,8 +25,8 @@ public class PacManSprite extends BaseSprite {
   //  protected int wantDir = Constants.DIR_RG;
   protected int lastDir = Constants.DIR_RG;
 
-  protected int wantDir1 = Constants.DIR_VOID;
-  protected int wantDir2 = Constants.DIR_VOID;
+  //  protected int wantDir1 = Constants.DIR_VOID;
+  //  protected int wantDir2 = Constants.DIR_VOID;
 
   protected List<Integer> dirQueue = new ArrayList<Integer>();
 
@@ -82,43 +85,57 @@ public class PacManSprite extends BaseSprite {
 
     // --------------------------------------------------------------------------------
 
-    switch (wantDir1) {
+    InputManager inputManager = levelExec.getInputManager();
+
+    int wantDir = Constants.DIR_VOID;
+
+    /*   */if (inputManager.getKeyStateFor(KeyEvent.VK_J)) {
+      wantDir = Constants.DIR_LF;
+    } else if (inputManager.getKeyStateFor(KeyEvent.VK_L)) {
+      wantDir = Constants.DIR_RG;
+    } else if (inputManager.getKeyStateFor(KeyEvent.VK_I)) {
+      wantDir = Constants.DIR_UP;
+    } else if (inputManager.getKeyStateFor(KeyEvent.VK_K)) {
+      wantDir = Constants.DIR_DW;
+    }
+
+    switch (wantDir) {
       case Constants.DIR_LF :
         if (data[grdCurr.x - 1][grdCurr.y] != 'X') {
           if (layerArray.testStepOn(grdCurr.x - 1, grdCurr.y, this)) {
-            currDir = wantDir1;
+            currDir = wantDir;
           }
         }
         break;
       case Constants.DIR_RG :
         if (data[grdCurr.x + 1][grdCurr.y] != 'X') {
           if (layerArray.testStepOn(grdCurr.x + 1, grdCurr.y, this)) {
-            currDir = wantDir1;
+            currDir = wantDir;
           }
         }
         break;
       case Constants.DIR_UP :
         if (data[grdCurr.x][grdCurr.y - 1] != 'X') {
           if (layerArray.testStepOn(grdCurr.x, grdCurr.y - 1, this)) {
-            currDir = wantDir1;
+            currDir = wantDir;
           }
         }
         break;
       case Constants.DIR_DW :
         if (data[grdCurr.x][grdCurr.y + 1] != 'X') {
           if (layerArray.testStepOn(grdCurr.x, grdCurr.y + 1, this)) {
-            currDir = wantDir1;
+            currDir = wantDir;
           }
         }
         break;
       case Constants.DIR_VOID :
-        currDir = wantDir1;
+        currDir = wantDir;
         break;
 
     }
 
-    wantDir1 = wantDir2;
-    wantDir2 = Constants.DIR_VOID;
+    //    wantDir1 = wantDir2;
+    //    wantDir2 = Constants.DIR_VOID;
 
     // --------------------------------------------------------------------------------
 
@@ -196,17 +213,17 @@ public class PacManSprite extends BaseSprite {
   //    return wantDir;
   //  }
 
-  public synchronized void setWantDir(int wantDir) {
-    if (wantDir1 == Constants.DIR_VOID) {
-      System.err.println("setting wd1: " + Log.dirToString(wantDir));
-      wantDir1 = wantDir;
-    } else {
-      System.err.println("setting wd2: " + Log.dirToString(wantDir));
-      wantDir2 = wantDir;
-    }
-
-    //    this.wantDir = wantDir;
-  }
+  //  public synchronized void setWantDir(int wantDir) {
+  //    if (wantDir1 == Constants.DIR_VOID) {
+  //      System.err.println("setting wd1: " + Log.dirToString(wantDir));
+  //      wantDir1 = wantDir;
+  //    } else {
+  //      System.err.println("setting wd2: " + Log.dirToString(wantDir));
+  //      wantDir2 = wantDir;
+  //    }
+  //
+  //    //    this.wantDir = wantDir;
+  //  }
 
   // --------------------------------------------------------------------------------
 

@@ -7,6 +7,7 @@ import org.cyrano.pacman.map.CharMap;
 import org.cyrano.pacman.map.DynaMap;
 import org.cyrano.pacman.map.InteMap;
 import org.cyrano.util.game.Timer;
+import org.cyrano.util.keyboard.InputManager;
 
 public class LevelExec {
 
@@ -35,6 +36,9 @@ public class LevelExec {
   private BaseSprite playSprite;
 
   private Timer timer;
+
+  // XXX: should be here???
+  private InputManager inputManager = new InputManager();
 
   // --------------------------------------------------------------------------------
 
@@ -157,5 +161,12 @@ public class LevelExec {
 
   public void setBig(int big) {
     this.big = big;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  // XXX: should be here???
+  public InputManager getInputManager() {
+    return inputManager;
   }
 }
