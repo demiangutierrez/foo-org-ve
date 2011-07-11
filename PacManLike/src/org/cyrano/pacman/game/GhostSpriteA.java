@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cyrano.pacman.pathfinder.PathCalculator;
-import org.cyrano.util.ImageCache;
-import org.cyrano.util.PointInt;
+import org.cyrano.util.misc.ImageCache;
+import org.cyrano.util.misc.PointInt;
 
 public class GhostSpriteA extends GhostSprite {
 

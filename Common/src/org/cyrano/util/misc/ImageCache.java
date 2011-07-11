@@ -1,4 +1,4 @@
-package org.cyrano.util;
+package org.cyrano.util.misc;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

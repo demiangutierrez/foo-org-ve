@@ -9,8 +9,9 @@ import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
 import org.cyrano.pacman.base.LevelExec;
+import org.cyrano.pacman.base.Log;
 import org.cyrano.pacman.base.SpriteMatrix;
-import org.cyrano.util.ImageCache;
+import org.cyrano.util.misc.ImageCache;
 
 public class PacManSprite extends BaseSprite {
 
@@ -18,7 +19,13 @@ public class PacManSprite extends BaseSprite {
   protected List<BufferedImage> xPacList;
 
   protected int currDir = Constants.DIR_RG;
-  protected int wantDir = Constants.DIR_RG;
+  //  protected int wantDir = Constants.DIR_RG;
+  protected int lastDir = Constants.DIR_RG;
+
+  protected int wantDir1 = Constants.DIR_VOID;
+  protected int wantDir2 = Constants.DIR_VOID;
+
+  protected List<Integer> dirQueue = new ArrayList<Integer>();
 
   protected int destroy;
 
@@ -63,6 +70,8 @@ public class PacManSprite extends BaseSprite {
   // --------------------------------------------------------------------------------
 
   protected void calcNext() {
+    //    Log.log("wantDir: " + Log.dirToString(wantDir));
+
     char[][] data = levelExec.getData();
 
     //    BaseSprite[][] dyna = levelExec.getDyna();
@@ -73,36 +82,43 @@ public class PacManSprite extends BaseSprite {
 
     // --------------------------------------------------------------------------------
 
-    switch (wantDir) {
+    switch (wantDir1) {
       case Constants.DIR_LF :
         if (data[grdCurr.x - 1][grdCurr.y] != 'X') {
           if (layerArray.testStepOn(grdCurr.x - 1, grdCurr.y, this)) {
-            currDir = wantDir;
+            currDir = wantDir1;
           }
         }
         break;
       case Constants.DIR_RG :
         if (data[grdCurr.x + 1][grdCurr.y] != 'X') {
           if (layerArray.testStepOn(grdCurr.x + 1, grdCurr.y, this)) {
-            currDir = wantDir;
+            currDir = wantDir1;
           }
         }
         break;
       case Constants.DIR_UP :
         if (data[grdCurr.x][grdCurr.y - 1] != 'X') {
           if (layerArray.testStepOn(grdCurr.x, grdCurr.y - 1, this)) {
-            currDir = wantDir;
+            currDir = wantDir1;
           }
         }
         break;
       case Constants.DIR_DW :
         if (data[grdCurr.x][grdCurr.y + 1] != 'X') {
           if (layerArray.testStepOn(grdCurr.x, grdCurr.y + 1, this)) {
-            currDir = wantDir;
+            currDir = wantDir1;
           }
         }
         break;
+      case Constants.DIR_VOID :
+        currDir = wantDir1;
+        break;
+
     }
+
+    wantDir1 = wantDir2;
+    wantDir2 = Constants.DIR_VOID;
 
     // --------------------------------------------------------------------------------
 
@@ -141,7 +157,10 @@ public class PacManSprite extends BaseSprite {
   // --------------------------------------------------------------------------------
 
   protected void calcLook() {
-    switch (currDir) {
+
+    int dir = currDir != Constants.DIR_VOID ? currDir : lastDir;
+
+    switch (dir) {
       case Constants.DIR_LF :
         scrLook.x = (grdCurr.x - 1) * Constants.TILE_W;
         scrLook.y = (grdCurr.y)/**/* Constants.TILE_H;
@@ -173,12 +192,20 @@ public class PacManSprite extends BaseSprite {
 
   // --------------------------------------------------------------------------------
 
-  public int getWantDir() {
-    return wantDir;
-  }
+  //  public int getWantDir() {
+  //    return wantDir;
+  //  }
 
-  public void setWantDir(int wantDir) {
-    this.wantDir = wantDir;
+  public synchronized void setWantDir(int wantDir) {
+    if (wantDir1 == Constants.DIR_VOID) {
+      System.err.println("setting wd1: " + Log.dirToString(wantDir));
+      wantDir1 = wantDir;
+    } else {
+      System.err.println("setting wd2: " + Log.dirToString(wantDir));
+      wantDir2 = wantDir;
+    }
+
+    //    this.wantDir = wantDir;
   }
 
   // --------------------------------------------------------------------------------
@@ -204,6 +231,20 @@ public class PacManSprite extends BaseSprite {
   }
 
   // --------------------------------------------------------------------------------
+
+  protected void internalExecNext() {
+    SpriteMatrix spriteMatrix = levelExec.getSpriteMatrix();
+
+    spriteMatrix.del(grdCurr.x, grdCurr.y, this);
+
+    lastDir = currDir;
+    //    currDir = wantDir;
+
+    internalCalcNext();
+    spriteMatrix.add(grdCurr.x, grdCurr.y, this);
+
+    execNext();
+  }
 
   public boolean isPlayer() {
     return true;

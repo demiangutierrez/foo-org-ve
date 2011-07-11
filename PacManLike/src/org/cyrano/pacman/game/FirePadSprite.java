@@ -9,7 +9,7 @@ import java.util.List;
 import org.cyrano.pacman.base.BaseBean;
 import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.LevelExec;
-import org.cyrano.util.ImageCache;
+import org.cyrano.util.misc.ImageCache;
 
 public class FirePadSprite extends BaseSprite {
 

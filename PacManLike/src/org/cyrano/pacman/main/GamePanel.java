@@ -20,15 +20,14 @@ import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
 import org.cyrano.pacman.base.Interaction;
 import org.cyrano.pacman.base.LevelExec;
-import org.cyrano.pacman.base.Log;
 import org.cyrano.pacman.base.SpriteMatrix;
 import org.cyrano.pacman.game.PacManSprite;
 import org.cyrano.pacman.map.CharMap;
 import org.cyrano.pacman.map.DynaMap;
 import org.cyrano.pacman.map.InteMap;
-import org.cyrano.util.Hwh;
-import org.cyrano.util.PointInt;
 import org.cyrano.util.game.Timer;
+import org.cyrano.util.misc.Hwh;
+import org.cyrano.util.misc.PointInt;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -104,10 +103,28 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     setFocusable(true);
+
+    //    addKeyListener(new TimedKeyListener() {
+    //      @Override
+    //      public void keyPressed(KeyEvent e) {
+    //        GamePanel.this.keyPressed(e);
+    //      }
+    //
+    //      @Override
+    //      public void keyReleased(KeyEvent evt) {
+    //        GamePanel.this.keyReleased(evt);
+    //      }
+    //    });
+
     addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
         GamePanel.this.keyPressed(e);
+      }
+
+      @Override
+      public void keyReleased(KeyEvent evt) {
+        GamePanel.this.keyReleased(evt);
       }
     });
   }
@@ -208,14 +225,14 @@ public class GamePanel extends JPanel implements Runnable {
 
   // --------------------------------------------------------------------------------
 
-  private void end() {
-
-    // -------------------------------------------------
-    // Warning: not sync so don't try to end / beg again
-    // -------------------------------------------------
-
-    running = false;
-  }
+  //  private void end() {
+  //
+  //    // -------------------------------------------------
+  //    // Warning: not sync so don't try to end / beg again
+  //    // -------------------------------------------------
+  //
+  //    running = false;
+  //  }
 
   // --------------------------------------------------------------------------------
 
@@ -233,13 +250,23 @@ public class GamePanel extends JPanel implements Runnable {
       case KeyEvent.VK_K : // DW
         pacSprite.setWantDir(Constants.DIR_DW);
         break;
+      default :
+        pacSprite.setWantDir(Constants.DIR_VOID);
+        break;
     }
 
     if (!running && !won && !die) {
       beg();
     }
 
-    Log.log("wantDir = " + Log.dirToString(pacSprite.getWantDir()));
+    //    Log.log("wantDir = " + Log.dirToString(pacSprite.getWantDir()));
+  }
+
+  // --------------------------------------------------------------------------------
+
+  private void keyReleased(KeyEvent evt) {
+    //    pacSprite.setWantDir(Constants.DIR_VOID);
+    //    Log.log("wantDir = " + Log.dirToString(pacSprite.getWantDir()));
   }
 
   // --------------------------------------------------------------------------------
