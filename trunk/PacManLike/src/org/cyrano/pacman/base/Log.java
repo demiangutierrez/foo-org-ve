@@ -13,6 +13,8 @@ public class Log {
 
   public static String dirToString(int dir) {
     switch (dir) {
+      case Constants.DIR_VOID :
+        return "DIR_VOID";
       case Constants.DIR_LF :
         return "DIR_LF";
       case Constants.DIR_RG :

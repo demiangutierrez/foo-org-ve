@@ -1,7 +1,7 @@
 /*
  * Created on 27/08/2008
  */
-package org.cyrano.util;
+package org.cyrano.util.misc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

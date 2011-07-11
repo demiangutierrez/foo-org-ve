@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.cyrano.pacman.map.CharMap;
-import org.cyrano.util.PointInt;
+import org.cyrano.util.misc.PointInt;
 
 public class PathCalculator {
 

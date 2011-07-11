@@ -24,7 +24,7 @@ org.cyrano.pacman.game.FirePadSprite 28 24 0
 org.cyrano.pacman.game.FirePadSprite 29 24 0
 
 
-org.cyrano.pacman.game.GhostSpriteA   1  1 150
+#org.cyrano.pacman.game.GhostSpriteA   1  1 150
 
 
 org.cyrano.pacman.game.PacManSprite  20 22 150

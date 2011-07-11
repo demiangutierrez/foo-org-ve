@@ -4,8 +4,8 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-import org.cyrano.util.Hwh;
-import org.cyrano.util.ImageCache;
+import org.cyrano.util.misc.Hwh;
+import org.cyrano.util.misc.ImageCache;
 
 public class GameMain extends JFrame {
 
@@ -39,8 +39,8 @@ public class GameMain extends JFrame {
     Toolkit toolkit = Toolkit.getDefaultToolkit();
 
     setSize( //
-        Hwh.getW(toolkit.getScreenSize()) - 100, //
-        Hwh.getH(toolkit.getScreenSize()) - 100);
+        Hwh.getW(toolkit.getScreenSize()) - 400, //
+        Hwh.getH(toolkit.getScreenSize()) - 400);
 
     setLocation(50, 50);
 

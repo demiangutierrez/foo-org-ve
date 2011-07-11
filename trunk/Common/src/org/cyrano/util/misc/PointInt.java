@@ -1,21 +1,21 @@
-package org.cyrano.util;
+package org.cyrano.util.misc;
 
 import java.text.NumberFormat;
 
-public class PointDbl extends PointAbs {
+public class PointInt extends PointAbs {
 
-  public double x;
-  public double y;
+  public int x;
+  public int y;
 
   // --------------------------------------------------------------------------------
 
-  public PointDbl() {
+  public PointInt() {
     // Empty
   }
 
   // --------------------------------------------------------------------------------
 
-  public PointDbl(double x, double y) {
+  public PointInt(int x, int y) {
     this.x = x;
     this.y = y;
   }
@@ -23,7 +23,7 @@ public class PointDbl extends PointAbs {
   // --------------------------------------------------------------------------------
 
   public/*   */int getIX() {
-    return (int) x;
+    return x;
   }
 
   public/*  */void setIX(int/**/x) {
@@ -33,7 +33,7 @@ public class PointDbl extends PointAbs {
   // --------------------------------------------------------------------------------
 
   public/*   */int getIY() {
-    return (int) y;
+    return y;
   }
 
   public/*  */void setIY(int/**/y) {
@@ -47,7 +47,7 @@ public class PointDbl extends PointAbs {
   }
 
   public/*  */void setDX(double x) {
-    this.x = x;
+    this.x = (int) x;
   }
 
   // --------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ public class PointDbl extends PointAbs {
   }
 
   public/*  */void setDY(double y) {
-    this.y = y;
+    this.y = (int) y;
   }
 
   // --------------------------------------------------------------------------------
@@ -66,14 +66,54 @@ public class PointDbl extends PointAbs {
   public String toString() {
     NumberFormat nf = NumberFormat.getInstance();
 
-    nf.setMinimumFractionDigits(2);
-    nf.setMaximumFractionDigits(2);
-
     nf.setMinimumIntegerDigits(4);
     nf.setMaximumIntegerDigits(4);
 
     nf.setGroupingUsed(false);
 
     return "[" + nf.format(x) + " , " + nf.format(y) + "]";
+  }
+
+  // --------------------------------------------------------------------------------
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+
+    int result = 1;
+
+    result = prime * result + x;
+    result = prime * result + y;
+
+    return result;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+
+    if (obj == null) {
+      return false;
+    }
+
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+
+    PointInt pnt = (PointInt) obj;
+
+    if (x != pnt.x) {
+      return false;
+    }
+
+    if (y != pnt.y) {
+      return false;
+    }
+
+    return true;
   }
 }

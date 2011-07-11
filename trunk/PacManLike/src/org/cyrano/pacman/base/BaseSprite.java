@@ -10,9 +10,9 @@ import java.util.List;
 
 import javax.swing.event.EventListenerList;
 
-import org.cyrano.util.ActionListenerProxy;
-import org.cyrano.util.PointDbl;
-import org.cyrano.util.PointInt;
+import org.cyrano.util.misc.ActionListenerProxy;
+import org.cyrano.util.misc.PointDbl;
+import org.cyrano.util.misc.PointInt;
 
 public abstract class BaseSprite {
 

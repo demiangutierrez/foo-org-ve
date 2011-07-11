@@ -9,9 +9,9 @@ import org.cyrano.pacman.base.Interaction;
 import org.cyrano.pacman.base.LevelExec;
 import org.cyrano.pacman.game.GhostSprite;
 import org.cyrano.pacman.game.PacManSprite;
-import org.cyrano.util.PointInt;
 import org.cyrano.util.game.Timer;
 import org.cyrano.util.game.TimerBean;
+import org.cyrano.util.misc.PointInt;
 
 public class PacManWithBigCokie implements Interaction {
 

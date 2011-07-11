@@ -1,21 +1,21 @@
-package org.cyrano.util;
+package org.cyrano.util.misc;
 
 import java.text.NumberFormat;
 
-public class PointInt extends PointAbs {
+public class PointDbl extends PointAbs {
 
-  public int x;
-  public int y;
+  public double x;
+  public double y;
 
   // --------------------------------------------------------------------------------
 
-  public PointInt() {
+  public PointDbl() {
     // Empty
   }
 
   // --------------------------------------------------------------------------------
 
-  public PointInt(int x, int y) {
+  public PointDbl(double x, double y) {
     this.x = x;
     this.y = y;
   }
@@ -23,7 +23,7 @@ public class PointInt extends PointAbs {
   // --------------------------------------------------------------------------------
 
   public/*   */int getIX() {
-    return x;
+    return (int) x;
   }
 
   public/*  */void setIX(int/**/x) {
@@ -33,7 +33,7 @@ public class PointInt extends PointAbs {
   // --------------------------------------------------------------------------------
 
   public/*   */int getIY() {
-    return y;
+    return (int) y;
   }
 
   public/*  */void setIY(int/**/y) {
@@ -47,7 +47,7 @@ public class PointInt extends PointAbs {
   }
 
   public/*  */void setDX(double x) {
-    this.x = (int) x;
+    this.x = x;
   }
 
   // --------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ public class PointInt extends PointAbs {
   }
 
   public/*  */void setDY(double y) {
-    this.y = (int) y;
+    this.y = y;
   }
 
   // --------------------------------------------------------------------------------
@@ -65,6 +65,9 @@ public class PointInt extends PointAbs {
   @Override
   public String toString() {
     NumberFormat nf = NumberFormat.getInstance();
+
+    nf.setMinimumFractionDigits(2);
+    nf.setMaximumFractionDigits(2);
 
     nf.setMinimumIntegerDigits(4);
     nf.setMaximumIntegerDigits(4);

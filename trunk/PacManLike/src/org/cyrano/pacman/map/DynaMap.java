@@ -28,7 +28,7 @@ public class DynaMap {
     while ((line = rd.readLine()) != null) {
       line = line.trim();
 
-      if (line.equals("")) {
+      if (line.equals("") || line.startsWith("#")) {
         continue;
       }
 

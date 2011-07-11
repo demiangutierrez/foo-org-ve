@@ -4,7 +4,7 @@ import org.cyrano.pacman.base.BaseSprite;
 import org.cyrano.pacman.base.Constants;
 import org.cyrano.pacman.base.Interaction;
 import org.cyrano.pacman.base.LevelExec;
-import org.cyrano.util.PointInt;
+import org.cyrano.util.misc.PointInt;
 
 public class PacManWithSmlCokie implements Interaction {
 
