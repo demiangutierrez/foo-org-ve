@@ -91,10 +91,10 @@ public class InputManager implements KeyEventDispatcher {
 
     switch (evt.getID()) {
       case KeyEvent.KEY_PRESSED :
-        System.err.println("KEY_P " + //
-            evt.getKeyCode() + "/" + //
-            Integer.toHexString(evt.getKeyCode()) + "/" + //
-            evt.getKeyChar() + "/" + evt.isActionKey() + ";" + evt.paramString());
+        //        System.err.println("KEY_P " + //
+        //            evt.getKeyCode() + "/" + //
+        //            Integer.toHexString(evt.getKeyCode()) + "/" + //
+        //            evt.getKeyChar() + "/" + evt.isActionKey() + ";" + evt.paramString());
 
         if (!keyState[evt.getKeyCode()]) {
           execPrs(evt.getKeyCode());
@@ -108,10 +108,10 @@ public class InputManager implements KeyEventDispatcher {
         break;
 
       case KeyEvent.KEY_RELEASED :
-        System.err.println("KEY_R " + //
-            evt.getKeyCode() + "/" + //
-            Integer.toHexString(evt.getKeyCode()) + "/" + //
-            evt.getKeyChar() + "/" + evt.isActionKey() + ";" + evt.paramString());
+        //        System.err.println("KEY_R " + //
+        //            evt.getKeyCode() + "/" + //
+        //            Integer.toHexString(evt.getKeyCode()) + "/" + //
+        //            evt.getKeyChar() + "/" + evt.isActionKey() + ";" + evt.paramString());
 
         if (repeatingKey != evt.getKeyCode()) {
           execRls(evt.getKeyCode());
