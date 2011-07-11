@@ -1,3 +1,0 @@
-#mv  cx   cy   bw   bh   vx   vy   ax   ay   r   g   b  name
- f   50   50   50   50    0    0    0    0 255   0   0  R
- t  250   50   50   50 -100   34    0    0   0 255   0  G
