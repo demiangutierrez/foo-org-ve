@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -26,6 +27,7 @@ import org.cyrano.pacman.map.CharMap;
 import org.cyrano.pacman.map.DynaMap;
 import org.cyrano.pacman.map.InteMap;
 import org.cyrano.util.game.Timer;
+import org.cyrano.util.keyboard.InputManager;
 import org.cyrano.util.misc.Hwh;
 import org.cyrano.util.misc.PointInt;
 
@@ -104,6 +106,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     setFocusable(true);
 
+    KeyboardFocusManager.getCurrentKeyboardFocusManager(). //
+        addKeyEventDispatcher(levelExec.getInputManager());
+
     //    addKeyListener(new TimedKeyListener() {
     //      @Override
     //      public void keyPressed(KeyEvent e) {
@@ -116,17 +121,20 @@ public class GamePanel extends JPanel implements Runnable {
     //      }
     //    });
 
-    addKeyListener(new KeyAdapter() {
-      @Override
-      public void keyPressed(KeyEvent e) {
-        GamePanel.this.keyPressed(e);
-      }
-
-      @Override
-      public void keyReleased(KeyEvent evt) {
-        GamePanel.this.keyReleased(evt);
-      }
-    });
+    // Only to start the thread
+//    addKeyListener(new KeyAdapter() {
+//      @Override
+//      public void keyPressed(KeyEvent e) {
+//        GamePanel.this.keyPressed(e);
+//      }
+//
+//      //          @Override
+//      //          public void keyReleased(KeyEvent evt) {
+//      //            GamePanel.this.keyReleased(evt);
+//      //          }
+//    });
+    
+    beg();
   }
 
   // --------------------------------------------------------------------------------
@@ -237,23 +245,23 @@ public class GamePanel extends JPanel implements Runnable {
   // --------------------------------------------------------------------------------
 
   private void keyPressed(KeyEvent e) {
-    switch (e.getKeyCode()) {
-      case KeyEvent.VK_J : // LF
-        pacSprite.setWantDir(Constants.DIR_LF);
-        break;
-      case KeyEvent.VK_L : // RG
-        pacSprite.setWantDir(Constants.DIR_RG);
-        break;
-      case KeyEvent.VK_I : // UP
-        pacSprite.setWantDir(Constants.DIR_UP);
-        break;
-      case KeyEvent.VK_K : // DW
-        pacSprite.setWantDir(Constants.DIR_DW);
-        break;
-      default :
-        pacSprite.setWantDir(Constants.DIR_VOID);
-        break;
-    }
+    //      switch (e.getKeyCode()) {
+    //        case KeyEvent.VK_J : // LF
+    //          pacSprite.setWantDir(Constants.DIR_LF);
+    //          break;
+    //        case KeyEvent.VK_L : // RG
+    //          pacSprite.setWantDir(Constants.DIR_RG);
+    //          break;
+    //        case KeyEvent.VK_I : // UP
+    //          pacSprite.setWantDir(Constants.DIR_UP);
+    //          break;
+    //        case KeyEvent.VK_K : // DW
+    //          pacSprite.setWantDir(Constants.DIR_DW);
+    //          break;
+    //        default :
+    //          pacSprite.setWantDir(Constants.DIR_VOID);
+    //          break;
+    //      }
 
     if (!running && !won && !die) {
       beg();
@@ -264,10 +272,10 @@ public class GamePanel extends JPanel implements Runnable {
 
   // --------------------------------------------------------------------------------
 
-  private void keyReleased(KeyEvent evt) {
-    //    pacSprite.setWantDir(Constants.DIR_VOID);
-    //    Log.log("wantDir = " + Log.dirToString(pacSprite.getWantDir()));
-  }
+  //  private void keyReleased(KeyEvent evt) {
+  //    //    pacSprite.setWantDir(Constants.DIR_VOID);
+  //    //    Log.log("wantDir = " + Log.dirToString(pacSprite.getWantDir()));
+  //  }
 
   // --------------------------------------------------------------------------------
 
