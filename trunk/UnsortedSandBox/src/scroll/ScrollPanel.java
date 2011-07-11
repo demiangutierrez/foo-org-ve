@@ -17,7 +17,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import org.cyrano.util.Hwh;
+import org.cyrano.util.misc.Hwh;
 
 public class ScrollPanel extends JPanel implements MouseListener, MouseMotionListener {
 
