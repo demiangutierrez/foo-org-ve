@@ -1,5 +1,7 @@
 package gui;
 
+import javax.servlet.http.HttpSession;
+
 import nextapp.echo.app.Alignment;
 import nextapp.echo.app.Button;
 import nextapp.echo.app.Column;
@@ -11,6 +13,7 @@ import nextapp.echo.app.TextField;
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
 import nextapp.echo.app.event.EventListenerList;
+import nextapp.echo.webcontainer.WebContainerServlet;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -118,6 +121,19 @@ public class PnlLogin extends Panel {
         actionListenerProxyError.fireActionEvent( //
             new ActionEvent(this, null));
       } else {
+
+        // ----------------------------------------
+        // the http session magic!
+        // ----------------------------------------
+
+        HttpSession httpSession = //
+        WebContainerServlet.getActiveConnection().getRequest().getSession();
+
+        System.err.println("login for user " + user.getName() + //
+            " in http session " + httpSession.getId());
+
+        // ----------------------------------------
+
         actionListenerProxyLogin.fireActionEvent( //
             new ActionEvent(this, null));
       }
