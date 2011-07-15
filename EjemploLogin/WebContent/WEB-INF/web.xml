@@ -7,6 +7,10 @@
 
 	<display-name>EjemploLogin</display-name>
 
+	<listener>
+		<listener-class>session.SomeHttpSessionListener</listener-class>
+	</listener>
+
 	<servlet>
 		<servlet-name>MainServlet</servlet-name>
 		<servlet-class>gui.MainServlet</servlet-class>

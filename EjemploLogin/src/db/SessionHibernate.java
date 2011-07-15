@@ -2,7 +2,6 @@ package db;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 /**
@@ -19,7 +18,7 @@ public class SessionHibernate {
   // --------------------------------------------------------------------------------
 
   private SessionHibernate() {
-    Configuration configuration = new AnnotationConfiguration();
+    Configuration configuration = new Configuration();
     configuration.configure("/db/hibernate.cfg.xml");
     sessionFactory = configuration.buildSessionFactory();
   }
