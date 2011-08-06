@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
@@ -22,6 +21,7 @@ import org.hibernate.annotations.Proxy;
 public class MPersona {
 
   private int id;
+  private String nombre;
   private MConyugue conyugue;
 
   @Id
@@ -34,8 +34,15 @@ public class MPersona {
     this.id = id;
   }
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @PrimaryKeyJoinColumn
+  public String getNombre() {
+    return nombre;
+  }
+
+  public void setNombre(String nombre) {
+    this.nombre = nombre;
+  }
+
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")
   public MConyugue getConyugue() {
     return conyugue;
   }

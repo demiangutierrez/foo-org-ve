@@ -19,25 +19,32 @@ public class Main {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
 
-    MPersona p = new MPersona();
-    MConyugue c = new MConyugue();
-    c.setNombre("nombre");
+    for (int i = 1; i < 6; i++) {
+      MPersona p = new MPersona();
+      p.setNombre("nombre " + i);
+      session.save(p);
 
-    p.setConyugue(c);
-    //    c.setPersona(p);
+      if (i != 3) {
+        MConyugue c = new MConyugue();
+        c.setNombre("nombre " + i);
 
-    session.save(p);
+        p.setConyugue(c);
+        c.setPersona(p);
 
+        session.save(c);
+      }
+    }
     session.getTransaction().commit();
     session.close();
 
-    session = sessionFactory.openSession();
-    session.beginTransaction();
-
-    p = (MPersona) session.load(MPersona.class, 1);
-    System.out.println(p.getConyugue().getNombre());
-
-    session.getTransaction().commit();
-    session.close();
+    //    session = sessionFactory.openSession();
+    //    session.beginTransaction();
+    //
+    //    p = (MPersona) session.load(MPersona.class, 1);
+    //    System.out.println(p.getConyugue());
+    //    System.out.println(p.getConyugue().getNombre());
+    //
+    //    session.getTransaction().commit();
+    //    session.close();
   }
 }
