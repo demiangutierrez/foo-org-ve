@@ -2,11 +2,13 @@ package relaciones.unoauno;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Proxy;
 
 /**
@@ -24,7 +26,14 @@ public class MConyugue {
   private MPersona persona;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  // @GeneratedValue(strategy = GenerationType.AUTO) // We can't do this
+  @GeneratedValue(generator = "take-from-foreign")
+
+  // Generates the ID based in persona's id
+  @GenericGenerator( //
+  /*      */name = "take-from-foreign", //
+  /*  */strategy = "foreign", //
+  /**/parameters = {@Parameter(name = "property", value = "persona")})
   public int getId() {
     return id;
   }
@@ -41,7 +50,10 @@ public class MConyugue {
     this.nombre = nombre;
   }
 
-  @OneToOne(mappedBy = "conyugue")
+  // Conyugue depends on Persona, the place of
+  // @PrimaryKeyJoinColumn marks foreign key
+  @OneToOne
+  @PrimaryKeyJoinColumn
   public MPersona getPersona() {
     return persona;
   }
