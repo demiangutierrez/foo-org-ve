@@ -13,6 +13,7 @@ import db.User;
 
 /**
  * @author Anna Lezama
+ * @author Demián Gutierrez
  */
 public class PnlViewAccount extends Panel {
 

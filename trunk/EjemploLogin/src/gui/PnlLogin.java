@@ -25,6 +25,7 @@ import db.User;
 
 /**
  * @author Anna Lezama
+ * @author Demián Gutierrez
  */
 public class PnlLogin extends Panel {
 

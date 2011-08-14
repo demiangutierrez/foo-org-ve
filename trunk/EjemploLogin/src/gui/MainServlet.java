@@ -5,6 +5,7 @@ import nextapp.echo.webcontainer.WebContainerServlet;
 
 /**
  * @author Anna Lezama
+ * @author Demián Gutierrez
  */
 public class MainServlet extends WebContainerServlet {
 

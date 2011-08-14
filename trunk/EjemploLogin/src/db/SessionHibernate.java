@@ -6,8 +6,8 @@ import org.hibernate.cfg.Configuration;
 
 /**
  * @author Anna Lezama
+ * @author Demián Gutierrez
  */
-//DONE
 public class SessionHibernate {
 
   // singleton

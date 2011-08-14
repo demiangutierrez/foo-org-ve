@@ -25,6 +25,7 @@ import echopoint.layout.HtmlLayoutData;
 
 /**
  * @author Anna Lezama
+ * @author Demián Gutierrez
  */
 public class PnlRegister extends Panel {
 

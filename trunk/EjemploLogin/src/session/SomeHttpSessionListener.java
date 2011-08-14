@@ -3,6 +3,9 @@ package session;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+/**
+ * @author Demián Gutierrez
+ */
 public class SomeHttpSessionListener implements HttpSessionListener {
 
   @Override
