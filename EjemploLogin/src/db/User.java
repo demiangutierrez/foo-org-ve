@@ -10,8 +10,8 @@ import org.hibernate.annotations.Proxy;
 
 /**
  * @author Anna Lezama
+ * @author Demián Gutierrez
  */
-//DONE
 @Entity
 @Table(name = "t_user")
 @Proxy(lazy = false)

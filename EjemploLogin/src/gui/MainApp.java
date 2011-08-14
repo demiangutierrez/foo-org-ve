@@ -6,6 +6,7 @@ import nextapp.echo.app.Window;
 
 /**
  * @author Anna Lezama
+ * @author Demián Gutierrez
  */
 public class MainApp extends ApplicationInstance {
 

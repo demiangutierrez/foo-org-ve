@@ -15,6 +15,7 @@ import echopoint.layout.HtmlLayoutData;
 
 /**
  * @author Anna Lezama
+ * @author Demián Gutierrez
  */
 public class DesktopMain extends ContentPane {
 
@@ -182,8 +183,9 @@ public class DesktopMain extends ContentPane {
   // --------------------------------------------------------------------------------
 
   private void btnLogoutClicked() {
-    removeAll();
-    add(new DesktopWelcome());
+    ContentPane parent = (ContentPane) getParent();
+    parent.removeAll();
+    parent.add(new DesktopWelcome());
   }
 
   // --------------------------------------------------------------------------------

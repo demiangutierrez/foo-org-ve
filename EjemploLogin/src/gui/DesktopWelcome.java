@@ -16,6 +16,7 @@ import echopoint.layout.HtmlLayoutData;
 
 /**
  * @author Anna Lezama
+ * @author Demián Gutierrez
  */
 public class DesktopWelcome extends ContentPane {
 
@@ -135,8 +136,9 @@ public class DesktopWelcome extends ContentPane {
   private void listenerPnlLoginLoginPerformed(ActionEvent evt) {
     PnlLogin formLogin = (PnlLogin) evt.getSource();
 
-    removeAll();
-    add(new DesktopMain(formLogin.getUser()));
+    ContentPane parent = (ContentPane) getParent();
+    parent.removeAll();
+    parent.add(new DesktopMain(formLogin.getUser()));
   }
 
   // --------------------------------------------------------------------------------
