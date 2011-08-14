@@ -351,4 +351,19 @@
 		<url-pattern>/tabpane.echo</url-pattern>
 	</servlet-mapping>
 
+	<!--
+		********************************************************************************
+		********************************************************************************
+	-->
+
+	<servlet>
+		<servlet-name>MenuServlet</servlet-name>
+		<servlet-class>com.tutorial.menu.MenuServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>MenuServlet</servlet-name>
+		<url-pattern>/menu.echo</url-pattern>
+	</servlet-mapping>
+
 </web-app>
