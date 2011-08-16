@@ -4,14 +4,15 @@ import nextapp.echo.app.ApplicationInstance;
 import nextapp.echo.app.Color;
 import nextapp.echo.app.ContentPane;
 import nextapp.echo.app.Extent;
+import nextapp.echo.app.Label;
+import nextapp.echo.app.Row;
 import nextapp.echo.app.SplitPane;
 import nextapp.echo.app.Window;
-import nextapp.echo.app.event.ActionEvent;
-import nextapp.echo.app.event.ActionListener;
+import nextapp.echo.app.WindowPane;
+import nextapp.echo.extras.app.DropDownMenu;
 import nextapp.echo.extras.app.MenuBarPane;
-import nextapp.echo.extras.app.menu.DefaultMenuModel;
-import nextapp.echo.extras.app.menu.DefaultOptionModel;
-import nextapp.echo.extras.app.menu.MenuModel;
+import echopoint.HtmlLayout;
+import echopoint.layout.HtmlLayoutData;
 
 public class MenuApp extends ApplicationInstance {
 
@@ -37,51 +38,78 @@ public class MenuApp extends ApplicationInstance {
     // raiz recien construido
     // ----------------------------------------
 
-    SplitPane split = new SplitPane();
-    split.setOrientation(SplitPane.ORIENTATION_VERTICAL_TOP_BOTTOM);
-    split.setSeparatorPosition(new Extent(20, Extent.PX));
-    split.setSeparatorColor(Color.BLACK);
-    split.setSeparatorHeight(new Extent(5, Extent.PX));
-    contentPane.add(split);
+    SplitPane split1 = new SplitPane();
+    split1.setOrientation(SplitPane.ORIENTATION_VERTICAL_TOP_BOTTOM);
+    split1.setSeparatorPosition(new Extent(30, Extent.PX));
+    split1.setSeparatorColor(Color.BLACK);
+    split1.setResizable(true);
+    split1.setSeparatorHeight(new Extent(5, Extent.PX));
+    contentPane.add(split1);
 
-    DefaultMenuModel baseDmm = new DefaultMenuModel();
-    baseDmm.setText("BASE");
+    MenuBarPane mbp = DemoMenuFactory.createDemoMenuBarPane();
+    split1.add(mbp);
 
-    baseDmm.addItem(initMenu("Menu A", "Item A ", 5));
-    baseDmm.addItem(initMenu("Menu B", "Item B ", 5));
+    SplitPane split2 = new SplitPane();
+    split2.setOrientation(SplitPane.ORIENTATION_VERTICAL_TOP_BOTTOM);
+    split2.setSeparatorPosition(new Extent(30, Extent.PX));
+    split2.setSeparatorColor(Color.BLACK);
+    split2.setResizable(true);
+    split2.setSeparatorHeight(new Extent(5, Extent.PX));
+    split1.add(split2);
 
-    MenuBarPane mbp = new MenuBarPane(baseDmm);
+    Row row = new Row();
+    //row.add(DemoMenuFactory.createDemoMenuBarPane()); // Can't be done
+    row.add(DemoMenuFactory.createDemoDropDownMenu());
+    split2.add(row);
 
-    mbp.addActionListener(new ActionListener() {
+    HtmlLayout htmlLayout;
 
-      @Override
-      public void actionPerformed(ActionEvent evt) {
-        System.err.println("¿?" + evt.getActionCommand());
-      }
-    });
+    try {
+      htmlLayout = new HtmlLayout( //
+          getClass().getResourceAsStream("template.html"), "UTF-8");
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
 
-    split.add(mbp);
+    HtmlLayoutData hld;
+
+    hld = new HtmlLayoutData("label1");
+    Label lblLabel1 = new Label("Menu 1");
+    lblLabel1.setLayoutData(hld);
+    htmlLayout.add(lblLabel1);
+
+    hld = new HtmlLayoutData("menu1");
+    //MenuBarPane ddm1 = DemoMenuFactory.createDemoMenuBarPane(); // Can't be done
+    DropDownMenu ddm1 = DemoMenuFactory.createDemoDropDownMenu();
+    ddm1.setLayoutData(hld);
+    htmlLayout.add(ddm1);
+
+    hld = new HtmlLayoutData("label2");
+    Label lblLabel2 = new Label("Menu 2");
+    lblLabel2.setLayoutData(hld);
+    htmlLayout.add(lblLabel2);
+
+    hld = new HtmlLayoutData("menu2");
+    DropDownMenu ddm2 = DemoMenuFactory.createDemoDropDownMenu();
+    ddm2.setLayoutData(hld);
+    htmlLayout.add(ddm2);
+
+    split2.add(htmlLayout);
+
+    WindowPane windowPane = new WindowPane();
+    windowPane.setClosable(false);
+    contentPane.add(windowPane);
+
+    SplitPane split3 = new SplitPane();
+    split3.setOrientation(SplitPane.ORIENTATION_VERTICAL_TOP_BOTTOM);
+    split3.setSeparatorPosition(new Extent(30, Extent.PX));
+    split3.setSeparatorColor(Color.BLACK);
+    split3.setResizable(true);
+    split3.setSeparatorHeight(new Extent(5, Extent.PX));
+    windowPane.add(split3);
+
+    split3.add(DemoMenuFactory.createDemoMenuBarPane());
 
     return window;
   }
-
-  public MenuModel initMenu(String menuLabel, String itemBaseLabel, int count) {
-    DefaultMenuModel ret = new DefaultMenuModel();
-    ret.setText(menuLabel);
-
-    for (int i = 0; i < count; i++) {
-      DefaultMenuModel sub = new DefaultMenuModel();
-      sub.setText(itemBaseLabel + i);
-      ret.addItem(sub);
-
-      for (int j = 0; j < count; j++) {
-        DefaultOptionModel item = new DefaultOptionModel(itemBaseLabel + i + "-" + j, itemBaseLabel + i + "-" + j, null);
-        //      item.setText(itemBaseLabel + i);
-        sub.addItem(item);
-      }
-    }
-
-    return ret;
-  }
-
 }
