@@ -30,9 +30,11 @@ import com.sun.opengl.util.texture.TextureIO;
  */
 public class Main implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
 
-  private float view_rotx = 0.0f, view_roty = 0.0f;
+  private float view_rotx = 0.0f;
+  private float view_roty = 0.0f; // CHECK
 
-  private int prevMouseX, prevMouseY;
+  private int prevMouseX;
+  private int prevMouseY;
 
   private GLU glu = new GLU();
 

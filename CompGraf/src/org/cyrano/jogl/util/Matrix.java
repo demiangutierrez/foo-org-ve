@@ -1,4 +1,4 @@
-package org.cyrano.jogl.camerafp;
+package org.cyrano.jogl.util;
 
 import java.text.NumberFormat;
 

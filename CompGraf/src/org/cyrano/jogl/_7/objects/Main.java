@@ -1,4 +1,4 @@
-package org.cyrano.jogl._5.animator_2;
+package org.cyrano.jogl._7.objects;
 
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
@@ -19,11 +19,18 @@ import com.sun.opengl.util.FPSAnimator;
  */
 public class Main implements GLEventListener {
 
-  private double degSec = 50;
-  private double degAct = 0;
+  // --------------------------------------------------------------------------------
+  // Animation
+  // --------------------------------------------------------------------------------
 
   private long prevTime;
   private long currTime;
+
+  // --------------------------------------------------------------------------------
+  // Objects
+  // --------------------------------------------------------------------------------
+
+  List<Body> bodyList = new ArrayList<Body>();
 
   // --------------------------------------------------------------------------------
 
@@ -34,30 +41,41 @@ public class Main implements GLEventListener {
     //gl.glEnable(GL.GL_CULL_FACE);
     gl.glEnable(GL.GL_DEPTH_TEST);
 
-    CelestialBody cb1 = new CelestialBody();
-    cb1.x = 0;
-    cb1.y = 0;
+    Body cb1 = new Body();
+    cb1.bR = 1.0f;
+    cb1.bG = 0.5f;
+    cb1.bB = 0.5f;
+    cb1.x = 2;
+    cb1.y = 2;
     cb1.z = 0;
+    cb1.parentZRot = 45;
+    cb1.parentYRot = 45;
 
-    celestialBodieList.add(cb1);
+    bodyList.add(cb1);
 
-    CelestialBody cb2 = new CelestialBody();
+    Body cb2 = new Body();
+    cb2.bR = 0.5f;
+    cb2.bG = 1.0f;
+    cb2.bB = 0.5f;
     cb2.parentDist = 3;
-    cb2.vel = 0;
-    cb2.parent = cb2;
+    cb2.slfRotVel = 0;
     cb2.scale = 0.5f;
-    cb2.parentRVel = 10;
-    cb1.children.add(cb2);
+    cb2.parRotVel = 10;
 
+    cb2.parent = cb2;
+    cb1.bodyList.add(cb2);
 
-    CelestialBody cb3 = new CelestialBody();
+    Body cb3 = new Body();
+    cb3.bR = 0.5f;
+    cb3.bG = 0.5f;
+    cb3.bB = 1.0f;
     cb3.parentDist = 1;
-    cb3.vel = 0;
-    cb3.parent = cb2;
+    cb3.slfRotVel = 0;
     cb3.scale = 0.2f;
-    cb3.parentRVel = 70;
-    cb2.children.add(cb3);
+    cb3.parRotVel = 70;
 
+    cb3.parent = cb2;
+    cb2.bodyList.add(cb3);
   }
 
   // --------------------------------------------------------------------------------
@@ -72,8 +90,8 @@ public class Main implements GLEventListener {
     gl.glMatrixMode(GL.GL_PROJECTION);
 
     gl.glLoadIdentity();
-    //gl.glFrustum(-1, +1, -1, +1, 1, 5); // (1)
-    gl.glFrustum(-1, +1, -1, +1, 1, 10); // (2)
+
+    gl.glFrustum(-2, +2, -2, +2, 2, 10);
 
     gl.glMatrixMode(GL.GL_MODELVIEW);
   }
@@ -92,10 +110,9 @@ public class Main implements GLEventListener {
 
   // --------------------------------------------------------------------------------
 
-  List<CelestialBody> celestialBodieList = new ArrayList<CelestialBody>();
-
   public void display(GLAutoDrawable drawable) {
     GL gl = drawable.getGL();
+
     GLU glu = new GLU();
 
     gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -103,42 +120,13 @@ public class Main implements GLEventListener {
 
     gl.glLoadIdentity();
 
-    glu.gluLookAt(0, 0, +8, 0, 0, 0, 0, 1, 0);
-    //glu.gluLookAt(0, 0, +5, 0, 0, 0, 0, 1, 0);
-
-    //    +--+
-    //    |ma|
-    // +--+--+--+
-    // |ce|ve|ro|
-    // +--+--+--+
-    //    |am|
-    //    +--+
-    //    |az|
-    //    +--+
-    //glu.gluLookAt(+5, +5, +5, 0, 0, 0, 0, 1, 0); // VE / MA / RO
-    //glu.gluLookAt(-3, +3, +3, 0, 0, 0, 0, 1, 0); // CE / MA / VE
-    //glu.gluLookAt(-3, -3, +3, 0, 0, 0, 0, 1, 0); // CE / AM / VE
-    //glu.gluLookAt(+3, -3, +3, 0, 0, 0, 0, 1, 0); // VE / AM / RO
-
-    //    +--+
-    //    |ma|
-    // +--+--+--+
-    // |ro|az|ce|
-    // +--+--+--+
-    //    |am|
-    //    +--+
-    //    |ve|
-    //    +--+
-    //glu.gluLookAt(+3, +3, -3, 0, 0, 0, 0, 1, 0); // RO / MA / AZ
-    //glu.gluLookAt(-3, +3, -3, 0, 0, 0, 0, 1, 0); // AZ / MA / CE
-    //glu.gluLookAt(-3, -3, -3, 0, 0, 0, 0, 1, 0); // AZ / AM / CE
-    //glu.gluLookAt(+3, -3, -3, 0, 0, 0, 0, 1, 0); // RO / AM / CE
+    glu.gluLookAt(0, 0, +5, 0, 0, 0, 0, 1, 0);
 
     drawAxes(gl);
 
     float dt = calculateDt();
 
-    for (CelestialBody celestialBody : celestialBodieList) {
+    for (Body celestialBody : bodyList) {
       celestialBody.draw(gl, dt);
     }
   }

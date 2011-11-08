@@ -1,4 +1,4 @@
-package org.cyrano.jogl.camerafp;
+package org.cyrano.jogl.util;
 
 //--------------------------------------------------------------------------------
 // BEWARE: this is probably a "noob" 3D affine transforms implementation!

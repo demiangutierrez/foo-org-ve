@@ -1,4 +1,4 @@
-package org.cyrano.jogl._8.displist;
+package org.cyrano.jogl._5.displist;
 
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
