@@ -1,4 +1,4 @@
-package org.cyrano.jogl._8.camera;
+package org.cyrano.jogl._10.lightA;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -9,8 +9,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -20,8 +18,6 @@ import javax.media.opengl.glu.GLU;
 
 import org.cyrano.jogl.util.Matrix;
 import org.cyrano.jogl.util.MatrixOps;
-
-import com.sun.opengl.util.FPSAnimator;
 
 /**
  * @author Demián Gutierrez
@@ -53,17 +49,8 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
   private int prevMouseY;
 
   // --------------------------------------------------------------------------------
-  // Animation
-  // --------------------------------------------------------------------------------
 
-  private long prevTime;
-  private long currTime;
-
-  // --------------------------------------------------------------------------------
-  // Objects
-  // --------------------------------------------------------------------------------
-
-  List<Body> bodyList = new ArrayList<Body>();
+  private GLCanvas glCanvas;
 
   // --------------------------------------------------------------------------------
 
@@ -77,42 +64,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     gl.glDisable(GL.GL_CULL_FACE);
     //gl.glEnable(GL.GL_CULL_FACE);
     gl.glEnable(GL.GL_DEPTH_TEST);
-
-    Body cb1 = new Body();
-    cb1.bR = 1.0f;
-    cb1.bG = 0.5f;
-    cb1.bB = 0.5f;
-    cb1.x = 2;
-    cb1.y = 2;
-    cb1.z = 0;
-    cb1.parentZRot = 45;
-    cb1.parentYRot = 45;
-
-    bodyList.add(cb1);
-
-    Body cb2 = new Body();
-    cb2.bR = 0.5f;
-    cb2.bG = 1.0f;
-    cb2.bB = 0.5f;
-    cb2.parentDist = 3;
-    cb2.slfRotVel = 0;
-    cb2.scale = 0.5f;
-    cb2.parRotVel = 10;
-
-    cb2.parent = cb2;
-    cb1.bodyList.add(cb2);
-
-    Body cb3 = new Body();
-    cb3.bR = 0.5f;
-    cb3.bG = 0.5f;
-    cb3.bB = 1.0f;
-    cb3.parentDist = 1;
-    cb3.slfRotVel = 0;
-    cb3.scale = 0.2f;
-    cb3.parRotVel = 70;
-
-    cb3.parent = cb2;
-    cb2.bodyList.add(cb3);
+    gl.glEnable(GL.GL_LIGHTING);
+    
+    gl.glShadeModel(GL.GL_SMOOTH);
   }
 
   // --------------------------------------------------------------------------------
@@ -150,21 +104,8 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
   // --------------------------------------------------------------------------------
 
-  private float calculateDt() {
-    currTime = System.currentTimeMillis();
-
-    if (prevTime == 0) {
-      prevTime = currTime;
-    }
-
-    return currTime - prevTime;
-  }
-
-  // --------------------------------------------------------------------------------
-
   public void display(GLAutoDrawable drawable) {
     GL gl = drawable.getGL();
-
     GLU glu = new GLU();
 
     calculatePerspective(gl);
@@ -180,32 +121,81 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     glu.gluLookAt(frnDstX, frnDstY, frnDstZ, 0, 0, 0, topX, topY, topZ);
 
-    drawAxes(gl);
+    //    +--+
+    //    |ma|
+    // +--+--+--+
+    // |ce|ve|ro|
+    // +--+--+--+
+    //    |am|
+    //    +--+
+    //    |az|
+    //    +--+
+    //glu.gluLookAt(+2, +2, +2, 0, 0, 0, 0, 1, 0); // VE / MA / RO
+    //glu.gluLookAt(-2, +2, +2, 0, 0, 0, 0, 1, 0); // CE / MA / VE
+    //glu.gluLookAt(-2, -2, +2, 0, 0, 0, 0, 1, 0); // CE / AM / VE
+    //glu.gluLookAt(+2, -2, +2, 0, 0, 0, 0, 1, 0); // VE / AM / RO
 
-    float dt = calculateDt();
+    //    +--+
+    //    |ma|
+    // +--+--+--+
+    // |ro|az|ce|
+    // +--+--+--+
+    //    |am|
+    //    +--+
+    //    |ve|
+    //    +--+
+    //glu.gluLookAt(+2, +2, -2, 0, 0, 0, 0, 1, 0); // RO / MA / AZ
+    //glu.gluLookAt(-2, +2, -2, 0, 0, 0, 0, 1, 0); // AZ / MA / CE
+    //glu.gluLookAt(-2, -2, -2, 0, 0, 0, 0, 1, 0); // AZ / AM / CE
+    //glu.gluLookAt(+2, -2, -2, 0, 0, 0, 0, 1, 0); // RO / AM / CE
 
-    for (Body celestialBody : bodyList) {
-      celestialBody.draw(gl, dt);
-    }
+    gl.glPushMatrix();
+    gl.glColor3f(0, 0, 1); // AZ
+    gl.glRotatef(180f, 0, 1, 0);
+    drawFace(gl);
+    gl.glPopMatrix();
+
+    gl.glPushMatrix();
+    gl.glColor3f(0, 1, 0); // VE
+    gl.glRotatef(0f, 0, 1, 0);
+    drawFace(gl);
+    gl.glPopMatrix();
+
+    gl.glPushMatrix();
+    gl.glColor3f(0, 1, 1); // CE
+    gl.glRotatef(-90f, 0, 1, 0);
+    drawFace(gl);
+    gl.glPopMatrix();
+
+    gl.glPushMatrix();
+    gl.glColor3f(1, 0, 0); // RO
+    gl.glRotatef(90f, 0, 1, 0);
+    drawFace(gl);
+    gl.glPopMatrix();
+
+    gl.glPushMatrix();
+    gl.glColor3f(1, 0, 1); // MA
+    gl.glRotatef(-90f, 1, 0, 0);
+    drawFace(gl);
+    gl.glPopMatrix();
+
+    gl.glPushMatrix();
+    gl.glColor3f(1, 1, 0); // AM
+    gl.glRotatef(90f, 1, 0, 0);
+    drawFace(gl);
+    gl.glPopMatrix();
+
+    gl.glFlush();
   }
 
   // --------------------------------------------------------------------------------
 
-  private void drawAxes(GL gl) {
-    gl.glBegin(GL.GL_LINES);
-
-    gl.glColor3f(1.0f, 0.5f, 0.5f);
-    gl.glVertex3f(0f, 0f, 0f);
-    gl.glVertex3f(5f, 0f, 0f);
-
-    gl.glColor3f(0.5f, 1.0f, 0.5f);
-    gl.glVertex3f(0f, 0f, 0f);
-    gl.glVertex3f(0f, 5f, 0f);
-
-    gl.glColor3f(0.5f, 0.5f, 1.0f);
-    gl.glVertex3f(0f, 0f, 0f);
-    gl.glVertex3f(0f, 0f, 5f);
-
+  private void drawFace(GL gl) {
+    gl.glBegin(GL.GL_QUADS);
+    gl.glVertex3f(-0.5f, -0.5f, +0.5f);
+    gl.glVertex3f(+0.5f, -0.5f, +0.5f);
+    gl.glVertex3f(+0.5f, +0.5f, +0.5f);
+    gl.glVertex3f(-0.5f, +0.5f, +0.5f);
     gl.glEnd();
   }
 
@@ -272,6 +262,8 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     //System.err.println(thetaX + ";" + thetaY);
 
     rotate(thetaX, thetaY);
+
+    glCanvas.repaint();
   }
 
   // --------------------------------------------------------------------------------
@@ -335,6 +327,8 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
         }
         break;
     }
+
+    glCanvas.repaint();
   }
 
   // --------------------------------------------------------------------------------
@@ -355,10 +349,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     Frame frame = new Frame("JOGL Main");
 
     GLCanvas canvas = new GLCanvas();
-
-    FPSAnimator animator = new FPSAnimator(canvas, 60);
-    canvas.addGLEventListener(new Main());
-    animator.start();
+    Main m = new Main();
+    m.glCanvas = canvas;
+    canvas.addGLEventListener(m);
 
     frame.add(canvas);
     frame.setSize(300, 300);
