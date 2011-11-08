@@ -1,4 +1,4 @@
-package org.cyrano.jogl._08.camera;
+package org.cyrano.jogl._09.texture_3;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -9,8 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.InputStream;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -21,7 +20,9 @@ import javax.media.opengl.glu.GLU;
 import org.cyrano.jogl.util.Matrix;
 import org.cyrano.jogl.util.MatrixOps;
 
-import com.sun.opengl.util.FPSAnimator;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * @author Demián Gutierrez
@@ -53,17 +54,28 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
   private int prevMouseY;
 
   // --------------------------------------------------------------------------------
-  // Animation
-  // --------------------------------------------------------------------------------
 
-  private long prevTime;
-  private long currTime;
+  private GLCanvas glCanvas;
 
   // --------------------------------------------------------------------------------
-  // Objects
+
+  private Texture texture;
+
   // --------------------------------------------------------------------------------
 
-  List<Body> bodyList = new ArrayList<Body>();
+  private void loadTexture() {
+    try {
+      InputStream is;
+      TextureData textureData;
+
+      is = ClassLoader.getSystemResourceAsStream("textures/wood-fence.jpg");
+      textureData = TextureIO.newTextureData(is, false, "bmp");
+      texture = TextureIO.newTexture(textureData);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
   // --------------------------------------------------------------------------------
 
@@ -74,46 +86,14 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     GL gl = drawable.getGL();
 
+    loadTexture();
+
     gl.glDisable(GL.GL_CULL_FACE);
     //gl.glEnable(GL.GL_CULL_FACE);
     gl.glEnable(GL.GL_DEPTH_TEST);
-
-    Body cb1 = new Body();
-    cb1.bR = 1.0f;
-    cb1.bG = 0.5f;
-    cb1.bB = 0.5f;
-    cb1.x = 2;
-    cb1.y = 2;
-    cb1.z = 0;
-    cb1.parentZRot = 45;
-    cb1.parentYRot = 45;
-
-    bodyList.add(cb1);
-
-    Body cb2 = new Body();
-    cb2.bR = 0.5f;
-    cb2.bG = 1.0f;
-    cb2.bB = 0.5f;
-    cb2.parentDist = 3;
-    cb2.slfRotVel = 0;
-    cb2.scale = 0.5f;
-    cb2.parRotVel = 10;
-
-    cb2.parent = cb2;
-    cb1.bodyList.add(cb2);
-
-    Body cb3 = new Body();
-    cb3.bR = 0.5f;
-    cb3.bG = 0.5f;
-    cb3.bB = 1.0f;
-    cb3.parentDist = 1;
-    cb3.slfRotVel = 0;
-    cb3.scale = 0.2f;
-    cb3.parRotVel = 70;
-
-    cb3.parent = cb2;
-    cb2.bodyList.add(cb3);
   }
+
+  // --------------------------------------------------------------------------------
 
   // --------------------------------------------------------------------------------
 
@@ -139,9 +119,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     double nr = 0.5;
     double fr = 2 * (dist - nr) + nr;
 
-    //System.err.println("nr: " + nr);
-    //System.err.println("fr: " + fr);
-    //System.err.println("dist: " + dist);
+    System.err.println("nr: " + nr);
+    System.err.println("fr: " + fr);
+    System.err.println("dist: " + dist);
 
     glu.gluPerspective(90, 1, nr, fr);
 
@@ -150,21 +130,8 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
   // --------------------------------------------------------------------------------
 
-  private float calculateDt() {
-    currTime = System.currentTimeMillis();
-
-    if (prevTime == 0) {
-      prevTime = currTime;
-    }
-
-    return currTime - prevTime;
-  }
-
-  // --------------------------------------------------------------------------------
-
   public void display(GLAutoDrawable drawable) {
     GL gl = drawable.getGL();
-
     GLU glu = new GLU();
 
     calculatePerspective(gl);
@@ -180,31 +147,64 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     glu.gluLookAt(frnDstX, frnDstY, frnDstZ, 0, 0, 0, topX, topY, topZ);
 
-    drawAxes(gl);
+    // ----------------------------------------
+    // avoid stitching!
+    // ----------------------------------------
 
-    float dt = calculateDt();
+    gl.glEnable(GL.GL_POLYGON_OFFSET_FILL);
+    gl.glPolygonOffset(0.2f, 0.2f);
 
-    for (Body celestialBody : bodyList) {
-      celestialBody.draw(gl, dt);
-    }
+    // ----------------------------------------
+
+    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+    //gl.glColor3f(1, 0, 0); // RED
+
+    gl.glEnable(GL.GL_TEXTURE_2D);
+    texture.bind();
+
+    drawTriangles(gl);
+    gl.glDisable(GL.GL_TEXTURE_2D);
+
+    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+    gl.glColor3f(1, 1, 1); // WHT
+
+    drawTriangles(gl);
+
+    // ----------------------------------------
+    // back to normal
+    // ----------------------------------------
+
+    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+    gl.glDisable(GL.GL_POLYGON_OFFSET_FILL);
+
+    gl.glFlush();
   }
 
   // --------------------------------------------------------------------------------
 
-  private void drawAxes(GL gl) {
-    gl.glBegin(GL.GL_LINES);
+  public void drawTriangles(GL gl) {
+    gl.glBegin(GL.GL_TRIANGLE_STRIP);
 
-    gl.glColor3f(1.0f, 0.5f, 0.5f);
-    gl.glVertex3f(0f, 0f, 0f);
-    gl.glVertex3f(5f, 0f, 0f);
+    gl.glTexCoord2f(0.0f, 0f);
+    gl.glVertex3f(-3, -1, -0.5f);
 
-    gl.glColor3f(0.5f, 1.0f, 0.5f);
-    gl.glVertex3f(0f, 0f, 0f);
-    gl.glVertex3f(0f, 5f, 0f);
+    gl.glTexCoord2f(0.16f, 1f);
+    gl.glVertex3f(-2, +1, +0);
 
-    gl.glColor3f(0.5f, 0.5f, 1.0f);
-    gl.glVertex3f(0f, 0f, 0f);
-    gl.glVertex3f(0f, 0f, 5f);
+    gl.glTexCoord2f(0.33f, 0f);
+    gl.glVertex3f(-1, -1, +0);
+
+    gl.glTexCoord2f(0.5f, 1f);
+    gl.glVertex3f(+0, +1, -0.5f);
+
+    gl.glTexCoord2f(0.66f, 0f);
+    gl.glVertex3f(+1, -1, +0);
+
+    gl.glTexCoord2f(0.83f, 1f);
+    gl.glVertex3f(+2, +1, +0);
+
+    gl.glTexCoord2f(1.0f, 0f);
+    gl.glVertex3f(+3, -1, -0.5f);
 
     gl.glEnd();
   }
@@ -272,6 +272,8 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     //System.err.println(thetaX + ";" + thetaY);
 
     rotate(thetaX, thetaY);
+
+    glCanvas.repaint();
   }
 
   // --------------------------------------------------------------------------------
@@ -335,6 +337,8 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
         }
         break;
     }
+
+    glCanvas.repaint();
   }
 
   // --------------------------------------------------------------------------------
@@ -355,10 +359,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     Frame frame = new Frame("JOGL Main");
 
     GLCanvas canvas = new GLCanvas();
-
-    FPSAnimator animator = new FPSAnimator(canvas, 60);
-    canvas.addGLEventListener(new Main());
-    animator.start();
+    Main m = new Main();
+    m.glCanvas = canvas;
+    canvas.addGLEventListener(m);
 
     frame.add(canvas);
     frame.setSize(300, 300);

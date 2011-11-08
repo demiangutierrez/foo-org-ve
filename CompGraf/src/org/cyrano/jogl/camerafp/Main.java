@@ -31,7 +31,7 @@ import com.sun.opengl.util.texture.TextureIO;
 public class Main implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
 
   private float view_rotx = 0.0f;
-  private float view_roty = 0.0f; // CHECK
+  //private float view_roty = 0.0f; // CHECK
 
   private int prevMouseX;
   private int prevMouseY;
@@ -213,7 +213,7 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     }
 
     view_rotx -= thetaX;
-    view_roty += thetaY;
+    //view_roty += thetaY;
 
     camera.rotate(thetaX, thetaY);
   }
