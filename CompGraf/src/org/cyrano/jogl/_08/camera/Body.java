@@ -1,4 +1,4 @@
-package org.cyrano.jogl._8.camera;
+package org.cyrano.jogl._08.camera;
 
 import java.util.ArrayList;
 import java.util.List;
