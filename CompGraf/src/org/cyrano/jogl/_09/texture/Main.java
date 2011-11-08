@@ -1,21 +1,48 @@
-package org.cyrano.jogl._1.helloworld;
+package org.cyrano.jogl._09.texture;
 
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.InputStream;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
+
 /**
  * @author Demián Gutierrez
  */
 public class Main implements GLEventListener {
 
+  private Texture texture;
+
+  // --------------------------------------------------------------------------------
+
+  private void loadTexture() {
+    try {
+      InputStream is;
+      TextureData textureData;
+
+      is = ClassLoader.getSystemResourceAsStream("textures/wood-fence.jpg");
+      textureData = TextureIO.newTextureData(is, false, "bmp");
+      texture = TextureIO.newTexture(textureData);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  // --------------------------------------------------------------------------------
+
   public void init(GLAutoDrawable drawable) {
     GL gl = drawable.getGL();
+
+    loadTexture();
 
     gl.glDisable(GL.GL_CULL_FACE);
     //gl.glEnable(GL.GL_CULL_FACE);
@@ -46,16 +73,18 @@ public class Main implements GLEventListener {
     gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-    gl.glColor3f(1f, 1f, 1f);
+    gl.glEnable(GL.GL_TEXTURE_2D);
 
-    gl.glBegin(GL.GL_POLYGON);
-    //gl.glColor3f(1f, 1f, 1f);
+    texture.bind();
+
+    gl.glBegin(GL.GL_QUADS);
+    gl.glTexCoord2f(0f, 0f);
     gl.glVertex3f(-0.5f, -0.5f, 0f);
-    //gl.glColor3f(1f, 0f, 0f);
+    gl.glTexCoord2f(0f, 1f);
     gl.glVertex3f(-0.5f, +0.5f, 0f);
-    //gl.glColor3f(0f, 1f, 0f);
+    gl.glTexCoord2f(1f, 1f);
     gl.glVertex3f(+0.5f, +0.5f, 0f);
-    //gl.glColor3f(0f, 0f, 1f);
+    gl.glTexCoord2f(1f, 0f);
     gl.glVertex3f(+0.5f, -0.5f, 0f);
     gl.glEnd();
 
