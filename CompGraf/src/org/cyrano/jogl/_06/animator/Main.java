@@ -1,4 +1,4 @@
-package org.cyrano.jogl._6.animator;
+package org.cyrano.jogl._06.animator;
 
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;

@@ -1,4 +1,4 @@
-package org.cyrano.jogl._4.rotate;
+package org.cyrano.jogl._04.rotate;
 
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;

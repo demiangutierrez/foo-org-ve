@@ -1,4 +1,4 @@
-package org.cyrano.jogl._2.hellocube_1;
+package org.cyrano.jogl._02.hellocube_1;
 
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
