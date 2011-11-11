@@ -25,15 +25,17 @@ public class Icosahedron {
 
   // --------------------------------------------------------------------------------
 
+  public static double r;
+  public static double g;
+  public static double b;
+
+  // --------------------------------------------------------------------------------
+
   private Icosahedron() {
     // Empty
   }
 
   // --------------------------------------------------------------------------------
-
-  public static double r;
-  public static double g;
-  public static double b;
 
   public static void drawIcosahedron(GL gl, int depth) {
     for (int i = 0; i < tindx.length; i++) {
@@ -85,16 +87,6 @@ public class Icosahedron {
 
   // --------------------------------------------------------------------------------
 
-  private static double[] cross(double[] a, double[] b) {
-    double[] r = {0, 0, 0};
-
-    r[0] = a[1] * b[2] - a[2] * b[1];
-    r[1] = a[2] * b[0] - a[0] * b[2];
-    r[2] = a[0] * b[1] - a[1] * b[0];
-
-    return r;
-  }
-
   private static void drawTriangle(GL gl, //
       double[] v1, double[] v2, double[] v3) {
 
@@ -104,7 +96,7 @@ public class Icosahedron {
     double[] v12 = {v1[0] - v2[0], v1[1] - v2[1], v1[1] - v2[1]};
     double[] v13 = {v1[0] - v3[0], v1[1] - v3[1], v1[1] - v3[1]};
 
-    double[] cc = cross(v12, v13);
+    double[] cc = MathUtil.cross(v12, v13);
 
     if (cc[0] / v1[0] > 0 && cc[1] / v1[1] > 0 && cc[2] / v1[2] > 0) {
       gl.glVertex3d(v3[0], v3[1], v3[2]);

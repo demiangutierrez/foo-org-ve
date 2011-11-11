@@ -29,15 +29,17 @@ public class Icosahedron {
 
   // --------------------------------------------------------------------------------
 
+  public static double r;
+  public static double g;
+  public static double b;
+
+  // --------------------------------------------------------------------------------
+
   private Icosahedron() {
     // Empty
   }
 
   // --------------------------------------------------------------------------------
-
-  public static double r;
-  public static double g;
-  public static double b;
 
   public static void drawIcosahedron(GL gl, int depth) {
     for (int i = 0; i < tindx.length; i++) {
@@ -89,20 +91,10 @@ public class Icosahedron {
 
   // --------------------------------------------------------------------------------
 
-  private static double[] cross(double[] a, double[] b) {
-    double[] r = {0, 0, 0};
-
-    r[0] = a[1] * b[2] - a[2] * b[1];
-    r[1] = a[2] * b[0] - a[0] * b[2];
-    r[2] = a[0] * b[1] - a[1] * b[0];
-
-    return r;
-  }
-
-  private static double[] calcTextureMap(double[] vtx) {
+  private static double[] textureMapCoords(double[] vtx) {
     double[] ret = new double[3];
 
-    ret[0] = Math.sqrt(vtx[0] * vtx[0] + vtx[1] * vtx[1] + vtx[2] * vtx[2]);
+    ret[0] = MathUtil.mod(vtx);
     ret[1] = Math.acos(vtx[2] / ret[0]);
     ret[2] = Math.atan2(vtx[1], vtx[0]);
 
@@ -113,6 +105,8 @@ public class Icosahedron {
 
     return ret;
   }
+
+  // --------------------------------------------------------------------------------
 
   private static void drawTriangle(GL gl, //
       double[] v1, double[] v2, double[] v3) {
@@ -129,30 +123,30 @@ public class Icosahedron {
     double[] v12 = {v1[0] - v2[0], v1[1] - v2[1], v1[1] - v2[1]};
     double[] v13 = {v1[0] - v3[0], v1[1] - v3[1], v1[1] - v3[1]};
 
-    double[] cc = cross(v12, v13);
+    double[] cc = MathUtil.cross(v12, v13);
 
     if (cc[0] / v1[0] > 0 && cc[1] / v1[1] > 0 && cc[2] / v1[2] > 0) {
-      spherical = calcTextureMap(v3);
+      spherical = textureMapCoords(v3);
       gl.glTexCoord2d(spherical[1], spherical[2]);
       gl.glVertex3d(v3[0], v3[1], v3[2]);
 
-      spherical = calcTextureMap(v1);
+      spherical = textureMapCoords(v1);
       gl.glTexCoord2d(spherical[1], spherical[2]);
       gl.glVertex3d(v1[0], v1[1], v1[2]);
 
-      spherical = calcTextureMap(v2);
+      spherical = textureMapCoords(v2);
       gl.glTexCoord2d(spherical[1], spherical[2]);
       gl.glVertex3d(v2[0], v2[1], v2[2]);
     } else {
-      spherical = calcTextureMap(v2);
+      spherical = textureMapCoords(v2);
       gl.glTexCoord2d(spherical[1], spherical[2]);
       gl.glVertex3d(v2[0], v2[1], v2[2]);
 
-      spherical = calcTextureMap(v1);
+      spherical = textureMapCoords(v1);
       gl.glTexCoord2d(spherical[1], spherical[2]);
       gl.glVertex3d(v1[0], v1[1], v1[2]);
 
-      spherical = calcTextureMap(v3);
+      spherical = textureMapCoords(v3);
       gl.glTexCoord2d(spherical[1], spherical[2]);
       gl.glVertex3d(v3[0], v3[1], v3[2]);
     }
@@ -161,7 +155,6 @@ public class Icosahedron {
 
     gl.glDisable(GL.GL_TEXTURE_2D);
 
-    
     r /= 1.001;
     g /= 1.001;
     b /= 1.001;
