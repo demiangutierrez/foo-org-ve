@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.InputStream;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -20,6 +21,9 @@ import org.cyrano.jogl.util.Matrix;
 import org.cyrano.jogl.util.MatrixOps;
 
 import com.sun.opengl.util.FPSAnimator;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * @author Demián Gutierrez
@@ -50,12 +54,32 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
   private int prevMouseX;
   private int prevMouseY;
 
+  private Texture texture;
+
+  // --------------------------------------------------------------------------------
+
+  private void loadTexture() {
+    try {
+      InputStream is;
+      TextureData textureData;
+
+      is = ClassLoader.getSystemResourceAsStream("textures/earth1.jpg");
+      textureData = TextureIO.newTextureData(is, false, "bmp");
+      texture = TextureIO.newTexture(textureData);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   // --------------------------------------------------------------------------------
 
   public void init(GLAutoDrawable drawable) {
     drawable.addMouseListener(this);
     drawable.addMouseMotionListener(this);
     drawable.addKeyListener(this);
+
+    loadTexture();
 
     GL gl = drawable.getGL();
 
@@ -131,8 +155,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     // ----------------------------------------
 
     gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-    gl.glColor3f(1, 0, 0); // RED
+//    gl.glColor3f(1, 0, 0); // RED
 
+    Icosahedron.texture = texture;
     Icosahedron.drawIcosahedron(gl, 2);
 
     gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
