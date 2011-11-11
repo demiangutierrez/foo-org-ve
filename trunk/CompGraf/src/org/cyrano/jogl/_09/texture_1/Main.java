@@ -28,7 +28,7 @@ public class Main implements GLEventListener {
       InputStream is;
       TextureData textureData;
 
-      is = ClassLoader.getSystemResourceAsStream("textures/wood-fence.jpg");
+      is = ClassLoader.getSystemResourceAsStream("textures/wood-fence_256x256.jpg");
       textureData = TextureIO.newTextureData(is, false, "bmp");
       texture = TextureIO.newTexture(textureData);
 
@@ -79,6 +79,7 @@ public class Main implements GLEventListener {
 
     gl.glBegin(GL.GL_QUADS);
 
+    // NORMAL
     gl.glTexCoord2f(0.0f, 0.0f);
     gl.glVertex3f(-0.5f, -0.5f, 0f);
     gl.glTexCoord2f(0.0f, 1.0f);
@@ -88,6 +89,7 @@ public class Main implements GLEventListener {
     gl.glTexCoord2f(1.0f, 0.0f);
     gl.glVertex3f(+0.5f, -0.5f, 0f);
 
+    // ROTATED
     //    gl.glTexCoord2f(1.0f, 0.0f);
     //    gl.glVertex3f(-0.5f, -0.5f, 0f);
     //    gl.glTexCoord2f(0.0f, 0.0f);
@@ -95,6 +97,19 @@ public class Main implements GLEventListener {
     //    gl.glTexCoord2f(0.0f, 1.0f);
     //    gl.glVertex3f(+0.5f, +0.5f, 0f);
     //    gl.glTexCoord2f(1.0f, 1.0f);
+    //    gl.glVertex3f(+0.5f, -0.5f, 0f);
+
+    // REPEATED
+    //    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
+    //    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
+    //    
+    //    gl.glTexCoord2f(0.0f, 0.0f);
+    //    gl.glVertex3f(-0.5f, -0.5f, 0f);
+    //    gl.glTexCoord2f(0.0f, 3.0f);
+    //    gl.glVertex3f(-0.5f, +0.5f, 0f);
+    //    gl.glTexCoord2f(3.0f, 3.0f);
+    //    gl.glVertex3f(+0.5f, +0.5f, 0f);
+    //    gl.glTexCoord2f(3.0f, 0.0f);
     //    gl.glVertex3f(+0.5f, -0.5f, 0f);
 
     gl.glEnd();

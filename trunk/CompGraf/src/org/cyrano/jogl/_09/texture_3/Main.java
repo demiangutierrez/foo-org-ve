@@ -68,8 +68,16 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
       InputStream is;
       TextureData textureData;
 
-      is = ClassLoader.getSystemResourceAsStream("textures/wood-fence.jpg");
-      textureData = TextureIO.newTextureData(is, false, "bmp");
+      is = ClassLoader.getSystemResourceAsStream("textures/wood-fence_256x256.jpg");
+
+      // --------------------------------------------------------
+      // w/o mipmaps
+      // textureData = TextureIO.newTextureData(is, false, null);
+      // --------------------------------------------------------
+      // w.. mipmaps
+      textureData = TextureIO.newTextureData(is, true, null);
+      // --------------------------------------------------------
+
       texture = TextureIO.newTexture(textureData);
 
     } catch (Exception e) {
@@ -326,13 +334,13 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     switch (evt.getKeyChar()) {
       case 'A' :
       case 'a' :
-        if (dist <= 10) {
+        if (dist <= 50) {
           dist *= 2;
         }
         break;
       case 'Z' :
       case 'z' :
-        if (dist >= 5) {
+        if (dist >= 1) {
           dist /= 2;
         }
         break;

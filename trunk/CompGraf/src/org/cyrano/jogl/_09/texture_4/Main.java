@@ -10,6 +10,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.InputStream;
+import java.nio.Buffer;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -19,6 +22,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.cyrano.jogl.util.Matrix;
 import org.cyrano.jogl.util.MatrixOps;
+import org.cyrano.util.misc.Hwh;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
@@ -65,19 +69,61 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
   private void loadTexture() {
     try {
-      InputStream is;
-      TextureData textureData;
+      List<TextureData> mipmapList = new LinkedList<TextureData>();
 
-      is = ClassLoader.getSystemResourceAsStream("textures/wood-fence.jpg");
-      textureData = TextureIO.newTextureData(is, false, "bmp");
+      for (int i = 0; true; i++) {
+        TextureData mipmap;
+        mipmap = TextureIO.newTextureData(openDataFile(i), false, null);
+        mipmapList.add(mipmap);
+
+        if (mipmap.getWidth() <= 1) {
+          break;
+        }
+      }
+
+      Buffer[] bufferArray = new Buffer[mipmapList.size()];
+
+      for (TextureData mipmap : mipmapList) {
+        bufferArray[mipmapList.indexOf(mipmap)] = mipmap.getBuffer();
+      }
+
+      TextureData textureBase = mipmapList.get(0);
+      TextureData textureData = new TextureData(textureBase.getInternalFormat(), //
+          Hwh.getW(textureBase), Hwh.getH(textureBase), 0, //
+          textureBase.getPixelFormat(), textureBase.getPixelType(), //
+          false, false, bufferArray, null);
+
       texture = TextureIO.newTexture(textureData);
-
     } catch (Exception e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 
   // --------------------------------------------------------------------------------
+
+  private InputStream openDataFile(int i) {
+    switch (i) {
+      case 0 :
+        return ClassLoader.getSystemResourceAsStream("textures/wood-fence_256x256.jpg");
+      case 1 :
+        return ClassLoader.getSystemResourceAsStream("textures/wood-fence_128x128.jpg");
+      case 2 :
+        return ClassLoader.getSystemResourceAsStream("textures/wood-fence_064x064.jpg");
+      case 3 :
+        return ClassLoader.getSystemResourceAsStream("textures/wood-fence_032x032.jpg");
+      case 4 :
+        return ClassLoader.getSystemResourceAsStream("textures/wood-fence_016x016.jpg");
+      case 5 :
+        return ClassLoader.getSystemResourceAsStream("textures/wood-fence_008x008.jpg");
+      case 6 :
+        return ClassLoader.getSystemResourceAsStream("textures/wood-fence_004x004.jpg");
+      case 7 :
+        return ClassLoader.getSystemResourceAsStream("textures/wood-fence_002x002.jpg");
+      case 8 :
+        return ClassLoader.getSystemResourceAsStream("textures/wood-fence_001x001.jpg");
+    }
+    return null;
+  }
 
   public void init(GLAutoDrawable drawable) {
     drawable.addMouseListener(this);
@@ -157,12 +203,24 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     // ----------------------------------------
 
     gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-    //gl.glColor3f(1, 0, 0); // RED
 
     gl.glEnable(GL.GL_TEXTURE_2D);
+
+    // ------------------------------------------------------------------
+    // texture parameters
+    // ------------------------------------------------------------------
+    gl.glTexParameterf(GL.GL_TEXTURE_2D, //
+        GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR_MIPMAP_LINEAR);
+    gl.glTexParameterf(GL.GL_TEXTURE_2D, //
+        GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR_MIPMAP_LINEAR);
+
+    gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_DECAL);
+    // ------------------------------------------------------------------
+
     texture.bind();
 
     drawTriangles(gl);
+
     gl.glDisable(GL.GL_TEXTURE_2D);
 
     gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
@@ -326,15 +384,15 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     switch (evt.getKeyChar()) {
       case 'A' :
       case 'a' :
-        if (dist <= 10) {
-          dist *= 2;
-        }
+        //        if (dist <= 10) {
+        dist *= 2;
+        //        }
         break;
       case 'Z' :
       case 'z' :
-        if (dist >= 5) {
-          dist /= 2;
-        }
+        //        if (dist >= 5) {
+        dist /= 2;
+        //        }
         break;
     }
 
