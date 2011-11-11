@@ -1,4 +1,4 @@
-package org.cyrano.jogl._11.lightA;
+package org.cyrano.jogl._11.light_2;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -15,7 +15,6 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
-import javax.media.opengl.glu.GLUquadric;
 
 import org.cyrano.jogl.util.Matrix;
 import org.cyrano.jogl.util.MatrixOps;
@@ -76,12 +75,10 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     //    gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, new float[]{1.0f, 1.0f, 1.0f, 0.0f}, 0);
 
-    gl.glLightModelf(GL.GL_LIGHT_MODEL_LOCAL_VIEWER, GL.GL_TRUE);
-    
-    
-    gl.glLightf(GL.GL_LIGHT0, GL.GL_SPOT_CUTOFF, 90);
-    
-    
+//    gl.glLightModelf(GL.GL_LIGHT_MODEL_LOCAL_VIEWER, GL.GL_TRUE);
+
+//    gl.glLightf(GL.GL_LIGHT0, GL.GL_SPOT_CUTOFF, 90);
+
     gl.glEnable(GL.GL_LIGHT0);
   }
 
@@ -170,77 +167,61 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     gl.glEnable(GL.GL_LIGHTING);
 
     gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, //
-        new float[]{2.0f, 2.0f, 2.0f, 1.0f}, 0);
-    gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPOT_DIRECTION, new float[]{-2.0f, -2.0f, -2.0f, 0.0f}, 0);
+        new float[]{4.0f, 4.0f, 4.0f, 1.0f}, 0);
+//    gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPOT_DIRECTION, new float[]{-2.0f, -2.0f, -2.0f, 0.0f}, 0);
 
+    //    gl.glPushMatrix();
+    //    gl.glTranslatef(2.5f, 2.5f, 2.5f);
+    //    GLUquadric earth = glu.gluNewQuadric();
+    //    glu.gluQuadricDrawStyle(earth, GLU.GLU_FILL);
+    //    glu.gluQuadricNormals(earth, GLU.GLU_FLAT);
+    //    glu.gluQuadricOrientation(earth, GLU.GLU_OUTSIDE);
+    //    final float radius = 0.1f;
+    //    final int slices = 16;
+    //    final int stacks = 16;
+    //    glu.gluSphere(earth, radius, slices, stacks);
+    //    glu.gluDeleteQuadric(earth);
+    //    gl.glPopMatrix();
 
-//    gl.glPushMatrix();
-//    gl.glTranslatef(2.5f, 2.5f, 2.5f);
-//    GLUquadric earth = glu.gluNewQuadric();
-//    glu.gluQuadricDrawStyle(earth, GLU.GLU_FILL);
-//    glu.gluQuadricNormals(earth, GLU.GLU_FLAT);
-//    glu.gluQuadricOrientation(earth, GLU.GLU_OUTSIDE);
-//    final float radius = 0.1f;
-//    final int slices = 16;
-//    final int stacks = 16;
-//    glu.gluSphere(earth, radius, slices, stacks);
-//    glu.gluDeleteQuadric(earth);
-//    gl.glPopMatrix();
+    //    gl.glBegin(GL.GL_QUADS);
+    //    setMaterial(gl, 0.8f, 0.8f, 0.8f, 1);
+    //    gl.glVertex3f(-3, -3, -3);
+    //    gl.glVertex3f(-3, +3, -3);
+    //    gl.glVertex3f(-3, +3, +3);
+    //    gl.glVertex3f(-3, -3, +3);
+    //
+    //    gl.glVertex3f(-3, -3, -3);
+    //    gl.glVertex3f(+3, -3, -3);
+    //    gl.glVertex3f(+3, +3, -3);
+    //    gl.glVertex3f(-3, +3, -3);
+    //    
+    //    gl.glVertex3f(-3, -3, -3);
+    //    gl.glVertex3f(-3, -3, +3);
+    //    gl.glVertex3f(+3, -3, +3);
+    //    gl.glVertex3f(+3, -3, -3);
+    //    
+    //    gl.glEnd();
 
-//    gl.glBegin(GL.GL_QUADS);
-//    setMaterial(gl, 0.8f, 0.8f, 0.8f, 1);
-//    gl.glVertex3f(-3, -3, -3);
-//    gl.glVertex3f(-3, +3, -3);
-//    gl.glVertex3f(-3, +3, +3);
-//    gl.glVertex3f(-3, -3, +3);
-//
-//    gl.glVertex3f(-3, -3, -3);
-//    gl.glVertex3f(+3, -3, -3);
-//    gl.glVertex3f(+3, +3, -3);
-//    gl.glVertex3f(-3, +3, -3);
-//    
-//    gl.glVertex3f(-3, -3, -3);
-//    gl.glVertex3f(-3, -3, +3);
-//    gl.glVertex3f(+3, -3, +3);
-//    gl.glVertex3f(+3, -3, -3);
-//    
-//    gl.glEnd();
-    
-    gl.glPushMatrix();
-    setMaterial(gl, 0, 0, 1, 64);
-    gl.glRotatef(180f, 0, 1, 0);
-    drawFace(gl);
-    gl.glPopMatrix();
+    // ----------------------------------------
+    // avoid stitching!
+    // ----------------------------------------
 
-    gl.glPushMatrix();
-    setMaterial(gl, 0, 1, 0, 64);
-    gl.glRotatef(0f, 0, 1, 0);
-    drawFace(gl);
-    gl.glPopMatrix();
+    gl.glEnable(GL.GL_POLYGON_OFFSET_FILL);
+    gl.glPolygonOffset(1.0f, 1.0f);
 
-    gl.glPushMatrix();
-    setMaterial(gl, 0, 1, 1, 25);
-    gl.glRotatef(-90f, 0, 1, 0);
-    drawFace(gl);
-    gl.glPopMatrix();
+    // ----------------------------------------
 
-    gl.glPushMatrix();
-    setMaterial(gl, 1, 0, 0, 25);
-    gl.glRotatef(90f, 0, 1, 0);
-    drawFace(gl);
-    gl.glPopMatrix();
+    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+//    gl.glColor3f(1, 0, 0); // RED
+    setMaterial(gl, 1, 0, 0, 32);
 
-    gl.glPushMatrix();
-    setMaterial(gl, 1, 0, 1, 25);
-    gl.glRotatef(-90f, 1, 0, 0);
-    drawFace(gl);
-    gl.glPopMatrix();
+    Icosahedron.drawIcosahedron(gl, 0);
 
-    gl.glPushMatrix();
-    setMaterial(gl, 1, 1, 0, 25);
-    gl.glRotatef(90f, 1, 0, 0);
-    drawFace(gl);
-    gl.glPopMatrix();
+    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+    //gl.glColor3f(1, 1, 1); // WHT
+    setMaterial(gl, 1, 1, 1, 32);
+
+//    Icosahedron.drawIcosahedron(gl, 1);
 
     gl.glFlush();
   }

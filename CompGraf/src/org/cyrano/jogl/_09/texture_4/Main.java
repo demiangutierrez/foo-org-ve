@@ -1,4 +1,4 @@
-package org.cyrano.jogl._11.lightA;
+package org.cyrano.jogl._09.texture_4;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -9,16 +9,20 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.InputStream;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
-import javax.media.opengl.glu.GLUquadric;
 
 import org.cyrano.jogl.util.Matrix;
 import org.cyrano.jogl.util.MatrixOps;
+
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * @author Demián Gutierrez
@@ -55,6 +59,26 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
   // --------------------------------------------------------------------------------
 
+  private Texture texture;
+
+  // --------------------------------------------------------------------------------
+
+  private void loadTexture() {
+    try {
+      InputStream is;
+      TextureData textureData;
+
+      is = ClassLoader.getSystemResourceAsStream("textures/wood-fence.jpg");
+      textureData = TextureIO.newTextureData(is, false, "bmp");
+      texture = TextureIO.newTexture(textureData);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  // --------------------------------------------------------------------------------
+
   public void init(GLAutoDrawable drawable) {
     drawable.addMouseListener(this);
     drawable.addMouseMotionListener(this);
@@ -62,28 +86,14 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     GL gl = drawable.getGL();
 
-    //gl.glDisable(GL.GL_CULL_FACE);
-    gl.glEnable(GL.GL_CULL_FACE);
+    loadTexture();
+
+    gl.glDisable(GL.GL_CULL_FACE);
+    //gl.glEnable(GL.GL_CULL_FACE);
     gl.glEnable(GL.GL_DEPTH_TEST);
-
-    gl.glEnable(GL.GL_LIGHTING);
-
-    gl.glShadeModel(GL.GL_SMOOTH);
-
-    gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
-    gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 0);
-    gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 0);
-
-    //    gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, new float[]{1.0f, 1.0f, 1.0f, 0.0f}, 0);
-
-    gl.glLightModelf(GL.GL_LIGHT_MODEL_LOCAL_VIEWER, GL.GL_TRUE);
-    
-    
-    gl.glLightf(GL.GL_LIGHT0, GL.GL_SPOT_CUTOFF, 90);
-    
-    
-    gl.glEnable(GL.GL_LIGHT0);
   }
+
+  // --------------------------------------------------------------------------------
 
   // --------------------------------------------------------------------------------
 
@@ -109,9 +119,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     double nr = 0.5;
     double fr = 2 * (dist - nr) + nr;
 
-    //System.err.println("nr: " + nr);
-    //System.err.println("fr: " + fr);
-    //System.err.println("dist: " + dist);
+    System.err.println("nr: " + nr);
+    System.err.println("fr: " + fr);
+    System.err.println("dist: " + dist);
 
     glu.gluPerspective(90, 1, nr, fr);
 
@@ -137,161 +147,64 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     glu.gluLookAt(frnDstX, frnDstY, frnDstZ, 0, 0, 0, topX, topY, topZ);
 
-    //    +--+
-    //    |ma|
-    // +--+--+--+
-    // |ce|ve|ro|
-    // +--+--+--+
-    //    |am|
-    //    +--+
-    //    |az|
-    //    +--+
-    //glu.gluLookAt(+2, +2, +2, 0, 0, 0, 0, 1, 0); // VE / MA / RO
-    //glu.gluLookAt(-2, +2, +2, 0, 0, 0, 0, 1, 0); // CE / MA / VE
-    //glu.gluLookAt(-2, -2, +2, 0, 0, 0, 0, 1, 0); // CE / AM / VE
-    //glu.gluLookAt(+2, -2, +2, 0, 0, 0, 0, 1, 0); // VE / AM / RO
+    // ----------------------------------------
+    // avoid stitching!
+    // ----------------------------------------
 
-    //    +--+
-    //    |ma|
-    // +--+--+--+
-    // |ro|az|ce|
-    // +--+--+--+
-    //    |am|
-    //    +--+
-    //    |ve|
-    //    +--+
-    //glu.gluLookAt(+2, +2, -2, 0, 0, 0, 0, 1, 0); // RO / MA / AZ
-    //glu.gluLookAt(-2, +2, -2, 0, 0, 0, 0, 1, 0); // AZ / MA / CE
-    //glu.gluLookAt(-2, -2, -2, 0, 0, 0, 0, 1, 0); // AZ / AM / CE
-    //glu.gluLookAt(+2, -2, -2, 0, 0, 0, 0, 1, 0); // RO / AM / CE
+    gl.glEnable(GL.GL_POLYGON_OFFSET_FILL);
+    gl.glPolygonOffset(0.2f, 0.2f);
 
-    gl.glDisable(GL.GL_LIGHTING);
-    drawAxes(gl);
-    gl.glEnable(GL.GL_LIGHTING);
+    // ----------------------------------------
 
-    gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, //
-        new float[]{2.0f, 2.0f, 2.0f, 1.0f}, 0);
-    gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPOT_DIRECTION, new float[]{-2.0f, -2.0f, -2.0f, 0.0f}, 0);
+    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+    //gl.glColor3f(1, 0, 0); // RED
 
+    gl.glEnable(GL.GL_TEXTURE_2D);
+    texture.bind();
 
-//    gl.glPushMatrix();
-//    gl.glTranslatef(2.5f, 2.5f, 2.5f);
-//    GLUquadric earth = glu.gluNewQuadric();
-//    glu.gluQuadricDrawStyle(earth, GLU.GLU_FILL);
-//    glu.gluQuadricNormals(earth, GLU.GLU_FLAT);
-//    glu.gluQuadricOrientation(earth, GLU.GLU_OUTSIDE);
-//    final float radius = 0.1f;
-//    final int slices = 16;
-//    final int stacks = 16;
-//    glu.gluSphere(earth, radius, slices, stacks);
-//    glu.gluDeleteQuadric(earth);
-//    gl.glPopMatrix();
+    drawTriangles(gl);
+    gl.glDisable(GL.GL_TEXTURE_2D);
 
-//    gl.glBegin(GL.GL_QUADS);
-//    setMaterial(gl, 0.8f, 0.8f, 0.8f, 1);
-//    gl.glVertex3f(-3, -3, -3);
-//    gl.glVertex3f(-3, +3, -3);
-//    gl.glVertex3f(-3, +3, +3);
-//    gl.glVertex3f(-3, -3, +3);
-//
-//    gl.glVertex3f(-3, -3, -3);
-//    gl.glVertex3f(+3, -3, -3);
-//    gl.glVertex3f(+3, +3, -3);
-//    gl.glVertex3f(-3, +3, -3);
-//    
-//    gl.glVertex3f(-3, -3, -3);
-//    gl.glVertex3f(-3, -3, +3);
-//    gl.glVertex3f(+3, -3, +3);
-//    gl.glVertex3f(+3, -3, -3);
-//    
-//    gl.glEnd();
-    
-    gl.glPushMatrix();
-    setMaterial(gl, 0, 0, 1, 64);
-    gl.glRotatef(180f, 0, 1, 0);
-    drawFace(gl);
-    gl.glPopMatrix();
+    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+    gl.glColor3f(1, 1, 1); // WHT
 
-    gl.glPushMatrix();
-    setMaterial(gl, 0, 1, 0, 64);
-    gl.glRotatef(0f, 0, 1, 0);
-    drawFace(gl);
-    gl.glPopMatrix();
+    drawTriangles(gl);
 
-    gl.glPushMatrix();
-    setMaterial(gl, 0, 1, 1, 25);
-    gl.glRotatef(-90f, 0, 1, 0);
-    drawFace(gl);
-    gl.glPopMatrix();
+    // ----------------------------------------
+    // back to normal
+    // ----------------------------------------
 
-    gl.glPushMatrix();
-    setMaterial(gl, 1, 0, 0, 25);
-    gl.glRotatef(90f, 0, 1, 0);
-    drawFace(gl);
-    gl.glPopMatrix();
-
-    gl.glPushMatrix();
-    setMaterial(gl, 1, 0, 1, 25);
-    gl.glRotatef(-90f, 1, 0, 0);
-    drawFace(gl);
-    gl.glPopMatrix();
-
-    gl.glPushMatrix();
-    setMaterial(gl, 1, 1, 0, 25);
-    gl.glRotatef(90f, 1, 0, 0);
-    drawFace(gl);
-    gl.glPopMatrix();
+    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+    gl.glDisable(GL.GL_POLYGON_OFFSET_FILL);
 
     gl.glFlush();
   }
 
   // --------------------------------------------------------------------------------
 
-  private void setMaterial(GL gl, float r, float g, float b, float s) {
-    setMaterialProperty(gl, GL.GL_AMBIENT_AND_DIFFUSE, r / 1.2f, g / 1.2f, b / 1.2f);
-    setMaterialProperty(gl, GL.GL_SPECULAR, r, g, b);
-    //setMaterialProperty(gl, GL.GL_EMISSION, r / 2, g / 2, b / 2);
-    setMaterialProperty(gl, GL.GL_EMISSION, 0, 0, 0);
-    setMaterialProperty(gl, GL.GL_SHININESS, s);
-    gl.glColor3f(r, g, b);
-  }
+  public void drawTriangles(GL gl) {
+    gl.glBegin(GL.GL_TRIANGLE_STRIP);
 
-  private void setMaterialProperty(GL gl, int property, float r, float g, float b) {
-    gl.glMaterialfv(GL.GL_FRONT_AND_BACK, property, //
-        new float[]{r, g, b, 1}, 0);
-  }
+    gl.glTexCoord2f(0.0f, 0f);
+    gl.glVertex3f(-3, -1, -0.5f);
 
-  private void setMaterialProperty(GL gl, int property, float v) {
-    gl.glMaterialf(GL.GL_FRONT_AND_BACK, property, v);
-  }
+    gl.glTexCoord2f(0.16f, 1f);
+    gl.glVertex3f(-2, +1, +0);
 
-  // --------------------------------------------------------------------------------
+    gl.glTexCoord2f(0.33f, 0f);
+    gl.glVertex3f(-1, -1, +0);
 
-  private void drawFace(GL gl) {
-    gl.glBegin(GL.GL_QUADS);
-    gl.glVertex3f(-0.5f, -0.5f, +0.5f);
-    gl.glVertex3f(+0.5f, -0.5f, +0.5f);
-    gl.glVertex3f(+0.5f, +0.5f, +0.5f);
-    gl.glVertex3f(-0.5f, +0.5f, +0.5f);
-    gl.glEnd();
-  }
+    gl.glTexCoord2f(0.5f, 1f);
+    gl.glVertex3f(+0, +1, -0.5f);
 
-  // --------------------------------------------------------------------------------
+    gl.glTexCoord2f(0.66f, 0f);
+    gl.glVertex3f(+1, -1, +0);
 
-  private void drawAxes(GL gl) {
-    gl.glBegin(GL.GL_LINES);
+    gl.glTexCoord2f(0.83f, 1f);
+    gl.glVertex3f(+2, +1, +0);
 
-    gl.glColor3f(1.0f, 0.5f, 0.5f);
-    gl.glVertex3f(0f, 0f, 0f);
-    gl.glVertex3f(5f, 0f, 0f);
-
-    gl.glColor3f(0.5f, 1.0f, 0.5f);
-    gl.glVertex3f(0f, 0f, 0f);
-    gl.glVertex3f(0f, 5f, 0f);
-
-    gl.glColor3f(0.5f, 0.5f, 1.0f);
-    gl.glVertex3f(0f, 0f, 0f);
-    gl.glVertex3f(0f, 0f, 5f);
+    gl.glTexCoord2f(1.0f, 0f);
+    gl.glVertex3f(+3, -1, -0.5f);
 
     gl.glEnd();
   }
