@@ -2,25 +2,26 @@ package org.cyrano.jogl._10.icosahedron;
 
 import javax.media.opengl.GL;
 
+import org.cyrano.util.misc.Hwh;
 import org.cyrano.util.misc.MathUtil;
 
+import com.sun.opengl.util.texture.Texture;
+
 public class Icosahedron {
+
+  public static Texture texture;
 
   public static double X = 0.525731112119133606f;
   public static double Z = 0.850650808352039932f;
 
   //@begnf
-  public static double[][] vdata = {
-      {-X, +0, +Z}, {+X, +0, +Z}, {-X, +0, -Z}, {+X, +0, -Z},    
-      {+0, +Z, +X}, {+0, +Z, -X}, {+0, -Z, +X}, {+0, -Z, -X}, 
-      {+Z, +X, +0}, {-Z, +X, +0}, {+Z, -X, +0}, {-Z, -X, +0}};
+  public static double[][] vdata = {{-X, +0, +Z}, {+X, +0, +Z}, {-X, +0, -Z}, {+X, +0, -Z}, {+0, +Z, +X}, {+0, +Z, -X},
+      {+0, -Z, +X}, {+0, -Z, -X}, {+Z, +X, +0}, {-Z, +X, +0}, {+Z, -X, +0}, {-Z, -X, +0}};
 
-  public static int   [][] tindx = {
-      { 0,  4,  1}, { 0,  9,  4}, { 9,  5,  4}, { 4,  5,  8},
-      { 4,  8,  1}, { 8, 10,  1}, { 8,  3, 10}, { 5,  3,  8},
-      { 5,  2,  3}, { 2,  7,  3}, { 7, 10,  3}, { 7,  6, 10},
-      { 7, 11,  6}, {11,  0,  6}, { 0,  1,  6}, { 6,  1, 10},
-      { 9,  0, 11}, { 9, 11,  2}, { 9,  2,  5}, { 7,  2, 11}};
+  public static int[][] tindx = {{0, 4, 1}, {0, 9, 4}, {9, 5, 4}, {4, 5, 8}, {4, 8, 1}, {8, 10, 1}, {8, 3, 10},
+      {5, 3, 8}, {5, 2, 3}, {2, 7, 3}, {7, 10, 3}, {7, 6, 10}, {7, 11, 6}, {11, 0, 6}, {0, 1, 6}, {6, 1, 10},
+      {9, 0, 11}, {9, 11, 2}, {9, 2, 5}, {7, 2, 11}};
+
   //@endnf
 
   // --------------------------------------------------------------------------------
@@ -81,13 +82,47 @@ public class Icosahedron {
 
   // --------------------------------------------------------------------------------
 
+  private static double[] calcTextureMap(double[] vtx) {
+    double[] ret = new double[3];
+
+    ret[0] = Math.sqrt(vtx[0] * vtx[0] + vtx[1] * vtx[1] + vtx[2] * vtx[2]);
+    ret[1] = Math.acos(vtx[2] / ret[0]);
+    ret[2] = Math.atan2(vtx[1], vtx[0]);
+
+    ret[1] += Math.PI;
+    ret[1] /= (2 * Math.PI);
+    ret[2] += Math.PI;
+    ret[2] /= (2 * Math.PI);
+
+    return ret;
+  }
+
   private static void drawTriangle(GL gl, //
       double[] v1, double[] v2, double[] v3) {
 
+    double[] spherical;
+
+    gl.glEnable(GL.GL_TEXTURE_2D);
+
+    texture.bind();
+
     gl.glBegin(GL.GL_TRIANGLES);
+
+    spherical = calcTextureMap(v1);
+//    System.err.println(spherical[0] + ";" + spherical[1] + ";" + spherical[2]);
+    gl.glTexCoord2d(spherical[1], spherical[2]);
     gl.glVertex3d(v1[0], v1[1], v1[2]);
+
+    spherical = calcTextureMap(v2);
+//    System.err.println(spherical[0] + ";" + spherical[1] + ";" + spherical[2]);
+    gl.glTexCoord2d(spherical[1], spherical[2]);
     gl.glVertex3d(v2[0], v2[1], v2[2]);
+
+    spherical = calcTextureMap(v3);
+//    System.err.println(spherical[0] + ";" + spherical[1] + ";" + spherical[2]);
+    gl.glTexCoord2d(spherical[1], spherical[2]);
     gl.glVertex3d(v3[0], v3[1], v3[2]);
+
     gl.glEnd();
   }
 }
