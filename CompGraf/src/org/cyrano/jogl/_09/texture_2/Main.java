@@ -28,7 +28,7 @@ public class Main implements GLEventListener {
       InputStream is;
       TextureData textureData;
 
-      is = ClassLoader.getSystemResourceAsStream("textures/wood-fence.jpg");
+      is = ClassLoader.getSystemResourceAsStream("textures/wood-fence_256x256.jpg");
       textureData = TextureIO.newTextureData(is, false, "bmp");
       texture = TextureIO.newTexture(textureData);
 
