@@ -36,9 +36,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
   private double topY = 1.0f;
   private double topZ = 0.0f;
 
-  private double frnX = 0.0f;
-  private double frnY = 0.0f;
-  private double frnZ = 1.0f;
+  private double eyeX = 0.0f;
+  private double eyeY = 0.0f;
+  private double eyeZ = 1.0f;
 
   private double dist = 5;
 
@@ -174,18 +174,18 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     gl.glLoadIdentity();
 
-    double frnDstX = frnX * dist;
-    double frnDstY = frnY * dist;
-    double frnDstZ = frnZ * dist;
+    double eyeDstX = eyeX * dist;
+    double eyeDstY = eyeY * dist;
+    double eyeDstZ = eyeZ * dist;
 
-    glu.gluLookAt(frnDstX, frnDstY, frnDstZ, 0, 0, 0, topX, topY, topZ);
+    glu.gluLookAt(eyeDstX, eyeDstY, eyeDstZ, 0, 0, 0, topX, topY, topZ);
 
     drawAxes(gl);
 
     float dt = calculateDt();
 
-    for (Body celestialBody : bodyList) {
-      celestialBody.draw(gl, dt);
+    for (Body body : bodyList) {
+      body.draw(gl, dt);
     }
   }
 
@@ -277,9 +277,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
   // --------------------------------------------------------------------------------
 
   public void rotate(float thetaX, float thetaY) {
-    Matrix curFrn = new Matrix(4, 1);
-    curFrn.setData( //
-        new double[]{frnX, frnY, frnZ, 1});
+    Matrix curEye = new Matrix(4, 1);
+    curEye.setData( //
+        new double[]{eyeX, eyeY, eyeZ, 1});
 
     Matrix curTop = new Matrix(4, 1);
     curTop.setData( //
@@ -287,23 +287,23 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     Matrix ry = MatrixOps.rotateY(thetaY);
 
-    Matrix newFrn = MatrixOps.matrixMult(ry, curFrn);
+    Matrix newEye = MatrixOps.matrixMult(ry, curEye);
     Matrix newTop = MatrixOps.matrixMult(ry, curTop);
 
-    curFrn = newFrn;
+    curEye = newEye;
     curTop = newTop;
 
-    Matrix curSid = MatrixOps.crossProduct(curFrn, curTop);
+    Matrix curSid = MatrixOps.crossProduct(curEye, curTop);
 
     Matrix rs = MatrixOps.rotate( //
         -thetaX, curSid.get(0, 0), curSid.get(1, 0), curSid.get(2, 0));
 
-    newFrn = MatrixOps.matrixMult(rs, curFrn);
+    newEye = MatrixOps.matrixMult(rs, curEye);
     newTop = MatrixOps.matrixMult(rs, curTop);
 
-    frnX = newFrn.get(0, 0);
-    frnY = newFrn.get(1, 0);
-    frnZ = newFrn.get(2, 0);
+    eyeX = newEye.get(0, 0);
+    eyeY = newEye.get(1, 0);
+    eyeZ = newEye.get(2, 0);
 
     topX = newTop.get(0, 0);
     topY = newTop.get(1, 0);
