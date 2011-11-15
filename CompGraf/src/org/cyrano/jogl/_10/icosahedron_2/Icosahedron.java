@@ -98,10 +98,10 @@ public class Icosahedron {
     ret[1] = Math.acos(vtx[2] / ret[0]);
     ret[2] = Math.atan2(vtx[1], vtx[0]);
 
-    ret[1] += Math.PI;
-    ret[1] /= (2 * Math.PI);
-    ret[2] += Math.PI;
-    ret[2] /= (2 * Math.PI);
+    //    ret[1] += Math.PI;
+    //    ret[1] /= (2 * Math.PI);
+    //    ret[2] += Math.PI;
+    //    ret[2] /= (2 * Math.PI);
 
     return ret;
   }
@@ -120,8 +120,8 @@ public class Icosahedron {
     gl.glBegin(GL.GL_TRIANGLES);
     gl.glColor3d(r, g, b);
 
-    double[] v12 = {v1[0] - v2[0], v1[1] - v2[1], v1[1] - v2[1]};
-    double[] v13 = {v1[0] - v3[0], v1[1] - v3[1], v1[1] - v3[1]};
+    double[] v12 = {v1[0] - v2[0], v1[1] - v2[1], v1[2] - v2[2]};
+    double[] v13 = {v1[0] - v3[0], v1[1] - v3[1], v1[2] - v3[2]};
 
     double[] cc = MathUtil.cross(v12, v13);
 
