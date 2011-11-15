@@ -76,10 +76,10 @@ public class LightParent {
     gl.glLightfv(GL.GL_LIGHT1, GL.GL_SPECULAR, //
         red, 0); // Change spec light :) :) !!!
 
-    gl.glLightf(GL.GL_LIGHT1, GL.GL_CONSTANT_ATTENUATION, 1.0f);
+    gl.glLightf(GL.GL_LIGHT1, GL.GL_CONSTANT_ATTENUATION, 3.0f);
 
     //gl.glLightf(GL.GL_LIGHT1, GL.GL_SPOT_CUTOFF, 10);
-    gl.glLightf(GL.GL_LIGHT1, GL.GL_SPOT_CUTOFF, 180);
+    gl.glLightf(GL.GL_LIGHT1, GL.GL_SPOT_CUTOFF, 50);
 
     gl.glEnable(GL.GL_LIGHT1);
 
@@ -90,12 +90,12 @@ public class LightParent {
     gl.glLightfv(GL.GL_LIGHT2, GL.GL_DIFFUSE, //
         green, 0);
     gl.glLightfv(GL.GL_LIGHT2, GL.GL_SPECULAR, //
-        red, 0);
+        green, 0);
 
-    gl.glLightf(GL.GL_LIGHT2, GL.GL_CONSTANT_ATTENUATION, 1.0f);
+    gl.glLightf(GL.GL_LIGHT2, GL.GL_CONSTANT_ATTENUATION, 2.0f);
 
     //gl.glLightf(GL.GL_LIGHT2, GL.GL_SPOT_CUTOFF, 10);
-    gl.glLightf(GL.GL_LIGHT2, GL.GL_SPOT_CUTOFF, 180);
+    gl.glLightf(GL.GL_LIGHT2, GL.GL_SPOT_CUTOFF, 50);
 
     gl.glEnable(GL.GL_LIGHT2);
 
