@@ -95,7 +95,15 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     GL gl = drawable.getGL();
 
-    gl.glViewport(0, 0, w, h);
+    float r = ((float) w) / h;
+
+    if (r >= 1) {
+      int d = (w - h) / 2;
+      gl.glViewport(d, 0, h, h);
+    } else {
+      int d = (h - w) / 2;
+      gl.glViewport(0, d, w, w);
+    }
 
     calculatePerspective(gl);
   }
