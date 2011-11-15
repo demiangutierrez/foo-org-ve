@@ -1,4 +1,4 @@
-package org.cyrano.jogl._11.lightA;
+package org.cyrano.jogl._11.light_1;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -15,15 +15,24 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
-import javax.media.opengl.glu.GLUquadric;
 
+import org.cyrano.jogl._11.LightParent;
 import org.cyrano.jogl.util.Matrix;
 import org.cyrano.jogl.util.MatrixOps;
+
+import com.sun.opengl.util.FPSAnimator;
 
 /**
  * @author Demián Gutierrez
  */
-public class Main implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
+public class Main extends LightParent //
+    implements
+      GLEventListener,
+      MouseListener,
+      MouseMotionListener,
+      KeyListener {
+
+  public boolean TRIANGLE_NORMALS = true;
 
   // --------------------------------------------------------------------------------
   // Camera
@@ -70,19 +79,7 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     gl.glShadeModel(GL.GL_SMOOTH);
 
-    gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
-    gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 0);
-    gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 0);
-
-    //    gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, new float[]{1.0f, 1.0f, 1.0f, 0.0f}, 0);
-
-    gl.glLightModelf(GL.GL_LIGHT_MODEL_LOCAL_VIEWER, GL.GL_TRUE);
-    
-    
-    gl.glLightf(GL.GL_LIGHT0, GL.GL_SPOT_CUTOFF, 90);
-    
-    
-    gl.glEnable(GL.GL_LIGHT0);
+    createLight(gl);
   }
 
   // --------------------------------------------------------------------------------
@@ -126,6 +123,8 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     calculatePerspective(gl);
 
+    calculateSpin();
+
     gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
@@ -137,107 +136,46 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     glu.gluLookAt(frnDstX, frnDstY, frnDstZ, 0, 0, 0, topX, topY, topZ);
 
-    //    +--+
-    //    |ma|
-    // +--+--+--+
-    // |ce|ve|ro|
-    // +--+--+--+
-    //    |am|
-    //    +--+
-    //    |az|
-    //    +--+
-    //glu.gluLookAt(+2, +2, +2, 0, 0, 0, 0, 1, 0); // VE / MA / RO
-    //glu.gluLookAt(-2, +2, +2, 0, 0, 0, 0, 1, 0); // CE / MA / VE
-    //glu.gluLookAt(-2, -2, +2, 0, 0, 0, 0, 1, 0); // CE / AM / VE
-    //glu.gluLookAt(+2, -2, +2, 0, 0, 0, 0, 1, 0); // VE / AM / RO
-
-    //    +--+
-    //    |ma|
-    // +--+--+--+
-    // |ro|az|ce|
-    // +--+--+--+
-    //    |am|
-    //    +--+
-    //    |ve|
-    //    +--+
-    //glu.gluLookAt(+2, +2, -2, 0, 0, 0, 0, 1, 0); // RO / MA / AZ
-    //glu.gluLookAt(-2, +2, -2, 0, 0, 0, 0, 1, 0); // AZ / MA / CE
-    //glu.gluLookAt(-2, -2, -2, 0, 0, 0, 0, 1, 0); // AZ / AM / CE
-    //glu.gluLookAt(+2, -2, -2, 0, 0, 0, 0, 1, 0); // RO / AM / CE
-
     gl.glDisable(GL.GL_LIGHTING);
     drawAxes(gl);
     gl.glEnable(GL.GL_LIGHTING);
 
-    gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, //
-        new float[]{2.0f, 2.0f, 2.0f, 1.0f}, 0);
-    gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPOT_DIRECTION, new float[]{-2.0f, -2.0f, -2.0f, 0.0f}, 0);
+    drawAllLights(gl);
 
+    // ----------------------------------------
 
-//    gl.glPushMatrix();
-//    gl.glTranslatef(2.5f, 2.5f, 2.5f);
-//    GLUquadric earth = glu.gluNewQuadric();
-//    glu.gluQuadricDrawStyle(earth, GLU.GLU_FILL);
-//    glu.gluQuadricNormals(earth, GLU.GLU_FLAT);
-//    glu.gluQuadricOrientation(earth, GLU.GLU_OUTSIDE);
-//    final float radius = 0.1f;
-//    final int slices = 16;
-//    final int stacks = 16;
-//    glu.gluSphere(earth, radius, slices, stacks);
-//    glu.gluDeleteQuadric(earth);
-//    gl.glPopMatrix();
-
-//    gl.glBegin(GL.GL_QUADS);
-//    setMaterial(gl, 0.8f, 0.8f, 0.8f, 1);
-//    gl.glVertex3f(-3, -3, -3);
-//    gl.glVertex3f(-3, +3, -3);
-//    gl.glVertex3f(-3, +3, +3);
-//    gl.glVertex3f(-3, -3, +3);
-//
-//    gl.glVertex3f(-3, -3, -3);
-//    gl.glVertex3f(+3, -3, -3);
-//    gl.glVertex3f(+3, +3, -3);
-//    gl.glVertex3f(-3, +3, -3);
-//    
-//    gl.glVertex3f(-3, -3, -3);
-//    gl.glVertex3f(-3, -3, +3);
-//    gl.glVertex3f(+3, -3, +3);
-//    gl.glVertex3f(+3, -3, -3);
-//    
-//    gl.glEnd();
-    
     gl.glPushMatrix();
-    setMaterial(gl, 0, 0, 1, 64);
+    setMaterial(gl);
     gl.glRotatef(180f, 0, 1, 0);
     drawFace(gl);
     gl.glPopMatrix();
 
     gl.glPushMatrix();
-    setMaterial(gl, 0, 1, 0, 64);
+    setMaterial(gl);
     gl.glRotatef(0f, 0, 1, 0);
     drawFace(gl);
     gl.glPopMatrix();
 
     gl.glPushMatrix();
-    setMaterial(gl, 0, 1, 1, 25);
+    setMaterial(gl);
     gl.glRotatef(-90f, 0, 1, 0);
     drawFace(gl);
     gl.glPopMatrix();
 
     gl.glPushMatrix();
-    setMaterial(gl, 1, 0, 0, 25);
+    setMaterial(gl);
     gl.glRotatef(90f, 0, 1, 0);
     drawFace(gl);
     gl.glPopMatrix();
 
     gl.glPushMatrix();
-    setMaterial(gl, 1, 0, 1, 25);
+    setMaterial(gl);
     gl.glRotatef(-90f, 1, 0, 0);
     drawFace(gl);
     gl.glPopMatrix();
 
     gl.glPushMatrix();
-    setMaterial(gl, 1, 1, 0, 25);
+    setMaterial(gl);
     gl.glRotatef(90f, 1, 0, 0);
     drawFace(gl);
     gl.glPopMatrix();
@@ -247,32 +185,44 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
   // --------------------------------------------------------------------------------
 
-  private void setMaterial(GL gl, float r, float g, float b, float s) {
-    setMaterialProperty(gl, GL.GL_AMBIENT_AND_DIFFUSE, r / 1.2f, g / 1.2f, b / 1.2f);
-    setMaterialProperty(gl, GL.GL_SPECULAR, r, g, b);
-    //setMaterialProperty(gl, GL.GL_EMISSION, r / 2, g / 2, b / 2);
-    setMaterialProperty(gl, GL.GL_EMISSION, 0, 0, 0);
-    setMaterialProperty(gl, GL.GL_SHININESS, s);
-    gl.glColor3f(r, g, b);
-  }
-
-  private void setMaterialProperty(GL gl, int property, float r, float g, float b) {
-    gl.glMaterialfv(GL.GL_FRONT_AND_BACK, property, //
-        new float[]{r, g, b, 1}, 0);
-  }
-
-  private void setMaterialProperty(GL gl, int property, float v) {
-    gl.glMaterialf(GL.GL_FRONT_AND_BACK, property, v);
-  }
-
-  // --------------------------------------------------------------------------------
-
   private void drawFace(GL gl) {
     gl.glBegin(GL.GL_QUADS);
+
+    // V1
+    if (TRIANGLE_NORMALS) {
+      gl.glNormal3f(0, 0, 1);
+    } else {
+      gl.glNormal3f(-0.5f, -0.5f, +0.5f);
+    }
+
     gl.glVertex3f(-0.5f, -0.5f, +0.5f);
+
+    // V2
+    if (TRIANGLE_NORMALS) {
+      gl.glNormal3f(0, 0, 1);
+    } else {
+      gl.glNormal3f(+0.5f, -0.5f, +0.5f);
+    }
+
     gl.glVertex3f(+0.5f, -0.5f, +0.5f);
+
+    // V3
+    if (TRIANGLE_NORMALS) {
+      gl.glNormal3f(0, 0, 1);
+    } else {
+      gl.glNormal3f(+0.5f, +0.5f, +0.5f);
+    }
+
     gl.glVertex3f(+0.5f, +0.5f, +0.5f);
+
+    // V4
+    if (TRIANGLE_NORMALS) {
+      gl.glNormal3f(0, 0, 1);
+    } else {
+      gl.glNormal3f(-0.5f, +0.5f, +0.5f);
+    }
     gl.glVertex3f(-0.5f, +0.5f, +0.5f);
+
     gl.glEnd();
   }
 
@@ -423,6 +373,11 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
           dist /= 2;
         }
         break;
+      case 'S' :
+      case 's' :
+        animate = !animate;
+        prevTime = 0;
+        break;
     }
 
     glCanvas.repaint();
@@ -446,9 +401,12 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     Frame frame = new Frame("JOGL Main");
 
     GLCanvas canvas = new GLCanvas();
+
+    FPSAnimator animator = new FPSAnimator(canvas, 60);
     Main m = new Main();
     m.glCanvas = canvas;
     canvas.addGLEventListener(m);
+    animator.start();
 
     frame.add(canvas);
     frame.setSize(300, 300);

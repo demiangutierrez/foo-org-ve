@@ -25,15 +25,19 @@ public class Icosahedron {
 
   // --------------------------------------------------------------------------------
 
+  public static boolean triangleNormals;
+
+  // --------------------------------------------------------------------------------
+
   private Icosahedron() {
     // Empty
   }
 
   // --------------------------------------------------------------------------------
 
-//  public static double r;
-//  public static double g;
-//  public static double b;
+  //  public static double r;
+  //  public static double g;
+  //  public static double b;
 
   public static void drawIcosahedron(GL gl, int depth) {
     for (int i = 0; i < tindx.length; i++) {
@@ -85,41 +89,71 @@ public class Icosahedron {
 
   // --------------------------------------------------------------------------------
 
-  private static double[] cross(double[] a, double[] b) {
-    double[] r = {0, 0, 0};
-
-    r[0] = a[1] * b[2] - a[2] * b[1];
-    r[1] = a[2] * b[0] - a[0] * b[2];
-    r[2] = a[0] * b[1] - a[1] * b[0];
-
-    return r;
-  }
-
   private static void drawTriangle(GL gl, //
       double[] v1, double[] v2, double[] v3) {
 
     gl.glBegin(GL.GL_TRIANGLES);
-//    gl.glColor3d(r, g, b);
+    //    gl.glColor3d(r, g, b);
 
     double[] v12 = {v1[0] - v2[0], v1[1] - v2[1], v1[1] - v2[1]};
     double[] v13 = {v1[0] - v3[0], v1[1] - v3[1], v1[1] - v3[1]};
 
-    double[] cc = cross(v12, v13);
+    double[] cc = MathUtil.cross(v12, v13);
 
     if (cc[0] / v1[0] > 0 && cc[1] / v1[1] > 0 && cc[2] / v1[2] > 0) {
+      cc = MathUtil.cross(v13, v12);
+
+      if (triangleNormals) {
+        gl.glNormal3d(cc[0], cc[1], cc[2]);
+      } else {
+        gl.glNormal3d(v3[0], v3[1], v3[2]);
+      }
+
       gl.glVertex3d(v3[0], v3[1], v3[2]);
+
+      if (triangleNormals) {
+        gl.glNormal3d(cc[0], cc[1], cc[2]);
+      } else {
+        gl.glNormal3d(v1[0], v1[1], v1[2]);
+      }
+
       gl.glVertex3d(v1[0], v1[1], v1[2]);
+
+      if (triangleNormals) {
+        gl.glNormal3d(cc[0], cc[1], cc[2]);
+      } else {
+        gl.glNormal3d(v2[0], v2[1], v2[2]);
+      }
+
       gl.glVertex3d(v2[0], v2[1], v2[2]);
     } else {
+
+      cc = MathUtil.cross(v13, v12);
+      if (triangleNormals) {
+        gl.glNormal3d(cc[0], cc[1], cc[2]);
+      } else {
+        gl.glNormal3d(v2[0], v2[1], v2[2]);
+      }
+
       gl.glVertex3d(v2[0], v2[1], v2[2]);
+
+      if (triangleNormals) {
+        gl.glNormal3d(cc[0], cc[1], cc[2]);
+      } else {
+        gl.glNormal3d(v1[0], v1[1], v1[2]);
+      }
+
       gl.glVertex3d(v1[0], v1[1], v1[2]);
+
+      if (triangleNormals) {
+        gl.glNormal3d(cc[0], cc[1], cc[2]);
+      } else {
+        gl.glNormal3d(v3[0], v3[1], v3[2]);
+      }
+
       gl.glVertex3d(v3[0], v3[1], v3[2]);
     }
 
     gl.glEnd();
-
-//    r /= 1.001;
-//    g /= 1.001;
-//    b /= 1.001;
   }
 }
