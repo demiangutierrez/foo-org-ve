@@ -19,6 +19,7 @@ import javax.media.opengl.glu.GLU;
 import org.cyrano.jogl._11.LightParent;
 import org.cyrano.jogl.util.Matrix;
 import org.cyrano.jogl.util.MatrixOps;
+import org.cyrano.util.misc.MathUtil;
 
 import com.sun.opengl.util.FPSAnimator;
 
@@ -32,7 +33,7 @@ public class Main extends LightParent //
       MouseMotionListener,
       KeyListener {
 
-  public boolean TRIANGLE_NORMALS = true;
+  public boolean QUAD_NORMALS = true;
 
   // --------------------------------------------------------------------------------
   // Camera
@@ -191,25 +192,29 @@ public class Main extends LightParent //
     gl.glBegin(GL.GL_QUADS);
 
     // V1
-    if (TRIANGLE_NORMALS) {
+    if (QUAD_NORMALS) {
       gl.glNormal3f(0, 0, 1);
     } else {
-      gl.glNormal3f(-0.5f, -0.5f, +0.5f);
+      double[] n = {-0.5f, -0.5f, +0.5f};
+      n = MathUtil.nor(n);
+      gl.glNormal3dv(n, 0);
     }
 
     gl.glVertex3f(-0.5f, -0.5f, +0.5f);
 
     // V2
-    if (TRIANGLE_NORMALS) {
+    if (QUAD_NORMALS) {
       gl.glNormal3f(0, 0, 1);
     } else {
+      double[] n = {-0.5f, -0.5f, +0.5f};
+      n = MathUtil.nor(n);
       gl.glNormal3f(+0.5f, -0.5f, +0.5f);
     }
 
     gl.glVertex3f(+0.5f, -0.5f, +0.5f);
 
     // V3
-    if (TRIANGLE_NORMALS) {
+    if (QUAD_NORMALS) {
       gl.glNormal3f(0, 0, 1);
     } else {
       gl.glNormal3f(+0.5f, +0.5f, +0.5f);
@@ -218,7 +223,7 @@ public class Main extends LightParent //
     gl.glVertex3f(+0.5f, +0.5f, +0.5f);
 
     // V4
-    if (TRIANGLE_NORMALS) {
+    if (QUAD_NORMALS) {
       gl.glNormal3f(0, 0, 1);
     } else {
       gl.glNormal3f(-0.5f, +0.5f, +0.5f);
