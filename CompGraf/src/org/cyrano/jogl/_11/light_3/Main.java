@@ -1,4 +1,4 @@
-package org.cyrano.jogl._11.light_2;
+package org.cyrano.jogl._11.light_3;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.InputStream;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -21,6 +22,9 @@ import org.cyrano.jogl.util.Matrix;
 import org.cyrano.jogl.util.MatrixOps;
 
 import com.sun.opengl.util.FPSAnimator;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * @author Demián Gutierrez
@@ -31,10 +35,6 @@ public class Main extends LightParent //
       MouseListener,
       MouseMotionListener,
       KeyListener {
-
-  public boolean DRAW_WIREFRAME = false;
-  public boolean TRIANGLE_NORMALS = true;
-  public int DETAIL_LEVEL = 3;
 
   // --------------------------------------------------------------------------------
   // Camera
@@ -66,6 +66,34 @@ public class Main extends LightParent //
 
   // --------------------------------------------------------------------------------
 
+  private Texture texture;
+
+  // --------------------------------------------------------------------------------
+
+  private void loadTexture() {
+    try {
+      InputStream is;
+      TextureData textureData;
+
+      is = ClassLoader.getSystemResourceAsStream("textures/wood-fence_256x256.jpg");
+
+      // --------------------------------------------------------
+      // w/o mipmaps
+      // textureData = TextureIO.newTextureData(is, false, null);
+      // --------------------------------------------------------
+      // w.. mipmaps
+      textureData = TextureIO.newTextureData(is, true, null);
+      // --------------------------------------------------------
+
+      texture = TextureIO.newTexture(textureData);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  // --------------------------------------------------------------------------------
+
   public void init(GLAutoDrawable drawable) {
     drawable.addMouseListener(this);
     drawable.addMouseMotionListener(this);
@@ -73,14 +101,18 @@ public class Main extends LightParent //
 
     GL gl = drawable.getGL();
 
-    //gl.glDisable(GL.GL_CULL_FACE);
-    gl.glEnable(GL.GL_CULL_FACE);
+    loadTexture();
+
+    gl.glDisable(GL.GL_CULL_FACE);
+    //gl.glEnable(GL.GL_CULL_FACE);
     gl.glEnable(GL.GL_DEPTH_TEST);
 
     gl.glShadeModel(GL.GL_SMOOTH);
 
     createLight(gl);
   }
+
+  // --------------------------------------------------------------------------------
 
   // --------------------------------------------------------------------------------
 
@@ -106,9 +138,9 @@ public class Main extends LightParent //
     double nr = 0.5;
     double fr = 2 * (dist - nr) + nr;
 
-    //System.err.println("nr: " + nr);
-    //System.err.println("fr: " + fr);
-    //System.err.println("dist: " + dist);
+    System.err.println("nr: " + nr);
+    System.err.println("fr: " + fr);
+    System.err.println("dist: " + dist);
 
     glu.gluPerspective(90, 1, nr, fr);
 
@@ -147,24 +179,30 @@ public class Main extends LightParent //
     // ----------------------------------------
 
     gl.glEnable(GL.GL_POLYGON_OFFSET_FILL);
-    gl.glPolygonOffset(1.0f, 1.0f);
+    gl.glPolygonOffset(0.2f, 0.2f);
 
     // ----------------------------------------
 
     gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+    //gl.glColor3f(1, 0, 0); // RED
 
-    setMaterial(gl, 1, 1, 1, 1);
+    gl.glEnable(GL.GL_TEXTURE_2D);
+    texture.bind();
 
-    Icosahedron.triangleNormals = TRIANGLE_NORMALS;
-    Icosahedron.drawIcosahedron(gl, DETAIL_LEVEL);
+    drawTriangles(gl);
+    gl.glDisable(GL.GL_TEXTURE_2D);
 
-    if (DRAW_WIREFRAME) {
-      gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
-      //gl.glColor3f(1, 1, 1); // WHT
-      setMaterial(gl, 1, 1, 1, 32);
-      Icosahedron.triangleNormals = TRIANGLE_NORMALS;
-      Icosahedron.drawIcosahedron(gl, DETAIL_LEVEL);
-    }
+    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+    gl.glColor3f(1, 1, 1); // WHT
+
+    drawTriangles(gl);
+
+    // ----------------------------------------
+    // back to normal
+    // ----------------------------------------
+
+    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+    gl.glDisable(GL.GL_POLYGON_OFFSET_FILL);
 
     gl.glFlush();
   }
@@ -185,6 +223,35 @@ public class Main extends LightParent //
     gl.glColor3f(0.5f, 0.5f, 1.0f);
     gl.glVertex3f(0f, 0f, 0f);
     gl.glVertex3f(0f, 0f, 5f);
+
+    gl.glEnd();
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public void drawTriangles(GL gl) {
+    gl.glBegin(GL.GL_TRIANGLE_STRIP);
+
+    gl.glTexCoord2f(0.0f, 0f);
+    gl.glVertex3f(-3, -1, -0.5f);
+
+    gl.glTexCoord2f(0.16f, 1f);
+    gl.glVertex3f(-2, +1, +0);
+
+    gl.glTexCoord2f(0.33f, 0f);
+    gl.glVertex3f(-1, -1, +0);
+
+    gl.glTexCoord2f(0.5f, 1f);
+    gl.glVertex3f(+0, +1, -0.5f);
+
+    gl.glTexCoord2f(0.66f, 0f);
+    gl.glVertex3f(+1, -1, +0);
+
+    gl.glTexCoord2f(0.83f, 1f);
+    gl.glVertex3f(+2, +1, +0);
+
+    gl.glTexCoord2f(1.0f, 0f);
+    gl.glVertex3f(+3, -1, -0.5f);
 
     gl.glEnd();
   }
@@ -306,13 +373,13 @@ public class Main extends LightParent //
     switch (evt.getKeyChar()) {
       case 'A' :
       case 'a' :
-        if (dist <= 10) {
+        if (dist <= 50) {
           dist *= 2;
         }
         break;
       case 'Z' :
       case 'z' :
-        if (dist >= 5) {
+        if (dist >= 1) {
           dist /= 2;
         }
         break;
