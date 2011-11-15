@@ -79,6 +79,8 @@ public class Main extends LightParent //
 
     gl.glShadeModel(GL.GL_SMOOTH);
 
+    gl.glEnable(GL.GL_NORMALIZE); // Expensive!!!
+
     createLight(gl);
   }
 

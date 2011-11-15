@@ -33,7 +33,7 @@ public class Main extends LightParent //
       KeyListener {
 
   public boolean DRAW_WIREFRAME = false;
-  public boolean TRIANGLE_NORMALS = true;
+  public boolean TRIANGLE_NORMALS = false;
   public int DETAIL_LEVEL = 3;
 
   // --------------------------------------------------------------------------------
@@ -79,6 +79,8 @@ public class Main extends LightParent //
 
     gl.glShadeModel(GL.GL_SMOOTH);
 
+    //    gl.glEnable(GL.GL_NORMALIZE); // Expensive!!!
+
     createLight(gl);
   }
 
@@ -89,7 +91,15 @@ public class Main extends LightParent //
 
     GL gl = drawable.getGL();
 
-    gl.glViewport(0, 0, w, h);
+    float r = ((float) w) / h;
+
+    if (r >= 1) {
+      int d = (w - h) / 2;
+      gl.glViewport(d, 0, h, h);
+    } else {
+      int d = (h - w) / 2;
+      gl.glViewport(0, d, w, w);
+    }
 
     calculatePerspective(gl);
   }
@@ -153,7 +163,7 @@ public class Main extends LightParent //
 
     gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 
-    setMaterial(gl, 1, 1, 1, 1);
+    setMaterial(gl, 1, 1, 1, 100);
 
     Icosahedron.triangleNormals = TRIANGLE_NORMALS;
     Icosahedron.drawIcosahedron(gl, DETAIL_LEVEL);
