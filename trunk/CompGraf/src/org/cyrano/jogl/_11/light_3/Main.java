@@ -20,6 +20,7 @@ import javax.media.opengl.glu.GLU;
 import org.cyrano.jogl._11.LightParent;
 import org.cyrano.jogl.util.Matrix;
 import org.cyrano.jogl.util.MatrixOps;
+import org.cyrano.util.misc.MathUtil;
 
 import com.sun.opengl.util.FPSAnimator;
 import com.sun.opengl.util.texture.Texture;
@@ -35,6 +36,8 @@ public class Main extends LightParent //
       MouseListener,
       MouseMotionListener,
       KeyListener {
+
+  public boolean QUAD_NORMALS = true;
 
   // --------------------------------------------------------------------------------
   // Camera
@@ -109,6 +112,10 @@ public class Main extends LightParent //
 
     gl.glShadeModel(GL.GL_SMOOTH);
 
+    // if this mode is set, OpenGL calculates ligth before texture
+    // so no light + texture
+    //gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_DECAL);
+    gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
     createLight(gl);
   }
 
@@ -138,9 +145,9 @@ public class Main extends LightParent //
     double nr = 0.5;
     double fr = 2 * (dist - nr) + nr;
 
-    System.err.println("nr: " + nr);
-    System.err.println("fr: " + fr);
-    System.err.println("dist: " + dist);
+    //    System.err.println("nr: " + nr);
+    //    System.err.println("fr: " + fr);
+    //    System.err.println("dist: " + dist);
 
     glu.gluPerspective(90, 1, nr, fr);
 
@@ -174,37 +181,102 @@ public class Main extends LightParent //
 
     drawAllLights(gl);
 
-    // ----------------------------------------
-    // avoid stitching!
-    // ----------------------------------------
-
-    gl.glEnable(GL.GL_POLYGON_OFFSET_FILL);
-    gl.glPolygonOffset(0.2f, 0.2f);
-
-    // ----------------------------------------
-
-    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-    //gl.glColor3f(1, 0, 0); // RED
-
     gl.glEnable(GL.GL_TEXTURE_2D);
     texture.bind();
 
-    drawTriangles(gl);
+    // ----------------------------------------
+
+    gl.glPushMatrix();
+    setMaterial(gl);
+    gl.glRotatef(180f, 0, 1, 0);
+    drawFace(gl);
+    gl.glPopMatrix();
+
+    gl.glPushMatrix();
+    setMaterial(gl);
+    gl.glRotatef(0f, 0, 1, 0);
+    drawFace(gl);
+    gl.glPopMatrix();
+
+    gl.glPushMatrix();
+    setMaterial(gl);
+    gl.glRotatef(-90f, 0, 1, 0);
+    drawFace(gl);
+    gl.glPopMatrix();
+
+    gl.glPushMatrix();
+    setMaterial(gl);
+    gl.glRotatef(90f, 0, 1, 0);
+    drawFace(gl);
+    gl.glPopMatrix();
+
+    gl.glPushMatrix();
+    setMaterial(gl);
+    gl.glRotatef(-90f, 1, 0, 0);
+    drawFace(gl);
+    gl.glPopMatrix();
+
+    gl.glPushMatrix();
+    setMaterial(gl);
+    gl.glRotatef(90f, 1, 0, 0);
+    drawFace(gl);
+    gl.glPopMatrix();
+
     gl.glDisable(GL.GL_TEXTURE_2D);
 
-    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
-    gl.glColor3f(1, 1, 1); // WHT
-
-    drawTriangles(gl);
-
-    // ----------------------------------------
-    // back to normal
-    // ----------------------------------------
-
-    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-    gl.glDisable(GL.GL_POLYGON_OFFSET_FILL);
-
     gl.glFlush();
+  }
+
+  // --------------------------------------------------------------------------------
+
+  private void drawFace(GL gl) {
+    gl.glBegin(GL.GL_QUADS);
+
+    // V1
+    if (QUAD_NORMALS) {
+      gl.glNormal3f(0, 0, 1);
+    } else {
+      double[] n = {-0.5f, -0.5f, +0.5f};
+      n = MathUtil.nor(n);
+      gl.glNormal3dv(n, 0);
+    }
+
+    gl.glTexCoord2f(0.0f, 0.0f);
+    gl.glVertex3f(-0.5f, -0.5f, +0.5f);
+
+    // V2
+    if (QUAD_NORMALS) {
+      gl.glNormal3f(0, 0, 1);
+    } else {
+      double[] n = {-0.5f, -0.5f, +0.5f};
+      n = MathUtil.nor(n);
+      gl.glNormal3f(+0.5f, -0.5f, +0.5f);
+    }
+
+    gl.glTexCoord2f(1.0f, 0.0f);
+    gl.glVertex3f(+0.5f, -0.5f, +0.5f);
+
+    // V3
+    if (QUAD_NORMALS) {
+      gl.glNormal3f(0, 0, 1);
+    } else {
+      gl.glNormal3f(+0.5f, +0.5f, +0.5f);
+    }
+
+    gl.glTexCoord2f(1.0f, 1.0f);
+    gl.glVertex3f(+0.5f, +0.5f, +0.5f);
+
+    // V4
+    if (QUAD_NORMALS) {
+      gl.glNormal3f(0, 0, 1);
+    } else {
+      gl.glNormal3f(-0.5f, +0.5f, +0.5f);
+    }
+
+    gl.glTexCoord2f(0.0f, 1.0f);
+    gl.glVertex3f(-0.5f, +0.5f, +0.5f);
+
+    gl.glEnd();
   }
 
   // --------------------------------------------------------------------------------
@@ -223,35 +295,6 @@ public class Main extends LightParent //
     gl.glColor3f(0.5f, 0.5f, 1.0f);
     gl.glVertex3f(0f, 0f, 0f);
     gl.glVertex3f(0f, 0f, 5f);
-
-    gl.glEnd();
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public void drawTriangles(GL gl) {
-    gl.glBegin(GL.GL_TRIANGLE_STRIP);
-
-    gl.glTexCoord2f(0.0f, 0f);
-    gl.glVertex3f(-3, -1, -0.5f);
-
-    gl.glTexCoord2f(0.16f, 1f);
-    gl.glVertex3f(-2, +1, +0);
-
-    gl.glTexCoord2f(0.33f, 0f);
-    gl.glVertex3f(-1, -1, +0);
-
-    gl.glTexCoord2f(0.5f, 1f);
-    gl.glVertex3f(+0, +1, -0.5f);
-
-    gl.glTexCoord2f(0.66f, 0f);
-    gl.glVertex3f(+1, -1, +0);
-
-    gl.glTexCoord2f(0.83f, 1f);
-    gl.glVertex3f(+2, +1, +0);
-
-    gl.glTexCoord2f(1.0f, 0f);
-    gl.glVertex3f(+3, -1, -0.5f);
 
     gl.glEnd();
   }

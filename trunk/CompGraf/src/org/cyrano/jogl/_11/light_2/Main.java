@@ -32,8 +32,10 @@ public class Main extends LightParent //
       MouseMotionListener,
       KeyListener {
 
+  public boolean DRAW_SOLIDBODY = true;
   public boolean DRAW_WIREFRAME = false;
-  public boolean TRIANGLE_NORMALS = false;
+  public boolean DRAW_NORMALS = false;
+  public boolean TRIA_NORMALS = false;
   public int DETAIL_LEVEL = 3;
 
   // --------------------------------------------------------------------------------
@@ -161,20 +163,26 @@ public class Main extends LightParent //
 
     // ----------------------------------------
 
-    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+    if (DRAW_SOLIDBODY) {
+      gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 
-    setMaterial(gl, 1, 1, 1, 100);
+      setMaterial(gl, 1, 1, 1, 100);
 
-    Icosahedron.triangleNormals = TRIANGLE_NORMALS;
-    Icosahedron.drawIcosahedron(gl, DETAIL_LEVEL);
+      Icosahedron.triaNormals = TRIA_NORMALS;
+      Icosahedron.drawNormals = DRAW_NORMALS;
+      Icosahedron.drawIcosahedron(gl, DETAIL_LEVEL);
+    }
 
     if (DRAW_WIREFRAME) {
       gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
       //gl.glColor3f(1, 1, 1); // WHT
       setMaterial(gl, 1, 1, 1, 32);
-      Icosahedron.triangleNormals = TRIANGLE_NORMALS;
+      Icosahedron.triaNormals = TRIA_NORMALS;
+      Icosahedron.drawNormals = DRAW_NORMALS;
       Icosahedron.drawIcosahedron(gl, DETAIL_LEVEL);
     }
+
+    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 
     gl.glFlush();
   }
@@ -322,7 +330,7 @@ public class Main extends LightParent //
         break;
       case 'Z' :
       case 'z' :
-        if (dist >= 5) {
+        if (dist >= 0.1) {
           dist /= 2;
         }
         break;
