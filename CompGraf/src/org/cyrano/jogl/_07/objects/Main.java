@@ -37,9 +37,15 @@ public class Main implements GLEventListener {
   public void init(GLAutoDrawable drawable) {
     GL gl = drawable.getGL();
 
-    gl.glDisable(GL.GL_CULL_FACE);
     //gl.glEnable(GL.GL_CULL_FACE);
+    gl.glDisable(GL.GL_CULL_FACE);
+
+    //gl.glShadeModel(GL.GL_FLAT);
+    gl.glShadeModel(GL.GL_SMOOTH);
+
     gl.glEnable(GL.GL_DEPTH_TEST);
+
+    // ----------------------------------------
 
     Body cb1 = new Body();
     cb1.bR = 1.0f;
@@ -50,8 +56,12 @@ public class Main implements GLEventListener {
     cb1.z = 0;
     cb1.parentZRot = 45;
     cb1.parentYRot = 45;
+    cb1.scale = 1.0f;
 
+    cb1.parent = null;
     bodyList.add(cb1);
+
+    // ----------------------------------------
 
     Body cb2 = new Body();
     cb2.bR = 0.5f;
@@ -59,11 +69,13 @@ public class Main implements GLEventListener {
     cb2.bB = 0.5f;
     cb2.parentDist = 3;
     cb2.slfRotVel = 0;
-    cb2.scale = 0.5f;
     cb2.parRotVel = 10;
+    cb2.scale = 0.5f;
 
-    cb2.parent = cb2;
+    cb2.parent = cb1;
     cb1.bodyList.add(cb2);
+
+    // ----------------------------------------
 
     Body cb3 = new Body();
     cb3.bR = 0.5f;
@@ -76,6 +88,48 @@ public class Main implements GLEventListener {
 
     cb3.parent = cb2;
     cb2.bodyList.add(cb3);
+
+    Body cb4 = new Body();
+    cb4.bR = 0.5f;
+    cb4.bG = 1.0f;
+    cb4.bB = 1.0f;
+    cb4.parentDist = 2f;
+
+    //    cb4.x = -2;
+    //    cb4.y = -2;
+    //    cb4.z = 1;
+    cb4.scale = 1.1f;
+    cb4.parRotVel = 40;
+    cb4.parentZRot = 0;
+    cb4.parentYRot = 0;
+    cb4.parent = cb1;
+    cb1.bodyList.add(cb4);
+
+    //bodyList.add(cb4);
+
+    Body cb5 = new Body();
+    cb5.bR = 1.0f;
+    cb5.bG = 1.0f;
+    cb5.bB = 0.5f;
+    cb5.parentDist = 2;
+    cb5.slfRotVel = 0;
+    cb5.scale = 0.4f;
+    cb5.parRotVel = 30;
+
+    cb5.parent = cb4;
+    cb4.bodyList.add(cb5);
+
+    Body cb6 = new Body();
+    cb6.bR = 1.0f;
+    cb6.bG = 0.5f;
+    cb6.bB = 1.0f;
+    cb6.parentDist = 0.5f;
+    cb6.slfRotVel = 0;
+    cb6.scale = 0.3f;
+    cb6.parRotVel = 100;
+
+    cb6.parent = cb5;
+    cb5.bodyList.add(cb6);
   }
 
   // --------------------------------------------------------------------------------
@@ -99,6 +153,8 @@ public class Main implements GLEventListener {
   // --------------------------------------------------------------------------------
 
   private float calculateDt() {
+    // TODO: arreglar
+
     currTime = System.currentTimeMillis();
 
     if (prevTime == 0) {
@@ -126,8 +182,8 @@ public class Main implements GLEventListener {
 
     float dt = calculateDt();
 
-    for (Body celestialBody : bodyList) {
-      celestialBody.draw(gl, dt);
+    for (Body body : bodyList) {
+      body.draw(gl, dt);
     }
   }
 
