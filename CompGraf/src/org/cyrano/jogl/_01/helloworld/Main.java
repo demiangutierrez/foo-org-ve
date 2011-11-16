@@ -17,8 +17,12 @@ public class Main implements GLEventListener {
   public void init(GLAutoDrawable drawable) {
     GL gl = drawable.getGL();
 
-    gl.glDisable(GL.GL_CULL_FACE);
     //gl.glEnable(GL.GL_CULL_FACE);
+    gl.glDisable(GL.GL_CULL_FACE);
+
+    //gl.glShadeModel(GL.GL_FLAT);
+    gl.glShadeModel(GL.GL_SMOOTH);
+
     gl.glEnable(GL.GL_DEPTH_TEST);
   }
 
@@ -49,13 +53,13 @@ public class Main implements GLEventListener {
     gl.glColor3f(1f, 1f, 1f);
 
     gl.glBegin(GL.GL_POLYGON);
-    //gl.glColor3f(1f, 1f, 1f);
+    gl.glColor3f(1f, 1f, 1f);
     gl.glVertex3f(-0.5f, -0.5f, 0f);
-    //gl.glColor3f(1f, 0f, 0f);
+    gl.glColor3f(1f, 0f, 0f);
     gl.glVertex3f(-0.5f, +0.5f, 0f);
-    //gl.glColor3f(0f, 1f, 0f);
+    gl.glColor3f(0f, 1f, 0f);
     gl.glVertex3f(+0.5f, +0.5f, 0f);
-    //gl.glColor3f(0f, 0f, 1f);
+    gl.glColor3f(0f, 0f, 1f);
     gl.glVertex3f(+0.5f, -0.5f, 0f);
     gl.glEnd();
 
