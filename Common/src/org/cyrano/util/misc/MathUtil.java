@@ -20,6 +20,20 @@ public class MathUtil {
 
   // --------------------------------------------------------------------------------
 
+  public static double[] nor(double[] v) {
+    double[] r = {0, 0, 0};
+
+    double m = mod(v);
+
+    r[0] = v[0] / m;
+    r[1] = v[1] / m;
+    r[2] = v[2] / m;
+
+    return r;
+  }
+
+  // --------------------------------------------------------------------------------
+
   public static double[] cross(double[] a, double[] b) {
     double[] r = {0, 0, 0};
 
