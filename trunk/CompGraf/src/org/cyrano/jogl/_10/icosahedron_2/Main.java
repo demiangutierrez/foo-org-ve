@@ -63,7 +63,7 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
       InputStream is;
       TextureData textureData;
 
-      is = ClassLoader.getSystemResourceAsStream("textures/earth1.jpg");
+      is = ClassLoader.getSystemResourceAsStream("textures/earth3.png");
       textureData = TextureIO.newTextureData(is, false, "bmp");
       texture = TextureIO.newTexture(textureData);
 
@@ -166,18 +166,15 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     gl.glColor3f(1, 0, 0); // RED
 
     Icosahedron.texture = texture;
-    Icosahedron.r = 1;
-    Icosahedron.g = 0.9;
-    Icosahedron.b = 0.9;
-    Icosahedron.drawIcosahedron(gl, 2);
+    Icosahedron.surfColor = new double[]{0.9, 0.8, 0.8, 1};
+    Icosahedron.drawIcosahedron(gl, 3);
 
     gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
     gl.glColor3f(1, 1, 1); // WHT
 
-    Icosahedron.r = 1;
-    Icosahedron.g = 1;
-    Icosahedron.b = 1;
-    Icosahedron.drawIcosahedron(gl, 2);
+    //    Icosahedron.surfColor = new double[]{0.2, 0.2, 0.2, 1};
+    Icosahedron.surfColor = new double[]{1, 1, 1, 1};
+    Icosahedron.drawIcosahedron(gl, 3);
 
     // ----------------------------------------
     // back to normal
