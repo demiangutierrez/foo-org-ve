@@ -17,8 +17,14 @@ import com.sun.opengl.util.FPSAnimator;
  */
 public class Main implements GLEventListener {
 
+  // --------------------------------------------------------------------------------
+  // deg / seg
+  // --------------------------------------------------------------------------------
+
   private double degSec = 50;
   private double degAct = 0;
+
+  // --------------------------------------------------------------------------------
 
   private long prevTime;
   private long currTime;
@@ -28,8 +34,12 @@ public class Main implements GLEventListener {
   public void init(GLAutoDrawable drawable) {
     GL gl = drawable.getGL();
 
-    gl.glDisable(GL.GL_CULL_FACE);
     //gl.glEnable(GL.GL_CULL_FACE);
+    gl.glDisable(GL.GL_CULL_FACE);
+
+    //gl.glShadeModel(GL.GL_FLAT);
+    gl.glShadeModel(GL.GL_SMOOTH);
+
     gl.glEnable(GL.GL_DEPTH_TEST);
   }
 
@@ -56,10 +66,10 @@ public class Main implements GLEventListener {
     currTime = System.currentTimeMillis();
 
     if (prevTime != 0) {
-      degAct = (currTime - prevTime) / 1000f * degSec;
-    } else {
-      prevTime = currTime;
+      degAct += (currTime - prevTime) / 1000f * degSec;
     }
+
+    prevTime = currTime;
   }
 
   // --------------------------------------------------------------------------------

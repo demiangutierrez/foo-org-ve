@@ -54,7 +54,7 @@ public class Body {
     updateSlfRot(dt);
     updateParRot(dt);
 
-    gl.glPushMatrix();
+    gl.glPushMatrix(); // A
 
     gl.glRotated(+parentYRot, 0, 1, 0);
     gl.glRotated(+parentZRot, 0, 0, 1);
@@ -67,7 +67,7 @@ public class Body {
       gl.glRotated(-parRotAng, 0, 1, 0);
     }
 
-    gl.glPushMatrix();
+    gl.glPushMatrix(); // B
 
     gl.glScalef(scale, scale, scale);
     gl.glRotated(slfRotAng, 0, 1, 0);
@@ -75,7 +75,12 @@ public class Body {
     gl.glPushMatrix();
     gl.glColor3f(bR / 1, bG / 1, bB / 1);
     gl.glRotatef(180f, 0, 1, 0);
+    gl.glPushMatrix();
+    gl.glColor3f(bR / 1, bG / 1, bB / 1);
+    gl.glRotatef(180f, 0, 1, 0);
     drawFace(gl);
+    gl.glPopMatrix();
+ drawFace(gl);
     gl.glPopMatrix();
 
     gl.glPushMatrix();
@@ -108,13 +113,13 @@ public class Body {
     drawFace(gl);
     gl.glPopMatrix();
 
-    gl.glPopMatrix();
+    gl.glPopMatrix(); // B
 
     for (Body body : bodyList) {
       body.draw(gl, dt);
     }
 
-    gl.glPopMatrix();
+    gl.glPopMatrix(); // A
   }
 
   // --------------------------------------------------------------------------------
