@@ -9,25 +9,28 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.InputStream;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
 import org.cyrano.jogl.util.Matrix;
 import org.cyrano.jogl.util.MatrixOps;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureData;
-import com.sun.opengl.util.texture.TextureIO;
+import com.sun.opengl.util.FPSAnimator;
 
 /**
  * @author Demián Gutierrez
  */
-public class Main implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
+public class Main //
+    implements
+      GLEventListener,
+      MouseListener,
+      MouseMotionListener,
+      KeyListener {
 
   // --------------------------------------------------------------------------------
   // Camera
@@ -55,31 +58,27 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
   // --------------------------------------------------------------------------------
 
-  private GLCanvas glCanvas;
-
-  // --------------------------------------------------------------------------------
-
-  private Texture texture1;
-  private Texture texture2;
-
-  // --------------------------------------------------------------------------------
-
-  private void loadTexture() {
-    try {
-      InputStream is;
-      TextureData textureData;
-
-      is = ClassLoader.getSystemResourceAsStream("textures/floor1.bmp");
-      textureData = TextureIO.newTextureData(is, false, "bmp");
-      texture1 = TextureIO.newTexture(textureData);
-
-      is = ClassLoader.getSystemResourceAsStream("textures/floor2.bmp");
-      textureData = TextureIO.newTextureData(is, false, "bmp");
-      texture2 = TextureIO.newTexture(textureData);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+  //  private Texture texture1;
+  //  private Texture texture2;
+  //
+  //  // --------------------------------------------------------------------------------
+  //
+  //  private void loadTexture() {
+  //    try {
+  //      InputStream is;
+  //      TextureData textureData;
+  //
+  //      is = ClassLoader.getSystemResourceAsStream("textures/floor1.bmp");
+  //      textureData = TextureIO.newTextureData(is, false, "bmp");
+  //      texture1 = TextureIO.newTexture(textureData);
+  //
+  //      is = ClassLoader.getSystemResourceAsStream("textures/floor2.bmp");
+  //      textureData = TextureIO.newTextureData(is, false, "bmp");
+  //      texture2 = TextureIO.newTexture(textureData);
+  //    } catch (Exception e) {
+  //      e.printStackTrace();
+  //    }
+  //  }
 
   // --------------------------------------------------------------------------------
 
@@ -90,20 +89,29 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     GL gl = drawable.getGL();
 
-    loadTexture();
+    //    loadTexture();
 
     gl.glDisable(GL.GL_CULL_FACE);
     //gl.glEnable(GL.GL_CULL_FACE);
+
+//    gl.glDepthFunc(GL.GL_EQUAL);
     gl.glEnable(GL.GL_DEPTH_TEST);
+
+//    gl.glClearStencil(0);
+    gl.glEnable(GL.GL_STENCIL_TEST);
   }
 
   // --------------------------------------------------------------------------------
+  int w;
+  int h;
 
   public void reshape(GLAutoDrawable drawable, //
       int x, int y, int w, int h) {
 
     GL gl = drawable.getGL();
 
+    this.w = w;
+    this.h = h;
     gl.glViewport(0, 0, w, h);
 
     calculatePerspective(gl);
@@ -121,9 +129,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     double nr = 0.5;
     double fr = 2 * (dist - nr) + nr;
 
-    System.err.println("nr: " + nr);
-    System.err.println("fr: " + fr);
-    System.err.println("dist: " + dist);
+    //System.err.println("nr: " + nr);
+    //System.err.println("fr: " + fr);
+    //System.err.println("dist: " + dist);
 
     glu.gluPerspective(90, 1, nr, fr);
 
@@ -139,7 +147,7 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     calculatePerspective(gl);
 
     gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
+    //    gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
 
     gl.glLoadIdentity();
 
@@ -149,33 +157,39 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     glu.gluLookAt(frnDstX, frnDstY, frnDstZ, 0, 0, 0, topX, topY, topZ);
 
-    drawAxes(gl);
+    //    drawAxes(gl);
 
-    gl.glEnable(GL.GL_STENCIL_TEST);
-    gl.glStencilFunc(GL.GL_NEVER, 0x0, 0x0);
-    gl.glStencilOp(GL.GL_INCR, GL.GL_INCR, GL.GL_INCR);
+    gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+    gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+
+    gl.glColorMask(false, false, false, false);
+
+    gl.glDisable(GL.GL_DEPTH_TEST);
+
+    gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
+    gl.glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_REPLACE);
 
     gl.glColor3f(1.0f, 1.0f, 1.0f);
-    drawRect(gl, 0.5f, 0.25f);
+    drawRect(gl, 0.5f, 0.26f);
 
-    //gl.glDisable(GL.GL_STENCIL_TEST);
-
-    gl.glStencilFunc(GL.GL_NOTEQUAL, 0x1, 0x1);
+    gl.glColorMask(true, true, true, true);
+    gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 
-    gl.glEnable(GL.GL_TEXTURE_2D);
 
-    //gl.glColor3f(0.0f, 1.0f, 0.0f);
-    texture2.bind();
+    gl.glStencilFunc(GL.GL_NOTEQUAL, 1, 1);
+
+    gl.glColor3f(0.0f, 1.0f, 0.0f);
     drawRect(gl, 1.0f, +0.25f);
 
-    gl.glDisable(GL.GL_STENCIL_TEST);
+    //    gl.glDisable(GL.GL_STENCIL_TEST);
+    //    gl.glStencilFunc(GL.GL_EQUAL, 0x0, 0x1);
+    gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
 
-    //gl.glColor3f(1.0f, 0.0f, 0.0f);
-    texture1.bind();
+    gl.glColor3f(1.0f, 0.0f, 0.0f);
     drawRect(gl, 1.0f, -0.25f);
 
-    gl.glDisable(GL.GL_TEXTURE_2D);
+    //    gl.glDisable(GL.GL_TEXTURE_2D);
 
     gl.glFlush();
   }
@@ -224,8 +238,6 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
       boolean modeChanged, boolean deviceChanged) {
     // Empty
   }
-
-  // --------------------------------------------------------------------------------
 
   // --------------------------------------------------------------------------------
   // MouseListener
@@ -283,8 +295,6 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     //System.err.println(thetaX + ";" + thetaY);
 
     rotate(thetaX, thetaY);
-
-    glCanvas.repaint();
   }
 
   // --------------------------------------------------------------------------------
@@ -337,19 +347,13 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     switch (evt.getKeyChar()) {
       case 'A' :
       case 'a' :
-        //        if (dist <= 10) {
         dist *= 2;
-        //        }
         break;
       case 'Z' :
       case 'z' :
-        //        if (dist >= 5) {
         dist /= 2;
-        //        }
         break;
     }
-
-    glCanvas.repaint();
   }
 
   // --------------------------------------------------------------------------------
@@ -369,10 +373,13 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
   public static void main(String[] args) {
     Frame frame = new Frame("JOGL Main");
 
-    GLCanvas canvas = new GLCanvas();
-    Main m = new Main();
-    m.glCanvas = canvas;
-    canvas.addGLEventListener(m);
+    GLCapabilities cap = new GLCapabilities();
+    cap.setStencilBits(8);
+    GLCanvas canvas = new GLCanvas(cap);
+    
+    FPSAnimator animator = new FPSAnimator(canvas, 60);
+    canvas.addGLEventListener(new Main());
+    animator.start();
 
     frame.add(canvas);
     frame.setSize(300, 300);

@@ -20,6 +20,7 @@ import javax.media.opengl.glu.GLU;
 import org.cyrano.jogl.util.Matrix;
 import org.cyrano.jogl.util.MatrixOps;
 
+import com.sun.opengl.util.FPSAnimator;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
@@ -27,7 +28,12 @@ import com.sun.opengl.util.texture.TextureIO;
 /**
  * @author Demián Gutierrez
  */
-public class Main implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
+public class Main //
+    implements
+      GLEventListener,
+      MouseListener,
+      MouseMotionListener,
+      KeyListener {
 
   // --------------------------------------------------------------------------------
   // Camera
@@ -52,10 +58,6 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
   private int prevMouseX;
   private int prevMouseY;
-
-  // --------------------------------------------------------------------------------
-
-  private GLCanvas glCanvas;
 
   // --------------------------------------------------------------------------------
 
@@ -90,7 +92,7 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     GL gl = drawable.getGL();
 
-    //loadTexture();
+    loadTexture();
 
     gl.glDisable(GL.GL_CULL_FACE);
     //gl.glEnable(GL.GL_CULL_FACE);
@@ -121,9 +123,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     double nr = 0.5;
     double fr = 2 * (dist - nr) + nr;
 
-    System.err.println("nr: " + nr);
-    System.err.println("fr: " + fr);
-    System.err.println("dist: " + dist);
+    //System.err.println("nr: " + nr);
+    //System.err.println("fr: " + fr);
+    //System.err.println("dist: " + dist);
 
     glu.gluPerspective(90, 1, nr, fr);
 
@@ -151,8 +153,10 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     drawAxes(gl);
 
+    //gl.glEnable(GL.GL_TEXTURE_2D);
+    //gl.glColor3f(1.0f, 1.0f, 1.0f);
+
     //gl.glDisable(GL.GL_DEPTH_TEST);
-    gl.glEnable(GL.GL_TEXTURE_2D);
 
     // SWAP
     gl.glColor3f(1.0f, 0.0f, 0.0f);
@@ -163,8 +167,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     //texture2.bind();
     drawRect(gl, 0.5f, +0.25f);
 
+    //gl.glDisable(GL.GL_TEXTURE_2D);
+
     //gl.glEnable(GL.GL_DEPTH_TEST);
-    gl.glDisable(GL.GL_TEXTURE_2D);
 
     gl.glFlush();
   }
@@ -270,8 +275,6 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     //System.err.println(thetaX + ";" + thetaY);
 
     rotate(thetaX, thetaY);
-
-    glCanvas.repaint();
   }
 
   // --------------------------------------------------------------------------------
@@ -324,19 +327,13 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     switch (evt.getKeyChar()) {
       case 'A' :
       case 'a' :
-        //        if (dist <= 10) {
         dist *= 2;
-        //        }
         break;
       case 'Z' :
       case 'z' :
-        //        if (dist >= 5) {
         dist /= 2;
-        //        }
         break;
     }
-
-    glCanvas.repaint();
   }
 
   // --------------------------------------------------------------------------------
@@ -357,9 +354,10 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     Frame frame = new Frame("JOGL Main");
 
     GLCanvas canvas = new GLCanvas();
-    Main m = new Main();
-    m.glCanvas = canvas;
-    canvas.addGLEventListener(m);
+
+    FPSAnimator animator = new FPSAnimator(canvas, 60);
+    canvas.addGLEventListener(new Main());
+    animator.start();
 
     frame.add(canvas);
     frame.setSize(300, 300);

@@ -24,7 +24,12 @@ import com.sun.opengl.util.FPSAnimator;
 /**
  * @author Demián Gutierrez
  */
-public class Main implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
+public class Main //
+    implements
+      GLEventListener,
+      MouseListener,
+      MouseMotionListener,
+      KeyListener {
 
   // --------------------------------------------------------------------------------
   // Camera
@@ -88,9 +93,9 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     double nr = 0.5;
     double fr = 2 * (dist - nr) + nr;
 
-    //    System.err.println("nr: " + nr);
-    //    System.err.println("fr: " + fr);
-    //    System.err.println("dist: " + dist);
+    //System.err.println("nr: " + nr);
+    //System.err.println("fr: " + fr);
+    //System.err.println("dist: " + dist);
 
     glu.gluPerspective(90, 1, nr, fr);
 
@@ -293,15 +298,11 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     switch (evt.getKeyChar()) {
       case 'A' :
       case 'a' :
-        //        if (dist <= 10) {
         dist *= 2;
-        //        }
         break;
       case 'Z' :
       case 'z' :
-        //        if (dist >= 5) {
         dist /= 2;
-        //        }
         break;
     }
   }
