@@ -14,6 +14,7 @@ import java.io.InputStream;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
@@ -534,7 +535,9 @@ public class Main //
   public static void main(String[] args) {
     Frame frame = new Frame("JOGL Main");
 
-    GLCanvas canvas = new GLCanvas();
+    GLCapabilities cap = new GLCapabilities();
+    cap.setStencilBits(8);
+    GLCanvas canvas = new GLCanvas(cap);
 
     FPSAnimator animator = new FPSAnimator(canvas, 60);
     Main m = new Main();
