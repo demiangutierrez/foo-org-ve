@@ -228,6 +228,7 @@ public class Main extends LightParent //
     } else {
       gl.glNormal3f(-0.5f, +0.5f, +0.5f);
     }
+
     gl.glVertex3f(-0.5f, +0.5f, +0.5f);
 
     gl.glEnd();
