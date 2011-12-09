@@ -193,26 +193,29 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
   public void drawTriangles(GL gl) {
     gl.glBegin(GL.GL_TRIANGLE_STRIP);
 
+    float a = -1f;
+    float b = +0f;
+
     gl.glTexCoord2f(0.0f, 0f);
-    gl.glVertex3f(-3, -1, -0.5f);
+    gl.glVertex3f(-3, -1, +a);
 
     gl.glTexCoord2f(0.16f, 1f);
-    gl.glVertex3f(-2, +1, +0);
+    gl.glVertex3f(-2, +1, +b);
 
     gl.glTexCoord2f(0.33f, 0f);
-    gl.glVertex3f(-1, -1, +0);
+    gl.glVertex3f(-1, -1, +b);
 
     gl.glTexCoord2f(0.5f, 1f);
-    gl.glVertex3f(+0, +1, -0.5f);
+    gl.glVertex3f(+0, +1, +a);
 
     gl.glTexCoord2f(0.66f, 0f);
-    gl.glVertex3f(+1, -1, +0);
+    gl.glVertex3f(+1, -1, +b);
 
     gl.glTexCoord2f(0.83f, 1f);
-    gl.glVertex3f(+2, +1, +0);
+    gl.glVertex3f(+2, +1, +b);
 
     gl.glTexCoord2f(1.0f, 0f);
-    gl.glVertex3f(+3, -1, -0.5f);
+    gl.glVertex3f(+3, -1, +a);
 
     gl.glEnd();
   }
