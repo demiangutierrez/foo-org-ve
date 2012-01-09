@@ -1,4 +1,4 @@
-package org.cyrano.util.misc;
+package org.cyrano.util.geometry;
 
 public abstract class PointAbs {
 
