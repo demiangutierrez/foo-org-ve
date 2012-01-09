@@ -5,8 +5,8 @@ import java.io.InputStream;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.cyrano.jogl.util.Matrix;
-import org.cyrano.jogl.util.MatrixOps;
+import org.cyrano.util.geometry.Matrix;
+import org.cyrano.util.geometry.MatrixOps;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
