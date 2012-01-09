@@ -17,8 +17,8 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
 import org.cyrano.jogl._11.LightParent;
-import org.cyrano.jogl.util.Matrix;
-import org.cyrano.jogl.util.MatrixOps;
+import org.cyrano.util.geometry.Matrix;
+import org.cyrano.util.geometry.MatrixOps;
 
 import com.sun.opengl.util.FPSAnimator;
 
