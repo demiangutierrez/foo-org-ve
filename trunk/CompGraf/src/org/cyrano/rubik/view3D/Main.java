@@ -25,8 +25,6 @@ import org.cyrano.rubik.model.Turn;
 import org.cyrano.util.geometry.Matrix;
 import org.cyrano.util.geometry.MatrixOps;
 
-import com.sun.opengl.util.GLUT;
-
 /**
  * @author Demián Gutierrez
  */

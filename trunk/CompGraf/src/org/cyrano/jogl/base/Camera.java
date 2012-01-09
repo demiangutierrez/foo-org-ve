@@ -10,8 +10,8 @@ import java.awt.event.MouseMotionListener;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.cyrano.jogl.util.Matrix;
-import org.cyrano.jogl.util.MatrixOps;
+import org.cyrano.util.geometry.Matrix;
+import org.cyrano.util.geometry.MatrixOps;
 
 public class Camera //
     implements
