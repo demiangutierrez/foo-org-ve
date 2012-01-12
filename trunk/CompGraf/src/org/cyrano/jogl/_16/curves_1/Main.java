@@ -1,4 +1,4 @@
-package org.cyrano.jogl._16.splines;
+package org.cyrano.jogl._16.curves_1;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;

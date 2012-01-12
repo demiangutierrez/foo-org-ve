@@ -60,27 +60,8 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
   // --------------------------------------------------------------------------------
 
-  private Texture texture1;
-  private Texture texture2;
-
-  // --------------------------------------------------------------------------------
-
-  private void loadTexture() {
-    try {
-      InputStream is;
-      TextureData textureData;
-
-      is = ClassLoader.getSystemResourceAsStream("textures/floor1.bmp");
-      textureData = TextureIO.newTextureData(is, false, "bmp");
-      texture1 = TextureIO.newTexture(textureData);
-
-      is = ClassLoader.getSystemResourceAsStream("textures/floor2.bmp");
-      textureData = TextureIO.newTextureData(is, false, "bmp");
-      texture2 = TextureIO.newTexture(textureData);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+  private int xMouseClick;
+  private int yMouseClick;
 
   // --------------------------------------------------------------------------------
 
@@ -150,7 +131,7 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
     glu.gluLookAt(frnDstX, frnDstY, frnDstZ, 0, 0, 0, topX, topY, topZ);
 
-    drawAxes(gl);
+    //drawAxes(gl);
 
     //    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(256);
     //    IntBuffer ib = byteBuffer.asIntBuffer();
@@ -167,53 +148,68 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
     //        (double) (viewport[3] - pickPoint.y), //
     //        5.0, 5.0, viewport, 0);
 
-    renderScene(gl, true);
+    pick = false;
+    renderScene(gl);
+    
+//    gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+    
+   // if (pick == true) {
+    gl.glTranslated(0, 0, 0.01);
+    pick = true;
+      gl.glDisable(GL.GL_TEXTURE);
+//      gl.glDisable(GL.GL_LIGHTING);
+      renderScene(gl);
+
+      ByteBuffer bb = ByteBuffer.allocate(4);
+      gl.glReadPixels(prevMouseX, prevMouseY, 1, 1, GL.GL_RGBA, GL.GL_BYTE, bb);
+
+      System.err.println(bb.get(0) + ";" + bb.get(1) + ";" + bb.get(2) + ";" + bb.get(3));
+
+      long id = 0;
+
+      id = id | bb.get(0) << 24;
+      id = id | bb.get(1) << 16;
+      id = id | bb.get(2) << 8;
+      id = id | bb.get(3);
+
+      System.err.println(id);
+
+      pick = false;
+      gl.glEnable(GL.GL_TEXTURE);
+//      gl.glEnable(GL.GL_LIGHTING);
+  //  }
 
     //    int hits = gl.glRenderMode(GL.GL_RENDER);
     //    System.err.println(hits);
     //    System.err.println("***>" + ib.get(0));
-    ByteBuffer bb = ByteBuffer.allocate(4);
-    gl.glReadPixels(prevMouseX, prevMouseY, 1, 1, GL.GL_RGBA, GL.GL_BYTE, bb);
 
-    gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-    renderScene(gl, false);
-
-
-    System.err.println(bb.get(0));
-    System.err.println(bb.get(1));
-    System.err.println(bb.get(2));
-    System.err.println(bb.get(3));
 
     gl.glFlush();
   }
-  
-  private int xMouseClick;
-  private int yMouseClick;
 
-  private void renderScene(GL gl, boolean pick) {
-    //gl.glEnable(GL.GL_TEXTURE_2D);
-
-    //gl.glLoadName(0);
-    if (pick == true) {
-      gl.glColor4b((byte) 1, (byte) 0, (byte) 0, (byte) 0);
-    } else {
-      gl.glColor3f(1.0f, 0.0f, 0.0f);
-      //texture1.bind();
-    }
-
+  private void renderScene(GL gl) {
+    glColorId(gl, 1.0f, 0.0f, 0.0f, 1);
     drawRect(gl, 1.0f, -0.25f);
 
-    //gl.glLoadName(1);
-    if (pick == true) {
-      gl.glColor4b((byte) 2, (byte) 0, (byte) 0, (byte) 0);
-    } else {
-      gl.glColor3f(0.0f, 1.0f, 0.0f);
-      //texture2.bind();
-    }
-
+    glColorId(gl, 0.0f, 1.0f, 0.0f, 2);
     drawRect(gl, 0.5f, +0.25f);
+  }
 
-    //gl.glDisable(GL.GL_TEXTURE_2D);
+  private boolean pick;
+
+  // --------------------------------------------------------------------------------
+
+  private void glColorId(GL gl, float r, float g, float b, long id) {
+    if (pick == true) {
+      long rid = ((id & 0xFF000000) >> 24);
+      long gid = ((id & 0x00FF0000) >> 16);
+      long bid = ((id & 0x0000FF00) >> 8);
+      long aid = ((id & 0x000000FF)/* */);
+
+      gl.glColor4b((byte) rid, (byte) gid, (byte) bid, (byte) aid);
+    } else {
+      gl.glColor3f(r, g, b);
+    }
   }
 
   // --------------------------------------------------------------------------------
@@ -285,6 +281,7 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
   public void mouseClicked(MouseEvent e) {
     xMouseClick = e.getX();
     yMouseClick = e.getY();
+    pick = true;
     System.err.println(xMouseClick + ";" + yMouseClick);
     glCanvas.repaint();
   }
