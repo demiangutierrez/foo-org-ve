@@ -18,6 +18,16 @@ public abstract class BaseExample implements GLEventListener {
 
   // --------------------------------------------------------------------------------
 
+  protected GLCanvas glCanvas;
+
+  // --------------------------------------------------------------------------------
+
+  public BaseExample() {
+    // Empty
+  }
+
+  // --------------------------------------------------------------------------------
+
   protected int getW(GL gl) {
     int[] iv = new int[4];
 
@@ -39,17 +49,18 @@ public abstract class BaseExample implements GLEventListener {
   // --------------------------------------------------------------------------------
 
   public void run() {
-    Frame frame = new Frame("JOGL example");
+    Frame frame = new Frame("JOGL example: " + //
+        getClass().getName());
 
     GLCapabilities glCapabilities = new GLCapabilities();
     glCapabilities.setStencilBits(8);
-    GLCanvas canvas = new GLCanvas(glCapabilities);
+    glCanvas = new GLCanvas(glCapabilities);
 
-    FPSAnimator animator = new FPSAnimator(canvas, 60);
-    canvas.addGLEventListener(this);
+    FPSAnimator animator = new FPSAnimator(glCanvas, 60);
+    glCanvas.addGLEventListener(this);
     animator.start();
 
-    frame.add(canvas);
+    frame.add(glCanvas);
     frame.setSize(W, H);
     frame.setVisible(true);
 
