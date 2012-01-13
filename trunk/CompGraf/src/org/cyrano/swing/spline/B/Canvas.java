@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.cyrano.swing.spline.B.BSpline.Axis;
 import org.cyrano.swing.spline.cubic.Spline.Mode;
 import org.cyrano.util.draw.CtrlPoint;
 import org.cyrano.util.misc.Hwh;
@@ -71,8 +72,8 @@ public class Canvas extends JPanel //
     splineX = new double[ctrlPointList.size()][4];
     splineY = new double[ctrlPointList.size()][4];
 
-//    Spline.solve(ctrlPointList, splineX, mode, Axis.X);
-//    Spline.solve(ctrlPointList, splineY, mode, Axis.Y);
+    //    Spline.solve(ctrlPointList, splineX, mode, Axis.X);
+    //    Spline.solve(ctrlPointList, splineY, mode, Axis.Y);
   }
 
   // --------------------------------------------------------------------------------
@@ -117,24 +118,24 @@ public class Canvas extends JPanel //
 
     // ----------------------------------------
 
-    int segments = mode == Mode.OPN //
-        ? ctrlPointList.size() - 1 //
-        : ctrlPointList.size();
-
-    for (int i = 0; i < segments; i++) {
-      drawPoly(g2d, 20, //
-          splineX[i][0], splineX[i][1], splineX[i][2], splineX[i][3], //
-          splineY[i][0], splineY[i][1], splineY[i][2], splineY[i][3]);
-    }
+    //    int segments = mode == Mode.OPN //
+    //        ? ctrlPointList.size() - 1 //
+    //        : ctrlPointList.size();
+    //    int segments = ctrlPointList.size() - 1 //
+    //
+    //    for (int i = 0; i < segments; i++) {
+    //      drawPoly(g2d, 20, //
+    //          splineX[i][0], splineX[i][1], splineX[i][2], splineX[i][3], //
+    //          splineY[i][0], splineY[i][1], splineY[i][2], splineY[i][3]);
+    //    }
+    drawPoly(g2d, 200);
 
     g2d.setTransform(prev);
   }
 
   // --------------------------------------------------------------------------------
 
-  private void drawPoly(Graphics2D g2d, int steps, //
-      double ax, double bx, double cx, double dx, //
-      double ay, double by, double cy, double dy) {
+  private void drawPoly(Graphics2D g2d, int steps) {
 
     double prevX = Double.NaN;
     double prevY = Double.NaN;
@@ -142,8 +143,8 @@ public class Canvas extends JPanel //
     g2d.setColor(Color.WHITE);
 
     for (double u = 0; u <= 1; u += 1f / steps) {
-      double currX = dx * u * u * u + cx * u * u + bx * u + ax;
-      double currY = dy * u * u * u + cy * u * u + by * u + ay;
+      double currX = BSpline.solve(ctrlPointList, Axis.X, u);
+      double currY = BSpline.solve(ctrlPointList, Axis.Y, u);
 
       if (!Double.isNaN(prevX) && !Double.isNaN(prevY)) {
         g2d.drawLine( //
@@ -221,8 +222,8 @@ public class Canvas extends JPanel //
     curr.setX(x + dx);
     curr.setY(y + dy);
 
-//    Spline.solve(ctrlPointList, splineX, mode, Axis.X);
-//    Spline.solve(ctrlPointList, splineY, mode, Axis.Y);
+    //    Spline.solve(ctrlPointList, splineX, mode, Axis.X);
+    //    Spline.solve(ctrlPointList, splineY, mode, Axis.Y);
 
     repaint();
   }
