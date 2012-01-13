@@ -75,19 +75,12 @@ public class Main extends BaseExample {
     if (pick) {
       renderScene(gl);
 
-      int[] viewport = new int[4];
-      gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-
-      ByteBuffer bb = ByteBuffer.allocate(4);
-      gl.glReadPixels( //
-          /*          */xMousePick, //
-          viewport[3] - yMousePick, //
-          1, 1, GL.GL_RGBA, GL.GL_BYTE, bb);
-
-      System.err.println("picked ID is: " + bb.get(3));
+      System.err.println("picked ID is: " + getPickId(gl));
 
       pick = false;
     }
+
+    // ----------------------------------------
 
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
@@ -106,6 +99,23 @@ public class Main extends BaseExample {
 
     glSetColorAndId(gl, 0.0f, 1.0f, 0.0f, (byte) 2);
     Primitives.drawRect(gl, +0.5f, +0.25f);
+  }
+
+  // --------------------------------------------------------------------------------
+
+  private byte getPickId(GL gl) {
+    int[] viewport = new int[4];
+
+    gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+
+    ByteBuffer bb = ByteBuffer.allocate(4);
+
+    gl.glReadPixels( //
+        /*          */xMousePick, //
+        viewport[3] - yMousePick, //
+        1, 1, GL.GL_RGBA, GL.GL_BYTE, bb);
+
+    return bb.get(3);
   }
 
   // --------------------------------------------------------------------------------
