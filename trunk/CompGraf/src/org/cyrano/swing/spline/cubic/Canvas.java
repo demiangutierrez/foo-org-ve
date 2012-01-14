@@ -12,9 +12,9 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.cyrano.swing.spline.cubic.Spline.Axis;
 import org.cyrano.swing.spline.cubic.Spline.Mode;
 import org.cyrano.util.draw.CtrlPoint;
+import org.cyrano.util.draw.CtrlPoint.Axis;
 import org.cyrano.util.misc.Hwh;
 
 public class Canvas extends JPanel //

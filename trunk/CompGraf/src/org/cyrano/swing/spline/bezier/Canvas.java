@@ -12,9 +12,9 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.cyrano.swing.spline.bezier.Bezier.Axis;
 import org.cyrano.swing.spline.bezier.TriCtrlPoint.PointMode;
 import org.cyrano.util.draw.CtrlPoint;
+import org.cyrano.util.draw.CtrlPoint.Axis;
 import org.cyrano.util.misc.Hwh;
 
 public class Canvas extends JPanel //
@@ -211,7 +211,7 @@ public class Canvas extends JPanel //
         triCtrlPoint.setMode(PointMode.IND);
         break;
     }
-    
+
     repaint();
   }
 

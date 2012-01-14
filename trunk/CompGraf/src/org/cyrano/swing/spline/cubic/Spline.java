@@ -8,29 +8,12 @@ import org.apache.commons.math.linear.DecompositionSolver;
 import org.apache.commons.math.linear.LUDecompositionImpl;
 import org.apache.commons.math.linear.RealVector;
 import org.cyrano.util.draw.CtrlPoint;
+import org.cyrano.util.draw.CtrlPoint.Axis;
 
 public class Spline {
 
   public enum Mode {
     OPN, CLS
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public enum Axis {
-    X, Y;
-
-    public double getValue(CtrlPoint ctrlPoint) {
-      switch (this) {
-        case X :
-          return ctrlPoint.getX();
-        case Y :
-          return ctrlPoint.getY();
-
-        default :
-          throw new IllegalStateException();
-      }
-    }
   }
 
   // --------------------------------------------------------------------------------
