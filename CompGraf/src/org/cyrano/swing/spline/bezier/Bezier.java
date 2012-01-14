@@ -3,24 +3,9 @@ package org.cyrano.swing.spline.bezier;
 import java.util.List;
 
 import org.cyrano.util.draw.CtrlPoint;
+import org.cyrano.util.draw.CtrlPoint.Axis;
 
 public class Bezier {
-
-  public enum Axis {
-    X, Y;
-
-    public double getValue(CtrlPoint ctrlPoint) {
-      switch (this) {
-        case X :
-          return ctrlPoint.getX();
-        case Y :
-          return ctrlPoint.getY();
-
-        default :
-          throw new IllegalStateException();
-      }
-    }
-  }
 
   // --------------------------------------------------------------------------------
   // check http://en.wikipedia.org/wiki/B%C3%A9zier_curve

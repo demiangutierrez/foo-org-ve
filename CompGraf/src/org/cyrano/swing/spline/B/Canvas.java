@@ -12,9 +12,8 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.cyrano.swing.spline.B.BSpline.Axis;
-import org.cyrano.swing.spline.cubic.Spline.Mode;
 import org.cyrano.util.draw.CtrlPoint;
+import org.cyrano.util.draw.CtrlPoint.Axis;
 import org.cyrano.util.misc.Hwh;
 
 public class Canvas extends JPanel //
@@ -24,10 +23,7 @@ public class Canvas extends JPanel //
 
   private List<CtrlPoint> ctrlPointList = new ArrayList<CtrlPoint>();
 
-  private Mode mode = Mode.CLS;
-
-  private double[][] splineX;
-  private double[][] splineY;
+  //  private Mode mode = Mode.CLS;
 
   // --------------------------------------------------------------------------------
 
@@ -44,36 +40,47 @@ public class Canvas extends JPanel //
 
     CtrlPoint ctrlPoint;
 
+    // p0 = -60, +50
     ctrlPoint = new CtrlPoint();
-    ctrlPoint.setX(-100);
-    ctrlPoint.setY(0);
+    ctrlPoint.setX(-60);
+    ctrlPoint.setY(+50);
     ctrlPointList.add(ctrlPoint);
 
+    // p1 = -75, -3
+    ctrlPoint = new CtrlPoint();
+    ctrlPoint.setX(-75);
+    ctrlPoint.setY(-3);
+    ctrlPointList.add(ctrlPoint);
+
+    // p2 = -50, -10
     ctrlPoint = new CtrlPoint();
     ctrlPoint.setX(-50);
-    ctrlPoint.setY(+50);
+    ctrlPoint.setY(-10);
     ctrlPointList.add(ctrlPoint);
 
+    // p3 = 0, 0
     ctrlPoint = new CtrlPoint();
     ctrlPoint.setX(0);
-    ctrlPoint.setY(-50);
-    ctrlPointList.add(ctrlPoint);
-
-    ctrlPoint = new CtrlPoint();
-    ctrlPoint.setX(+50);
-    ctrlPoint.setY(+50);
-    ctrlPointList.add(ctrlPoint);
-
-    ctrlPoint = new CtrlPoint();
-    ctrlPoint.setX(+100);
     ctrlPoint.setY(0);
     ctrlPointList.add(ctrlPoint);
 
-    splineX = new double[ctrlPointList.size()][4];
-    splineY = new double[ctrlPointList.size()][4];
+    // p4 = +50, -10
+    ctrlPoint = new CtrlPoint();
+    ctrlPoint.setX(+50);
+    ctrlPoint.setY(-10);
+    ctrlPointList.add(ctrlPoint);
 
-    //    Spline.solve(ctrlPointList, splineX, mode, Axis.X);
-    //    Spline.solve(ctrlPointList, splineY, mode, Axis.Y);
+    // p5 = +75, -10
+    ctrlPoint = new CtrlPoint();
+    ctrlPoint.setX(+75);
+    ctrlPoint.setY(-10);
+    ctrlPointList.add(ctrlPoint);
+
+    // p6 = +60, +50
+    ctrlPoint = new CtrlPoint();
+    ctrlPoint.setX(+60);
+    ctrlPoint.setY(+50);
+    ctrlPointList.add(ctrlPoint);
   }
 
   // --------------------------------------------------------------------------------
