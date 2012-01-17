@@ -41,8 +41,6 @@ public class Main extends BaseExample {
 
     GL gl = drawable.getGL();
 
-    //TextureCache.init("textures");
-
     gl.glDisable(GL.GL_CULL_FACE);
     gl.glEnable(GL.GL_DEPTH_TEST);
   }

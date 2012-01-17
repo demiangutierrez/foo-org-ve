@@ -17,20 +17,6 @@ public class BSpline {
   // k     -> the number of ctrlpoints that affect a subset of the curve
   // k - 1 -> the degree of the curve
 
-  //  private static double nfunc(int i, int j, double[] tvect, double tparm) {
-  //    if (j == 0) {
-  //      return tvect[i] <= tparm && tparm < tvect[i + 1] ? 1 : 0;
-  //    }
-  //
-  //    double a = (tparm            - tvect[i    ]) /
-  //               (tvect[i + 1]     - tvect[i    ]);
-  //    double b = (tvect[i + j + 1] - tparm       ) /
-  //               (tvect[i + j + 1] - tvect[i + 1]);
-  //
-  //    return a * nfunc(i,     j - 1, tvect, tparm) +
-  //           b * nfunc(i + 1, j - 1, tvect, tparm);
-  //  }
-
   private static double nfunc(int i, int k, double[] tvect, double tparm) {
     if (k == 1) {
       return tvect[i] <= tparm && tparm < tvect[i + 1] ? 1 : 0;
@@ -52,26 +38,6 @@ public class BSpline {
     double ret = a * nfunc(i,     k - 1, tvect, tparm) +
                  b * nfunc(i + 1, k - 1, tvect, tparm);
     //@endnf
-
-    //    if (Double.isNaN(a)) {
-    //      System.err.println("a is nan, i = " + i + ", k = " + k);
-    //    }
-    //
-    //    if (Double.isInfinite(a)) {
-    //      System.err.println("a is infinite, i = " + i + ", k = " + k);
-    //    }
-    //
-    //    if (Double.isNaN(b)) {
-    //      System.err.println("b is nan, i = " + i + ", k = " + k);
-    //    }
-    //
-    //    if (Double.isInfinite(b)) {
-    //      System.err.println("b is infinite, i = " + i + ", k = " + k);
-    //    }
-    //
-    //    if (Double.isNaN(ret)) {
-    //      System.err.println("ret is nan, i = " + i + ", k = " + k);
-    //    }
 
     return ret;
   }

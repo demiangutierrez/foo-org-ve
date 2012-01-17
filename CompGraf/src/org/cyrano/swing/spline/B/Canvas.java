@@ -23,8 +23,6 @@ public class Canvas extends JPanel //
 
   private List<CtrlPoint> ctrlPointList = new ArrayList<CtrlPoint>();
 
-  //  private Mode mode = Mode.CLS;
-
   // --------------------------------------------------------------------------------
 
   private CtrlPoint curr;
@@ -123,19 +121,9 @@ public class Canvas extends JPanel //
       prevCtrlPoint = currCtrlPoint;
     }
 
-    // ----------------------------------------
-
-    //    int segments = mode == Mode.OPN //
-    //        ? ctrlPointList.size() - 1 //
-    //        : ctrlPointList.size();
-    //    int segments = ctrlPointList.size() - 1 //
-    //
-    //    for (int i = 0; i < segments; i++) {
-    //      drawPoly(g2d, 20, //
-    //          splineX[i][0], splineX[i][1], splineX[i][2], splineX[i][3], //
-    //          splineY[i][0], splineY[i][1], splineY[i][2], splineY[i][3]);
-    //    }
     drawPoly(g2d, 200);
+
+    // ----------------------------------------
 
     g2d.setTransform(prev);
   }
@@ -228,9 +216,6 @@ public class Canvas extends JPanel //
 
     curr.setX(x + dx);
     curr.setY(y + dy);
-
-    //    Spline.solve(ctrlPointList, splineX, mode, Axis.X);
-    //    Spline.solve(ctrlPointList, splineY, mode, Axis.Y);
 
     repaint();
   }
