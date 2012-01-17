@@ -54,8 +54,6 @@ public class BSpline {
         1 / 4f, 1 / 2f, 3 / 4f, //
         1, 1, 1, 1};
 
-    double ret2 = 0;
-
     for (int i = 0; i < ctrlPointList.size(); i++) {
       CtrlPoint ctrlPoint = ctrlPointList.get(i);
 
@@ -63,12 +61,8 @@ public class BSpline {
 
       double nf = nfunc(i, 4, tvect, param);
 
-      ret2 += nf;
-
       ret += axisVal * nf;
     }
-
-    System.err.println("ret2: shoude be 1: " + ret2);
 
     return ret;
   }
