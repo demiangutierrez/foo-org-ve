@@ -10,6 +10,26 @@ public class CtrlPoint {
 
   // --------------------------------------------------------------------------------
 
+  public enum Axis {
+    X, Y;
+
+    public double getValue(CtrlPoint ctrlPoint) {
+      switch (this) {
+        case X :
+          return ctrlPoint.x;
+
+        case Y :
+          return ctrlPoint.y;
+
+        default :
+          throw new IllegalStateException(this.toString());
+      }
+    }
+
+  }
+
+  // --------------------------------------------------------------------------------
+
   public enum Type {
     RECT, OVAL, STAR
   }
