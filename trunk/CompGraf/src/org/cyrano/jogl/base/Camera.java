@@ -1,6 +1,7 @@
 package org.cyrano.jogl.base;
 
 import java.awt.Dimension;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -117,24 +118,28 @@ public class Camera //
   // MouseListener
   // --------------------------------------------------------------------------------
 
-  public void mouseEntered(MouseEvent e) {
+  public void mouseEntered(MouseEvent evt) {
     // Empty
   }
 
-  public void mouseExited(MouseEvent e) {
+  public void mouseExited(MouseEvent evt) {
     // Empty
   }
 
-  public void mousePressed(MouseEvent e) {
-    prevMouseX = e.getX();
-    prevMouseY = e.getY();
+  public void mousePressed(MouseEvent evt) {
+    if (evt.getButton() != MouseEvent.BUTTON1) {
+      return;
+    }
+
+    prevMouseX = evt.getX();
+    prevMouseY = evt.getY();
   }
 
-  public void mouseReleased(MouseEvent e) {
+  public void mouseReleased(MouseEvent evt) {
     // Empty
   }
 
-  public void mouseClicked(MouseEvent e) {
+  public void mouseClicked(MouseEvent evt) {
     // Empty
   }
 
@@ -142,10 +147,15 @@ public class Camera //
   // MouseMotionListener
   // --------------------------------------------------------------------------------
 
-  public void mouseDragged(MouseEvent e) {
-    int x = e.getX();
-    int y = e.getY();
-    Dimension size = e.getComponent().getSize();
+  public void mouseDragged(MouseEvent evt) {
+    if (evt.getModifiersEx() != InputEvent.BUTTON1_DOWN_MASK) {
+      return;
+    }
+
+    int x = evt.getX();
+    int y = evt.getY();
+
+    Dimension size = evt.getComponent().getSize();
 
     float thetaY = 360.0f * ((float) (prevMouseX - x) / (float) size.width);
     float thetaX = 360.0f * ((float) (prevMouseY - y) / (float) size.height);
