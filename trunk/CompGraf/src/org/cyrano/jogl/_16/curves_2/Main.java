@@ -1,5 +1,6 @@
 package org.cyrano.jogl._16.curves_2;
 
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -41,8 +42,8 @@ public class Main extends BaseExample {
   // --------------------------------------------------------------------------------
 
   public void init(GLAutoDrawable drawable) {
-    //    drawable.addMouseMotionListener(camera);
-    //    drawable.addMouseListener/*  */(camera);
+    drawable.addMouseMotionListener(camera);
+    drawable.addMouseListener/*  */(camera);
     drawable.addKeyListener/*    */(camera);
 
     drawable.addMouseListener(new MouseAdapter() {
@@ -131,7 +132,7 @@ public class Main extends BaseExample {
       System.err.println("picked ID is: " + getPickId(gl));
 
       selectedPoint = getPickId(gl) - 1;
-      
+
       System.err.println("selected point: " + selectedPoint);
 
       pick = false;
@@ -207,10 +208,17 @@ public class Main extends BaseExample {
   // --------------------------------------------------------------------------------
 
   private void mouseClicked(MouseEvent evt) {
+//    if (evt.getModifiersEx() != InputEvent.BUTTON3_DOWN_MASK) {
+//      return;
+//    }
+    if (evt.getButton() != MouseEvent.BUTTON3) {
+      return;
+    }
+
     xMousePick = evt.getX();
     yMousePick = evt.getY();
-
-    System.err.println(xMousePick + ";" + yMousePick);
+    
+    System.err.println("pick:" + xMousePick + ";" + yMousePick);
 
     pick = true;
 
@@ -223,6 +231,11 @@ public class Main extends BaseExample {
   int h;
 
   public void motion(MouseEvent evt) {
+    if (evt.getModifiersEx() != InputEvent.BUTTON3_DOWN_MASK) {
+      return;
+    }
+
+    System.err.println("pickX:" + xMousePick + ";" + yMousePick);
 
     double[] obj = new double[3];
 
