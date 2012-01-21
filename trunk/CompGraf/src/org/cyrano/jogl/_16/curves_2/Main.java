@@ -1,10 +1,11 @@
 package org.cyrano.jogl._16.curves_2;
 
 import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -13,19 +14,11 @@ import javax.media.opengl.glu.GLU;
 import org.cyrano.jogl.base.BaseExample;
 import org.cyrano.jogl.base.Camera;
 import org.cyrano.jogl.base.Primitives;
-import org.cyrano.jogl.util.TextureCache;
 
 /**
  * @author Demián Gutierrez
  */
-public class Main extends BaseExample {
-
-  // --------------------------------------------------------------------------------
-
-  private int xMousePick;
-  private int yMousePick;
-
-  private boolean pick;
+public class Main extends BaseExample implements MouseListener, MouseMotionListener {
 
   private Camera camera = new Camera();
 
@@ -41,57 +34,53 @@ public class Main extends BaseExample {
 
   // --------------------------------------------------------------------------------
 
+  private double[] proMatrix = new double[16];
+  private double[] modMatrix = new double[16];
+
+  private int selPoint = -1;
+
+  private int xMouseDrag;
+  private int yMouseDrag;
+  private boolean drag;
+
+  private double depth;
+
+  private int xMousePick;
+  private int yMousePick;
+  private boolean pick;
+
+  private boolean idMode;
+
+  // --------------------------------------------------------------------------------
+
   public void init(GLAutoDrawable drawable) {
     drawable.addMouseMotionListener(camera);
     drawable.addMouseListener/*  */(camera);
     drawable.addKeyListener/*    */(camera);
 
-    drawable.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent evt) {
-        Main.this.mouseClicked(evt);
-      }
-    });
-
-    drawable.addMouseMotionListener(new MouseMotionAdapter() {
-      @Override
-      public void mouseDragged(MouseEvent evt) {
-        motion(evt);
-      }
-    });
+    drawable.addMouseMotionListener(this);
+    drawable.addMouseListener/*  */(this);
 
     GL gl = drawable.getGL();
 
-    TextureCache.init("textures");
-
     gl.glDisable(GL.GL_CULL_FACE);
+
     gl.glEnable(GL.GL_DEPTH_TEST);
+    gl.glDepthRange(0, 1);
 
     gl.glEnable(GL.GL_MAP2_VERTEX_3);
     gl.glMapGrid2d(gridSize, 0.0, 1.0, gridSize, 0.0, 1.0);
-
   }
 
   // --------------------------------------------------------------------------------
 
-  double[] projMatrix = new double[16];
-  double[] modelMatrix = new double[16];
-
   public void reshape(GLAutoDrawable drawable, //
       int x, int y, int w, int h) {
-
-    this.w = w;
-    this.h = h;
 
     GL gl = drawable.getGL();
     gl.glViewport(0, 0, w, h);
 
-    gl.glMatrixMode(GL.GL_PROJECTION);
-    gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, projMatrix, 0);
-
     camera.updateCameraBox();
-    gl.glMatrixMode(GL.GL_MODELVIEW);
-    gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, modelMatrix, 0);
   }
 
   // --------------------------------------------------------------------------------
@@ -108,39 +97,80 @@ public class Main extends BaseExample {
     camera.updateCameraBox();
     camera.updateCameraPos();
 
+    gl.glMatrixMode(GL.GL_PROJECTION);
+    gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, //
+        proMatrix, 0);
+
+    gl.glMatrixMode(GL.GL_MODELVIEW);
+    gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, //
+        modMatrix, 0);
+
     // ----------------------------------------
 
-    //    float[] points = {-40, 40, 0, -10, 200, 0, 10, -200, 0, 40, 40, 0};
-    //    
-    //    gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0, 1, 3, 4, points, 0);
-    //    gl.glEnable(GL.GL_MAP1_VERTEX_3);
-    //
-    //    
-    //    gl.glColor3f(1,  1, 0);
-    //    
-    //    gl.glBegin(GL.GL_LINE_STRIP);
-    //    
-    //    for (int k = 0; k <= 50; k++) {
-    //      gl.glEvalCoord1f(k / 50f);
-    //    }
-    //    
-    //    gl.glEnd();
+    if (drag) {
+      if (selPoint != -1) {
+        int[] viewport = new int[4];
+        gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
 
-    if (pick) {
+        GLU glu = new GLU();
+
+        double[] coord = new double[3];
+
+        glu.gluUnProject( //
+            xMouseDrag, //
+            viewport[3] - yMouseDrag, //
+            depth, modMatrix, 0, proMatrix, 0, viewport, 0, coord, 0);
+
+        System.err.println("drag - depth: " + depth);
+        System.err.println("drag - coord: " + //
+            coord[0] + ";" + coord[1] + ";" + coord[2]);
+
+        grid2x2[selPoint * 3 + 0] = coord[0];
+        grid2x2[selPoint * 3 + 1] = coord[1];
+        grid2x2[selPoint * 3 + 2] = coord[2];
+      }
+    } else if (pick) {
+      idMode = !idMode;
       drawControlPoints(gl);
+      idMode = !idMode;
 
-      System.err.println("picked ID is: " + getPickId(gl));
+      System.err.println("picked ID is: " + (getPickId(gl)/**/));
+      System.err.println("select Pt is: " + (getPickId(gl) - 1));
 
-      selectedPoint = getPickId(gl) - 1;
+      selPoint = getPickId(gl) - 1;
 
-      System.err.println("selected point: " + selectedPoint);
+      if (selPoint != -1) {
+        int[] viewport = new int[4];
+        gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
 
-      pick = false;
+        GLU glu = new GLU();
+
+        FloatBuffer zDepth = FloatBuffer.allocate(1);
+
+        gl.glReadPixels( //
+            /*          */xMousePick, //
+            viewport[3] - yMousePick, //
+            1, 1, GL.GL_DEPTH_COMPONENT, GL.GL_FLOAT, zDepth);
+
+        depth = zDepth.get(0);
+
+        double[] coord = new double[3];
+
+        glu.gluUnProject( //
+            xMousePick, //
+            viewport[3] - yMousePick, //
+            depth, modMatrix, 0, proMatrix, 0, viewport, 0, coord, 0);
+
+        System.err.println("pick - depth: " + zDepth.get(0));
+        System.err.println("pick - coord: " + //
+            coord[0] + ";" + coord[1] + ";" + coord[2]);
+      }
     }
 
     // ----------------------------------------
 
-    gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+    gl.glClear(GL.GL_COLOR_BUFFER_BIT | //
+        /*   */GL.GL_DEPTH_BUFFER_BIT);
 
     Primitives.drawAxes(gl);
     evaluateGrid(gl);
@@ -151,16 +181,19 @@ public class Main extends BaseExample {
     gl.glFlush();
   }
 
+  // --------------------------------------------------------------------------------
+
   private void evaluateGrid(GL gl) {
     gl.glColor3f(1.0f, 1.0f, 1.0f);
     gl.glMap2d(GL.GL_MAP2_VERTEX_3, 0, 1, 3, uSize, 0, 1, uSize * 3, vSize, grid2x2, 0);
     gl.glEvalMesh2(GL.GL_LINE, 0, gridSize, 0, gridSize);
   }
 
+  // --------------------------------------------------------------------------------
+
   private void drawControlPoints(GL gl) {
     int i;
 
-    //gl.glColor3f(1.0f, 1.0f, 0.0f);
     gl.glPointSize(10.0f);
 
     gl.glBegin(GL.GL_POINTS);
@@ -172,6 +205,8 @@ public class Main extends BaseExample {
 
     gl.glEnd();
   }
+
+  // --------------------------------------------------------------------------------
 
   private byte getPickId(GL gl) {
     int[] viewport = new int[4];
@@ -191,7 +226,7 @@ public class Main extends BaseExample {
   // --------------------------------------------------------------------------------
 
   private void glSetColorAndId(GL gl, float r, float g, float b, byte id) {
-    if (pick == true) {
+    if (idMode == true) {
       gl.glColor4b((byte) 0, (byte) 0, (byte) 0, id);
     } else {
       gl.glColor3f(r, g, b);
@@ -206,55 +241,74 @@ public class Main extends BaseExample {
   }
 
   // --------------------------------------------------------------------------------
+  // MouseListener
+  // --------------------------------------------------------------------------------
 
-  private void mouseClicked(MouseEvent evt) {
-//    if (evt.getModifiersEx() != InputEvent.BUTTON3_DOWN_MASK) {
-//      return;
-//    }
+  public void mouseEntered(MouseEvent evt) {
+    // Empty
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public void mouseExited(MouseEvent evt) {
+    // Empty
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public void mousePressed(MouseEvent evt) {
     if (evt.getButton() != MouseEvent.BUTTON3) {
       return;
     }
 
     xMousePick = evt.getX();
     yMousePick = evt.getY();
-    
-    System.err.println("pick:" + xMousePick + ";" + yMousePick);
 
     pick = true;
+
+    System.err.println("pick: " + xMousePick + ";" + yMousePick);
 
     glCanvas.repaint();
   }
 
-  int selectedPoint = -1;
+  // --------------------------------------------------------------------------------
 
-  int w;
-  int h;
+  public void mouseReleased(MouseEvent evt) {
+    pick = false;
+    drag = false;
 
-  public void motion(MouseEvent evt) {
+    selPoint = -1;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public void mouseClicked(MouseEvent evt) {
+    // Empty
+  }
+
+  // --------------------------------------------------------------------------------
+  // MouseMotionListener
+  // --------------------------------------------------------------------------------
+
+  public void mouseDragged(MouseEvent evt) {
     if (evt.getModifiersEx() != InputEvent.BUTTON3_DOWN_MASK) {
       return;
     }
 
-    System.err.println("pickX:" + xMousePick + ";" + yMousePick);
+    xMouseDrag = evt.getX();
+    yMouseDrag = evt.getY();
 
-    double[] obj = new double[3];
+    drag = true;
 
-    if (selectedPoint != -1) {
-      int[] viewport = new int[]{0, 0, w, h};
+    System.err.println("drag: " + xMouseDrag + ";" + yMouseDrag);
 
-      GLU glu = new GLU();
+    glCanvas.repaint();
+  }
 
-      glu.gluUnProject(evt.getX(), h - evt.getY(), 0.95, modelMatrix, 0, projMatrix, 0, viewport, 0, obj, 0);
+  // --------------------------------------------------------------------------------
 
-      //      glu.gluUnProject(evt.getX(), h - evt.getY(), 0.95,
-      //        modelMatrix, 0, projMatrix, 0, viewport,
-      //        obj, 0);
-
-      grid2x2[selectedPoint * 3 + 0] = obj[0];
-      grid2x2[selectedPoint * 3 + 1] = obj[1];
-
-      glCanvas.repaint();
-    }
+  public void mouseMoved(MouseEvent e) {
+    // Empty
   }
 
   // --------------------------------------------------------------------------------
