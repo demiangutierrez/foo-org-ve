@@ -18,19 +18,55 @@ import org.cyrano.jogl.base.Primitives;
 /**
  * @author Demián Gutierrez
  */
+// --------------------------------------------------------------------------------
+// slightly based and adapted from:
+// www.opengl.org/resources/code/samples/mjktips/grid/editgrid.c
+// --------------------------------------------------------------------------------
 public class Main extends BaseExample implements MouseListener, MouseMotionListener {
 
   private Camera camera = new Camera();
 
-  private static final int uSize = 2;
-  private static final int vSize = 2;
-  private static final int gridSize = 20;
+  // --------------------------------------------------------------------------------
+
+  private static final int uSize2x2 = 2;
+  private static final int vSize2x2 = 2;
 
   private double[] grid2x2 = { //
   /**/-2.0, -2.0, +0.0,//
       +2.0, -2.0, +0.0,//
       -2.0, +2.0, +0.0,//
       +2.0, +2.0, +0.0};
+
+  private static final int uSize4x4 = 4;
+  private static final int vSize4x4 = 4;
+
+  // --------------------------------------------------------------------------------
+
+  private double[] grid4x4 = { //
+  /**/-2.0, -2.0, 0.0,//
+      -0.5, -2.0, 0.0,//
+      +0.5, -2.0, 0.0,//
+      +2.0, -2.0, 0.0,//
+      -2.0, -0.5, 0.0,//
+      -0.5, -0.5, 0.0,//
+      +0.5, -0.5, 0.0,//
+      +2.0, -0.5, 0.0,//
+      -2.0, +0.5, 0.0,//
+      -0.5, +0.5, 0.0,//
+      +0.5, +0.5, 0.0,//
+      +2.0, +0.5, 0.0,//
+      -2.0, +2.0, 0.0,//
+      -0.5, +2.0, 0.0,//
+      +0.5, +2.0, 0.0,//
+      +2.0, +2.0, 0.0};
+
+  // --------------------------------------------------------------------------------
+
+  private static final int gridSize = 20;
+  private static final int uSize = uSize4x4;
+  private static final int vSize = vSize4x4;
+
+  private double[] grid = grid4x4;
 
   // --------------------------------------------------------------------------------
 
@@ -125,9 +161,9 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
         System.err.println("drag - coord: " + //
             coord[0] + ";" + coord[1] + ";" + coord[2]);
 
-        grid2x2[selPoint * 3 + 0] = coord[0];
-        grid2x2[selPoint * 3 + 1] = coord[1];
-        grid2x2[selPoint * 3 + 2] = coord[2];
+        grid[selPoint * 3 + 0] = coord[0];
+        grid[selPoint * 3 + 1] = coord[1];
+        grid[selPoint * 3 + 2] = coord[2];
       }
     } else if (pick) {
       idMode = !idMode;
@@ -185,7 +221,7 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
   private void evaluateGrid(GL gl) {
     gl.glColor3f(1.0f, 1.0f, 1.0f);
-    gl.glMap2d(GL.GL_MAP2_VERTEX_3, 0, 1, 3, uSize, 0, 1, uSize * 3, vSize, grid2x2, 0);
+    gl.glMap2d(GL.GL_MAP2_VERTEX_3, 0, 1, 3, uSize, 0, 1, uSize * 3, vSize, grid, 0);
     gl.glEvalMesh2(GL.GL_LINE, 0, gridSize, 0, gridSize);
   }
 
@@ -200,7 +236,7 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
     for (i = 0; i < uSize * vSize; i++) {
       glSetColorAndId(gl, 1.0f, 1.0f, 0.0f, (byte) (i + 1));
-      gl.glVertex3dv(grid2x2, i * 3);
+      gl.glVertex3dv(grid, i * 3);
     }
 
     gl.glEnd();
