@@ -11,7 +11,7 @@ import org.cyrano.jogl.util.TextureCache;
 /**
  * @author Demián Gutierrez
  */
-public class Main extends BaseExample {
+public class Main0 extends BaseExample {
 
   private Camera camera = new Camera();
 
@@ -59,48 +59,26 @@ public class Main extends BaseExample {
 
     // ----------------------------------------
 
-    //    float[] points = {-40, 40, 0, -10, 200, 0, 10, -200, 0, 40, 40, 0};
-    //    
-    //    gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0, 1, 3, 4, points, 0);
-    //    gl.glEnable(GL.GL_MAP1_VERTEX_3);
-    //
-    //    
-    //    gl.glColor3f(1,  1, 0);
-    //    
-    //    gl.glBegin(GL.GL_LINE_STRIP);
-    //    
-    //    for (int k = 0; k <= 50; k++) {
-    //      gl.glEvalCoord1f(k / 50f);
-    //    }
-    //    
-    //    gl.glEnd();
+    //@begnf
+    double[] pointArray = {
+        -0.32, +0.08, 0,
+        +0.32, +0.08, 0};
+    //@endnf
 
-//    double ctrlpoints[][][] = {{{-1.5, -1.5, 4.0}, {-0.5, -1.5, 2.0}, {0.5, -1.5, -1.0}, {1.5, -1.5, 2.0}},
-//        {{-1.5, -0.5, 1.0}, {-0.5, -0.5, 3.0}, {0.5, -0.5, 0.0}, {1.5, -0.5, -1.0}},
-//        {{-1.5, 0.5, 4.0}, {-0.5, 0.5, 0.0}, {0.5, 0.5, 3.0}, {1.5, 0.5, 4.0}},
-//        {{-1.5, 1.5, -2.0}, {-0.5, 1.5, -2.0}, {0.5, 1.5, 0.0}, {1.5, 1.5, -1.0}}};
-    double ctrlpoints[] = {-1.5, -1.5, 4.0, -0.5, -1.5, 2.0, 0.5, -1.5, -1.0, 1.5, -1.5, 2.0,
-        -1.5, -0.5, 1.0, -0.5, -0.5, 3.0, 0.5, -0.5, 0.0, 1.5, -0.5, -1.0,
-        -1.5, 0.5, 4.0, -0.5, 0.5, 0.0, 0.5, 0.5, 3.0, 1.5, 0.5, 4.0,
-        -1.5, 1.5, -2.0, -0.5, 1.5, -2.0, 0.5, 1.5, 0.0, 1.5, 1.5, -1.0};
+    gl.glEnable(GL.GL_MAP1_VERTEX_3);
+    gl.glMap1d(GL.GL_MAP1_VERTEX_3, 0, 1, 3, 2, pointArray, 0);
 
-    gl.glMap2d(GL.GL_MAP2_VERTEX_3, 0, 1, 3, 4,
-        0, 1, 12, 4, ctrlpoints, 0);
-gl.glEnable(GL.GL_MAP2_VERTEX_3);
-gl.glMapGrid2d(20, 0.0, 1.0, 20, 0.0, 1.0);    
-    
-    for (int j = 0; j <= 8; j++) {
-      gl.glBegin(GL.GL_LINE_STRIP);
-      for (int i = 0; i <= 30; i++) {
-        gl.glEvalCoord2d(i / 30.0, j / 8.0);
-      }
-      gl.glEnd();
-      gl.glBegin(GL.GL_LINE_STRIP);
-      for (int i = 0; i <= 30; i++) {
-        gl.glEvalCoord2d(j / 8.0, i / 30.0);
-      }
-      gl.glEnd();
+    gl.glColor3f(1, 1, 0);
+
+    gl.glBegin(GL.GL_LINE_STRIP);
+
+    for (int k = 0; k <= 50; k++) {
+      gl.glEvalCoord1f(k / 50f);
     }
+
+    gl.glEnd();
+
+    Util.drawControlPoints(gl, pointArray);
 
     // ----------------------------------------
 
@@ -117,6 +95,6 @@ gl.glMapGrid2d(20, 0.0, 1.0, 20, 0.0, 1.0);
   // --------------------------------------------------------------------------------
 
   public static void main(String[] args) {
-    new Main().run();
+    new Main0().run();
   }
 }
