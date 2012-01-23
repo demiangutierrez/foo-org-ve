@@ -11,17 +11,17 @@ public enum FaceletColor {
   public Color translateColor() {
     switch (this) {
       case Y :
-        return new Color(0xA0, 0xA0, 0x00);
+        return new Color(0xFF, 0xFF, 0x00);
       case G :
         return new Color(0x00, 0xFF, 0x00);
       case W :
-        return new Color(0x00, 0xA0, 0xA0);
+        return new Color(0xFF, 0xFF, 0xFF);
       case B :
         return new Color(0x00, 0x00, 0xFF);
       case R :
         return new Color(0xFF, 0x00, 0x00);
       case O :
-        return new Color(0xFF, 0x80, 0x80);
+        return new Color(0xFF, 0xBF, 0x00);
       default :
         throw new IllegalStateException( //
             this.toString());

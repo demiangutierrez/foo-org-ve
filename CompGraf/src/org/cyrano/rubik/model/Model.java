@@ -36,6 +36,7 @@ public class Model {
   // --------------------------------------------------------------------------------
 
   private void build() {
+    byte idCount = 0;
 
     int beg = -n / 2;
     int end = +n / 2;
@@ -67,36 +68,36 @@ public class Model {
 
           if (x == beg) {
             cubie.faceletList.add( //
-                createFacelet(Axis.X_NEG));
+                createFacelet(Axis.X_NEG, idCount++));
           }
 
           if (x == end) {
             cubie.faceletList.add( //
-                createFacelet(Axis.X_POS));
+                createFacelet(Axis.X_POS, idCount++));
           }
 
           // ----------------------------------------
 
           if (y == beg) {
             cubie.faceletList.add( //
-                createFacelet(Axis.Y_NEG));
+                createFacelet(Axis.Y_NEG, idCount++));
           }
 
           if (y == end) {
             cubie.faceletList.add( //
-                createFacelet(Axis.Y_POS));
+                createFacelet(Axis.Y_POS, idCount++));
           }
 
           // ----------------------------------------
 
           if (z == beg) {
             cubie.faceletList.add( //
-                createFacelet(Axis.Z_NEG));
+                createFacelet(Axis.Z_NEG, idCount++));
           }
 
           if (z == end) {
             cubie.faceletList.add( //
-                createFacelet(Axis.Z_POS));
+                createFacelet(Axis.Z_POS, idCount++));
           }
 
           // ----------------------------------------
@@ -116,7 +117,7 @@ public class Model {
 
   // --------------------------------------------------------------------------------
 
-  private Facelet createFacelet(Axis normal) {
+  private Facelet createFacelet(Axis normal, byte id) {
     Facelet ret = new Facelet();
 
     int u[] = normal.unitVector();
@@ -127,6 +128,8 @@ public class Model {
 
     ret.faceletColor = FaceletColor.fromNormal( //
         ret.normal.x, ret.normal.y, ret.normal.z);
+
+    ret.id = id;
 
     return ret;
   }
