@@ -123,6 +123,7 @@ public class Canvas extends JPanel //
         : ctrlPointList.size();
 
     for (int i = 0; i < segments; i++) {
+      // FIXME: Bug with odd numbers!
       drawPoly(g2d, 20, //
           splineX[i][0], splineX[i][1], splineX[i][2], splineX[i][3], //
           splineY[i][0], splineY[i][1], splineY[i][2], splineY[i][3]);
