@@ -13,8 +13,8 @@ import com.sun.opengl.util.FPSAnimator;
 
 public abstract class BaseExample implements GLEventListener {
 
-  private static final int W = 500;
-  private static final int H = 500;
+  private static final int W = 640;
+  private static final int H = 480;
 
   // --------------------------------------------------------------------------------
 
