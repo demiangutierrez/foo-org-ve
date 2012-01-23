@@ -8,7 +8,7 @@ public class Main extends JFrame {
     add(new Canvas());
 
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-    setSize(600, 600);
+    setSize(640, 480);
     setVisible(true);
   }
 
