@@ -24,6 +24,8 @@ import org.cyrano.jogl.base.Primitives;
 // --------------------------------------------------------------------------------
 public class Main extends BaseExample implements MouseListener, MouseMotionListener {
 
+  private LightParent lightParent = new LightParent();
+
   private Camera camera = new Camera();
 
   // --------------------------------------------------------------------------------
@@ -63,8 +65,16 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
   // --------------------------------------------------------------------------------
 
   private static final int gridSize = 20;
-  private static final int uSize = uSize4x4;
-  private static final int vSize = vSize4x4;
+
+  // --------------------------------------------------------------------------------
+
+  //  private final int uSize = uSize2x2;
+  //  private final int vSize = vSize2x2;
+  //
+  //  private double[] grid = grid2x2;
+
+  private final int uSize = uSize4x4;
+  private final int vSize = vSize4x4;
 
   private double[] grid = grid4x4;
 
@@ -99,13 +109,18 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
     GL gl = drawable.getGL();
 
-    gl.glDisable(GL.GL_CULL_FACE);
+    //    gl.glDisable(GL.GL_CULL_FACE);
+
+    gl.glShadeModel(GL.GL_SMOOTH);
 
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthRange(0, 1);
 
     gl.glEnable(GL.GL_MAP2_VERTEX_3);
+    //    gl.glEnable(GL.GL_MAP2_NORMAL);
     gl.glMapGrid2d(gridSize, 0.0, 1.0, gridSize, 0.0, 1.0);
+
+    lightParent.createLight(gl);
   }
 
   // --------------------------------------------------------------------------------
@@ -166,9 +181,11 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
         grid[selPoint * 3 + 2] = coord[2];
       }
     } else if (pick) {
+      gl.glDisable(GL.GL_LIGHTING);
       idMode = !idMode;
       drawControlPoints(gl);
       idMode = !idMode;
+      gl.glEnable(GL.GL_LIGHTING);
 
       System.err.println("picked ID is: " + (getPickId(gl)/**/));
       System.err.println("select Pt is: " + (getPickId(gl) - 1));
@@ -208,9 +225,16 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | //
         /*   */GL.GL_DEPTH_BUFFER_BIT);
 
+    gl.glDisable(GL.GL_LIGHTING);
     Primitives.drawAxes(gl);
-    evaluateGrid(gl);
     drawControlPoints(gl);
+
+    //    gl.glEnable(GL.GL_LIGHTING);
+    //    lightParent.calculateSpin();
+    //    lightParent.drawAllLights(gl);
+
+    lightParent.setMaterial(gl);
+    evaluateGrid(gl);
 
     // ----------------------------------------
 
@@ -223,6 +247,7 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
     gl.glColor3f(1.0f, 1.0f, 1.0f);
     gl.glMap2d(GL.GL_MAP2_VERTEX_3, 0, 1, 3, uSize, 0, 1, uSize * 3, vSize, grid, 0);
     gl.glEvalMesh2(GL.GL_LINE, 0, gridSize, 0, gridSize);
+    //gl.glEvalMesh2(GL.GL_FILL, 0, gridSize, 0, gridSize);
   }
 
   // --------------------------------------------------------------------------------
@@ -256,14 +281,19 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
         viewport[3] - yMousePick, //
         1, 1, GL.GL_RGBA, GL.GL_BYTE, bb);
 
-    return bb.get(3);
+    return bb.get(0);
   }
 
   // --------------------------------------------------------------------------------
 
   private void glSetColorAndId(GL gl, float r, float g, float b, byte id) {
+
+    // ----------------------------------------
+    // don't use alias (last byte) to store ids
+    // ----------------------------------------
+
     if (idMode == true) {
-      gl.glColor4b((byte) 0, (byte) 0, (byte) 0, id);
+      gl.glColor4b((byte) id, (byte) 0, (byte) 0, (byte) 0);
     } else {
       gl.glColor3f(r, g, b);
     }
