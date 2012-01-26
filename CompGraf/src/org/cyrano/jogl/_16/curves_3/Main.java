@@ -24,9 +24,13 @@ import org.cyrano.jogl.base.Primitives;
 // --------------------------------------------------------------------------------
 public class Main extends BaseExample implements MouseListener, MouseMotionListener {
 
-  private LightParent lightParent = new LightParent();
+  private static final boolean IS_CURVE_2X2 = false;
+
+  // --------------------------------------------------------------------------------
 
   private Camera camera = new Camera();
+
+  private Light light = new Light();
 
   // --------------------------------------------------------------------------------
 
@@ -64,19 +68,14 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
   // --------------------------------------------------------------------------------
 
-  private static final int gridSize = 20;
+  private int gridSize = 20;
 
   // --------------------------------------------------------------------------------
 
-  //  private final int uSize = uSize2x2;
-  //  private final int vSize = vSize2x2;
-  //
-  //  private double[] grid = grid2x2;
+  private int uSize;
+  private int vSize;
 
-  private final int uSize = uSize4x4;
-  private final int vSize = vSize4x4;
-
-  private double[] grid = grid4x4;
+  private double[] grid;
 
   // --------------------------------------------------------------------------------
 
@@ -99,6 +98,19 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
   // --------------------------------------------------------------------------------
 
+  public Main() {
+
+    if (IS_CURVE_2X2) {
+      uSize = uSize2x2;
+      vSize = vSize2x2;
+      grid = grid2x2;
+    } else {
+      uSize = uSize4x4;
+      vSize = vSize4x4;
+      grid = grid4x4;
+    }
+  }
+
   public void init(GLAutoDrawable drawable) {
     drawable.addMouseMotionListener(camera);
     drawable.addMouseListener/*  */(camera);
@@ -109,7 +121,7 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
     GL gl = drawable.getGL();
 
-    //    gl.glDisable(GL.GL_CULL_FACE);
+    //gl.glDisable(GL.GL_CULL_FACE);
 
     gl.glShadeModel(GL.GL_SMOOTH);
 
@@ -117,10 +129,12 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
     gl.glDepthRange(0, 1);
 
     gl.glEnable(GL.GL_MAP2_VERTEX_3);
-    //    gl.glEnable(GL.GL_MAP2_NORMAL);
+
+    //gl.glEnable(GL.GL_MAP2_NORMAL);
+
     gl.glMapGrid2d(gridSize, 0.0, 1.0, gridSize, 0.0, 1.0);
 
-    lightParent.createLight(gl);
+    light.createLight(gl);
   }
 
   // --------------------------------------------------------------------------------
@@ -233,7 +247,7 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
     //    lightParent.calculateSpin();
     //    lightParent.drawAllLights(gl);
 
-    lightParent.setMaterial(gl);
+    light.setMaterial(gl);
     evaluateGrid(gl);
 
     // ----------------------------------------
@@ -247,6 +261,7 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
     gl.glColor3f(1.0f, 1.0f, 1.0f);
     gl.glMap2d(GL.GL_MAP2_VERTEX_3, 0, 1, 3, uSize, 0, 1, uSize * 3, vSize, grid, 0);
     gl.glEvalMesh2(GL.GL_LINE, 0, gridSize, 0, gridSize);
+
     //gl.glEvalMesh2(GL.GL_FILL, 0, gridSize, 0, gridSize);
   }
 
