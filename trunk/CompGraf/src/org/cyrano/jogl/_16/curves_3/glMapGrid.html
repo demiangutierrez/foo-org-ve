@@ -1,0 +1,122 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>glMapGrid Reference Page</title>
+</head>
+<body>
+
+<h1><b>glMapGrid</b></h1>
+<h3>NAME</h3>
+<b>glMapGrid1d</b>, <b>glMapGrid1f</b>, <b>glMapGrid2d</b>, 
+	<b>glMapGrid2f</b> -- define a one- or two-dimensional mesh
+
+<h3>C SPECIFICATION</h3>
+<pre>void <b>glMapGrid1d</b>(GLint <i>un</i>,
+                 GLdouble <i>u1</i>,
+                 GLdouble <i>u2</i>)
+void <b>glMapGrid1f</b>(GLint <i>un</i>,
+                 GLfloat <i>u1</i>,
+                 GLfloat <i>u2</i>)
+void <b>glMapGrid2d</b>(GLint <i>un</i>,
+                 GLdouble <i>u1</i>,
+                 GLdouble <i>u2</i>,
+                 GLint <i>vn</i>,
+                 GLdouble <i>v1</i>,
+                 GLdouble <i>v2</i>)
+void <b>glMapGrid2f</b>(GLint <i>un</i>,
+                 GLfloat <i>u1</i>,
+                 GLfloat <i>u2</i>,
+                 GLint <i>vn</i>,
+                 GLfloat <i>v1</i>,
+                 GLfloat <i>v2</i>)
+</pre>
+
+<h3>PARAMETERS</h3>
+<dl>
+<dt><i>un</i></dt><dd>
+	Specifies the number of partitions in the grid range interval 
+	[<i>u1</i>, <i>u2</i>].  Must be positive.<p>
+</p></dd><dt><i>u1</i>, <i>u2</i></dt><dd>
+	Specify the mappings for integer grid domain values <i>i</i> = 0 and 
+	<i>i</i> = <i>un</i>.<p>
+</p></dd><dt><i>vn</i></dt><dd>
+	Specifies the number of partitions in the grid range interval 
+	[<i>v1</i>, <i>v2</i>] (<b>glMapGrid2</b> only).<p>
+</p></dd><dt><i>v1</i>, <i>v2</i></dt><dd>
+	Specify the mappings for integer grid domain values <i>j</i> = 0 and 
+	<i>j</i> = <i>vn</i> (<b>glMapGrid2</b> only).
+</dd></dl>
+
+<h3>DESCRIPTION</h3>
+<b>glMapGrid</b> and <a href="http://orion.lcg.ufrj.br/opengl/glEvalMesh.html"><b>glEvalMesh</b></a> are 
+used in tandem to efficiently generate and evaluate a series of evenly spaced 
+map domain values.  <a href="http://orion.lcg.ufrj.br/opengl/glEvalMesh.html"><b>glEvalMesh</b></a> steps
+through the integer domain of a one- or two-dimensional grid, whose range is 
+the domain of the evaluation maps specified by 
+<a href="http://orion.lcg.ufrj.br/opengl/glMap1.html"><b>glMap1</b></a> and 
+<a href="http://orion.lcg.ufrj.br/opengl/glMap2.html"><b>glMap2</b></a>.<p>
+
+<b>glMapGrid1</b> and <b>glMapGrid2</b> specify the linear grid mappings 
+between the <i>i</i> (or <i>i</i> and <i>j</i>) integer grid coordinates, 
+to the <i>u</i> (or <i>u</i> and <i>v</i>) floating-point evaluation map 
+coordinates. See 
+<a href="http://orion.lcg.ufrj.br/opengl/glMap1.html"><b>glMap1</b></a> and 
+<a href="http://orion.lcg.ufrj.br/opengl/glMap2.html"><b>glMap2</b></a> for details of how <i>u</i> and 
+<i>v</i> coordinates are evaluated.</p><p>
+
+<b>glMapGrid1</b> specifies a single linear mapping such that integer grid
+coordinate 0 maps exactly to <i>u1</i>, and integer grid coordinate <i>un</i> 
+maps exactly to <i>u2</i>.  All other integer grid coordinates <i>i</i> are 
+mapped such that</p><p>
+
+</p><center>
+<i>u</i> = <i>i</i>(<i>u2</i> - <i>u1</i>) / <i>un</i> + <i>u1</i>
+</center><p>
+
+<b>glMapGrid2</b> specifies two such linear mappings.  One maps integer grid
+coordinate <i>i</i> = 0 exactly to <i>u1</i>, and integer grid coordinate 
+<i>i</i> = <i>un</i> exactly to <i>u2</i>. The other maps integer grid 
+coordinate <i>j</i> = 0 exactly to <i>v1</i>, and integer grid coordinate 
+<i>j</i> = <i>vn</i> exactly to <i>v2</i>.  Other integer grid coordinates 
+<i>i</i> and <i>j</i> are mapped such that</p><p>
+
+</p><center>
+<i>u</i> = <i>i</i>(<i>u2</i> - <i>u1</i>) / <i>un</i> + <i>u1</i><p>
+<i>v</i> = <i>j</i>(<i>v2</i> - <i>v1</i>) / <i>vn</i> + <i>v1</i>
+</p></center><p>
+                      
+The mappings specified by <b>glMapGrid</b> are used identically by 
+<a href="http://orion.lcg.ufrj.br/opengl/glEvalMesh.html"><b>glEvalMesh</b></a> and
+<a href="http://orion.lcg.ufrj.br/opengl/glEvalPoint.html"><b>glEvalPoint</b></a>.
+
+</p><h3>ERRORS</h3>
+<b>GL_INVALID_VALUE</b> is generated if either <i>un</i> or <i>vn</i> is
+not positive.<p>
+
+<b>GL_INVALID_OPERATION</b> is generated if <b>glMapGrid</b> is called between
+a call to <a href="http://orion.lcg.ufrj.br/opengl/glBegin.html"><b>glBegin</b></a> and the corresponding 
+call to <a href="http://orion.lcg.ufrj.br/opengl/glEnd.html"><b>glEnd</b></a>. 
+
+</p><h3>ASSOCIATED GETS</h3>
+<a href="http://orion.lcg.ufrj.br/opengl/glGet.html"><b>glGet</b></a> with argument 
+        <b>GL_MAP1_GRID_DOMAIN</b><br>
+<a href="http://orion.lcg.ufrj.br/opengl/glGet.html"><b>glGet</b></a> with argument 
+        <b>GL_MAP2_GRID_DOMAIN</b><br>
+<a href="http://orion.lcg.ufrj.br/opengl/glGet.html"><b>glGet</b></a> with argument 
+        <b>GL_MAP1_GRID_SEGMENTS</b><br>
+<a href="http://orion.lcg.ufrj.br/opengl/glGet.html"><b>glGet</b></a> with argument 
+        <b>GL_MAP2_GRID_SEGMENTS</b><br>
+
+<h3>SEE ALSO</h3>
+<a href="http://orion.lcg.ufrj.br/opengl/glEvalCoord.html"><b>glEvalCoord</b></a>,
+<a href="http://orion.lcg.ufrj.br/opengl/glEvalMesh.html"><b>glEvalMesh</b></a>,
+<a href="http://orion.lcg.ufrj.br/opengl/glEvalPoint.html"><b>glEvalPoint</b></a>,
+<a href="http://orion.lcg.ufrj.br/opengl/glMap1.html"><b>glMap1</b></a>,
+<a href="http://orion.lcg.ufrj.br/opengl/glMap2.html"><b>glMap2</b></a>
+
+<p></p><hr><p>
+back to the <a href="http://orion.lcg.ufrj.br/opengl/opengl.html"><b>OpenGL index page</b></a>
+</p><p></p><hr><p>
+© <i>1995 <a href="mailto:behrens@acm.org">Uwe Behrens</a>. All rights reserved.</i>
+
+
+</p></body></html>
