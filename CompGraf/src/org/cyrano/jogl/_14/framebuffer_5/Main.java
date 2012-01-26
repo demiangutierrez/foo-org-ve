@@ -35,7 +35,9 @@ public class Main extends BaseExample implements KeyListener {
     TextureCache.init("textures");
 
     gl.glDisable(GL.GL_CULL_FACE);
+
     gl.glEnable(GL.GL_DEPTH_TEST);
+    gl.glDepthRange(0, 1);
   }
 
   // --------------------------------------------------------------------------------
