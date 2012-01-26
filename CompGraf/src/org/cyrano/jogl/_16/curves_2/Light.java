@@ -4,7 +4,7 @@ import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
 
-public class LightParent {
+public class Light {
 
   protected double degSec = 50;
   protected double degAct = 0;
@@ -27,7 +27,7 @@ public class LightParent {
 
   // --------------------------------------------------------------------------------
 
-  public LightParent() {
+  public Light() {
     super();
   }
 
@@ -92,7 +92,7 @@ public class LightParent {
     gl.glLightfv(GL.GL_LIGHT2, GL.GL_SPECULAR, //
         green, 0);
 
-    gl.glLightf(GL.GL_LIGHT2, GL.GL_CONSTANT_ATTENUATION, 2.0f);
+    gl.glLightf(GL.GL_LIGHT2, GL.GL_CONSTANT_ATTENUATION, 3.0f);
 
     //gl.glLightf(GL.GL_LIGHT2, GL.GL_SPOT_CUTOFF, 10);
     gl.glLightf(GL.GL_LIGHT2, GL.GL_SPOT_CUTOFF, 50);
@@ -155,7 +155,7 @@ public class LightParent {
   // --------------------------------------------------------------------------------
 
   public void setMaterial(GL gl) {
-    setMaterial(gl, 1, 1, 1, 1);
+    setMaterial(gl, 1, 1, 1, 50);
   }
 
   // --------------------------------------------------------------------------------

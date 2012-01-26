@@ -6,7 +6,6 @@ import javax.media.opengl.GLAutoDrawable;
 import org.cyrano.jogl.base.BaseExample;
 import org.cyrano.jogl.base.Camera;
 import org.cyrano.jogl.base.Primitives;
-import org.cyrano.jogl.util.TextureCache;
 
 /**
  * @author Demián Gutierrez
@@ -23,8 +22,6 @@ public class Main extends BaseExample {
     drawable.addKeyListener/*    */(camera);
 
     GL gl = drawable.getGL();
-
-    TextureCache.init("textures");
 
     gl.glDisable(GL.GL_CULL_FACE);
     gl.glEnable(GL.GL_DEPTH_TEST);
