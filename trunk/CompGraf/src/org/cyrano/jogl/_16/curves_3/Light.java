@@ -4,7 +4,7 @@ import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
 
-public class LightParent {
+public class Light {
 
   protected double degSec = 50;
   protected double degAct = 0;
@@ -27,7 +27,7 @@ public class LightParent {
 
   // --------------------------------------------------------------------------------
 
-  public LightParent() {
+  public Light() {
     super();
   }
 
