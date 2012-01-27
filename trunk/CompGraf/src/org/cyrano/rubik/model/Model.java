@@ -68,36 +68,36 @@ public class Model {
 
           if (x == beg) {
             cubie.faceletList.add( //
-                createFacelet(Axis.X_NEG, idCount++));
+                createFacelet(Axis.X_NEG, ++idCount));
           }
 
           if (x == end) {
             cubie.faceletList.add( //
-                createFacelet(Axis.X_POS, idCount++));
+                createFacelet(Axis.X_POS, ++idCount));
           }
 
           // ----------------------------------------
 
           if (y == beg) {
             cubie.faceletList.add( //
-                createFacelet(Axis.Y_NEG, idCount++));
+                createFacelet(Axis.Y_NEG, ++idCount));
           }
 
           if (y == end) {
             cubie.faceletList.add( //
-                createFacelet(Axis.Y_POS, idCount++));
+                createFacelet(Axis.Y_POS, ++idCount));
           }
 
           // ----------------------------------------
 
           if (z == beg) {
             cubie.faceletList.add( //
-                createFacelet(Axis.Z_NEG, idCount++));
+                createFacelet(Axis.Z_NEG, ++idCount));
           }
 
           if (z == end) {
             cubie.faceletList.add( //
-                createFacelet(Axis.Z_POS, idCount++));
+                createFacelet(Axis.Z_POS, ++idCount));
           }
 
           // ----------------------------------------
