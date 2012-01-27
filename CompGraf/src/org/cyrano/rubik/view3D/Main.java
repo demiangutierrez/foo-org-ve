@@ -123,6 +123,7 @@ public class Main extends BaseExample //
     Primitives.drawAxes(gl);
 
     drawCube(gl);
+    //    drawTextDemo(gl);
 
     gl.glFlush();
   }
@@ -174,11 +175,13 @@ public class Main extends BaseExample //
           colorArray[0], colorArray[1], colorArray[2], //
           facelet.id);
 
-      //      System.err.println(facelet.id);
-
       // ----------------------------------------
 
       gl.glBegin(GL.GL_TRIANGLE_STRIP);
+
+      //      double xMid = 0;
+      //      double yMid = 0;
+      //      double zMid = 0;
 
       for (int j = -1; j <= +1; j += 2) {
         for (int i = -1; i <= +1; i += 2) {
@@ -218,13 +221,65 @@ public class Main extends BaseExample //
           }
 
           gl.glVertex3d(x, y, z);
-        }
 
+          //          xMid += x;
+          //          yMid += y;
+          //          zMid += z;
+        }
       }
 
+      //      xMid /= 4;
+      //      yMid /= 4;
+      //      zMid /= 4;
+
       gl.glEnd();
+
+      // drawFaceletId(gl, facelet, xMid, yMid, zMid);
     }
   }
+
+  //  private void drawFaceletId(GL gl, Facelet facelet, //
+  //      double xMid, double yMid, double zMid) {
+  //
+  //    GLUT glut = new GLUT();
+  //    GLU glu = new GLU();
+  //
+  //    double[] proMatrix = new double[16];
+  //    double[] modMatrix = new double[16];
+  //
+  //    gl.glMatrixMode(GL.GL_PROJECTION);
+  //    gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, //
+  //        proMatrix, 0);
+  //
+  //    gl.glMatrixMode(GL.GL_MODELVIEW);
+  //    gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, //
+  //        modMatrix, 0);
+  //
+  //    int[] viewport = new int[4];
+  //
+  //    gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+  //
+  //    double[] coord = new double[3];
+  //
+  //    glu.gluProject(xMid, yMid, zMid, //
+  //        modMatrix, 0, proMatrix, 0, //
+  //        viewport, 0, coord, 0);
+  //
+  //    float r = facelet.faceletColor.translateColor().getRed()/*  *// 255.0f;
+  //    float g = facelet.faceletColor.translateColor().getGreen()/**// 255.0f;
+  //    float b = facelet.faceletColor.translateColor().getBlue()/* *// 255.0f;
+  //
+  //    gl.glColor3f(1 - r, 1 - g, 1 - b);
+  //
+  //    double scale = 0.65;
+  //
+  //    gl.glRasterPos3d( //
+  //        facelet.normal.x * scale, //
+  //        facelet.normal.y * scale, //
+  //        facelet.normal.z * scale);
+  //
+  //    glut.glutBitmapString(7, Integer.toString(facelet.id));
+  //  }
 
   // --------------------------------------------------------------------------------
 
@@ -237,7 +292,7 @@ public class Main extends BaseExample //
 
   private void glSetColorAndId(GL gl, float r, float g, float b, byte id) {
     if (idMode == true) {
-      gl.glColor4b((byte) 0, (byte) 0, (byte) 0, id);
+      gl.glColor4b((byte) id, (byte) 0, (byte) 0, (byte) 0);
     } else {
       gl.glColor3f(r, g, b);
     }
@@ -260,7 +315,7 @@ public class Main extends BaseExample //
     System.err.println( //
         bb.get(0) + ";" + bb.get(1) + ";" + bb.get(2) + ";" + bb.get(3));
 
-    return bb.get(3);
+    return bb.get(0);
   }
 
   // --------------------------------------------------------------------------------
@@ -341,7 +396,7 @@ public class Main extends BaseExample //
     System.err.println("picked ID is: " + (getPickId(gl, evt)/**/));
     System.err.println("select Fl is: " + (getPickId(gl, evt) - 1));
 
-    selFacelet = (byte) (getPickId(gl, evt) - 1);
+    selFacelet = (byte) (getPickId(gl, evt));
 
     //
     //    if (selFacelet != -1) {
