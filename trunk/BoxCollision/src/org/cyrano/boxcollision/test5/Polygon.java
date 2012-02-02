@@ -6,7 +6,7 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cyrano.util.PointInt;
+import org.cyrano.util.geometry.PointInt;
 
 /**
  * @author Demián Gutierrez

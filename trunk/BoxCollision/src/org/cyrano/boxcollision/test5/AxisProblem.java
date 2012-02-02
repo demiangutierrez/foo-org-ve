@@ -1,8 +1,8 @@
 package org.cyrano.boxcollision.test5;
 
 import org.cyrano.axis.Axis;
-import org.cyrano.util.PointAbs;
-import org.cyrano.util.PointDbl;
+import org.cyrano.util.geometry.PointAbs;
+import org.cyrano.util.geometry.PointDbl;
 
 /**
  * @author Demián Gutierrez

@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import org.cyrano.boxcollision.base.CollisionDetector;
 import org.cyrano.boxcollision.base.CollisionDetector.CollisionInfo;
 import org.cyrano.boxcollision.base.CollisionDetector.Side;
-import org.cyrano.util.Hwh;
+import org.cyrano.util.misc.Hwh;
 
 /**
  * @author Demián Gutierrez

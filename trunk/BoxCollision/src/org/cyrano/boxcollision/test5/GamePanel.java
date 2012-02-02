@@ -16,8 +16,8 @@ import org.cyrano.axis.Axis;
 import org.cyrano.axis.PointDib;
 import org.cyrano.boxcollision.test5.CollisionDetector.CollisionInfo;
 import org.cyrano.math.ConvexHull;
-import org.cyrano.util.Hwh;
-import org.cyrano.util.PointInt;
+import org.cyrano.util.geometry.PointInt;
+import org.cyrano.util.misc.Hwh;
 
 /**
  * @author Demián Gutierrez
@@ -25,7 +25,7 @@ import org.cyrano.util.PointInt;
 public class GamePanel extends JPanel {
 
   public static final boolean SHOW_AXIS = true;
-  public static final boolean SHOW_PROJ = true;
+  public static final boolean SHOW_PROJ = false;
 
   public static final Color BOX1_COLOR = new Color(255, 0, 0);
   public static final Color BOX2_COLOR = new Color(0, 255, 0);
