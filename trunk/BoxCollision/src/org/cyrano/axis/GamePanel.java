@@ -13,11 +13,11 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.cyrano.util.Hwh;
-import org.cyrano.util.MathUtil;
-import org.cyrano.util.PointAbs;
-import org.cyrano.util.PointDbl;
-import org.cyrano.util.PointInt;
+import org.cyrano.util.geometry.PointAbs;
+import org.cyrano.util.geometry.PointDbl;
+import org.cyrano.util.geometry.PointInt;
+import org.cyrano.util.misc.Hwh;
+import org.cyrano.util.misc.MathUtil;
 
 /**
  * @author Demián Gutierrez
