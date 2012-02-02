@@ -4,8 +4,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import org.cyrano.util.PointAbs;
-import org.cyrano.util.PointDbl;
+import org.cyrano.util.geometry.PointAbs;
+import org.cyrano.util.geometry.PointDbl;
 
 /**
  * @author Demián Gutierrez
