@@ -1,9 +1,5 @@
 package org.cyrano.math;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.cyrano.util.PointInt;
 
 public class LineMath {
 

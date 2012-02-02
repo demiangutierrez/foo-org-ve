@@ -3,7 +3,7 @@ package org.cyrano.math;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cyrano.util.PointInt;
+import org.cyrano.util.geometry.PointInt;
 
 public class ConvexHull {
 
