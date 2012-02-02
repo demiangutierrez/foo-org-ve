@@ -9,7 +9,6 @@ import java.util.List;
 import org.cyrano.boxcollision.base.Box;
 import org.cyrano.gridcollision.base.GridCollisionDetector;
 import org.cyrano.gridcollision.base.GridCollisionDetector.GridCollisionInfo;
-import org.cyrano.util.Hwh;
 
 public class BoxImpl implements Box {
 

@@ -13,8 +13,8 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import org.cyrano.math.ConvexHull;
-import org.cyrano.util.Hwh;
-import org.cyrano.util.PointInt;
+import org.cyrano.util.geometry.PointInt;
+import org.cyrano.util.misc.Hwh;
 
 /**
  * @author Demián Gutierrez

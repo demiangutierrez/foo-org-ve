@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 import org.cyrano.boxcollision.base.Box;
 import org.cyrano.masscenter.MassCenterCalculator;
-import org.cyrano.util.Hwh;
+import org.cyrano.util.misc.Hwh;
 
 /**
  * @author Demián Gutierrez
