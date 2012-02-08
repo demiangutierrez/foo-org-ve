@@ -6,7 +6,7 @@ import org.cyrano.paintables.ImageFace;
 // Factory
 public class PaintableFactory {
 
-  private boolean useImage = false;
+  private boolean useImage = true;
 
   public Paintable create(int x1, int y1, int x2, int y2, int state) {
     if (useImage) {
