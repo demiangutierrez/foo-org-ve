@@ -18,7 +18,7 @@ import org.cyrano.common.Command;
 import org.cyrano.common.Paintable;
 import org.cyrano.common.PaintableFactory;
 
-public class Client extends JPanel {
+public class Canvas extends JPanel {
 
   private List<Paintable> paintableList = new ArrayList<Paintable>();
 
@@ -35,7 +35,7 @@ public class Client extends JPanel {
 
   // --------------------------------------------------------------------------------
 
-  public Client() {
+  public Canvas() {
     //    int x;
     //    int y;
     //
