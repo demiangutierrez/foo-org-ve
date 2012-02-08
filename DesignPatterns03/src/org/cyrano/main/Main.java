@@ -69,9 +69,6 @@ public class Main extends JFrame {
 
     // --------------------------------------------------------------------------------
 
-    
-System.err.println(System.getProperty("java.class.path"));
-    
     List<PaintableFactory> paintableFactoryList = //
     PluginsReader.fsRead(ClassLoader.getSystemResourceAsStream("plugins.txt"));
 
