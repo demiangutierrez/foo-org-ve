@@ -14,16 +14,16 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import org.cyrano.common.Drawable;
-import org.cyrano.objects.Stack;
 import org.cyrano.objects.CardEnums.CardNumb;
 import org.cyrano.objects.CardEnums.CardSuit;
+import org.cyrano.objects.Stack;
 import org.cyrano.rules.accept.AceOnEmptyAcceptRule;
 import org.cyrano.rules.accept.AscNumbAcceptRule;
 import org.cyrano.rules.accept.SameSuitAcceptRule;
 import org.cyrano.rules.borrow.DscNumbBorrowRule;
 import org.cyrano.rules.borrow.SameSuitBorrowRule;
 import org.cyrano.rules.borrow.TopOnlyBorrowRule;
-import org.cyrano.util.Hwh;
+import org.cyrano.util.misc.Hwh;
 
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener {
 
@@ -83,8 +83,8 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
     cardLoader.getDeck().removeAll(stack.getCardList());
 
-    //    stack.addBorrowRule(topOnlyBorrowRule);
-    //    stack.addBorrowRule(sameSuitBorrowRule);
+    stack.addBorrowRule(topOnlyBorrowRule);
+    stack.addBorrowRule(sameSuitBorrowRule);
     stack.addBorrowRule(dscNumbBorrowRule);
 
     stack.updateCards();
