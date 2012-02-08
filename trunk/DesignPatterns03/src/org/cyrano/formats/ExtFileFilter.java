@@ -27,7 +27,7 @@ public class ExtFileFilter extends FileFilter {
     if (lastPeriod < 0) {
       return false;
     }
-    
+
     String extension = f.getName().substring(lastPeriod + 1);
 
     if (ext.equals(extension)) {
