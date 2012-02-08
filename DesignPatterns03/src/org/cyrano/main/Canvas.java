@@ -19,7 +19,7 @@ import org.cyrano.common.Command;
 import org.cyrano.plugins.Paintable;
 import org.cyrano.plugins.PaintableFactory;
 
-public class Client extends JPanel {
+public class Canvas extends JPanel {
 
   public enum Tool {
     SELECT, DELETE, PLUGIN
@@ -44,7 +44,7 @@ public class Client extends JPanel {
 
   // --------------------------------------------------------------------------------
 
-  public Client() {
+  public Canvas() {
     //    int x;
     //    int y;
     //

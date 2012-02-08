@@ -20,22 +20,22 @@ import org.cyrano.formats.ExtFileFilter;
 import org.cyrano.formats.FileFormat;
 import org.cyrano.formats.FileFormatFactory;
 import org.cyrano.formats.FileFormatReader;
-import org.cyrano.main.Client.Tool;
+import org.cyrano.main.Canvas.Tool;
 import org.cyrano.plugins.PaintableFactory;
 import org.cyrano.plugins.PluginsReader;
 
-public class Main extends JFrame {
+public class FrmMain extends JFrame {
 
-  private Client client;
+  private Canvas client;
 
   private List<FileFormatFactory> fileFormatFactoryList;
 
   // --------------------------------------------------------------------------------
 
-  public Main() {
+  public FrmMain() {
     setLayout(new BorderLayout());
 
-    client = new Client();
+    client = new Canvas();
     add(client, BorderLayout.CENTER);
 
     add(initToolBarPanel(), BorderLayout.NORTH);
@@ -259,6 +259,6 @@ public class Main extends JFrame {
   // --------------------------------------------------------------------------------
 
   public static void main(String[] args) {
-    new Main();
+    new FrmMain();
   }
 }
