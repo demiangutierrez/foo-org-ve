@@ -4,10 +4,17 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
+import org.cyrano.util.misc.ImageCache;
+
+/**
+ * @author Demián Gutierrez
+ */
 public class MainFrame extends JFrame {
 
   public MainFrame() {
     setLayout(new BorderLayout());
+
+    ImageCache.init(".");
 
     add(new GamePanel(), BorderLayout.CENTER);
 
