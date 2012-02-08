@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import org.cyrano.common.Drawable;
 import org.cyrano.objects.Card;
 import org.cyrano.objects.Stack;
-import org.cyrano.util.Hwh;
+import org.cyrano.util.misc.Hwh;
 
 /**
  * @author Demián Gutierrez

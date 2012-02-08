@@ -7,8 +7,8 @@ import java.util.List;
 import org.cyrano.objects.Card;
 import org.cyrano.objects.CardEnums.CardNumb;
 import org.cyrano.objects.CardEnums.CardSuit;
-import org.cyrano.util.Hwh;
-import org.cyrano.util.ImageCache;
+import org.cyrano.util.misc.Hwh;
+import org.cyrano.util.misc.ImageCache;
 
 /**
  * @author Demián Gutierrez
@@ -16,8 +16,8 @@ import org.cyrano.util.ImageCache;
 public class CardLoader {
 
   private static final String BACK_FILENAME = //
-  "cards/" + Settings.CARD_SIZ + "/back/" + //
-      "back-" + Settings.BACK_COL + "-" + Settings.CARD_SIZ + "-" + Settings.BACK_VAR + ".png";
+  "backs/_" + Settings.CARD_SIZ + //
+      "/back-" + Settings.BACK_COL + "-" + Settings.CARD_SIZ + "-" + Settings.BACK_VAR + ".png";
 
   // --------------------------------------------------------------------------------
 
@@ -44,7 +44,7 @@ public class CardLoader {
       for (int numb = 1; numb < 14; numb++) {
         StringBuffer strbuf = new StringBuffer();
 
-        strbuf.append("cards/");
+        strbuf.append("cards/_");
         strbuf.append(Settings.CARD_SIZ);
         strbuf.append("/");
         strbuf.append(getSuitBaseName(suit));
@@ -104,17 +104,5 @@ public class CardLoader {
     }
 
     return null;
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public static void main(String[] args) throws Exception {
-    CardLoader cardLoader = new CardLoader();
-    cardLoader.load();
-    cardLoader.shuffle();
-
-    for (Card card : cardLoader.getDeck()) {
-      System.err.println(card);
-    }
   }
 }
