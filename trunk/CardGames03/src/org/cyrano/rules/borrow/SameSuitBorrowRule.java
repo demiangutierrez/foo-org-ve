@@ -1,8 +1,8 @@
 package org.cyrano.rules.borrow;
 
 import org.cyrano.common.BorrowRule;
-import org.cyrano.objects.Stack;
 import org.cyrano.objects.CardEnums.CardSuit;
+import org.cyrano.objects.Stack;
 
 public class SameSuitBorrowRule implements BorrowRule {
 

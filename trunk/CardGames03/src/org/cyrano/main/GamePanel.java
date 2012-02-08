@@ -19,7 +19,7 @@ import org.cyrano.objects.Stack;
 import org.cyrano.rules.accept.AceOnEmptyAcceptRule;
 import org.cyrano.rules.borrow.NoneBorrowRule;
 import org.cyrano.rules.borrow.TopOnlyBorrowRule;
-import org.cyrano.util.Hwh;
+import org.cyrano.util.misc.Hwh;
 
 public class GamePanel extends JPanel implements MouseListener, MouseMotionListener {
 
@@ -74,7 +74,7 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
     // ----------------------------------------
 
     stack = new Stack(465, 20, 0, 25);
-//    stack.addAcceptRule(aceOnEmptyAcceptRule);
+    stack.addAcceptRule(aceOnEmptyAcceptRule);
     drawableList.add(stack);
 
     // ----------------------------------------

@@ -1,8 +1,8 @@
 package org.cyrano.rules.borrow;
 
 import org.cyrano.common.BorrowRule;
-import org.cyrano.objects.Stack;
 import org.cyrano.objects.CardEnums.CardNumb;
+import org.cyrano.objects.Stack;
 
 public class DscNumbBorrowRule implements BorrowRule {
 
