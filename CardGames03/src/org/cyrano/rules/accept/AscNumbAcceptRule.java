@@ -1,8 +1,8 @@
 package org.cyrano.rules.accept;
 
 import org.cyrano.common.AcceptRule;
-import org.cyrano.objects.Stack;
 import org.cyrano.objects.CardEnums.CardNumb;
+import org.cyrano.objects.Stack;
 
 public class AscNumbAcceptRule implements AcceptRule {
 
