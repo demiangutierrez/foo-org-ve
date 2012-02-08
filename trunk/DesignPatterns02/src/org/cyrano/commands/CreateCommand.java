@@ -20,7 +20,9 @@ public class CreateCommand implements Command {
 
   // --------------------------------------------------------------------------------
 
-  public CreateCommand(PaintableFactory paintableFactory, int x, int y, List<Paintable> paintableList) {
+  public CreateCommand(PaintableFactory paintableFactory, //
+      int x, int y, List<Paintable> paintableList) {
+
     this.paintableFactory = paintableFactory;
 
     this.x = x;
@@ -34,7 +36,8 @@ public class CreateCommand implements Command {
   @Override
   public void redoCommand() {
     if (paintable == null) {
-      paintable = paintableFactory.create(x - 50, y - 50, x + 50, y + 50);
+      paintable = paintableFactory.create( //
+          x - 50, y - 50, x + 50, y + 50);
     }
 
     paintableList.add(paintable);

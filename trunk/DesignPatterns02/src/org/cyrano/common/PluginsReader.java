@@ -42,6 +42,7 @@ public class PluginsReader {
         continue;
       }
 
+      // Reflection Programming
       PaintableFactory paintableFactory = //
       (PaintableFactory) Class.forName(line).newInstance();
 

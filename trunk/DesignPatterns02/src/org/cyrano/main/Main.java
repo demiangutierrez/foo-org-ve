@@ -14,9 +14,6 @@ import javax.swing.JToggleButton;
 
 import org.cyrano.common.PaintableFactory;
 import org.cyrano.common.PluginsReader;
-import org.cyrano.tools.happy.HappyPaintableFactory;
-import org.cyrano.tools.normal.NormalPaintableFactory;
-import org.cyrano.tools.sad.SadPaintableFactory;
 
 public class Main extends JFrame {
 
@@ -71,6 +68,8 @@ public class Main extends JFrame {
 
     ButtonGroup buttonGroup = new ButtonGroup();
 
+    // ----------------------------------------
+    
     JToggleButton btnSelect = new JToggleButton("Select");
     btnSelect.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -82,11 +81,14 @@ public class Main extends JFrame {
     ret.add(btnSelect);
     buttonGroup.add(btnSelect);
 
+    // ----------------------------------------
+    
     List<PaintableFactory> paintableFactoryList = //
     PluginsReader.fsRead(ClassLoader.getSystemResourceAsStream("plugins.txt"));
 
     for (final PaintableFactory paintableFactory : paintableFactoryList) {
-      JToggleButton btnTool = new JToggleButton(paintableFactory.getClass().getSimpleName());
+      JToggleButton btnTool = //
+      new JToggleButton(paintableFactory.getClass().getSimpleName());
       btnTool.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           client.setPaintableFactory(paintableFactory);
