@@ -69,7 +69,7 @@ public class Main extends JFrame {
     ButtonGroup buttonGroup = new ButtonGroup();
 
     // ----------------------------------------
-    
+
     JToggleButton btnSelect = new JToggleButton("Select");
     btnSelect.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -82,7 +82,7 @@ public class Main extends JFrame {
     buttonGroup.add(btnSelect);
 
     // ----------------------------------------
-    
+
     List<PaintableFactory> paintableFactoryList = //
     PluginsReader.fsRead(ClassLoader.getSystemResourceAsStream("plugins.txt"));
 
