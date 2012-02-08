@@ -45,7 +45,7 @@ public class Client extends JPanel {
     //    x = 100;
     //    y = 100;
     //    paintableList.add(paintableFactory.create(x, y, x + 100, y + 100, SmileConstants.SMILE_DW));
-    //
+    //Array
     //    // Face 2
     //    x = 200;
     //    y = 200;
