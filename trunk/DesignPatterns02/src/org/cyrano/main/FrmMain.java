@@ -15,16 +15,16 @@ import javax.swing.JToggleButton;
 import org.cyrano.common.PaintableFactory;
 import org.cyrano.common.PluginsReader;
 
-public class Main extends JFrame {
+public class FrmMain extends JFrame {
 
-  private Client client;
+  private Canvas client;
 
   // --------------------------------------------------------------------------------
 
-  public Main() {
+  public FrmMain() {
     setLayout(new BorderLayout());
 
-    client = new Client();
+    client = new Canvas();
     add(client, BorderLayout.CENTER);
 
     add(initTopPanel(), BorderLayout.NORTH);
@@ -118,6 +118,6 @@ public class Main extends JFrame {
   // --------------------------------------------------------------------------------
 
   public static void main(String[] args) {
-    new Main();
+    new FrmMain();
   }
 }
