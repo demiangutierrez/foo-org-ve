@@ -32,9 +32,13 @@ public class ActionListenerProxy {
     eventListenerList.remove(ActionListener.class, listener);
   }
 
+  // --------------------------------------------------------------------------------
+
   public EventListener[] getActionListener() {
     return eventListenerList.getListeners(ActionListener.class);
   }
+
+  // --------------------------------------------------------------------------------
 
   public void fireActionEvent(ActionEvent evt) {
     EventListener[] eventListeners = getActionListener();
