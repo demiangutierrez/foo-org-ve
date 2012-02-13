@@ -10,6 +10,7 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.cyrano.jogl.base.BaseExample;
 import org.cyrano.jogl.base.Camera;
+import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.Primitives;
 import org.cyrano.jogl.util.TextureCache;
 
@@ -18,7 +19,7 @@ import org.cyrano.jogl.util.TextureCache;
  */
 public class Main extends BaseExample implements KeyListener {
 
-  private Camera camera = new Camera();
+  private Camera camera = new CameraBall();
 
   private boolean drawDepthBuffer;
 
@@ -107,17 +108,17 @@ public class Main extends BaseExample implements KeyListener {
     gl.glColor3f(0.0f, 1.0f, 0.0f);
     Primitives.drawRect(gl, +0.5f, +0.25f);
 
-//    if (drawDepthBuffer) {
-      FloatBuffer depthBufferData = //
-      ByteBuffer.allocateDirect( //
-          getW(gl) * getH(gl) * 4).asFloatBuffer();
+    //    if (drawDepthBuffer) {
+    FloatBuffer depthBufferData = //
+    ByteBuffer.allocateDirect( //
+        getW(gl) * getH(gl) * 4).asFloatBuffer();
 
-      gl.glReadPixels(0, 0, getW(gl), getH(gl), //
-          GL.GL_DEPTH_COMPONENT, GL.GL_FLOAT, depthBufferData);
+    gl.glReadPixels(0, 0, getW(gl), getH(gl), //
+        GL.GL_DEPTH_COMPONENT, GL.GL_FLOAT, depthBufferData);
 
-      gl.glDrawPixels(getW(gl), getH(gl), //
-          GL.GL_LUMINANCE, GL.GL_FLOAT, depthBufferData);
-//    }
+    gl.glDrawPixels(getW(gl), getH(gl), //
+        GL.GL_LUMINANCE, GL.GL_FLOAT, depthBufferData);
+    //    }
 
     // ----------------------------------------
 
