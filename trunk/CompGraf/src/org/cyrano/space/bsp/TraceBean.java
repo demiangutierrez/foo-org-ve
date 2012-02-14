@@ -1,4 +1,4 @@
-package org.cyrano.quadtree3;
+package org.cyrano.space.bsp;
 
 public class TraceBean {
 

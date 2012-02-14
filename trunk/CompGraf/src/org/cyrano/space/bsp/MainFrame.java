@@ -1,4 +1,4 @@
-package org.cyrano.quadtree1;
+package org.cyrano.space.bsp;
 
 import java.awt.BorderLayout;
 

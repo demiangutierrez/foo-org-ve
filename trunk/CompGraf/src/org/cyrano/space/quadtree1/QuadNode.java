@@ -1,4 +1,4 @@
-package org.cyrano.quadtree1;
+package org.cyrano.space.quadtree1;
 
 import java.util.ArrayList;
 import java.util.List;
