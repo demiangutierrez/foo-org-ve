@@ -1,4 +1,4 @@
-package org.cyrano.quadtree1;
+package org.cyrano.space.quadtree1;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

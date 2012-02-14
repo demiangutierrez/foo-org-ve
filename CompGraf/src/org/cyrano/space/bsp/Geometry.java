@@ -1,4 +1,4 @@
-package org.cyrano.quadtree3;
+package org.cyrano.space.bsp;
 
 import java.awt.Graphics2D;
 import java.util.List;
