@@ -5,6 +5,7 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.cyrano.jogl.base.BaseExample;
 import org.cyrano.jogl.base.Camera;
+import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.Primitives;
 import org.cyrano.jogl.util.TextureCache;
 
@@ -13,7 +14,7 @@ import org.cyrano.jogl.util.TextureCache;
  */
 public class Main1 extends BaseExample {
 
-  private Camera camera = new Camera();
+  private Camera camera = new CameraBall();
 
   // --------------------------------------------------------------------------------
 
