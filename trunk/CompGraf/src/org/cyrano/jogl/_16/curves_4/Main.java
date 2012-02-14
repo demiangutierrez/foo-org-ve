@@ -13,6 +13,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.cyrano.jogl.base.BaseExample;
 import org.cyrano.jogl.base.Camera;
+import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.Primitives;
 import org.cyrano.jogl.util.TextureCache;
 
@@ -31,9 +32,9 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
   // --------------------------------------------------------------------------------
 
-  private Camera camera = new Camera();
+  private Camera camera = new CameraBall();
 
-  private Light light = new Light();
+  //  private Light light = new Light();
 
   // --------------------------------------------------------------------------------
 
@@ -147,7 +148,7 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
     gl.glMapGrid2d(gridSize, 0.0, 1.0, gridSize, 0.0, 1.0);
 
-//    light.createLight(gl);
+    //    light.createLight(gl);
   }
 
   // --------------------------------------------------------------------------------
@@ -208,11 +209,11 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
         grid[selPoint * 3 + 2] = coord[2];
       }
     } else if (pick) {
-//      gl.glDisable(GL.GL_LIGHTING);
+      //      gl.glDisable(GL.GL_LIGHTING);
       idMode = !idMode;
       drawControlPoints(gl);
       idMode = !idMode;
-//      gl.glEnable(GL.GL_LIGHTING);
+      //      gl.glEnable(GL.GL_LIGHTING);
 
       System.err.println("picked ID is: " + (getPickId(gl)/**/));
       System.err.println("select Pt is: " + (getPickId(gl) - 1));
@@ -252,38 +253,36 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | //
         /*   */GL.GL_DEPTH_BUFFER_BIT);
 
-//    gl.glDisable(GL.GL_LIGHTING);
+    //    gl.glDisable(GL.GL_LIGHTING);
     Primitives.drawAxes(gl);
     drawControlPoints(gl);
 
-//    gl.glEnable(GL.GL_LIGHTING);
-//    light.calculateSpin();
-//    light.drawAllLights(gl);
+    //    gl.glEnable(GL.GL_LIGHTING);
+    //    light.calculateSpin();
+    //    light.drawAllLights(gl);
 
-//    gl.glColor3f(1, 1, 1);
-//    light.setMaterial(gl);
+    //    gl.glColor3f(1, 1, 1);
+    //    light.setMaterial(gl);
 
+    //    gl.glEnable(GL.GL_TEXTURE_2D);
 
-//    gl.glEnable(GL.GL_TEXTURE_2D);
-
-//    Texture texture = //
-//    TextureCache.getInstance().getImage("wood-fence_256x256.jpg");
-//
-//    texture.bind();
+    //    Texture texture = //
+    //    TextureCache.getInstance().getImage("wood-fence_256x256.jpg");
+    //
+    //    texture.bind();
     evaluateGrid(gl);
 
-//    // NORMAL
-//    gl.glBegin(GL.GL_QUADS);
-//    gl.glTexCoord2f(0.0f, 0.0f);
-//    gl.glVertex3f(-0.5f, -0.5f, 0f);
-//    gl.glTexCoord2f(0.0f, 1.0f);
-//    gl.glVertex3f(-0.5f, +0.5f, 0f);
-//    gl.glTexCoord2f(1.0f, 1.0f);
-//    gl.glVertex3f(+0.5f, +0.5f, 0f);
-//    gl.glTexCoord2f(1.0f, 0.0f);
-//    gl.glVertex3f(+0.5f, -0.5f, 0f);
-//    gl.glEnd();
-
+    //    // NORMAL
+    //    gl.glBegin(GL.GL_QUADS);
+    //    gl.glTexCoord2f(0.0f, 0.0f);
+    //    gl.glVertex3f(-0.5f, -0.5f, 0f);
+    //    gl.glTexCoord2f(0.0f, 1.0f);
+    //    gl.glVertex3f(-0.5f, +0.5f, 0f);
+    //    gl.glTexCoord2f(1.0f, 1.0f);
+    //    gl.glVertex3f(+0.5f, +0.5f, 0f);
+    //    gl.glTexCoord2f(1.0f, 0.0f);
+    //    gl.glVertex3f(+0.5f, -0.5f, 0f);
+    //    gl.glEnd();
 
     // ----------------------------------------
 
@@ -295,22 +294,21 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
   private void evaluateGrid(GL gl) {
     gl.glEnable(GL.GL_TEXTURE_2D);
     gl.glColor3f(1.0f, 1.0f, 1.0f);
-    
+
     gl.glMap2d(GL.GL_MAP2_VERTEX_3, 0, 1, 3, uSize, 0, 1, uSize * 3, vSize, grid, 0);
 
     gl.glMap2d(GL.GL_MAP2_TEXTURE_COORD_2, 0, 1, 2, 2, 0, 1, 4, 2, text, 0);
     //    gl.glEvalMesh2(GL.GL_LINE, 0, gridSize, 0, gridSize);
 
-    
     gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_DECAL);
 
     Texture texture = //
     TextureCache.getInstance().getImage("wood-fence_256x256.jpg");
-    
+
     texture.bind();
 
     Primitives.drawRect(gl, 0.5f, 1);
-    
+
     gl.glEvalMesh2(GL.GL_FILL, 0, gridSize, 0, gridSize);
     gl.glDisable(GL.GL_TEXTURE_2D);
   }
