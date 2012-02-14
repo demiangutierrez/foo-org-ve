@@ -13,6 +13,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.cyrano.jogl.base.BaseExample;
 import org.cyrano.jogl.base.Camera;
+import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.Primitives;
 
 /**
@@ -28,7 +29,7 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
   // --------------------------------------------------------------------------------
 
-  private Camera camera = new Camera();
+  private Camera camera = new CameraBall();
 
   private Light light = new Light();
 
