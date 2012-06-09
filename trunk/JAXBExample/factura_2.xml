@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<factura numero="13">
+	<cliente cedula="14555222" />
+	<item monto="45.0" descripcion="pizza" />
+	<item monto="15.0" descripcion="refresco" />
+	<total monto="60.0" />
+</factura>
