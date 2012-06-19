@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <factura xmlns="http://www.factura.org/factura.xsd" numero="12">
-	<cliente cedula="12452678">
+	<cliente cedula="V-12452678">
 	</cliente>
 
 	<item descripcion="tornillo 1/2x1/4" monto="10.5" />

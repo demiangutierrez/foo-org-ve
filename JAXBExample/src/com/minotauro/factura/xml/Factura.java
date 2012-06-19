@@ -5,7 +5,6 @@
 // Generated on: 2012.06.07 at 09:23:27 AM VET 
 //
 
-
 package com.minotauro.factura.xml;
 
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 
 /**
  * <p>Java class for anonymous complex type.
@@ -41,114 +39,110 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "cliente",
-    "item",
-    "total"
-})
+@XmlType(name = "", propOrder = {"cliente", "item", "total"})
 @XmlRootElement(name = "factura")
 public class Factura {
 
-    @XmlElement(required = true)
-    protected Cliente cliente;
-    @XmlElement(required = true)
-    protected List<Item> item;
-    @XmlElement(required = true)
-    protected Total total;
-    @XmlAttribute(required = true)
-    protected int numero;
+  @XmlElement(required = true)
+  protected Cliente cliente;
+  @XmlElement(required = true)
+  protected List<Item> item;
+  @XmlElement(required = true)
+  protected Total total;
+  @XmlAttribute(required = true)
+  protected int numero;
 
-    /**
-     * Gets the value of the cliente property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Cliente }
-     *     
-     */
-    public Cliente getCliente() {
-        return cliente;
-    }
+  /**
+   * Gets the value of the cliente property.
+   * 
+   * @return
+   *     possible object is
+   *     {@link Cliente }
+   *     
+   */
+  public Cliente getCliente() {
+    return cliente;
+  }
 
-    /**
-     * Sets the value of the cliente property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Cliente }
-     *     
-     */
-    public void setCliente(Cliente value) {
-        this.cliente = value;
-    }
+  /**
+   * Sets the value of the cliente property.
+   * 
+   * @param value
+   *     allowed object is
+   *     {@link Cliente }
+   *     
+   */
+  public void setCliente(Cliente value) {
+    this.cliente = value;
+  }
 
-    /**
-     * Gets the value of the item property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the item property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getItem().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Item }
-     * 
-     * 
-     */
-    public List<Item> getItem() {
-        if (item == null) {
-            item = new ArrayList<Item>();
-        }
-        return this.item;
+  /**
+   * Gets the value of the item property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list,
+   * not a snapshot. Therefore any modification you make to the
+   * returned list will be present inside the JAXB object.
+   * This is why there is not a <CODE>set</CODE> method for the item property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * <pre>
+   *    getItem().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list
+   * {@link Item }
+   * 
+   * 
+   */
+  public List<Item> getItem() {
+    if (item == null) {
+      item = new ArrayList<Item>();
     }
+    return this.item;
+  }
 
-    /**
-     * Gets the value of the total property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Total }
-     *     
-     */
-    public Total getTotal() {
-        return total;
-    }
+  /**
+   * Gets the value of the total property.
+   * 
+   * @return
+   *     possible object is
+   *     {@link Total }
+   *     
+   */
+  public Total getTotal() {
+    return total;
+  }
 
-    /**
-     * Sets the value of the total property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Total }
-     *     
-     */
-    public void setTotal(Total value) {
-        this.total = value;
-    }
+  /**
+   * Sets the value of the total property.
+   * 
+   * @param value
+   *     allowed object is
+   *     {@link Total }
+   *     
+   */
+  public void setTotal(Total value) {
+    this.total = value;
+  }
 
-    /**
-     * Gets the value of the numero property.
-     * 
-     */
-    public int getNumero() {
-        return numero;
-    }
+  /**
+   * Gets the value of the numero property.
+   * 
+   */
+  public int getNumero() {
+    return numero;
+  }
 
-    /**
-     * Sets the value of the numero property.
-     * 
-     */
-    public void setNumero(int value) {
-        this.numero = value;
-    }
+  /**
+   * Sets the value of the numero property.
+   * 
+   */
+  public void setNumero(int value) {
+    this.numero = value;
+  }
 
 }

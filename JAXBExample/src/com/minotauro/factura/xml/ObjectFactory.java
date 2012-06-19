@@ -5,11 +5,9 @@
 // Generated on: 2012.06.07 at 09:23:27 AM VET 
 //
 
-
 package com.minotauro.factura.xml;
 
 import javax.xml.bind.annotation.XmlRegistry;
-
 
 /**
  * This object contains factory methods for each 
@@ -28,44 +26,43 @@ import javax.xml.bind.annotation.XmlRegistry;
 @XmlRegistry
 public class ObjectFactory {
 
+  /**
+   * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.minotauro.factura.xml
+   * 
+   */
+  public ObjectFactory() {
+  }
 
-    /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.minotauro.factura.xml
-     * 
-     */
-    public ObjectFactory() {
-    }
+  /**
+   * Create an instance of {@link Item }
+   * 
+   */
+  public Item createItem() {
+    return new Item();
+  }
 
-    /**
-     * Create an instance of {@link Item }
-     * 
-     */
-    public Item createItem() {
-        return new Item();
-    }
+  /**
+   * Create an instance of {@link Cliente }
+   * 
+   */
+  public Cliente createCliente() {
+    return new Cliente();
+  }
 
-    /**
-     * Create an instance of {@link Cliente }
-     * 
-     */
-    public Cliente createCliente() {
-        return new Cliente();
-    }
+  /**
+   * Create an instance of {@link Factura }
+   * 
+   */
+  public Factura createFactura() {
+    return new Factura();
+  }
 
-    /**
-     * Create an instance of {@link Factura }
-     * 
-     */
-    public Factura createFactura() {
-        return new Factura();
-    }
-
-    /**
-     * Create an instance of {@link Total }
-     * 
-     */
-    public Total createTotal() {
-        return new Total();
-    }
+  /**
+   * Create an instance of {@link Total }
+   * 
+   */
+  public Total createTotal() {
+    return new Total();
+  }
 
 }

@@ -5,7 +5,6 @@
 // Generated on: 2012.06.07 at 09:23:27 AM VET 
 //
 
-
 package com.minotauro.factura.xml;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,7 +12,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 
 /**
  * <p>Java class for anonymous complex type.
@@ -37,23 +35,23 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "total")
 public class Total {
 
-    @XmlAttribute(required = true)
-    protected float monto;
+  @XmlAttribute(required = true)
+  protected float monto;
 
-    /**
-     * Gets the value of the monto property.
-     * 
-     */
-    public float getMonto() {
-        return monto;
-    }
+  /**
+   * Gets the value of the monto property.
+   * 
+   */
+  public float getMonto() {
+    return monto;
+  }
 
-    /**
-     * Sets the value of the monto property.
-     * 
-     */
-    public void setMonto(float value) {
-        this.monto = value;
-    }
+  /**
+   * Sets the value of the monto property.
+   * 
+   */
+  public void setMonto(float value) {
+    this.monto = value;
+  }
 
 }
