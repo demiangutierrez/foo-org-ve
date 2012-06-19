@@ -5,7 +5,6 @@
 // Generated on: 2012.06.07 at 09:23:27 AM VET 
 //
 
-
 package com.minotauro.factura.xml;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,7 +12,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 
 /**
  * <p>Java class for anonymous complex type.
@@ -37,31 +35,31 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "cliente")
 public class Cliente {
 
-    @XmlAttribute(required = true)
-    protected String cedula;
+  @XmlAttribute(required = true)
+  protected String cedula;
 
-    /**
-     * Gets the value of the cedula property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCedula() {
-        return cedula;
-    }
+  /**
+   * Gets the value of the cedula property.
+   * 
+   * @return
+   *     possible object is
+   *     {@link String }
+   *     
+   */
+  public String getCedula() {
+    return cedula;
+  }
 
-    /**
-     * Sets the value of the cedula property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCedula(String value) {
-        this.cedula = value;
-    }
+  /**
+   * Sets the value of the cedula property.
+   * 
+   * @param value
+   *     allowed object is
+   *     {@link String }
+   *     
+   */
+  public void setCedula(String value) {
+    this.cedula = value;
+  }
 
 }
