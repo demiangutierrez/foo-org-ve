@@ -35,6 +35,8 @@ public class MathUtil {
   // --------------------------------------------------------------------------------
 
   public static double[] cross(double[] a, double[] b) {
+    checkSameSize(a, b);
+
     double[] r = {0, 0, 0};
 
     r[0] = a[1] * b[2] - a[2] * b[1];
@@ -42,5 +44,27 @@ public class MathUtil {
     r[2] = a[0] * b[1] - a[1] * b[0];
 
     return r;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public static double dot(double[] a, double[] b) {
+    checkSameSize(a, b);
+
+    double ret = 0;
+
+    for (int i = 0; i < a.length; i++) {
+      ret += a[i] * b[i];
+    }
+
+    return ret;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  public static void checkSameSize(double[] a, double[] b) {
+    if (a.length != b.length) {
+      throw new IllegalArgumentException("a.length != b.length");
+    }
   }
 }
