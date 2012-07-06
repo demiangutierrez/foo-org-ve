@@ -1,7 +1,0 @@
-06/06/2004
-
--- Revisar Applets.
--- Arreglar los enlaces al Chess (Cambiar el chess de paquete: org.cyrano -> com.minotauro).
--- Hacer una p?gina principal para los ejemplos.
--- Mover la descarga de los ejemplos a www.minotauro.com.ve
--- Hacer que los ejemplos descargados contengan la menor cantidad de informaci?n posible.

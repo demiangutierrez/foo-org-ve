@@ -1,4 +1,0 @@
-org.cyrano.pacman.game.PacManSprite org.cyrano.pacman.game.GhostSpriteA org.cyrano.pacman.inte.PacManWithGhost
-org.cyrano.pacman.game.PacManSprite '.' org.cyrano.pacman.inte.PacManWithSmlCokie
-org.cyrano.pacman.game.PacManSprite '*' org.cyrano.pacman.inte.PacManWithBigCokie
-

@@ -1,3 +1,0 @@
-org.cyrano.plugins.happy.HappyPaintableFactory
-org.cyrano.plugins.normal.NormalPaintableFactory
-org.cyrano.plugins.sad.SadPaintableFactory
