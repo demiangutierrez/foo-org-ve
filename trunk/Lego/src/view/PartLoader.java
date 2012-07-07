@@ -19,178 +19,181 @@ import java.util.regex.Pattern;
  */
 public class PartLoader {
 
-  // ----------------------------------------
-  // Singleton 
-  // ----------------------------------------
+	// ----------------------------------------
+	// Singleton
+	// ----------------------------------------
 
-  private static PartLoader instance;
+	private static PartLoader instance;
 
-  public static PartLoader getInstance() {
-    if (instance == null) {
-      instance = new PartLoader();
-    }
+	public static PartLoader getInstance() {
+		if (instance == null) {
+			instance = new PartLoader();
+		}
 
-    return instance;
-  }
+		return instance;
+	}
 
-  // ----------------------------------------
-  // Props
-  // ----------------------------------------
+	// ----------------------------------------
+	// Props
+	// ----------------------------------------
 
-  private Map parts = new HashMap();
-  private List path = new ArrayList();
+	private Map<String, Part> parts;
+	private List<String> path = new ArrayList<String>();
 
-  // ----------------------------------------
+	// ----------------------------------------
 
-  private PartLoader() {
-    // Empty
-  }
+	private PartLoader() {
+		// Empty
+	}
 
-  // ----------------------------------------
+	// ----------------------------------------
 
-  protected File findFile(String name) throws Exception {
-    String fs = System.getProperty("file.separator");
+	protected File findFile(String name) throws Exception {
+		String fs = System.getProperty("file.separator");
 
-    File ret = null;
+		File ret = null;
 
-    Iterator itt = path.iterator();
+		Iterator<String> itt = path.iterator();
 
-    while (itt.hasNext()) {
-      String curPath = (String) itt.next();
+		while (itt.hasNext()) {
+			String curPath = itt.next();
 
-      if (fs.equals("/")) {
-        name = name.replace('\\', '/');
-        name = name.toLowerCase();
-      }
+			if (fs.equals("/")) {
+				name = name.replace('\\', '/');
+				name = name.toLowerCase();
+			}
 
-      ret = new File(curPath + fs + name);
+			ret = new File(curPath + fs + name);
 
-      if (ret.exists()) {
-        break;
-      }
+			if (ret.exists()) {
+				break;
+			}
 
-      ret = null;
-    }
+			ret = null;
+		}
 
-    if (ret == null) {
-      throw new FileNotFoundException(name);
-    }
+		if (ret == null) {
+			throw new FileNotFoundException(name);
+		}
 
-    return ret;
-  }
+		return ret;
+	}
 
-  public Part loadPart(String name) throws Exception {
+	public Part loadPart(String name, boolean reset) throws Exception {
+		if (reset) {
+			parts = new HashMap<String, Part>();
+		}
+		// ----------------------------------------
+		// For mpd support
+		// ----------------------------------------
 
-    // ----------------------------------------
-    //  For mpd support
-    // ----------------------------------------
+		List<UnresolvedBean> unresolvedBeanList = new ArrayList<UnresolvedBean>();
+		Part ret = null;
+		Part cur = null;
 
-    List unresolvedBeanList = new ArrayList();
-    Part ret = null;
-    Part cur = null;
+		// ----------------------------------------
+		// Read the file
+		// ----------------------------------------
 
-    // ----------------------------------------
-    // Read the file
-    // ----------------------------------------
+		BufferedReader rd = new BufferedReader(new FileReader(findFile(name)));
 
-    BufferedReader rd = new BufferedReader(new FileReader(findFile(name)));
+		Pattern pattern = Pattern.compile(" +");
 
-    Pattern pattern = Pattern.compile(" +");
+		String line;
 
-    String line;
+		while ((line = rd.readLine()) != null) {
+			line = line.trim();
 
-    while ((line = rd.readLine()) != null) {
-      line = line.trim();
+			if (line.equals("")) {
+				continue;
+			}
 
-      if (line.equals("")) {
-        continue;
-      }
+			String[] data = pattern.split(line);
 
-      String[] data = pattern.split(line);
+			if (Integer.parseInt(data[0]) != 0) {
+				Part itm = new Part();
 
-      if (Integer.parseInt(data[0]) != 0) {
-        Part itm = new Part();
+				try {
+					itm.parse(line);
+				} catch (FileNotFoundException e) {
+					UnresolvedBean unresolvedBean = new UnresolvedBean();
 
-        try {
-          itm.parse(line);
-        } catch (FileNotFoundException e) {
-          UnresolvedBean unresolvedBean = new UnresolvedBean();
+					unresolvedBean.name = e.getMessage();
+					unresolvedBean.itm = itm;
+					unresolvedBeanList.add(unresolvedBean);
+				}
 
-          unresolvedBean.name = e.getMessage();
-          unresolvedBean.itm = itm;
-          unresolvedBeanList.add(unresolvedBean);
-        }
+				if (cur == null) {
+					cur = new Part();
+					cur.name = data[2];
+					cur.type = 1;
+					cur.partList = new ArrayList<Part>();
 
-        if (cur == null) {
-          cur = new Part();
-          cur.name = data[2];
-          cur.type = 1;
-          cur.partList = new ArrayList();
+					ret = cur;
+				}
 
-          ret = cur;
-        }
+				cur.partList.add(itm);
+			} else {
+				if (data.length >= 3 && data[1].equalsIgnoreCase("FILE")) {
+					cur = new Part();
+					cur.name = data[2];
+					cur.type = 1;
+					cur.partList = new ArrayList<Part>();
 
-        cur.partList.add(itm);
-      } else {
-        if (data.length >= 3 && data[1].equalsIgnoreCase("FILE")) {
-          cur = new Part();
-          cur.name = data[2];
-          cur.type = 1;
-          cur.partList = new ArrayList();
+					parts.put(cur.name, cur);
 
-          parts.put(cur.name, cur);
+					if (ret == null) {
+						ret = cur;
+					}
+				}
+			}
+		}
 
-          if (ret == null) {
-            ret = cur;
-          }
-        }
-      }
-    }
+		// ----------------------------------------
+		// Check unresolved
+		// ----------------------------------------
 
-    // ----------------------------------------
-    // Check unresolved
-    // ----------------------------------------
+		Iterator<UnresolvedBean> itt = unresolvedBeanList.iterator();
 
-    Iterator itt = unresolvedBeanList.iterator();
+		while (itt.hasNext()) {
+			UnresolvedBean unresolvedBean = (UnresolvedBean) itt.next();
+			unresolvedBean.itm.partDeps = getPart((String) unresolvedBean.name);
+		}
+		
+		rd.close();
+		
+		return ret;
+	}
 
-    while (itt.hasNext()) {
-      UnresolvedBean unresolvedBean = (UnresolvedBean) itt.next();
-      unresolvedBean.itm.partDeps = getPart((String) unresolvedBean.name);
-    }
+	// ----------------------------------------
 
-    return ret;
-  }
+	public Part getPart(String name) throws Exception {
+		Part ret = (Part) parts.get(name);
 
-  // ----------------------------------------
+		if (ret == null) {
+			try {
+				ret = loadPart(name, false);
+			} catch (FileNotFoundException e) {
+				// name is used for mpd
+				throw new FileNotFoundException(name);
+			}
 
-  public Part getPart(String name) throws Exception {
-    Part ret = (Part) parts.get(name);
+			parts.put(name, ret);
+		}
 
-    if (ret == null) {
-      try {
-        ret = loadPart(name);
-      } catch (FileNotFoundException e) {
-        // name is used for mpd
-        throw new FileNotFoundException(name);
-      }
+		return ret;
+	}
 
-      parts.put(name, ret);
-    }
+	// ----------------------------------------
 
-    return ret;
-  }
+	public List<String> getPath() {
+		return path;
+	}
 
-  // ----------------------------------------
+	// ----------------------------------------
 
-  public List getPath() {
-    return path;
-  }
-
-  // ----------------------------------------
-
-  private static class UnresolvedBean {
-
-    public String name;
-    public Part itm;
-  }
+	private static class UnresolvedBean {
+		public String name;
+		public Part itm;
+	}
 }
