@@ -27,7 +27,7 @@ public class PartBase {
   protected float[] z = new float[4];
 
   protected Part partDeps;
-  protected List partList;
+  protected List<Part> partList;
 
   public PartBase() {
     // Empty

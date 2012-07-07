@@ -36,7 +36,7 @@ public class ColorIndex {
   // Props
   // ----------------------------------------
 
-  private Map colorMap = new HashMap();
+  private Map<MutableInt, ColorEntry> colorMap = new HashMap<MutableInt, ColorEntry>();
   private MutableInt key = new MutableInt();
 
   // ----------------------------------------
