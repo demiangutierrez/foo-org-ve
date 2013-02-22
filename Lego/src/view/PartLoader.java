@@ -156,8 +156,8 @@ public class PartLoader {
 		Iterator<UnresolvedBean> itt = unresolvedBeanList.iterator();
 
 		while (itt.hasNext()) {
-			UnresolvedBean unresolvedBean = (UnresolvedBean) itt.next();
-			unresolvedBean.itm.partDeps = getPart((String) unresolvedBean.name);
+			UnresolvedBean unresolvedBean = itt.next();
+			unresolvedBean.itm.partDeps = getPart(unresolvedBean.name);
 		}
 		
 		rd.close();
@@ -168,7 +168,7 @@ public class PartLoader {
 	// ----------------------------------------
 
 	public Part getPart(String name) throws Exception {
-		Part ret = (Part) parts.get(name);
+		Part ret = parts.get(name);
 
 		if (ret == null) {
 			try {

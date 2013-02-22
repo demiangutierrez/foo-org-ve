@@ -1,0 +1,111 @@
+apply plugin: 'java'
+
+// The eclipse plugin adds tasks such as 'eclipse' (creates .project, .classpath, etc)
+// I preffer to install the Gradle plugin to the IDE. 
+// http://www.gradle.org/docs/current/userguide/userguide_single.html#eclipse_plugin 
+//apply plugin: 'eclipse'
+
+def modelFile = 'model.tar.gz'
+def ldrawFile = 'ldraw.tar.gz'
+
+def modelDir = 'model'
+def ldrawDir = 'ldraw'
+def libDir = 'lib'
+
+dependencies {
+	compile fileTree(libDir) {
+		include '*.jar'
+		include 'jogl_jar/gluegen-rt.jar'
+		include 'jogl_jar/jogl.all.jar'
+	}
+	
+	def osName = System.properties['os.name'].toLowerCase()
+	def includeNative = null
+	
+	// Maybe there's a switch that enable wild card matching. For now this is good enough
+	if (osName.contains('windows')) {
+		includeNative = '*-windows-*.jar'
+	} else if (osName.contains('linux')) {
+		includeNative = '*-linux-*.jar'
+	}
+	runtime fileTree(dir: libDir + '/jogl_jar', include: includeNative)
+}
+
+// Defining a method. Extract tar.gz file
+def extractFile(tgzFile) {
+	copy {
+		from tarTree(resources.gzip(tgzFile))
+		into getProjectDir()
+	}
+}
+
+// Extract model
+task extractModel {
+	// Gradle has 3 phases: initialization, configuration and execution.
+	// Tasks dependencies, inputs/outputs, etc are used in the configuration phase.
+	// inputs and outputs are used to implement up-to-date checking
+	inputs.files files(modelFile)
+	outputs.dir files(modelDir)
+	
+	// doLast is what gets executed during the execution phase. Shorthand: <<	
+	doLast {
+		extractFile(modelFile)
+	}
+}
+
+// Extract ldraw
+task extractLdraw {
+	inputs.files files(ldrawFile)
+	outputs.dir files(ldrawDir)
+	
+	doLast {
+		extractFile(ldrawFile)
+	}
+}
+
+// For the lazy one, just one task to extract both files.
+task prepareProject
+prepareProject.dependsOn extractModel, extractLdraw
+
+// Default src directory in gradle is src/main/java. Changing to src
+compileJava {
+	source = file('src')
+}
+
+jar {
+	from 'src/ldconfig.ldr'
+	from 'src/log4j.properties'
+	
+    manifest {
+		attributes 'Main-Class': 'view.FrmLegoViewer'
+		
+		// Adding all required jars to classpath
+		def manifestClasspath = configurations.runtime.collect { 
+			libDir + '/' + it.getName() 
+		}.join(' ') 
+        attributes 'Class-Path': manifestClasspath 
+	}
+}
+
+task dist(dependsOn: [extractModel, extractLdraw], type: Zip) {
+	// Zipping a Lego folder that contains all that's needed
+	into('Lego') {
+		// Copying jar
+	    from jar.outputs
+		
+		// Copying model dir into zip
+		into(modelDir) {
+			from modelDir
+		}
+		
+		// Copying ldraw dir into zip
+		into(ldrawDir) {
+			from ldrawDir
+		}
+		
+		// All libs needed into lib dir inside zip
+	    into(libDir) {
+	        from configurations.runtime
+	    }
+	}
+}

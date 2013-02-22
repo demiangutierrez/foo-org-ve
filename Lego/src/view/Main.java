@@ -41,8 +41,8 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 
 	// ***************************************
 	// XXX: Change according the real location
-	private static final String ldraw_base = "ldraw"; // LDraw home
-	private static final String model_base = "model"; // Where to the
+	public static final String ldraw_base = "ldraw"; // LDraw home
+	public static final String model_base = "model"; // Where to the
 																				// models to be
 																				// displayed
 
@@ -206,7 +206,6 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 			break;
 		case KeyEvent.VK_R:
 			System.err.println("r");
-			lId = null;
 			reload();
 			break;
 		}
@@ -221,45 +220,52 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
 	}
 
 	private void reload() {
+		String name = null;
+		//		name = "3004.DAT"; // Boring, just a lego part for testing
+		//		name = "3034.DAT"; // Boring, just a lego part for testing
+		//		name = "3062B.DAT"; // Boring, just a lego part for testing
+		//		name = "3298P90.DAT"; // Boring, just a lego part for testing
+		//		name = "3298s01.dat"; // Boring, just a lego part for testing
+		//		name = "3839A.dat"; // Boring, just a lego part for testing
+		//		name = "4-4cyli.dat"; // Boring, just a lego part for testing
+		//		name = "3829b.DAT"; // Boring, just a lego part for testing
+		//		name = "3829a.DAT"; // Boring, just a lego part for testing
+		//		name = "3829.DAT"; // Boring, just a lego part for testing
+		//		name = "1499-1.mpd"; // Medium twin seat spaceship
+		//		name = "885-1.mpd"; // Very small spaceship (5)
+		//		name = "487-1.mpd"; // Medium Ship with deployable car
+		//		name = "6804-1.mpd"; // Very small car (2)
+		//		name = "6807-1.mpd"; // Very (very) small spaceship with robot
+		//		name = "6824.mpd"; // Very small spaceship (4)
+		//		name = "6872-1.mpd"; // Medium ship with small robot
+		//		name = "6890-1.mpd"; // Medium ship with deployable small ship
+		//		name = "6926-1.mpd"; // Nice blue car (1)
+		//		name = "6928-1.mpd"; // Nice blue car (2)
+		//		name = "6950-1.mpd"; // Childhood car & rocket
+		//		name = "6985.mpd"; // Big spaceship
+		//		name = "886-1.mpd"; // Very small car (1)
+		//		name = "1580-1.mpd"; // Medium car //XXX: BUG!!!!!
+		//		name = "6801-1.mpd"; // Very small spaceship (1)
+		//		name = "6806-1.mpd"; // Very small spaceship (2)
+		//		name = "6821-1.mpd"; // Small-med Bulldozer Car (1)
+		//		name = "6847-1.mpd"; // Small-med Bulldozer Car (2)
+		//		name = "6881-1.mpd"; // Small-med satelite-rocket launcher
+		//		name = "6891.mpd"; // Medium Ship
+		//		name = "6927-1.mpd"; // Medium car with rear deployable module
+		//		name = "6929-1.mpd"; // Medium Childhood Ship
+		//		name = "6972-1.mpd"; // Big lunar station small ship launcher
+		//		name = "885-1.mpd"; // Very small spaceship (3)
+		//		name = "889-1.mpd"; // Very small car with satelite
+		//		name = "train.ldr"; // front part of train
+		
+		reload(name);
+	}
+	
+	public void reload(String name) {
+		lId = null;
 		PartLoader partLoader = PartLoader.getInstance();
 		try {
-			// part = partLoader.loadPart("3004.DAT", true); // Boring, just a lego part for testing
-			// part = partLoader.loadPart("3034.DAT", true); // Boring, just a lego part for testing
-			// part = partLoader.loadPart("3062B.DAT", true); // Boring, just a lego part for testing
-			// part = partLoader.loadPart("3298P90.DAT", true); // Boring, just a lego part for testing
-			// part = partLoader.loadPart("3298s01.dat", true); // Boring, just a lego part for testing
-			// part = partLoader.loadPart("3839A.dat", true); // Boring, just a lego part for testing
-			// part = partLoader.loadPart("4-4cyli.dat", true); // Boring, just a lego part for testing
-			// part = partLoader.loadPart("3829b.DAT", true); // Boring, just a lego part for testing
-			// part = partLoader.loadPart("3829a.DAT", true); // Boring, just a lego part for testing
-			// part = partLoader.loadPart("3829.DAT", true); // Boring, just a lego part for testing
-			// part = partLoader.loadPart("1499-1.mpd", true); // Medium twin seat spaceship
-			// part = partLoader.loadPart("885-1.mpd", true); // Very small spaceship (5)
-			// part = partLoader.loadPart("487-1.mpd", true); // Medium Ship with deployable car
-			// part = partLoader.loadPart("6804-1.mpd", true); // Very small car (2)
-			// part = partLoader.loadPart("6807-1.mpd", true); // Very (very) small spaceship with robot
-			// part = partLoader.loadPart("6824.mpd", true); // Very small spaceship (4)
-			// part = partLoader.loadPart("6872-1.mpd", true); // Medium ship with small robot
-			// part = partLoader.loadPart("6890-1.mpd", true); // Medium ship with deployable small ship
-			// part = partLoader.loadPart("6926-1.mpd", true); // Nice blue car (1)
-			// part = partLoader.loadPart("6928-1.mpd", true); // Nice blue car (2)
-			// part = partLoader.loadPart("6950-1.mpd", true); // Childhood car & rocket
-			// part = partLoader.loadPart("6985.mpd", true); // Big spaceship
-			// part = partLoader.loadPart("886-1.mpd", true); // Very small car (1)
-			// part = partLoader.loadPart("1580-1.mpd" true); // Medium car
-			// part = partLoader.loadPart("6801-1.mpd", true); // Very small spaceship (1)
-			// part = partLoader.loadPart("6806-1.mpd", true); // Very small spaceship (2)
-			// part = partLoader.loadPart("6821-1.mpd", true); // Small-med Bulldozer Car (1)
-			// part = partLoader.loadPart("6847-1.mpd", true); // Small-med Bulldozer Car (2)
-			// part = partLoader.loadPart("6881-1.mpd", true); // Small-med satelite-rocket launcher
-			// part = partLoader.loadPart("6891.mpd", true); // Medium Ship
-			// part = partLoader.loadPart("6927-1.mpd", true); // Medium car with rear deployable module
-			// part = partLoader.loadPart("6929-1.mpd", true); // Medium Childhood Ship
-			// part = partLoader.loadPart("6972-1.mpd", true); // Big lunar station small ship launcher
-			// part = partLoader.loadPart("885-1.mpd", true); // Very small spaceship (3)
-			// part = partLoader.loadPart("889-1.mpd", true); // Very small car with satelite
-			// part = partLoader.loadPart("train.ldr", true); // front part of train
-
+			part = partLoader.loadPart(name, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
