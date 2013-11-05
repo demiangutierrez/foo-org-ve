@@ -10,19 +10,22 @@ import java.nio.ByteBuffer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.glu.GLU;
 import javax.swing.event.EventListenerList;
 
 import org.cyrano.jogl.base.BaseExample;
-import org.cyrano.jogl.base.Camera;
 import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.GLMouseListenerProxy;
 import org.cyrano.jogl.base.GLMouseMotionListenerProxy;
 import org.cyrano.jogl.base.Primitives;
 import org.cyrano.rubik.model.Axis;
+import org.cyrano.rubik.model.Command;
 import org.cyrano.rubik.model.Cubie;
 import org.cyrano.rubik.model.Facelet;
 import org.cyrano.rubik.model.Model;
 import org.cyrano.rubik.model.Turn;
+
+import com.sun.opengl.util.GLUT;
 
 /**
  * @author Demián Gutierrez
@@ -34,6 +37,8 @@ public class Main extends BaseExample //
       MouseMotionListener {
 
   private static final double FACE_SIZE_FACTOR = 0.45;
+
+  private boolean DRAW_FACELET_ID = false;
 
   // --------------------------------------------------------------------------------
 
@@ -50,17 +55,21 @@ public class Main extends BaseExample //
 
   // --------------------------------------------------------------------------------
 
-  private Camera camera = new CameraBall();
-
-  // --------------------------------------------------------------------------------
-
   private Model model;
 
   private byte selFacelet;
 
   // --------------------------------------------------------------------------------
 
+  public Main() {
+    initBaseExample(getClass().getName(), new CameraBall());
+  }
+
+  // --------------------------------------------------------------------------------
+
   public void init(GLAutoDrawable drawable) {
+    super.init(drawable);
+
     mouseMotionListenerProxy = //
     new GLMouseMotionListenerProxy(eventListenerList, glCanvas);
 
@@ -75,31 +84,9 @@ public class Main extends BaseExample //
     mouseMotionListenerProxy.addMouseMotionListener(this);
     mouseListenerProxy.addMouseListener(this);
 
-    drawable.addMouseMotionListener(camera);
-    drawable.addMouseListener/*  */(camera);
-    drawable.addKeyListener/*    */(camera);
-
-    drawable.addKeyListener/*    */(this);
-
     // ----------------------------------------
 
-    GL gl = drawable.getGL();
-
-    gl.glEnable(GL.GL_CULL_FACE);
-    gl.glEnable(GL.GL_DEPTH_TEST);
-
     model = new Model(3);
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public void reshape(GLAutoDrawable drawable, //
-      int x, int y, int w, int h) {
-
-    GL gl = drawable.getGL();
-    gl.glViewport(0, 0, w, h);
-
-    camera.updateCameraBox();
   }
 
   // --------------------------------------------------------------------------------
@@ -109,7 +96,7 @@ public class Main extends BaseExample //
 
     gl.glLoadIdentity();
 
-    camera.updateCameraBox();
+    camera.updateCameraBox(getW(gl), getH(gl));
     camera.updateCameraPos();
 
     mouseMotionListenerProxy.fireQueue();
@@ -123,11 +110,18 @@ public class Main extends BaseExample //
 
     Primitives.drawAxes(gl);
 
+    if (prev != 0) {
+      model.animateCommand(System.currentTimeMillis() - prev);
+    }
+
+    prev = System.currentTimeMillis();
+
     drawCube(gl);
-    //    drawTextDemo(gl);
 
     gl.glFlush();
   }
+
+  long prev;
 
   // --------------------------------------------------------------------------------
 
@@ -143,12 +137,12 @@ public class Main extends BaseExample //
 
           gl.glPushMatrix();
 
-          //gl.glRotated(30, 0, 1, 0);
+          gl.glMultMatrixd(cubie.getAnimRotationMatrix(), 0);
 
           gl.glTranslated( //
-              cubie.position.x, //
-              cubie.position.y, //
-              cubie.position.z);
+              cubie.getInitialPosition().x, //
+              cubie.getInitialPosition().y, //
+              cubie.getInitialPosition().z);
 
           drawCubie(gl, cubie);
 
@@ -161,7 +155,7 @@ public class Main extends BaseExample //
   // --------------------------------------------------------------------------------
 
   private void drawCubie(GL gl, Cubie cubie) {
-    for (Facelet facelet : cubie.faceletList) {
+    for (Facelet facelet : cubie.getFaceletList()) {
       Color color = facelet.faceletColor.translateColor();
 
       float[] colorArray;
@@ -180,9 +174,9 @@ public class Main extends BaseExample //
 
       gl.glBegin(GL.GL_TRIANGLE_STRIP);
 
-      //      double xMid = 0;
-      //      double yMid = 0;
-      //      double zMid = 0;
+      double xMid = 0;
+      double yMid = 0;
+      double zMid = 0;
 
       for (int j = -1; j <= +1; j += 2) {
         for (int i = -1; i <= +1; i += 2) {
@@ -223,77 +217,77 @@ public class Main extends BaseExample //
 
           gl.glVertex3d(x, y, z);
 
-          //          xMid += x;
-          //          yMid += y;
-          //          zMid += z;
+          xMid += x;
+          yMid += y;
+          zMid += z;
         }
       }
 
-      //      xMid /= 4;
-      //      yMid /= 4;
-      //      zMid /= 4;
+      xMid /= 4;
+      yMid /= 4;
+      zMid /= 4;
 
       gl.glEnd();
 
-      // drawFaceletId(gl, facelet, xMid, yMid, zMid);
+      if (DRAW_FACELET_ID) {
+        drawFaceletId(gl, facelet, facelet.id, xMid, yMid, zMid);
+      } else {
+        drawFaceletId(gl, facelet, cubie.getCubeId(), xMid, yMid, zMid);
+      }
+
     }
   }
 
-  //  private void drawFaceletId(GL gl, Facelet facelet, //
-  //      double xMid, double yMid, double zMid) {
-  //
-  //    GLUT glut = new GLUT();
-  //    GLU glu = new GLU();
-  //
-  //    double[] proMatrix = new double[16];
-  //    double[] modMatrix = new double[16];
-  //
-  //    gl.glMatrixMode(GL.GL_PROJECTION);
-  //    gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, //
-  //        proMatrix, 0);
-  //
-  //    gl.glMatrixMode(GL.GL_MODELVIEW);
-  //    gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, //
-  //        modMatrix, 0);
-  //
-  //    int[] viewport = new int[4];
-  //
-  //    gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-  //
-  //    double[] coord = new double[3];
-  //
-  //    glu.gluProject(xMid, yMid, zMid, //
-  //        modMatrix, 0, proMatrix, 0, //
-  //        viewport, 0, coord, 0);
-  //
-  //    float r = facelet.faceletColor.translateColor().getRed()/*  *// 255.0f;
-  //    float g = facelet.faceletColor.translateColor().getGreen()/**// 255.0f;
-  //    float b = facelet.faceletColor.translateColor().getBlue()/* *// 255.0f;
-  //
-  //    gl.glColor3f(1 - r, 1 - g, 1 - b);
-  //
-  //    double scale = 0.65;
-  //
-  //    gl.glRasterPos3d( //
-  //        facelet.normal.x * scale, //
-  //        facelet.normal.y * scale, //
-  //        facelet.normal.z * scale);
-  //
-  //    glut.glutBitmapString(7, Integer.toString(facelet.id));
-  //  }
-
   // --------------------------------------------------------------------------------
 
-  public void displayChanged(GLAutoDrawable drawable, //
-      boolean modeChanged, boolean deviceChanged) {
-    // Empty
+  private void drawFaceletId(GL gl, Facelet facelet, byte id, //
+      double xMid, double yMid, double zMid) {
+
+    GLUT glut = new GLUT();
+    GLU glu = new GLU();
+
+    double[] proMatrix = new double[16];
+    double[] modMatrix = new double[16];
+
+    gl.glMatrixMode(GL.GL_PROJECTION);
+    gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, //
+        proMatrix, 0);
+
+    gl.glMatrixMode(GL.GL_MODELVIEW);
+    gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, //
+        modMatrix, 0);
+
+    int[] viewport = new int[4];
+
+    gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+
+    double[] coord = new double[3];
+
+    glu.gluProject(xMid, yMid, zMid, //
+        modMatrix, 0, proMatrix, 0, //
+        viewport, 0, coord, 0);
+
+    float r = facelet.faceletColor.translateColor().getRed()/*  *// 255.0f;
+    float g = facelet.faceletColor.translateColor().getGreen()/**// 255.0f;
+    float b = facelet.faceletColor.translateColor().getBlue()/* *// 255.0f;
+
+    gl.glColor3f(1 - r, 1 - g, 1 - b);
+
+    double scale = 0.65;
+
+    gl.glRasterPos3d( //
+        facelet.normal.x * scale, //
+        facelet.normal.y * scale, //
+        facelet.normal.z * scale);
+
+    glut.glutBitmapString(7, Integer.toString(id));
   }
 
   // --------------------------------------------------------------------------------
 
   private void glSetColorAndId(GL gl, float r, float g, float b, byte id) {
     if (idMode == true) {
-      gl.glColor4b((byte) id, (byte) 0, (byte) 0, (byte) 0);
+      gl.glColor3b((byte) id, (byte) 0, (byte) 0);
     } else {
       gl.glColor3f(r, g, b);
     }
@@ -324,30 +318,64 @@ public class Main extends BaseExample //
   // --------------------------------------------------------------------------------
 
   public void keyTyped(KeyEvent evt) {
+    Command command;
+
     switch (evt.getKeyChar()) {
       case 'D' : // FR
+        command = new Command(Axis.Z_POS, Turn.CC, +1);
+        model.command(command);
+        break;
       case 'd' :
-        model.rotate(Axis.Z_POS, Turn.CW, +1);
+        command = new Command(Axis.Z_POS, Turn.CW, +1);
+        model.command(command);
         break;
       case 'C' : // BK
+        command = new Command(Axis.Z_NEG, Turn.CC, -1);
+        model.command(command);
+        break;
       case 'c' :
-        model.rotate(Axis.Z_NEG, Turn.CW, -1);
+        command = new Command(Axis.Z_NEG, Turn.CW, -1);
+        model.command(command);
         break;
       case 'E' : // TP
+        command = new Command(Axis.Y_POS, Turn.CC, +1);
+        model.command(command);
+        break;
       case 'e' :
-        model.rotate(Axis.Y_POS, Turn.CW, +1);
+        command = new Command(Axis.Y_POS, Turn.CW, +1);
+        model.command(command);
         break;
       case 'X' : // BT
-      case 'x' :
-        model.rotate(Axis.Y_NEG, Turn.CW, -1);
+        command = new Command(Axis.Y_NEG, Turn.CC, -1);
+        model.command(command);
         break;
-      case 'S' : // LF
-      case 's' :
-        model.rotate(Axis.X_NEG, Turn.CW, -1);
+      case 'x' :
+        command = new Command(Axis.Y_NEG, Turn.CW, -1);
+        model.command(command);
+        break;
+      case 'Z' : // LF
+        command = new Command(Axis.X_NEG, Turn.CC, -1);
+        model.command(command);
+        break;
+      case 'z' :
+        command = new Command(Axis.X_NEG, Turn.CW, -1);
+        model.command(command);
         break;
       case 'F' : // RG
+        command = new Command(Axis.X_POS, Turn.CC, +1);
+        model.command(command);
+        break;
       case 'f' :
-        model.rotate(Axis.X_POS, Turn.CW, +1);
+        command = new Command(Axis.X_POS, Turn.CW, +1);
+        model.command(command);
+        break;
+      case 'r' :
+      case 'R' :
+        model.redo();
+        break;
+      case 'u' :
+      case 'U' :
+        model.undo();
         break;
     }
 
@@ -463,6 +491,6 @@ public class Main extends BaseExample //
   // --------------------------------------------------------------------------------
 
   public static void main(String[] args) {
-    new Main().run();
+    new Main();
   }
 }
