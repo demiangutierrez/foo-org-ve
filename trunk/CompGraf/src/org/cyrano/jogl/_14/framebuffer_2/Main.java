@@ -4,7 +4,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.cyrano.jogl.base.BaseExample;
-import org.cyrano.jogl.base.Camera;
 import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.Primitives;
 
@@ -13,31 +12,8 @@ import org.cyrano.jogl.base.Primitives;
  */
 public class Main extends BaseExample {
 
-  private Camera camera = new CameraBall();
-
-  // --------------------------------------------------------------------------------
-
-  public void init(GLAutoDrawable drawable) {
-    drawable.addMouseMotionListener(camera);
-    drawable.addMouseListener/*  */(camera);
-    drawable.addKeyListener/*    */(camera);
-
-    GL gl = drawable.getGL();
-
-    gl.glDisable(GL.GL_CULL_FACE);
-    gl.glEnable(GL.GL_DEPTH_TEST);
-    gl.glEnable(GL.GL_STENCIL_TEST);
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public void reshape(GLAutoDrawable drawable, //
-      int x, int y, int w, int h) {
-
-    GL gl = drawable.getGL();
-    gl.glViewport(0, 0, w, h);
-
-    camera.updateCameraBox();
+  public Main() {
+    initBaseExample(getClass().getName(), new CameraBall());
   }
 
   // --------------------------------------------------------------------------------
@@ -46,18 +22,24 @@ public class Main extends BaseExample {
     GL gl = drawable.getGL();
 
     gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    gl.glClear(GL.GL_COLOR_BUFFER_BIT | //
-        /*   */GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
+    gl.glClear( //
+    /**/GL.GL_COLOR_BUFFER_BIT | //
+        GL.GL_DEPTH_BUFFER_BIT | //
+        GL.GL_STENCIL_BUFFER_BIT); // <-- Notice this
 
     gl.glLoadIdentity();
 
-    camera.updateCameraBox();
+    camera.updateCameraBox(getW(gl), getH(gl));
     camera.updateCameraPos();
 
     Primitives.drawAxes(gl);
 
     // ----------------------------------------
     // draw the stencil mask
+    // ----------------------------------------
+
+    gl.glEnable(GL.GL_STENCIL_TEST);
+
     // ----------------------------------------
 
     gl.glColorMask(false, false, false, false);
@@ -86,7 +68,7 @@ public class Main extends BaseExample {
     // draw the NON stenciled (red) rect
     // ----------------------------------------
 
-    //gl.glClear(GL.GL_STENCIL_BUFFER_BIT); // or...
+    // gl.glClear(GL.GL_STENCIL_BUFFER_BIT); // or...
     gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
 
     gl.glColor3f(1.0f, 0.0f, 0.0f);
@@ -99,14 +81,7 @@ public class Main extends BaseExample {
 
   // --------------------------------------------------------------------------------
 
-  public void displayChanged(GLAutoDrawable drawable, //
-      boolean modeChanged, boolean deviceChanged) {
-    // Empty
-  }
-
-  // --------------------------------------------------------------------------------
-
   public static void main(String[] args) {
-    new Main().run();
+    new Main();
   }
 }

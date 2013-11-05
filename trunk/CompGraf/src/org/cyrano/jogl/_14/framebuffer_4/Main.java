@@ -1,7 +1,6 @@
 package org.cyrano.jogl._14.framebuffer_4;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.nio.FloatBuffer;
@@ -11,47 +10,20 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.cyrano.jogl.base.BaseExample;
-import org.cyrano.jogl.base.Camera;
 import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.Primitives;
 
 /**
  * @author Demián Gutierrez
  */
-public class Main extends BaseExample implements KeyListener {
+public class Main extends BaseExample {
 
-  private Camera camera = new CameraBall();
-
-  // --------------------------------------------------------------------------------
-
-  private boolean saveFB;
+  private boolean capture;
 
   // --------------------------------------------------------------------------------
 
-  public void init(GLAutoDrawable drawable) {
-    drawable.addMouseMotionListener(camera);
-    drawable.addMouseListener/*  */(camera);
-    drawable.addKeyListener/*    */(camera);
-
-    drawable.addKeyListener/*    */(this);
-
-    GL gl = drawable.getGL();
-
-    gl.glDisable(GL.GL_CULL_FACE);
-
-    gl.glEnable(GL.GL_DEPTH_TEST);
-    gl.glDepthRange(0, 1);
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public void reshape(GLAutoDrawable drawable, //
-      int x, int y, int w, int h) {
-
-    GL gl = drawable.getGL();
-    gl.glViewport(0, 0, w, h);
-
-    camera.updateCameraBox();
+  public Main() {
+    initBaseExample(getClass().getName(), new CameraBall());
   }
 
   // --------------------------------------------------------------------------------
@@ -65,7 +37,7 @@ public class Main extends BaseExample implements KeyListener {
 
     gl.glLoadIdentity();
 
-    camera.updateCameraBox();
+    camera.updateCameraBox(getW(gl), getH(gl));
     camera.updateCameraPos();
 
     Primitives.drawAxes(gl);
@@ -80,21 +52,22 @@ public class Main extends BaseExample implements KeyListener {
 
     gl.glFlush();
 
-    if (saveFB) {
-      capture(gl);
-      saveFB = false;
-    }
+    capture(gl);
   }
 
   // --------------------------------------------------------------------------------
 
   private void capture(GL gl) {
-    int[] viewport = new int[4];
+    if (!capture) {
+      return;
+    }
 
-    gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+    capture = false;
 
-    int w = viewport[2];
-    int h = viewport[3];
+    // ----------------------------------------
+
+    int w = getW(gl);
+    int h = getH(gl);
 
     FloatBuffer pixelsRGB = FloatBuffer.allocate(w * h * 4);
 
@@ -102,10 +75,9 @@ public class Main extends BaseExample implements KeyListener {
         0, 0, w, h, //
         GL.GL_DEPTH_COMPONENT, GL.GL_FLOAT, pixelsRGB);
 
-    BufferedImage ret = transformPixelsDepth(pixelsRGB, w, h);
-
     try {
-      ImageIO.write(ret, "png", new FileOutputStream("depth.png"));
+      ImageIO.write(transformPixelsDepth(pixelsRGB, w, h), //
+          "png", new FileOutputStream("depth.png"));
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -161,21 +133,14 @@ public class Main extends BaseExample implements KeyListener {
   }
 
   // --------------------------------------------------------------------------------
-
-  public void displayChanged(GLAutoDrawable drawable, //
-      boolean modeChanged, boolean deviceChanged) {
-    // Empty
-  }
-
-  // --------------------------------------------------------------------------------
   // KeyListener
   // --------------------------------------------------------------------------------
 
   public void keyTyped(KeyEvent evt) {
     switch (evt.getKeyChar()) {
-      case 'S' :
-      case 's' :
-        saveFB = true;
+      case 'D' :
+      case 'd' :
+        capture = true;
         break;
     }
 
@@ -184,19 +149,7 @@ public class Main extends BaseExample implements KeyListener {
 
   // --------------------------------------------------------------------------------
 
-  public void keyPressed(KeyEvent e) {
-    //  Empty    
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public void keyReleased(KeyEvent e) {
-    // Empty    
-  }
-
-  // --------------------------------------------------------------------------------
-
   public static void main(String[] args) {
-    new Main().run();
+    new Main();
   }
 }

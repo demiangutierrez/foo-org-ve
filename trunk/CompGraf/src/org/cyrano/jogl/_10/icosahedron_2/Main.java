@@ -63,6 +63,7 @@ public class Main implements GLEventListener, MouseListener, MouseMotionListener
       InputStream is;
       TextureData textureData;
 
+      //      is = ClassLoader.getSystemResourceAsStream("textures/earth_2048plus256.png");
       is = ClassLoader.getSystemResourceAsStream("textures/earth3.png");
       textureData = TextureIO.newTextureData(is, false, "bmp");
       texture = TextureIO.newTexture(textureData);
