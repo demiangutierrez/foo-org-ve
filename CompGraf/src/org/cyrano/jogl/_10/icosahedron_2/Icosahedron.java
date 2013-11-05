@@ -117,6 +117,8 @@ public class Icosahedron {
     ret[1] += Math.PI;
     ret[1] /= (2 * Math.PI);
 
+    ret[2] = 1 - ret[2];
+
     if (ret[0] < 0 || ret[0] > 1) {
       throw new IllegalStateException("ret0: " + ret[0]);
     }
@@ -186,18 +188,21 @@ public class Icosahedron {
     gl.glBegin(GL.GL_TRIANGLES);
 
     spherical = textureMapCoords(va);
+    //    gl.glTexCoord2d(spherical[1]/9*8, spherical[2]);
     gl.glTexCoord2d(spherical[1], spherical[2]);
 
     gl.glNormal3dv(na, 0);
     gl.glVertex3d(va[0], va[1], va[2]);
 
     spherical = textureMapCoords(vb);
+    //    gl.glTexCoord2d(spherical[1]/9*8, spherical[2]);
     gl.glTexCoord2d(spherical[1], spherical[2]);
 
     gl.glNormal3dv(nb, 0);
     gl.glVertex3d(vb[0], vb[1], vb[2]);
 
     spherical = textureMapCoords(vc);
+    //    gl.glTexCoord2d(spherical[1]/9*8, spherical[2]);
     gl.glTexCoord2d(spherical[1], spherical[2]);
 
     gl.glNormal3dv(nc, 0);

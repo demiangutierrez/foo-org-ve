@@ -4,7 +4,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.cyrano.jogl.base.BaseExample;
-import org.cyrano.jogl.base.Camera;
 import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.Primitives;
 
@@ -13,35 +12,8 @@ import org.cyrano.jogl.base.Primitives;
  */
 public class Main extends BaseExample {
 
-  private Camera camera = new CameraBall();
-
-  // --------------------------------------------------------------------------------
-
-  public void init(GLAutoDrawable drawable) {
-    drawable.addMouseMotionListener(camera);
-    drawable.addMouseListener/*  */(camera);
-    drawable.addKeyListener/*    */(camera);
-
-    GL gl = drawable.getGL();
-
-    gl.glDisable(GL.GL_CULL_FACE);
-
-    // ----------------------------------------
-    // comment this and see the results
-    // ----------------------------------------
-    gl.glEnable(GL.GL_DEPTH_TEST);
-    // ----------------------------------------
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public void reshape(GLAutoDrawable drawable, //
-      int x, int y, int w, int h) {
-
-    GL gl = drawable.getGL();
-    gl.glViewport(0, 0, w, h);
-
-    camera.updateCameraBox();
+  public Main() {
+    initBaseExample(getClass().getName(), new CameraBall());
   }
 
   // --------------------------------------------------------------------------------
@@ -55,10 +27,16 @@ public class Main extends BaseExample {
 
     gl.glLoadIdentity();
 
-    camera.updateCameraBox();
+    camera.updateCameraBox(getW(gl), getH(gl));
     camera.updateCameraPos();
 
     Primitives.drawAxes(gl);
+
+    // ----------------------------------------
+    // uncomment this and see the results
+    // ----------------------------------------
+    // gl.glDisable(GL.GL_DEPTH_TEST);
+    // ----------------------------------------
 
     // ----------------------------------------
     // swap and see results
@@ -77,14 +55,7 @@ public class Main extends BaseExample {
 
   // --------------------------------------------------------------------------------
 
-  public void displayChanged(GLAutoDrawable drawable, //
-      boolean modeChanged, boolean deviceChanged) {
-    // Empty
-  }
-
-  // --------------------------------------------------------------------------------
-
   public static void main(String[] args) {
-    new Main().run();
+    new Main();
   }
 }

@@ -9,47 +9,20 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.cyrano.jogl.base.BaseExample;
-import org.cyrano.jogl.base.Camera;
 import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.Primitives;
-import org.cyrano.jogl.util.TextureCache;
 
 /**
  * @author Demián Gutierrez
  */
 public class Main extends BaseExample implements KeyListener {
 
-  private Camera camera = new CameraBall();
-
   private boolean drawDepthBuffer;
 
   // --------------------------------------------------------------------------------
 
-  public void init(GLAutoDrawable drawable) {
-    drawable.addMouseMotionListener(camera);
-    drawable.addMouseListener/*  */(camera);
-    drawable.addKeyListener/*    */(camera);
-    drawable.addKeyListener/*    */(this);
-
-    GL gl = drawable.getGL();
-
-    TextureCache.init("textures");
-
-    gl.glDisable(GL.GL_CULL_FACE);
-
-    gl.glEnable(GL.GL_DEPTH_TEST);
-    gl.glDepthRange(0, 1);
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public void reshape(GLAutoDrawable drawable, //
-      int x, int y, int w, int h) {
-
-    GL gl = drawable.getGL();
-    gl.glViewport(0, 0, w, h);
-
-    camera.updateCameraBox();
+  public Main() {
+    initBaseExample(getClass().getName(), new CameraBall());
   }
 
   // --------------------------------------------------------------------------------
@@ -63,7 +36,7 @@ public class Main extends BaseExample implements KeyListener {
 
     gl.glLoadIdentity();
 
-    camera.updateCameraBox();
+    camera.updateCameraBox(getW(gl), getH(gl));
     camera.updateCameraPos();
 
     Primitives.drawAxes(gl);
@@ -98,13 +71,6 @@ public class Main extends BaseExample implements KeyListener {
   }
 
   // --------------------------------------------------------------------------------
-
-  public void displayChanged(GLAutoDrawable drawable, //
-      boolean modeChanged, boolean deviceChanged) {
-    // Empty
-  }
-
-  // --------------------------------------------------------------------------------
   // KeyListener
   // --------------------------------------------------------------------------------
 
@@ -119,19 +85,7 @@ public class Main extends BaseExample implements KeyListener {
 
   // --------------------------------------------------------------------------------
 
-  public void keyPressed(KeyEvent e) {
-    //  Empty    
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public void keyReleased(KeyEvent e) {
-    // Empty    
-  }
-
-  // --------------------------------------------------------------------------------
-
   public static void main(String[] args) {
-    new Main().run();
+    new Main();
   }
 }

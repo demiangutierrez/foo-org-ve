@@ -80,7 +80,7 @@ public class Body {
     gl.glRotatef(180f, 0, 1, 0);
     drawFace(gl);
     gl.glPopMatrix();
- drawFace(gl);
+    drawFace(gl);
     gl.glPopMatrix();
 
     gl.glPushMatrix();
