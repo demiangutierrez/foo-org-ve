@@ -10,7 +10,7 @@ public class VectorIntTest extends TestCase {
     VectorInt v = new VectorInt(1, 1, 1);
 
     int[][] transform = //
-    Transforms.getTransform(Axis.X_POS, Turn.CC);
+    Transforms.getTransformInt(Axis.X_POS, Turn.CC);
 
     v.transform(transform);
     assertEquals(+1, v.x);
@@ -36,7 +36,7 @@ public class VectorIntTest extends TestCase {
     VectorInt v = new VectorInt(1, 1, 1);
 
     int[][] transform = //
-    Transforms.getTransform(Axis.X_POS, Turn.CW);
+    Transforms.getTransformInt(Axis.X_POS, Turn.CW);
 
     v.transform(transform);
     assertEquals(+1, v.x);
@@ -62,7 +62,7 @@ public class VectorIntTest extends TestCase {
     VectorInt v = new VectorInt(1, 1, 1);
 
     int[][] transform = //
-    Transforms.getTransform(Axis.Y_POS, Turn.CC);
+    Transforms.getTransformInt(Axis.Y_POS, Turn.CC);
 
     v.transform(transform);
     assertEquals(+1, v.x);
@@ -88,7 +88,7 @@ public class VectorIntTest extends TestCase {
     VectorInt v = new VectorInt(1, 1, 1);
 
     int[][] transform = //
-    Transforms.getTransform(Axis.Y_POS, Turn.CW);
+    Transforms.getTransformInt(Axis.Y_POS, Turn.CW);
 
     v.transform(transform);
     assertEquals(-1, v.x);
@@ -114,7 +114,7 @@ public class VectorIntTest extends TestCase {
     VectorInt v = new VectorInt(1, 1, 1);
 
     int[][] transform = //
-    Transforms.getTransform(Axis.Z_POS, Turn.CC);
+    Transforms.getTransformInt(Axis.Z_POS, Turn.CC);
 
     v.transform(transform);
     assertEquals(-1, v.x);
@@ -140,7 +140,7 @@ public class VectorIntTest extends TestCase {
     VectorInt v = new VectorInt(1, 1, 1);
 
     int[][] transform = //
-    Transforms.getTransform(Axis.Z_POS, Turn.CW);
+    Transforms.getTransformInt(Axis.Z_POS, Turn.CW);
 
     v.transform(transform);
     assertEquals(+1, v.x);
