@@ -1,4 +1,4 @@
-package org.cyrano.jogl.util;
+package org.cyrano.jogl.base;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +9,9 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
+/**
+ * @author Demián Gutierrez
+ */
 public class TextureCache {
 
   private static TextureCache instance;
@@ -48,7 +51,7 @@ public class TextureCache {
 
   // --------------------------------------------------------------------------------
 
-  public Texture getImage(String key) {
+  public Texture getTexture(String key) {
     Texture ret = textureMapByKey.get(key);
 
     if (ret != null) {
@@ -69,11 +72,10 @@ public class TextureCache {
   // --------------------------------------------------------------------------------
 
   private Texture loadTexture(String path) throws IOException {
-    InputStream is;
-    TextureData textureData;
+    InputStream is = ClassLoader.getSystemResourceAsStream(path);
 
-    is = ClassLoader.getSystemResourceAsStream(path);
-    textureData = TextureIO.newTextureData(is, false, null);
+    TextureData textureData = //
+    TextureIO.newTextureData(is, true, null);
 
     return TextureIO.newTexture(textureData);
   }

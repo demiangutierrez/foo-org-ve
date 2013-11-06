@@ -52,7 +52,7 @@ public class CameraFree implements Camera {
   public void updateCameraPos() {
     GLU glu = new GLU();
 
-    double[] lookAt = getLookAt();
+    float[] lookAt = getLookAt();
 
     glu.gluLookAt( //
         lookAt[0], lookAt[1], lookAt[2], //
@@ -62,7 +62,7 @@ public class CameraFree implements Camera {
 
   // --------------------------------------------------------------------------------
 
-  public double[] getLookAt() {
+  public float[] getLookAt() {
     Matrix trans = MatrixOps.translate(eyeX, eyeY, eyeZ);
 
     Matrix curFrn = new Matrix(4, 1);
@@ -78,30 +78,30 @@ public class CameraFree implements Camera {
 
     Matrix traFrn = MatrixOps.matrixMult(trans, curFrn);
 
-    return new double[]{ //
-    /**/eyeX,/*         */eyeY,/*         */eyeZ, //
-        traFrn.get(0, 0), traFrn.get(1, 0), traFrn.get(2, 0), //
-        topX,/*         */topY,/*         */topZ};
+    return new float[]{ //
+    /**/(float) eyeX,/*         */(float) eyeY,/*         */(float) eyeZ, //
+        (float) traFrn.get(0, 0), (float) traFrn.get(1, 0), (float) traFrn.get(2, 0), //
+        (float) topX,/*         */(float) topY,/*         */(float) topZ};
   }
 
   // --------------------------------------------------------------------------------
 
-  public void updateCameraBox() {
+  public void updateCameraBox(int w, int h) {
     GL gl = GLU.getCurrentGL();
 
     gl.glMatrixMode(GL.GL_PROJECTION);
 
     gl.glLoadIdentity();
 
-    double nr = 0.5;
-    double fr = 2 * (dist - nr) + nr;
+    double nr = 0.1;
+    double fr = 4 * (dist - nr) + nr;
 
     //System.err.println("nr: " + nr);
     //System.err.println("fr: " + fr);
     //System.err.println("dist: " + dist);
 
     GLU glu = new GLU();
-    glu.gluPerspective(90, 1, nr, fr);
+    glu.gluPerspective(90, ((float) w) / h, nr, fr);
 
     gl.glMatrixMode(GL.GL_MODELVIEW);
   }
@@ -340,5 +340,41 @@ public class CameraFree implements Camera {
 
   public void keyReleased(KeyEvent e) {
     // Empty    
+  }
+
+  // --------------------------------------------------------------------------------
+
+  @Override
+  public float[] getCameraEye() {
+    float eyeDstX = (float) (frnX * dist);
+    float eyeDstY = (float) (frnY * dist);
+    float eyeDstZ = (float) (frnZ * dist);
+
+    return new float[]{eyeDstX, eyeDstY, eyeDstZ};
+  }
+
+  // --------------------------------------------------------------------------------
+
+  @Override
+  public float[] getCameraFrn() {
+    float frnDstX = (float) (-frnX);
+    float frnDstY = (float) (-frnY);
+    float frnDstZ = (float) (-frnZ);
+
+    return new float[]{frnDstX, frnDstY, frnDstZ};
+  }
+
+  // --------------------------------------------------------------------------------
+
+  @Override
+  public float[] getCameraTop() {
+    return new float[]{(float) topX, (float) topY, (float) topZ};
+  }
+
+  // --------------------------------------------------------------------------------
+
+  @Override
+  public void drawCameraParameters(int x, int y) {
+    throw new UnsupportedOperationException();
   }
 }
