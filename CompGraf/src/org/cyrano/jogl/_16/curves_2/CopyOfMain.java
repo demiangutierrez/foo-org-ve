@@ -14,6 +14,7 @@ import javax.media.opengl.glu.GLU;
 import org.cyrano.jogl.base.BaseExample;
 import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.Primitives;
+import org.cyrano.jogl.base.TestLights;
 
 /**
  * @author Demián Gutierrez
@@ -22,11 +23,12 @@ import org.cyrano.jogl.base.Primitives;
 // slightly based and adapted from:
 // www.opengl.org/resources/code/samples/mjktips/grid/editgrid.c
 // --------------------------------------------------------------------------------
-public class Main extends BaseExample implements MouseListener, MouseMotionListener {
+public class CopyOfMain extends BaseExample //
+    implements
+      MouseListener,
+      MouseMotionListener {
 
   private static final boolean IS_CURVE_2X2 = false;
-
-  private Light light = new Light();
 
   // --------------------------------------------------------------------------------
 
@@ -92,9 +94,11 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
   private boolean idMode;
 
+  private TestLights testLights;
+
   // --------------------------------------------------------------------------------
 
-  public Main() {
+  public CopyOfMain() {
     initBaseExample(getClass().getName(), new CameraBall());
 
     if (IS_CURVE_2X2) {
@@ -118,21 +122,18 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
     GL gl = drawable.getGL();
 
-    //gl.glDisable(GL.GL_CULL_FACE);
-
-    gl.glShadeModel(GL.GL_SMOOTH);
-
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthRange(0, 1);
 
     gl.glEnable(GL.GL_MAP2_VERTEX_3);
 
     gl.glEnable(GL.GL_MAP2_NORMAL);
-//    gl.glEnable(GL.GL_AUTO_NORMAL);
+    gl.glEnable(GL.GL_AUTO_NORMAL);
 
     gl.glMapGrid2d(gridSize, 0.0, 1.0, gridSize, 0.0, 1.0);
 
-    light.createLight(gl);
+    testLights = new TestLights();
+    testLights.createLight(drawable.getGL());
   }
 
   // --------------------------------------------------------------------------------
@@ -228,15 +229,15 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
     gl.glDisable(GL.GL_LIGHTING);
     Primitives.drawAxes(gl);
-    drawControlPoints(gl);
 
+    drawControlPoints(gl);
     gl.glEnable(GL.GL_LIGHTING);
-    light.calculateSpin();
-    light.drawAllLights(gl);
+    
+    testLights.calculateSpin();
+    testLights.drawAllLights(gl);
 
     gl.glColor3f(1, 1, 1);
-    light.setMaterial(gl);
-
+    testLights.setMaterial(gl);
     evaluateGrid(gl);
 
     // ----------------------------------------
@@ -377,6 +378,6 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
   // --------------------------------------------------------------------------------
 
   public static void main(String[] args) {
-    new Main();
+    new CopyOfMain();
   }
 }

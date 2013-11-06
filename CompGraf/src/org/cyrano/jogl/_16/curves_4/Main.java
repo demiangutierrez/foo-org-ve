@@ -15,7 +15,7 @@ import org.cyrano.jogl.base.BaseExample;
 import org.cyrano.jogl.base.Camera;
 import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.Primitives;
-import org.cyrano.jogl.util.TextureCache;
+import org.cyrano.jogl.base.TextureCache;
 
 import com.sun.opengl.util.texture.Texture;
 
@@ -159,7 +159,7 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
     GL gl = drawable.getGL();
     gl.glViewport(0, 0, w, h);
 
-    camera.updateCameraBox();
+    camera.updateCameraBox(w, h);
   }
 
   // --------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
 
     gl.glLoadIdentity();
 
-    camera.updateCameraBox();
+    camera.updateCameraBox(getW(gl), getH(gl));
     camera.updateCameraPos();
 
     gl.glMatrixMode(GL.GL_PROJECTION);
@@ -303,7 +303,7 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
     gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_DECAL);
 
     Texture texture = //
-    TextureCache.getInstance().getImage("wood-fence_256x256.jpg");
+    TextureCache.getInstance().getTexture("wood-fence_256x256.jpg");
 
     texture.bind();
 
@@ -443,6 +443,6 @@ public class Main extends BaseExample implements MouseListener, MouseMotionListe
   // --------------------------------------------------------------------------------
 
   public static void main(String[] args) {
-    new Main().run();
+    new Main();
   }
 }

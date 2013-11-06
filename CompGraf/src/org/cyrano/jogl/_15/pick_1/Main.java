@@ -8,7 +8,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.cyrano.jogl.base.BaseExample;
-import org.cyrano.jogl.base.Camera;
 import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.Primitives;
 
@@ -17,9 +16,11 @@ import org.cyrano.jogl.base.Primitives;
  */
 public class Main extends BaseExample {
 
-  private Camera camera = new CameraBall();
-
-  // --------------------------------------------------------------------------------
+  // ----------------------------------------
+  // set to true and see the results
+  // ----------------------------------------
+  private boolean draw = false;
+  // ----------------------------------------
 
   private int xMousePick;
   private int yMousePick;
@@ -28,10 +29,14 @@ public class Main extends BaseExample {
 
   // --------------------------------------------------------------------------------
 
+  public Main() {
+    initBaseExample(getClass().getName(), new CameraBall());
+  }
+
+  // --------------------------------------------------------------------------------
+
   public void init(GLAutoDrawable drawable) {
-    drawable.addMouseMotionListener(camera);
-    drawable.addMouseListener/*  */(camera);
-    drawable.addKeyListener/*    */(camera);
+    super.init(drawable);
 
     drawable.addMouseListener(new MouseAdapter() {
       @Override
@@ -39,22 +44,6 @@ public class Main extends BaseExample {
         Main.this.mouseClicked(evt);
       }
     });
-
-    GL gl = drawable.getGL();
-
-    gl.glDisable(GL.GL_CULL_FACE);
-    gl.glEnable(GL.GL_DEPTH_TEST);
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public void reshape(GLAutoDrawable drawable, //
-      int x, int y, int w, int h) {
-
-    GL gl = drawable.getGL();
-    gl.glViewport(0, 0, w, h);
-
-    camera.updateCameraBox();
   }
 
   // --------------------------------------------------------------------------------
@@ -68,35 +57,50 @@ public class Main extends BaseExample {
 
     gl.glLoadIdentity();
 
-    camera.updateCameraBox();
+    camera.updateCameraBox(getW(gl), getH(gl));
     camera.updateCameraPos();
 
-    if (pick) {
-      renderScene(gl);
+    // ----------------------------------------
+    // 1st pass
+    // ----------------------------------------
 
-      System.err.println("picked ID is: " + getPickId(gl));
+    pickScene(gl);
 
-      pick = false;
-    }
-
+    // ----------------------------------------
+    // 2nd pass
     // ----------------------------------------
 
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
     Primitives.drawAxes(gl);
 
-    renderScene(gl);
+    drawScene(gl);
 
     gl.glFlush();
   }
 
   // --------------------------------------------------------------------------------
 
-  private void renderScene(GL gl) {
-    glSetColorAndId(gl, 1.0f, 0.0f, 0.0f, (byte) 1);
+  private void pickScene(GL gl) {
+    if (!pick) {
+      return;
+    }
+
+    drawScene(gl);
+
+    System.err.println( //
+        "picked ID is: " + getPickId(gl));
+
+    pick = false;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  private void drawScene(GL gl) {
+    setColorAndId(gl, 1.0f, 0.0f, 0.0f, (byte) 100);
     Primitives.drawRect(gl, +1.0f, -0.25f);
 
-    glSetColorAndId(gl, 0.0f, 1.0f, 0.0f, (byte) 2);
+    setColorAndId(gl, 0.0f, 1.0f, 0.0f, (byte) 120);
     Primitives.drawRect(gl, +0.5f, +0.25f);
   }
 
@@ -114,24 +118,17 @@ public class Main extends BaseExample {
         viewport[3] - yMousePick, //
         1, 1, GL.GL_RGBA, GL.GL_BYTE, bb);
 
-    return bb.get(3);
+    return bb.get(0);
   }
 
   // --------------------------------------------------------------------------------
 
-  private void glSetColorAndId(GL gl, float r, float g, float b, byte id) {
-    if (pick == true) {
-      gl.glColor4b((byte) 0, (byte) 0, (byte) 0, id);
+  private void setColorAndId(GL gl, float r, float g, float b, byte id) {
+    if (pick || draw) {
+      gl.glColor3b((byte) id, (byte) 0, (byte) 0);
     } else {
       gl.glColor3f(r, g, b);
     }
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public void displayChanged(GLAutoDrawable drawable, //
-      boolean modeChanged, boolean deviceChanged) {
-    // Empty
   }
 
   // --------------------------------------------------------------------------------
@@ -150,6 +147,6 @@ public class Main extends BaseExample {
   // --------------------------------------------------------------------------------
 
   public static void main(String[] args) {
-    new Main().run();
+    new Main();
   }
 }
