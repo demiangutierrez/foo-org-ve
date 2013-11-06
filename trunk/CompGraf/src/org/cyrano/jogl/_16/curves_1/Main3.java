@@ -4,42 +4,16 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.cyrano.jogl.base.BaseExample;
-import org.cyrano.jogl.base.Camera;
 import org.cyrano.jogl.base.CameraBall;
 import org.cyrano.jogl.base.Primitives;
-import org.cyrano.jogl.util.TextureCache;
 
 /**
  * @author Demián Gutierrez
  */
 public class Main3 extends BaseExample {
 
-  private Camera camera = new CameraBall();
-
-  // --------------------------------------------------------------------------------
-
-  public void init(GLAutoDrawable drawable) {
-    drawable.addMouseMotionListener(camera);
-    drawable.addMouseListener/*  */(camera);
-    drawable.addKeyListener/*    */(camera);
-
-    GL gl = drawable.getGL();
-
-    TextureCache.init("textures");
-
-    gl.glDisable(GL.GL_CULL_FACE);
-    gl.glEnable(GL.GL_DEPTH_TEST);
-  }
-
-  // --------------------------------------------------------------------------------
-
-  public void reshape(GLAutoDrawable drawable, //
-      int x, int y, int w, int h) {
-
-    GL gl = drawable.getGL();
-    gl.glViewport(0, 0, w, h);
-
-    camera.updateCameraBox();
+  public Main3() {
+    initBaseExample(getClass().getName(), new CameraBall());
   }
 
   // --------------------------------------------------------------------------------
@@ -53,7 +27,7 @@ public class Main3 extends BaseExample {
 
     gl.glLoadIdentity();
 
-    camera.updateCameraBox();
+    camera.updateCameraBox(getW(gl), getH(gl));
     camera.updateCameraPos();
 
     Primitives.drawAxes(gl);
@@ -80,8 +54,6 @@ public class Main3 extends BaseExample {
         +1.5, +1.5, -1.0};
     //@endnf
 
-    gl.glColor3f(1, 1, 0);
-
     gl.glEnable(GL.GL_MAP2_VERTEX_3);
 
     // ----------------------------------------
@@ -101,7 +73,10 @@ public class Main3 extends BaseExample {
     // eval & draw
     // ----------------------------------------
 
+    //gl.glColor3f(1, 1, 0);
     //gl.glEvalMesh2(GL.GL_FILL, 0, 8, 0, 30);
+
+    gl.glColor3f(0, 1, 1);
     gl.glEvalMesh2(GL.GL_LINE, 0, 8, 0, 30);
 
     //    for (int j = 0; j <= 8; j++) {
@@ -127,33 +102,7 @@ public class Main3 extends BaseExample {
 
   // --------------------------------------------------------------------------------
 
-  public void displayChanged(GLAutoDrawable drawable, //
-      boolean modeChanged, boolean deviceChanged) {
-    // Empty
-  }
-
-  // --------------------------------------------------------------------------------
-
   public static void main(String[] args) {
-    new Main3().run();
+    new Main3();
   }
 }
-
-//for (int j = 0; j <= 30; j += 1) {
-//  gl.glBegin(GL.GL_LINE_STRIP);
-//  for (int i = 0; i <= 8; i += 1) {
-//    double du = (1-0)/8f;
-//    double dv = (1-0)/30f;
-//    gl.glEvalCoord2d(i * du + 1, j * dv + 1);
-//  }
-//  gl.glEnd();
-//}
-//for (int i = 0; i <= 8; i += 1) {
-//  gl.glBegin(GL.GL_LINE_STRIP);
-//  for (int j = 0; j <= 30; j += 1) {
-//    double du = (1-0)/8f;
-//    double dv = (1-0)/30f;
-//    gl.glEvalCoord2d(i * du + 1, j * dv + 1);
-//  }
-//  gl.glEnd();
-//}
